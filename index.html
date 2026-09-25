@@ -186,7 +186,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.6</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.7</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -2002,7 +2002,7 @@ function applyPowerTax(){
 const MEMORY_LABELS = {
   safetyTrail:"安全信号时间线", approvalChain:"审批链", doseMatrix:"剂量决策矩阵",
   imActions:"研究者会 Action Items", eop2Minutes:"EOP2 问答纪要", authorshipTrail:"贡献/署名分工",
-  writtenWarning:"书面确认邮件", privacyClosed:"隐私事件闭环", capaClosed:"CAPA 闭环", publicCredit:"公开贡献记录", analysisRescue:"关键分析救火", regPreview:"监管提前预审", intelPrepared:"情报转化准备", orgRestructure:"组织重组记录"
+  writtenWarning:"书面确认邮件", privacyClosed:"隐私事件闭环", capaClosed:"CAPA 闭环", publicCredit:"公开贡献记录", analysisRescue:"关键分析救火", regPreview:"监管提前预审", intelPrepared:"情报转化准备", orgRestructure:"组织重组记录", meetingBattle:"项目会冲突记录"
 };
 function addOfficeMemory(tag, source){
   if(!tag) return;
@@ -3232,7 +3232,7 @@ function pickChapter(i){
   const next = function(){
     if(flags.fraud){ showEnding('be_fraud'); return; }
     if(chapterIdx === runChapters.length-1){ evaluateFinal(); return; }
-    maybeEvent(ch.id, function(){ maybePhoneEvent(function(){ chapterIdx++; applyChapterPassives(); maybeResourceConflict(function(){ maybePrivateChat(function(){ maybeLove(renderChapter); }); }); }); });
+    maybeEvent(ch.id, function(){ maybeProjectBattle(ch.id,function(){ maybePhoneEvent(function(){ chapterIdx++; applyChapterPassives(); maybeResourceConflict(function(){ maybePrivateChat(function(){ maybeLove(renderChapter); }); }); }); }); });
   };
   checkDeath(c.r, deltas, next);
 }
@@ -3324,6 +3324,211 @@ function maybePhoneEvent(next){
   usedEvents.push(ev.id);
   window._evObj={ev:ev,next:next,cro:false,phone:true};
   renderEventFromObj();
+}
+
+
+/* =====================  v9.7 · Project Meeting Battle  =====================
+   除研究者会外，关键项目节点会触发内部项目会 Battle。
+   如果存在明显交恶方，优先由其发难；否则由钟时承担“改口 / 甩锅 / 抢叙事”的默认对手角色。 */
+const PROJECT_BATTLES={
+  c5:{title:'方案评审会',theme:'endpoint',defaultOpponent:'钟时',
+    attacks:[
+      '“医学为什么又不愿意改？我只是让你们把主要终点再优化一下。”',
+      '“统计都能重跑，你们医学为什么这么僵？”',
+      '“这件事拖到现在，核心还是医学没有尽早给出明确方向。”'
+    ]},
+  c7:{title:'DMC / 安全性复盘会',theme:'safety',defaultOpponent:'钟时',
+    attacks:[
+      '“我们是不是把这个安全信号讲得太重了？”',
+      '“如果现在主动暂停中心，谁来负责入组损失？”',
+      '“我不希望一个单点事件把项目节奏全部打乱。”'
+    ]},
+  x4:{title:'EOP2 内部准备会',theme:'regulatory',defaultOpponent:'钟时',
+    attacks:[
+      '“FDA 真问到这个问题，就按我刚才这个版本答。”',
+      '“briefing book 不用写得太死，现场灵活一点。”',
+      '“你们把风险写这么多，是不是自己先把自己吓住了？”'
+    ]},
+  c10:{title:'Phase III 启动战情会',theme:'execution',defaultOpponent:'钟时',
+    attacks:[
+      '“中心启动慢三周，医学不能每次都拿风险当理由。”',
+      '“培训没完全闭环又不是不能开中心。”',
+      '“这个项目现在需要执行，不需要再讨论。”'
+    ]},
+  c12:{title:'DB Lock / CSR 决策会',theme:'credit',defaultOpponent:'钟时',
+    attacks:[
+      '“锁库不能再拖，医学的疑问后面 CSR 里解释。”',
+      '“这个分析是我最早提的，汇报里按这个逻辑写。”',
+      '“不要为了几个 outlier 把整个数据库再打开。”'
+    ]},
+  x5:{title:'Pre-NDA 高层准备会',theme:'credit',defaultOpponent:'钟时',
+    attacks:[
+      '“最后对外就一个声音，项目成果按负责人统一讲。”',
+      '“贡献表不用写太细，团队成果就是负责人成果。”',
+      '“现在最重要的是一致，不要在老板面前讲内部过程。”'
+    ]}
+};
+const BATTLE_RELEVANT={
+  c5:['mingye','heina'],
+  c7:['jialin','qiaoqiao','zhuzong','heina'],
+  x4:['yijian','mingye'],
+  c10:['qiaoqiao','wenjing','zhuzong','heina','xiaoen'],
+  c12:['mingye','qiaoqiao','zhuzong'],
+  x5:['yijian','xiaoen','zouting','mingye']
+};
+let projectBattleState=null, projectBattleTimer=null;
+
+function chooseBattleOpponent(chId){
+  const arr=(BATTLE_RELEVANT[chId]||[]).filter(function(k){return NPCs[k] && (S.npc[k]||0)<34;});
+  if(arr.length){
+    arr.sort(function(a,b){return (S.npc[a]||0)-(S.npc[b]||0);});
+    return arr[0];
+  }
+  return 'vp';
+}
+function battleOpponentName(k){return k==='vp'?'钟时':NPCs[k].name;}
+function battleTimeLimit(){
+  let s=difficulty().id==='hard'?4:difficulty().id==='story'?8:6;
+  const b=sanityBand().id;
+  if(b==='irritable') s-=1;
+  if(b==='frayed') s-=2;
+  return Math.max(3,s);
+}
+function battleResponses(theme){
+  const evidenceTag=theme==='safety'?'safetyTrail':theme==='regulatory'?'eop2Minutes':theme==='execution'?'approvalChain':theme==='credit'?'authorshipTrail':'doseMatrix';
+  return [
+    {id:'evidence',text:'打开现有记录，只回答可核对的事实',kind:'evidence',tag:evidenceTag},
+    {id:'ally',text:'把问题交给最有资格的专业方当场确认',kind:'ally'},
+    {id:'process',text:'把争论改成 owner / deadline / decision log',kind:'process'},
+    {id:'power',text:'直接打断：“这个决定由我承担，按当前方案执行。”',kind:'power'},
+    {id:'appease',text:'先顺着对方，把冲突留到会后再处理',kind:'appease'}
+  ];
+}
+function battleAllyFor(theme){
+  if(theme==='safety') return 'jialin';
+  if(theme==='regulatory') return 'yijian';
+  if(theme==='execution') return 'anyu';
+  if(theme==='credit') return 'zouting';
+  return 'mingye';
+}
+function battleScore(opt,theme,opponent){
+  let s=0;
+  if(opt.kind==='evidence'){
+    s=hasMemory(opt.tag)?5:1;
+    if(memoryCount()>=4) s++;
+  }else if(opt.kind==='ally'){
+    const a=battleAllyFor(theme), p=socialPerson(a);
+    s=((S.npc[a]||0)>=52?3:0)+((p.favor||0)>0?2:0);
+  }else if(opt.kind==='process'){
+    s=3+(S.power>=45?1:0);
+  }else if(opt.kind==='power'){
+    s=S.power>=60?4:0;
+    if(opponent==='vp') s-=1;
+  }else if(opt.kind==='appease'){
+    s=1;
+  }
+  const b=sanityBand().id;
+  if(b==='irritable' && (opt.kind==='power'||opt.kind==='appease')) s-=1;
+  if(b==='frayed') s-=2;
+  if(difficulty().id==='hard') s-=1;
+  return s;
+}
+function battleOptionText(opt,theme){
+  let t=opt.text;
+  if(opt.kind==='evidence'&&!hasMemory(opt.tag)) t+='【记录不完整】';
+  if(opt.kind==='ally'){
+    const a=battleAllyFor(theme);
+    if((S.npc[a]||0)<52 && socialPerson(a).favor<=0) t+='【对方未必愿意替你接球】';
+    else t+='【'+NPCs[a].name+'可接球】';
+  }
+  if(opt.kind==='power'&&S.power<60) t+='【权力不足，可能反噬】';
+  return t;
+}
+function maybeProjectBattle(chId,next){
+  const cfg=PROJECT_BATTLES[chId];
+  if(!cfg || flags['battle_'+chId]){next();return;}
+  const hostile=chooseBattleOpponent(chId);
+  // 有交恶方时几乎必触发；否则按难度决定是否由 VP 发起项目会冲突。
+  const rate=hostile!=='vp'?.92:(difficulty().id==='hard'?.72:difficulty().id==='story'?.38:.55);
+  if(Math.random()>rate){next();return;}
+  flags['battle_'+chId]=true;
+  startProjectBattle(chId,hostile,next);
+}
+function startProjectBattle(chId,opponent,next){
+  const cfg=PROJECT_BATTLES[chId];
+  projectBattleState={chId:chId,cfg:cfg,opponent:opponent,round:0,wins:0,losses:0,next:next,history:[]};
+  renderProjectBattle();
+}
+function renderProjectBattle(){
+  if(projectBattleTimer){clearTimeout(projectBattleTimer);projectBattleTimer=null;}
+  const st=projectBattleState;if(!st)return;
+  if(st.round>=3){finishProjectBattle();return;}
+  const attack=st.cfg.attacks[st.round%st.cfg.attacks.length];
+  const limit=battleTimeLimit();
+  const opts=battleResponses(st.cfg.theme);
+  const order=opts.map((_,i)=>i).sort(()=>Math.random()-.5);
+  st.opts=opts;
+  document.getElementById('scene-area').innerHTML='<div class="scene">'
+    +'<span class="event-badge">⚔ 项目会 Battle · '+(st.round+1)+' / 3</span>'
+    +'<div class="scene-title">'+st.cfg.title+' · 对手：'+battleOpponentName(st.opponent)+'</div>'
+    +'<div class="scene-sub">'+limit+' 秒。你不是在找“最礼貌”的回答，而是在决定谁拥有这次会议的叙事权。</div>'
+    +'<div class="vp-line">'+battleOpponentName(st.opponent)+'：'+attack+'</div>'
+    +sanityWarning()
+    +'<div class="choices">'+order.map(function(idx,j){return '<button class="choice" onclick="projectBattlePick('+idx+')"><span class="idx">'+'ABCDE'[j]+'</span>'+battleOptionText(opts[idx],st.cfg.theme)+'</button>';}).join('')+'</div></div>';
+  projectBattleTimer=setTimeout(function(){projectBattlePick(-1);},limit*1000);
+}
+function projectBattlePick(i){
+  const st=projectBattleState;if(!st)return;
+  if(projectBattleTimer){clearTimeout(projectBattleTimer);projectBattleTimer=null;}
+  let score=-3,opt=null;
+  if(i>=0){opt=st.opts[i];score=battleScore(opt,st.cfg.theme,st.opponent);}
+  const win=score>=3;
+  if(win){
+    st.wins++;
+    S.power=clamp(S.power+2); S.merit=clamp((S.merit||0)+2);
+    if(st.opponent==='vp'){
+      S.trust=clamp(S.trust-2); S.bossTrust=clamp((S.bossTrust||0)+1);
+    }else{
+      socialPerson(st.opponent).respect=clamp(socialPerson(st.opponent).respect+3);
+      S.npc[st.opponent]=clamp(S.npc[st.opponent]-1); // 不一定更喜欢你，但更认可你
+    }
+    if(opt&&opt.kind==='ally'){
+      const a=battleAllyFor(st.cfg.theme), p=socialPerson(a);
+      if(p.favor>0){p.favor--;toast('🤝 '+NPCs[a].name+' 替你接了一次球','up');}
+    }
+  }else{
+    st.losses++;
+    S.blame=clamp((S.blame||0)+(difficulty().id==='hard'?4:3));
+    S.heart=clamp(S.heart-2);
+    if(st.opponent==='vp') S.trust=clamp(S.trust+2);
+    else socialPerson(st.opponent).fear=clamp(socialPerson(st.opponent).fear+1);
+  }
+  st.history.push({round:st.round,opt:i,score:score});
+  seedGossip(st.opponent==='vp'?'mingye':st.opponent,'me',win?'CREDIT':'BLAME',win?3:-4,
+    win?'项目会上你把一次发难压回了可核对的事实。':'项目会上对方拿到了一个可以继续讲下去的版本。','TEAM');
+  st.round++;
+  const txt=i<0?'你没在时限内接住。对方顺势把自己的版本写进了会议空气里。':
+    win?'你没有赢得对方喜欢。你赢得的是：这句话以后必须先经过你的记录才能继续讲。':
+    '你没能关闭这一轮。对方没有宣布胜利，只是在会后纪要里多了一句对自己有利的话。';
+  showResult(txt,[{label:win?'本轮压住对手':'本轮叙事权失守',kind:win?'up':'down'}],renderProjectBattle);
+}
+function finishProjectBattle(){
+  if(projectBattleTimer){clearTimeout(projectBattleTimer);projectBattleTimer=null;}
+  const st=projectBattleState;if(!st)return;
+  const won=st.wins>=2, opponent=st.opponent, next=st.next;
+  if(won){
+    S.reputation=clamp((S.reputation||0)+5); S.power=clamp(S.power+4); S.heart=clamp(S.heart+2);
+    if(opponent==='vp') S.trust=clamp(S.trust-3);
+    else {socialPerson(opponent).respect=clamp(socialPerson(opponent).respect+5); S.npc[opponent]=clamp(S.npc[opponent]-2);}
+    addOfficeMemory('meetingBattle','项目会冲突记录');
+  }else{
+    S.reputation=clamp((S.reputation||0)-3); S.blame=clamp((S.blame||0)+5); S.heart=clamp(S.heart-4);
+    if(opponent==='vp') S.trust=clamp(S.trust+3);
+  }
+  projectBattleState=null;
+  showResult((won?'三轮结束。你拿到了这场项目会的叙事权。':'三轮结束。你没有被当场击倒，但会后版本已经更接近对方的说法。')
+    +'\n\n对手：'+battleOpponentName(opponent)+'。这场冲突不会让关系自动修复；有些人会因此更讨厌你，同时更尊重你。',
+    [{label:won?'Battle 胜利':'Battle 失利',kind:won?'up':'down'}],next);
 }
 
 /* 随机事件节奏：每章后掷一次。黑娜池优先抽 4 次（保证整局有稳定的 CRO 压力），其余走普通池 */
