@@ -179,7 +179,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.3</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.4</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -765,23 +765,127 @@ function showAlliances(){
   const comps=allianceComponents();
   const rows=comps.length?comps.slice(0,6).map(function(c){return '<div class="intel-item"><div class="ih"><span class="it">'+allianceName(c)+'</span><span class="isrc">动态形成</span></div><div class="ib">'+c.map(k=>NPCs[k].name).join(' · ')+'</div></div>';}).join(''):'<div class="intro-hint">目前还没有形成稳定的内部联盟。</div>';
   const pmKeys=['anyu','linan','qiaoqiao','wenjing','xiaoke'];
-  const pm=pmKeys.map(function(k){const p=socialPerson(k);return '<div class="intel-item"><div class="ih"><span class="it">'+NPCs[k].name+' · '+NPCs[k].role+'</span><span class="isrc">关系 '+S.npc[k]+'</span></div><div class="ib">专业认可 '+p.respect+' ｜ 人情 '+p.favor+' ｜ 敬畏 '+p.fear+'</div></div>';}).join('');
+  const pm=pmKeys.map(function(k){return '<div class="intel-item"><div class="ih"><span class="it">'+NPCs[k].name+' · '+NPCs[k].role+'</span><span class="isrc">'+(ensureRelationshipIntel()[k]?'已有判断':'尚未沟通')+'</span></div>'+relationIntelCard(k)+'</div>';}).join('');
   document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🕸</span> 内部关系网</div><div class="scene-sub">阵营不是岗位决定的，而是共同站队、互相欠账和长期冲突长出来的。你目前更像：'+dominantPlayerAlignment()+'</div>'+rows+'<div class="sec-title">PM 生态</div>'+pm+'<button class="btn" onclick="backToScene()">返回</button></div>';
 }
 function consumeFavor(k,reason){ const p=socialPerson(k); if(p.favor<=0) return false; p.favor--; toast('🤝 '+NPCs[k].name+' 还了你一次人情：'+reason,'up'); return true; }
 function maybeInternalAssist(nextId){
   if(!S.social) return;
-  if((nextId==='c10'||nextId==='c11') && socialPerson('anyu').respect>=58 && S.npc.anyu>=55 && !flags.anyuAssist){flags.anyuAssist=true;S.progress=clamp(S.progress+3);S.blame=clamp(S.blame-3);toast('🧭 安瑜提前把三期风险表补齐：进度 +3','up');}
+  if((nextId==='c10'||nextId==='c11') && socialPerson('anyu').respect>=58 && S.npc.anyu>=55 && !flags.anyuAssist){flags.anyuAssist=true;S.progress=clamp(S.progress+3);S.blame=clamp(S.blame-3);saveRelationshipIntel('anyu','joint',2);toast('🧭 安瑜提前把三期风险表补齐：进度 +3','up');}
   if(nextId==='x5' && socialPerson('wenjing').respect>=55 && !flags.wenjingAssist){flags.wenjingAssist=true;addOfficeMemory('approvalChain','文静整理的批准链');toast('📎 文静把关键批准链整理成了一页','up');}
   if(S.power>=65 && socialPerson('linan').fear>=55 && nextId==='c11' && !flags.linanObey){flags.linanObey=true;S.progress=clamp(S.progress+2);toast('⚔️ 林安这次没有漏：她知道你会追到底','up');}
 }
 
 
+
+/* =====================  v9.4 · Hidden Relationship Intelligence  =====================
+   NPC 好感值不再作为 UI 数字暴露。玩家只能通过沟通、共同工作和旁人转述，
+   得到“态度判断”，而且信息源有可靠度差异。 */
+function ensureRelationshipIntel(){
+  ensureOrgSystems();
+  if(!S.org.relationshipIntel) S.org.relationshipIntel={};
+  return S.org.relationshipIntel;
+}
+function relationBand(v){
+  if(v>=78) return '明显信赖你';
+  if(v>=62) return '对你很友好';
+  if(v>=45) return '基本愿意合作';
+  if(v>=30) return '保持距离';
+  return '明显有戒心';
+}
+function respectBand(v){
+  if(v>=72) return '高度认可你的专业判断';
+  if(v>=55) return '基本认可你的能力';
+  if(v>=38) return '仍在观察你的专业性';
+  return '对你的专业判断存疑';
+}
+function favorBand(v){
+  if(v>=3) return '明显欠你不止一次人情';
+  if(v>=1) return '似乎记着你一次人情';
+  return '没有明显人情债';
+}
+function fearBand(v){
+  if(v>=65) return '明显忌惮你的权力';
+  if(v>=42) return '做事时会顾忌你的反应';
+  return '并不太怕你';
+}
+function saveRelationshipIntel(k,source,quality){
+  if(!NPCs[k]) return;
+  const p=socialPerson(k), store=ensureRelationshipIntel();
+  store[k]={
+    ch:chapterIdx,source:source||'direct',quality:quality||3,
+    relation:relationBand(S.npc[k]||0),
+    respect:respectBand(p.respect||0),
+    favor:favorBand(p.favor||0),
+    fear:fearBand(p.fear||0)
+  };
+}
+function intelSourceLabel(x){
+  if(!x) return '未知';
+  if(x.source==='direct') return '本人 1:1';
+  if(x.source==='mingye') return '明夜转述';
+  if(x.source==='joint') return '共同工作观察';
+  return '间接观察';
+}
+function relationIntelCard(k){
+  const info=ensureRelationshipIntel()[k];
+  if(!info) return '<div class="ib" style="color:var(--dim)">你还没有真正和 '+NPCs[k].name+' 谈过，也没有可靠渠道判断对方怎么看你。</div>';
+  let relation=info.relation,respect=info.respect,favor=info.favor,fear=info.fear;
+  if(info.quality===1){
+    // 八卦只能给轮廓，不给完整结构。
+    favor='不确定'; fear='不确定';
+  }
+  return '<div class="ib">'+relation+'<br>专业判断：'+respect+'<br>人情：'+favor+'<br>权力反应：'+fear+
+    '<br><span style="color:var(--dim)">信息源：'+intelSourceLabel(info)+(info.quality>=3?' · 较可靠':' · 可能带主观判断')+'</span></div>';
+}
+function directRelationshipTalk(k){
+  if((S.relationTalkLeft||0)<=0){toast('这一章你已经主动找人谈过一次','down');return;}
+  S.relationTalkLeft--;
+  const p=socialPerson(k);
+  saveRelationshipIntel(k,'direct',3);
+  S.npc[k]=clamp((S.npc[k]||0)+1);
+  p.respect=clamp((p.respect||0)+1);
+  addLog({act:'1:1沟通',from:'me',to:[k],cc:[],subj:'非正式对齐',attach:'',body:'你没有问“你对我的好感是多少”。你问的是：最近合作里，有什么是你希望我继续做、有什么是你希望我别再做。'});
+  showResult(
+    NPCs[k].name+'没有给你一个分数。'+
+    '\n\n'+relationBand(S.npc[k])+'；'+respectBand(p.respect)+'。'+
+    (p.favor>0?'\n对方还记得你之前帮过的一次忙。':'')+
+    (p.fear>=42?'\n你也察觉到，对方有些话是在衡量你的权力以后才说的。':''),
+    [{label:'获得较可靠的关系判断',kind:'up'}],
+    function(){showRelationshipDesk();}
+  );
+}
+function askMingyeAbout(k){
+  if((S.relationTalkLeft||0)<=0){toast('这一章你已经主动打听过一次','down');return;}
+  if(k==='mingye'){directRelationshipTalk('mingye');return;}
+  if((S.npc.mingye||0)<48 || socialPerson('mingye').respect<42){toast('明夜和你还没熟到会替你点评别人','down');return;}
+  S.relationTalkLeft--;
+  saveRelationshipIntel(k,'mingye',1);
+  seedGossip('mingye',k,'RELATION',0,'你向明夜旁敲侧击问了 '+NPCs[k].name+' 最近对你的态度。','PRIVATE');
+  const rel=S.npc[k]||0, p=socialPerson(k);
+  let line=rel>=62?'「他最近提到你时语气还不错。」':rel<30?'「我劝你最近别主动刺激他。」':'「正常吧，没有特别站你，也没有特别躲你。」';
+  if(p.respect>=60) line+=' 「不过专业上，他应该是认你的。」';
+  showResult('明夜先说：“你别说是我说的。”\n\n'+line+'\n\n你得到的是轮廓，不是事实核查。',[{label:'获得一条间接关系判断',kind:'up'}],function(){showRelationshipDesk();});
+}
+function showRelationshipDesk(){
+  const intel=ensureRelationshipIntel();
+  const rows=Object.keys(NPCs).map(function(k){
+    const known=!!intel[k];
+    return '<div class="intel-item"><div class="ih"><span class="it">'+NPCs[k].name+' · '+NPCs[k].role+'</span><span class="isrc">'+(known?'已有判断':'未知')+'</span></div>'
+      +relationIntelCard(k)
+      +'<div style="margin-top:8px"><button class="btn" '+((S.relationTalkLeft||0)<=0?'disabled':'onclick="directRelationshipTalk(\\''+k+'\\')"')+'>和本人聊聊</button> '
+      +'<button class="btn" '+((S.relationTalkLeft||0)<=0?'disabled':'onclick="askMingyeAbout(\\''+k+'\\')"')+'>问明夜</button></div></div>';
+  }).join('');
+  document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">💬</span> 关系判断</div>'
+    +'<div class="scene-sub">这里没有好感数字。你只能通过沟通逐渐判断别人是否信任你、认可你、欠你人情，还是只是忌惮你的权力。每章可主动沟通 1 次；明夜的信息更快，但未必完整。</div>'
+    +'<div class="intro-hint">本章剩余主动沟通：'+(S.relationTalkLeft||0)+' 次</div>'+rows+'<button class="btn" onclick="backToScene()">返回</button></div>';
+}
+
 /* =====================  v9.2 · Organization Consequence Systems  =====================
    把关系变成可消费资源和真实组织后果：
    Favor调用 / 晋升背书 / 1:1私聊 / 组织重组 / 秘密筹码 / 口碑标签 / 资源争夺。 */
 function ensureOrgSystems(){
-  if(!S.org) S.org={secrets:[],favorUses:[],privateChats:[],restructure:null,resourceChoices:[],endorsements:null,tags:[]};
+  if(!S.org) S.org={secrets:[],favorUses:[],privateChats:[],restructure:null,resourceChoices:[],endorsements:null,tags:[],relationshipIntel:{}};
   if(!S.org.secrets) S.org.secrets=[];
   return S.org;
 }
@@ -839,7 +943,7 @@ function showFavorDesk(){
   ensureOrgSystems();
   const rows=Object.keys(FAVOR_ACTIONS).map(function(k){
     const f=socialPerson(k).favor, disabled=f<=0?' disabled':'';
-    return '<button class="choice'+disabled+'" '+(f<=0?'disabled':'onclick="useFavorAction(\''+k+'\')"')+'><span class="idx">🤝</span>'+FAVOR_ACTIONS[k].label+' <span class="badge">可用人情 '+f+'</span></button>';
+    return '<button class="choice'+disabled+'" '+(f<=0?'disabled':'onclick="useFavorAction(\''+k+'\')"')+'><span class="idx">🤝</span>'+FAVOR_ACTIONS[k].label+' <span class="badge">'+(f>0?'有人情可用':'暂无可用人情')+'</span></button>';
   }).join('');
   document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🤝</span> 人情调用</div><div class="scene-sub">关系是态度，人情是债。人情花掉以后会归零，不会因为“关系很好”无限调用。</div><div class="choices">'+rows+'</div><br><button class="btn" onclick="backToScene()">返回</button></div>';
 }
@@ -914,7 +1018,7 @@ function pickPrivateChat(i){
   const x=window._privateChat;if(!x)return; const p=socialPerson(x.k);
   if(i===0){S.npc[x.k]=clamp(S.npc[x.k]+4);p.respect=clamp(p.respect+5);p.favor=clamp(p.favor+1);bumpLink(x.k,'me',2);}
   else {S.npc[x.k]=clamp(S.npc[x.k]-2);p.fear=clamp(p.fear+3);p.respect=clamp(p.respect-1);}
-  ensureOrgSystems().privateChats.push({k:x.k,ch:chapterIdx,choice:i}); const n=x.next; window._privateChat=null;
+  ensureOrgSystems().privateChats.push({k:x.k,ch:chapterIdx,choice:i}); saveRelationshipIntel(x.k,'direct',3); const n=x.next; window._privateChat=null;
   showResult(i===0?'你没有把这段私聊变成另一次工作汇报。对方记住的是：你听懂了。':'谈话很快结束。对方以后仍会做事，但未必还会主动解释为什么。',[{label:i===0?'关系/专业认可 ↑':'敬畏 ↑，关系略降',kind:i===0?'up':'down'}],n);
 }
 
@@ -1722,7 +1826,7 @@ function startGame(){
   S = {...INIT, npc:{}, intel:{}, log:[], officeMemory:{}, officeTrail:[]};
   Object.keys(NPCs).forEach(function(k){ S.npc[k] = NPCs[k].init; });
   initSocial(); ensureOrgSystems();
-  S.restLeft = REST_MAX; S.adLeft = AD_MAX; S.sanityCareLeft = 1; S.sanityCareLeft = 1;
+  S.restLeft = REST_MAX; S.adLeft = AD_MAX; S.sanityCareLeft = 1; S.relationTalkLeft = 1; S.sanityCareLeft = 1;
   LOVE_META.a.ch = -1; LOVE_META.b.ch = -1; LOVE_META.c.ch = -1;
   const priorRuns=parseInt(localStorage.getItem('dragon_runs')||'0',10);
   flags = {newGamePlus:priorRuns>0}; localStorage.setItem('dragon_runs', String(priorRuns+1)); usedEvents = []; usedHeina = []; chapterIdx = 0;
@@ -1876,10 +1980,10 @@ function renderHUD(){
     + '<span class="npc-chip" title="理智越低，选项越容易被情绪污染">'+sanityBand().icon+' 情绪 '+sanityBand().name+'</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
     + (flags.love ? '<span class="npc-chip hi" title="有人记得你几点下班 —— 每章恢复 12 点心力">💗 有人等你</span>' : '')
+    + '<span class="npc-chip intel-chip" onclick="showRelationshipDesk()" title="通过沟通判断别人怎么看你">💬 关系判断</span>'
     + Object.keys(NPCs).map(function(k){
-    const np = NPCs[k], v = S.npc[k];
-    const cls = (v>=60?'hi':v>=35?'mid':'low') + (np.boss?' boss':'');
-    return '<span class="npc-chip '+cls+'" title="'+np.name+' · '+np.role+' · 关系 '+v+'">'+np.name+' '+v+'</span>';
+    const np = NPCs[k];
+    return '<span class="npc-chip'+(np.boss?' boss':'')+'" title="'+np.name+' · '+np.role+'">'+np.name+'</span>';
   }).join('');
 }
 
@@ -3202,9 +3306,7 @@ function showEnding(key){
     + '<span class="s" style="color:var(--accent);border-color:var(--accent)">高管票：'+Math.max(S.npc.ceo,S.npc.cso)+'</span>'
     + (S.collapseCount ? '<span class="s" style="color:var(--red);border-color:var(--red)">💤 趴桌子 '+S.collapseCount+' 次</span>' : '')
     + '<span class="s" style="color:var(--accent2);border-color:rgba(79,140,255,.4)">📁 观察笔记 '+Object.keys(S.intel||{}).filter(function(k){return S.intel[k];}).length+' / '+INTEL_TOTAL+'</span>'
-    + Object.keys(NPCs).map(function(k){
-        return '<span class="s" style="color:var(--accent2);border-color:rgba(79,140,255,.4)">'+NPCs[k].name+' '+S.npc[k]+'</span>';
-      }).join('');
+    + '<span class="s" style="color:var(--accent2);border-color:rgba(79,140,255,.4)">已形成关系判断 '+Object.keys(ensureRelationshipIntel()).length+' / '+Object.keys(NPCs).length+'</span>';
   showScreen('ending-screen');
 }
 
