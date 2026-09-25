@@ -179,7 +179,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.2</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.3</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -1722,7 +1722,7 @@ function startGame(){
   S = {...INIT, npc:{}, intel:{}, log:[], officeMemory:{}, officeTrail:[]};
   Object.keys(NPCs).forEach(function(k){ S.npc[k] = NPCs[k].init; });
   initSocial(); ensureOrgSystems();
-  S.restLeft = REST_MAX; S.adLeft = AD_MAX;
+  S.restLeft = REST_MAX; S.adLeft = AD_MAX; S.sanityCareLeft = 1; S.sanityCareLeft = 1;
   LOVE_META.a.ch = -1; LOVE_META.b.ch = -1; LOVE_META.c.ch = -1;
   const priorRuns=parseInt(localStorage.getItem('dragon_runs')||'0',10);
   flags = {newGamePlus:priorRuns>0}; localStorage.setItem('dragon_runs', String(priorRuns+1)); usedEvents = []; usedHeina = []; chapterIdx = 0;
@@ -1873,6 +1873,7 @@ function renderHUD(){
     + '<span class="npc-chip intel-chip" onclick="showLeverage()" title="查看别人私下给你的内部消息与筹码">🔐 内部筹码</span>'
     + '<span class="npc-chip intel-chip" onclick="showReputationTags()" title="别人正在用什么标签理解你">🏷 内部口碑</span>'
     + '<span class="npc-chip intel-chip" onclick="showEndorsements()" title="关键人物是否愿意替你的晋升说话">🏛 晋升背书</span>'
+    + '<span class="npc-chip" title="理智越低，选项越容易被情绪污染">'+sanityBand().icon+' 情绪 '+sanityBand().name+'</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
     + (flags.love ? '<span class="npc-chip hi" title="有人记得你几点下班 —— 每章恢复 12 点心力">💗 有人等你</span>' : '')
     + Object.keys(NPCs).map(function(k){
@@ -2176,9 +2177,9 @@ function backFromIntel(){
 
 /* =====================  ☕ 喘口气（体力 source）  ===================== */
 const NAP_PLANS = [
-  {min:10, name:"工位上闭眼十分钟",      stamina:12, heart:2, progress:0,  note:"浅得像没睡。但足够让你把下午熬过去。"},
-  {min:25, name:"楼下的便利店午休",      stamina:20, heart:4, progress:0,  note:"你吃了一个饭团，看了一集没看完的东西。"},
-  {min:45, name:"走回家睡一觉再回来",    stamina:30, heart:6, progress:-1, note:"梦里没有会议室。醒来发现两个未接来电。"},
+  {min:10, name:"工位上闭眼十分钟",      stamina:12, heart:2, sanity:1, progress:0,  note:"浅得像没睡。但足够让你把下午熬过去。"},
+  {min:25, name:"楼下的便利店午休",      stamina:20, heart:4, sanity:3, progress:0,  note:"你吃了一个饭团，看了一集没看完的东西。"},
+  {min:45, name:"走回家睡一觉再回来",    stamina:30, heart:6, sanity:6, progress:-1, note:"梦里没有会议室。醒来发现两个未接来电。"},
 ];
 
 function showRest(){
@@ -2203,7 +2204,7 @@ function restPanel(){
     '<div class="result-box">'
     + '<h4>▎喘口气 · 第 '+(chapterIdx+1)+' 章（剩余 '+S.restLeft+' 次）</h4>'
     + '<div class="result-text">你的身体不是无限透支的资源 —— 虽然 HR 的 JD 上写得很像。\n\n'
-    + '体力 ⚡ '+S.stamina+' / 100　·　心力 ❤️ '+S.heart+' / 100</div>'
+    + '体力 ⚡ '+S.stamina+' / 100　·　心力 ❤️ '+S.heart+' / 100　·　理智 🧠 '+S.sanity+' / 100（'+sanityBand().name+'）</div>'
     + (S.restLeft > 0
         ? '<div class="choices">'+plans
           + '<button class="choice special" onclick="startCoffee()"><span class="idx">D</span>☕ 去茶水间冲一杯手冲（小游戏 · 上限最高，全看手）</button>'
@@ -2212,6 +2213,7 @@ function restPanel(){
           + '</div>'
         : '<div class="result-text" style="color:var(--dim)">这一章你已经歇过一次了。剩下的只能靠硬扛。</div>')
     + '<div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap">'
+    + '<button class="btn" onclick="startGroundingGame()">'+((S.sanityCareLeft||0)>0?'🧠 事实—情绪分离（维持理智）':'🧠 本章已复盘')+'</button>'
     + '<button class="btn" onclick="watchTraining()">'+(S.adLeft>0 ? '📺 完成一节线上必修课（恢复体力）' : '📺 今天这门课已修完')+'</button>'
     + '<button class="btn" onclick="closeOver()">← 回到工位</button>'
     + '</div></div>';
@@ -2221,9 +2223,9 @@ function takeNap(i){
   if(S.restLeft <= 0){ toast('这一章你已经歇过一次了','down'); return; }
   const p = NAP_PLANS[i];
   S.restLeft--;
-  grant({stamina:p.stamina, heart:p.heart, progress:p.progress});
+  grant({stamina:p.stamina, heart:p.heart, sanity:p.sanity||0, progress:p.progress});
   showResult(p.name + '。\n\n' + p.note + '\n\n（项目进度 '+p.progress+' —— 你休息的每一分钟，都是从藥来的。）',
-    [{label:'⚡ 体力 +'+p.stamina, kind:'up'},{label:'❤️ 心力 +'+p.heart, kind:'up'}]
+    [{label:'⚡ 体力 +'+p.stamina, kind:'up'},{label:'❤️ 心力 +'+p.heart, kind:'up'},{label:'🧠 理智 +'+(p.sanity||0), kind:'up'}]
       .concat(p.progress ? [{label:'📊 进度 '+p.progress, kind:'down'}] : []),
     function(){ if(window._inRest) restPanel(); });
 }
@@ -2614,9 +2616,122 @@ function lovePick(i){
   });
 }
 
+
+/* =====================  v9.3 · Emotion / Sanity System  =====================
+   sanity 不再只是死亡线，而是“你是否还能把脑子里那句话翻译成职业语言”。
+   低 sanity 不锁死玩家，而是污染选项：越低越冲动、讽刺、消极，且没有无代价的最优解。 */
+function sanityBand(){
+  if(S.sanity>=55) return {id:'stable',name:'稳定',icon:'🟢'};
+  if(S.sanity>=38) return {id:'tense',name:'绷紧',icon:'🟡'};
+  if(S.sanity>=22) return {id:'irritable',name:'易怒',icon:'🟠'};
+  return {id:'frayed',name:'失控边缘',icon:'🔴'};
+}
+function mergeObj(a,b){
+  const o=Object.assign({},a||{}); Object.keys(b||{}).forEach(function(k){o[k]=(o[k]||0)+b[k];}); return o;
+}
+function emotionalText(t,band,i){
+  if(band==='tense'){
+    const pre=['「我先说结论：','「这件事已经反复三次了。','「可以，但请现在定下来：'][i%3];
+    return pre+t.replace(/^「|」$/g,'')+'」';
+  }
+  if(band==='irritable'){
+    const pre=['「到底还要改几次？','「如果大家只是想找个人背锅，那直接说。','「行。那这次出了问题别再说没人提醒。'][i%3];
+    return pre+' '+t.replace(/^「|」$/g,'')+'」';
+  }
+  if(band==='frayed'){
+    const variants=[
+      '「够了。这个问题我已经解释过三遍，不想再陪着绕。」',
+      '「随便。你们定，我照做。以后别问我为什么。」',
+      '「那就按你说的。出了事请把今天这句话也一起记住。」',
+      '「我现在不适合继续开这个会。谁愿意接谁接。」'
+    ];
+    return variants[i%variants.length];
+  }
+  return t;
+}
+function emotionalizeChoice(c,i){
+  const band=sanityBand().id;
+  if(band==='stable') return c;
+  const x=Object.assign({},c,{e:Object.assign({},c.e||{}),npc:Object.assign({},c.npc||{}),hidden:Object.assign({},c.hidden||{})});
+  x.t=emotionalText(c.t,band,i);
+  x.emotionOriginal=c;
+  x.emotionBand=band;
+  if(band==='tense'){
+    x.e.sanity=(x.e.sanity||0)-1;
+    if(i%3===0) x.e.trust=(x.e.trust||0)-1;
+  }else if(band==='irritable'){
+    x.e.sanity=(x.e.sanity||0)-2;
+    x.e.trust=(x.e.trust||0)-(i%2===0?4:2);
+    x.e.morale=(x.e.morale||0)-(i%3===1?3:1);
+    x.hidden.reputation=(x.hidden.reputation||0)-1;
+    x.visibility=x.visibility||'TEAM';
+    x.gossipSeed={source:'mingye',subject:'me',topic:'RELATION',delta:-3,text:'有人开始说你最近开会说话越来越冲。',visibility:'TEAM'};
+  }else if(band==='frayed'){
+    // 没有最佳选项：每条路都付一种不同的代价。
+    const penalties=[
+      {trust:-8,morale:-2,sanity:-3},
+      {progress:-5,power:-2,sanity:-2},
+      {trust:-4,blame:5,sanity:-3},
+      {progress:-3,morale:-5,sanity:-1}
+    ][i%4];
+    Object.keys(penalties).forEach(function(k){
+      if(['blame'].includes(k)) x.hidden[k]=(x.hidden[k]||0)+penalties[k];
+      else x.e[k]=(x.e[k]||0)+penalties[k];
+    });
+    x.hidden.reputation=(x.hidden.reputation||0)-3;
+    x.visibility='PUBLIC';
+    x.gossipSeed={source:'mingye',subject:'me',topic:'RELATION',delta:-6,text:'你在会议里的情绪失控已经不再是私下感受，而开始变成办公室事实。',visibility:'PUBLIC'};
+  }
+  return x;
+}
+function presentedChoice(list,i){ return emotionalizeChoice(list[i],i); }
+function sanityWarning(){
+  const b=sanityBand();
+  if(b.id==='stable') return '';
+  const txt=b.id==='tense'?'你还能维持职业表达，但耐心正在变薄。':
+    b.id==='irritable'?'你的脑子还知道什么是正确答案，嘴已经不一定愿意配合。':
+    '你现在没有“最佳选项”。先把自己稳住，否则每句话都会留下后果。';
+  return '<div class="aside '+(b.id==='frayed'?'evil':'')+'"><div class="from">'+b.icon+' 情绪状态 · '+b.name+'</div>'+txt+'</div>';
+}
+
+/* 每章一次：事实—情绪分离小游戏。答对不是“正能量”，而是把可验证事实从脑补里捞出来。 */
+const GROUNDING_ROUNDS=[
+ {q:'“她又改口了，所以她一定是故意针对我。”',opts:['事实：她改口了；动机目前没有证据。','对，她就是针对我。','算了，所有人都这样。'],ok:0},
+ {q:'“老板没回邮件，说明我这次彻底完了。”',opts:['没回就是默认不同意。','事实：邮件还没回复；结果未知。','赶紧再发三封解释。'],ok:1},
+ {q:'“这次延期全是我的责任。”',opts:['把时间线拆开：哪些决定是谁在什么时候做的。','先认下来，显得有担当。','反正最后都会算到我头上。'],ok:0},
+ {q:'“我现在特别想当场怼回去。”',opts:['立刻发一封长邮件。','把想说的话写下来，十分钟后只保留可核对的事实。','忍住不说，以后也别说。'],ok:1}
+];
+let groundingState=null;
+function startGroundingGame(){
+  if((S.sanityCareLeft||0)<=0){toast('这一章你已经做过一次情绪复盘','down');return;}
+  groundingState={r:0,score:0}; renderGroundingRound();
+}
+function renderGroundingRound(){
+  const g=GROUNDING_ROUNDS[groundingState.r];
+  if(!g){finishGrounding();return;}
+  document.getElementById('scene-area').innerHTML='<div class="result-box"><h4>▎🧠 事实—情绪分离 · '+(groundingState.r+1)+' / '+GROUNDING_ROUNDS.length+'</h4>'
+    +'<div class="result-text">'+g.q+'</div><div class="choices">'+g.opts.map(function(o,i){return '<button class="choice" onclick="pickGrounding('+i+')"><span class="idx">'+'ABC'[i]+'</span>'+o+'</button>';}).join('')+'</div></div>';
+}
+function pickGrounding(i){
+  const g=GROUNDING_ROUNDS[groundingState.r];
+  if(i===g.ok) groundingState.score++;
+  groundingState.r++; renderGroundingRound();
+}
+function finishGrounding(){
+  const sc=groundingState.score; groundingState=null; S.sanityCareLeft=Math.max(0,(S.sanityCareLeft||0)-1);
+  const gain=sc===4?20:sc===3?14:sc===2?8:4;
+  S.sanity=clamp(S.sanity+gain);
+  if(sc>=3) S.heart=clamp(S.heart+3);
+  addLog({act:'私人复盘',from:'me',to:[],cc:[],subj:'事实—情绪分离',attach:'',body:'四轮复盘得分 '+sc+' / 4。没有解决任何人，只把自己从反应里捞回来。'});
+  showResult('你没有把自己劝开心。你只是重新分清：什么已经发生，什么只是脑子在最坏的时候自动补全。\n\n得分 '+sc+' / 4。',
+    [{label:'🧠 理智 +'+gain,kind:'up'}].concat(sc>=3?[{label:'❤️ 心力 +3',kind:'up'}]:[]),
+    function(){if(window._inRest) restPanel(); else renderChapter();});
+}
+
 function choiceHTML(list, handler){
   let affordable = 0;
-  const html = list.map(function(c,i){
+  const html = list.map(function(raw,i){
+    const c = presentedChoice(list,i);
     const letter = 'ABCDE'[i];
     if(c.lock && !unlocked(c)){
       affordable++;
@@ -2677,6 +2792,7 @@ function renderChapter(){
     + '<div class="scene-title"><span class="accent">▎</span>'+ch.title+'</div>'
     + '<div class="scene-sub">'+ch.act+' · 第 '+(chapterIdx+1)+' / '+runChapters.length+' 章</div>'
     + aside
+    + sanityWarning()
     + '<div class="vp-name">临床开发钟时（Dragon）说：</div>'
     + '<div class="vp-line">'+ch.text+'</div>'
     + '<div class="choices">'+choiceHTML(ch.choices,'pickChapter')+'</div>'
@@ -2769,7 +2885,7 @@ function applyChoice(c){
 
 function pickChapter(i){
   const ch = runChapters[chapterIdx];
-  const c = ch.choices[i];
+  const c = presentedChoice(ch.choices,i);
   if(c.lock && !unlocked(c)) return;
   const deltas = applyChoice(c);
   if(c.setFlag) flags[c.setFlag] = true;
@@ -2870,7 +2986,7 @@ function maybeEvent(chapterId, next){
 function pickEvent(i){
   const bundle = window._evObj;
   const ev = bundle.ev, next = bundle.next;
-  const c = ev.choices[i];
+  const c = presentedChoice(ev.choices,i);
   if(c.lock && !unlocked(c)) return;
   /* 事件结算完必须立刻摘掉 _evObj。它原来的生命期是整个存档 ——
      挂在 window 上不放，backToScene() 会把已经结算过的突发事件再画一遍，
