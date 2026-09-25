@@ -839,7 +839,7 @@ function showFavorDesk(){
   ensureOrgSystems();
   const rows=Object.keys(FAVOR_ACTIONS).map(function(k){
     const f=socialPerson(k).favor, disabled=f<=0?' disabled':'';
-    return '<button class="choice'+disabled+'" '+(f<=0?'disabled':'onclick="useFavorAction(\\''+k+'\\')"')+'><span class="idx">🤝</span>'+FAVOR_ACTIONS[k].label+' <span class="badge">可用人情 '+f+'</span></button>';
+    return '<button class="choice'+disabled+'" '+(f<=0?'disabled':'onclick="useFavorAction(\''+k+'\')"')+'><span class="idx">🤝</span>'+FAVOR_ACTIONS[k].label+' <span class="badge">可用人情 '+f+'</span></button>';
   }).join('');
   document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🤝</span> 人情调用</div><div class="scene-sub">关系是态度，人情是债。人情花掉以后会归零，不会因为“关系很好”无限调用。</div><div class="choices">'+rows+'</div><br><button class="btn" onclick="backToScene()">返回</button></div>';
 }
@@ -868,7 +868,7 @@ function useSecret(id,mode){
 }
 function showLeverage(){
   maybeSecretDrop(); const list=ensureOrgSystems().secrets.filter(x=>!x.used);
-  const rows=list.length?list.map(function(s){return '<div class="intel-item"><div class="ih"><span class="it">'+(NPCs[s.source]?NPCs[s.source].name:'内部消息')+'</span><span class="isrc">'+gossipLabel(s.topic)+'</span></div><div class="ib">'+s.text+'</div><div style="margin-top:8px"><button class="btn" onclick="useSecret(\\''+s.id+'\\',\\'prepare\\')">只用于准备</button> <button class="btn" onclick="useSecret(\\''+s.id+'\\',\\'leak\\')">放出去</button></div></div>';}).join(''):'<div class="intro-hint">目前没有可用的内部筹码。高关系的人不一定给你信息；他们还得相信你知道什么时候该闭嘴。</div>';
+  const rows=list.length?list.map(function(s){return '<div class="intel-item"><div class="ih"><span class="it">'+(NPCs[s.source]?NPCs[s.source].name:'内部消息')+'</span><span class="isrc">'+gossipLabel(s.topic)+'</span></div><div class="ib">'+s.text+'</div><div style="margin-top:8px"><button class="btn" onclick="useSecret(\''+s.id+'\',\'prepare\')">只用于准备</button> <button class="btn" onclick="useSecret(\''+s.id+'\',\'leak\')">放出去</button></div></div>';}).join(''):'<div class="intro-hint">目前没有可用的内部筹码。高关系的人不一定给你信息；他们还得相信你知道什么时候该闭嘴。</div>';
   document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🔐</span> 内部筹码</div><div class="scene-sub">知道秘密和使用秘密是两件不同的事。</div>'+rows+'<button class="btn" onclick="backToScene()">返回</button></div>';
 }
 
@@ -1868,6 +1868,11 @@ function renderHUD(){
     + '<span class="npc-chip intel-chip" onclick="showLog()" title="点击翻阅：这一局的工作日志 / 留痕档案">📮 工作日志 '+((S.log||[]).length)+'</span>'
     + '<span class="npc-chip intel-chip" onclick="showMemory()" title="会在后续章节重新发挥作用的证据链">🗂 组织记忆 '+memoryCount()+'</span>'
     + '<span class="npc-chip intel-chip" onclick="showAlliances()" title="查看当前动态形成的内部联盟与 PM 关系">🕸 内部关系网</span>'
+    + '<span class="npc-chip intel-chip" onclick="showGossip()" title="查看办公室传播与风声">🗣 办公室风声</span>'
+    + '<span class="npc-chip intel-chip" onclick="showFavorDesk()" title="把已经积累的人情真正花掉">🤝 人情调用</span>'
+    + '<span class="npc-chip intel-chip" onclick="showLeverage()" title="查看别人私下给你的内部消息与筹码">🔐 内部筹码</span>'
+    + '<span class="npc-chip intel-chip" onclick="showReputationTags()" title="别人正在用什么标签理解你">🏷 内部口碑</span>'
+    + '<span class="npc-chip intel-chip" onclick="showEndorsements()" title="关键人物是否愿意替你的晋升说话">🏛 晋升背书</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
     + (flags.love ? '<span class="npc-chip hi" title="有人记得你几点下班 —— 每章恢复 12 点心力">💗 有人等你</span>' : '')
     + Object.keys(NPCs).map(function(k){
