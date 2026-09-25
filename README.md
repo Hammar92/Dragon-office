@@ -1,1 +1,20 @@
-The requested file reference is not currently visible. Use files.search or files.list to rediscover the file, then retry with a returned ref_id or file_id.
+# 药厂生存记 · 临床开发部
+
+一个纯 HTML/CSS/JavaScript 的浏览器剧情小游戏。
+
+## 试玩
+
+直接打开 `index.html` 即可开始游戏。
+
+## 内容
+
+- 医学经理线
+- 13 章
+- 19 位同事
+- 20 个结局
+- 结局图鉴使用浏览器 `localStorage` 本机保存
+- 含“喘口气”恢复机制与多个小游戏
+
+## 部署
+
+本项目为纯静态网页，可直接部署到 GitHub Pages、Netlify 等静态网站托管服务。
