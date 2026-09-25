@@ -1,6 +1,6 @@
 # 药厂生存记 · 临床开发部
 
-## Demo v9.4 · Hidden Relationship Intelligencen & Sanitynization Consequencesnces, Rivalries & Gossipnces & Rivalries
+## Demo v9.5 · Difficulty Modesn Relationship Intelligencen & Sanitynization Consequencesnces, Rivalries & Gossipnces & Rivalries
 
 纯 HTML/CSS/JavaScript 的临床开发职场剧情小游戏。
 
