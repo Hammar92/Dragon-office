@@ -1,6 +1,6 @@
 # 药厂生存记 · 临床开发部
 
-## Demo v9.2 · Organization Consequencesnces, Rivalries & Gossipnces & Rivalries
+## Demo v9.3 · Emotion & Sanitynization Consequencesnces, Rivalries & Gossipnces & Rivalries
 
 纯 HTML/CSS/JavaScript 的临床开发职场剧情小游戏。
 
@@ -27,3 +27,8 @@
 - 秘密/筹码：内部消息可选择用于准备或主动放出
 - 动态口碑：靠谱、救火队长、老板的人、统计那边的人、高压主管等标签会影响他人判断
 - 资源争夺：统计分析与中心启动等任务会争抢同一资源，必须明确舍弃一边
+
+- Emotion / Sanity System：理智降低会污染选项措辞与后果；低理智时没有无代价最佳选项
+- 情绪状态：稳定 / 绷紧 / 易怒 / 失控边缘
+- 事实—情绪分离小游戏：每章一次，用证据化思考恢复理智
+- 午休长度现在也会少量恢复理智
