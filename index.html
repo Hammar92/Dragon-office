@@ -2749,10 +2749,12 @@ function applyChoice(c){
   if(ch_ > 0){ S.heart = clamp(S.heart - ch_); deltas.push({label:'❤️ 心力 -'+ch_, kind:'down'}); }
   Object.keys(c.e||{}).forEach(function(k){
     const v = c.e[k];
+    /* 兼容旧事件里把隐藏属性误写进 e 的情况：这些值照样结算，但不在 HUD 暴露。 */
+    if(['merit','reputation','piRep','blame'].indexOf(k)>=0){ S[k]=clamp((S[k]||0)+v); return; }
     if(k==='stamina'||k==='heart'){ /* 由 grant() 通道处理 */ }
     S[k] = clamp(S[k]+v);
     if(k==='dragon'){ if(v>0) deltas.push({label:'🐉 龙性 +'+v, kind:'dragon'}); return; }
-    deltas.push({label: STAT_META[k].name + (v>0?' +':' ')+v, kind: v>0?'up':'down'});
+    if(STAT_META[k]) deltas.push({label: STAT_META[k].name + (v>0?' +':' ')+v, kind: v>0?'up':'down'});
   });
   Object.keys(c.npc||{}).forEach(function(k){
     const v = c.npc[k];
