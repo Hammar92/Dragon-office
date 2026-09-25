@@ -179,7 +179,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.1</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.2</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -774,6 +774,188 @@ function maybeInternalAssist(nextId){
   if((nextId==='c10'||nextId==='c11') && socialPerson('anyu').respect>=58 && S.npc.anyu>=55 && !flags.anyuAssist){flags.anyuAssist=true;S.progress=clamp(S.progress+3);S.blame=clamp(S.blame-3);toast('🧭 安瑜提前把三期风险表补齐：进度 +3','up');}
   if(nextId==='x5' && socialPerson('wenjing').respect>=55 && !flags.wenjingAssist){flags.wenjingAssist=true;addOfficeMemory('approvalChain','文静整理的批准链');toast('📎 文静把关键批准链整理成了一页','up');}
   if(S.power>=65 && socialPerson('linan').fear>=55 && nextId==='c11' && !flags.linanObey){flags.linanObey=true;S.progress=clamp(S.progress+2);toast('⚔️ 林安这次没有漏：她知道你会追到底','up');}
+}
+
+
+/* =====================  v9.2 · Organization Consequence Systems  =====================
+   把关系变成可消费资源和真实组织后果：
+   Favor调用 / 晋升背书 / 1:1私聊 / 组织重组 / 秘密筹码 / 口碑标签 / 资源争夺。 */
+function ensureOrgSystems(){
+  if(!S.org) S.org={secrets:[],favorUses:[],privateChats:[],restructure:null,resourceChoices:[],endorsements:null,tags:[]};
+  if(!S.org.secrets) S.org.secrets=[];
+  return S.org;
+}
+function addSecret(id,source,text,topic,strength){
+  const o=ensureOrgSystems();
+  if(o.secrets.some(x=>x.id===id)) return;
+  o.secrets.push({id:id,source:source,text:text,topic:topic||'POWER',strength:strength||2,used:false,ch:chapterIdx});
+  toast('🔐 '+(NPCs[source]?NPCs[source].name:'有人')+' 给了你一条内部消息','up');
+}
+function reputationTags(){
+  ensureOrgSystems();
+  const tags=[];
+  const avgFear=Object.keys(S.social?.people||{}).length ? Math.round(Object.values(S.social.people).reduce((a,p)=>a+(p.fear||0),0)/Object.keys(S.social.people).length) : 0;
+  if(memoryCount()>=5) tags.push('爱留痕');
+  if((S.merit||0)>=65 && S.progress>=55) tags.push('救火队长');
+  if((S.bossTrust||0)>=60) tags.push('老板的人');
+  if(S.npc.mingye>=62 && socialPerson('mingye').respect>=55) tags.push('统计那边的人');
+  if(S.power>=65 && avgFear>=38) tags.push('高压主管');
+  if(S.dragon>=7 || (S.blame||0)>=55) tags.push('会甩锅');
+  if((S.blame||0)<=20 && memoryCount()>=4) tags.push('靠谱');
+  if(S.trust<=30 && S.power>=55) tags.push('难搞但有分量');
+  ensureOrgSystems().tags=tags;
+  return tags;
+}
+function tagEffectFor(k){
+  const tags=reputationTags(); let s=0;
+  if(tags.includes('靠谱') && ['anyu','wenjing','xiaoen','jialin','yijian'].includes(k)) s+=6;
+  if(tags.includes('老板的人') && ['xiaoke','qiaoqiao'].includes(k)) s+=5;
+  if(tags.includes('统计那边的人') && ['mingye','cso'].includes(k)) s+=6;
+  if(tags.includes('高压主管') && ['linan','xiaoke','qiaoqiao'].includes(k)) s+=2;
+  if(tags.includes('会甩锅') && ['xiaoen','jialin','wenjing','yijian'].includes(k)) s-=8;
+  return s;
+}
+function showReputationTags(){
+  const tags=reputationTags();
+  const body=tags.length?tags.map(t=>'<span class="delta up" style="display:inline-block;margin:4px">'+t+'</span>').join(''):'<div class="intro-hint">目前还没有形成稳定口碑。别人仍在观察你。</div>';
+  document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🏷</span> 内部口碑</div><div class="scene-sub">口碑不是自我评价，而是别人根据你过去的行为形成的快捷判断。它会影响背书、私聊和主动支援。</div>'+body+'<br><br><button class="btn" onclick="backToScene()">返回</button></div>';
+}
+
+/* Favor 变成可花的政治资源。 */
+const FAVOR_ACTIONS={
+  mingye:{label:'请明夜今晚重跑一版关键分析',need:'统计人情',run:function(){S.progress=clamp(S.progress+3);S.merit=clamp(S.merit+2);addOfficeMemory('analysisRescue','明夜临时重跑分析');}},
+  anyu:{label:'请安瑜帮你加急清一轮三期风险',need:'PM人情',run:function(){S.progress=clamp(S.progress+4);S.blame=clamp(S.blame-2);}},
+  yijian:{label:'请一建提前预审监管材料',need:'注册人情',run:function(){S.blame=clamp(S.blame-4);S.bossTrust=clamp((S.bossTrust||0)+2);addOfficeMemory('regPreview','注册提前预审');}},
+  houpi:{label:'请侯教授在关键会上公开背书',need:'PI人情',run:function(){S.piRep=clamp((S.piRep||0)+5);S.bossTrust=clamp((S.bossTrust||0)+2);S.reputation=clamp((S.reputation||0)+2);}}
+};
+function useFavorAction(k){
+  ensureOrgSystems();
+  if(!FAVOR_ACTIONS[k]||!consumeFavor(k,FAVOR_ACTIONS[k].label)) return;
+  FAVOR_ACTIONS[k].run(); S.org.favorUses.push({k:k,ch:chapterIdx});
+  seedGossip(k,k,'CREDIT',3,NPCs[k].name+'在关键节点替你补了一次位。','TEAM');
+  showResult('这不是“好感度奖励”。你把过去积下的一次人情真正花掉了。\n\n'+FAVOR_ACTIONS[k].label,[{label:'人情 -1',kind:'down'},{label:'组织支持兑现',kind:'up'}],renderChapter);
+}
+function showFavorDesk(){
+  ensureOrgSystems();
+  const rows=Object.keys(FAVOR_ACTIONS).map(function(k){
+    const f=socialPerson(k).favor, disabled=f<=0?' disabled':'';
+    return '<button class="choice'+disabled+'" '+(f<=0?'disabled':'onclick="useFavorAction(\\''+k+'\\')"')+'><span class="idx">🤝</span>'+FAVOR_ACTIONS[k].label+' <span class="badge">可用人情 '+f+'</span></button>';
+  }).join('');
+  document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🤝</span> 人情调用</div><div class="scene-sub">关系是态度，人情是债。人情花掉以后会归零，不会因为“关系很好”无限调用。</div><div class="choices">'+rows+'</div><br><button class="btn" onclick="backToScene()">返回</button></div>';
+}
+
+/* 秘密不是收藏品：可以用于准备，也可以政治化地放出去。 */
+function maybeSecretDrop(){
+  ensureOrgSystems();
+  if(S.npc.mingye>=55 && socialPerson('mingye').respect>=50) addSecret('vp_blame_plan','mingye','明夜听说钟时准备在下一次老板会上把 timeline 延误归因给医学判断反复。','BLAME',3);
+  if(S.npc.xiaoen>=55 && socialPerson('xiaoen').respect>=50) addSecret('qa_observation','xiaoen','肖恩私下提醒：QA 已经在草拟一个关于决策留痕不完整的 observation。','COMPLIANCE',2);
+  if(S.npc.yijian>=52 && socialPerson('yijian').respect>=48) addSecret('agency_concern','yijian','一建提前告诉你：监管方内部预审最可能追问的是剂量选择证据链，而不是漂亮的疗效图。','REGULATORY',3);
+  if(S.npc.zouting>=55) addSecret('promotion_talk','zouting','邹婷告诉你，高层已经开始私下讨论下一阶段 Clinical Development 的汇报线。','POWER',3);
+}
+function useSecret(id,mode){
+  const s=ensureOrgSystems().secrets.find(x=>x.id===id); if(!s||s.used) return;
+  s.used=true;
+  if(mode==='prepare'){
+    S.blame=clamp((S.blame||0)-s.strength*2); S.merit=clamp((S.merit||0)+1);
+    addOfficeMemory('intelPrepared','内部情报转化为准备');
+    showResult('你没有把消息传播出去，只把它变成了准备。等别人开口时，你已经把证据放在桌上。',[{label:'背锅风险 -'+(s.strength*2),kind:'up'}],renderChapter);
+  }else{
+    S.power=clamp(S.power+s.strength*2); S.reputation=clamp((S.reputation||0)+s.strength);
+    if(S.npc[s.source]!=null) S.npc[s.source]=clamp(S.npc[s.source]-6);
+    seedGossip(s.source,'me',s.topic,4,'一条原本只在小范围流动的信息突然出现在更多人的聊天窗口里。','PUBLIC');
+    showResult('你把筹码打了出去。它确实改变了房间里的力量，但提供消息的人也会慢慢意识到消息是从哪里漏出去的。',[{label:'权力 +'+(s.strength*2),kind:'up'},{label:'消息源关系 -6',kind:'down'}],renderChapter);
+  }
+}
+function showLeverage(){
+  maybeSecretDrop(); const list=ensureOrgSystems().secrets.filter(x=>!x.used);
+  const rows=list.length?list.map(function(s){return '<div class="intel-item"><div class="ih"><span class="it">'+(NPCs[s.source]?NPCs[s.source].name:'内部消息')+'</span><span class="isrc">'+gossipLabel(s.topic)+'</span></div><div class="ib">'+s.text+'</div><div style="margin-top:8px"><button class="btn" onclick="useSecret(\\''+s.id+'\\',\\'prepare\\')">只用于准备</button> <button class="btn" onclick="useSecret(\\''+s.id+'\\',\\'leak\\')">放出去</button></div></div>';}).join(''):'<div class="intro-hint">目前没有可用的内部筹码。高关系的人不一定给你信息；他们还得相信你知道什么时候该闭嘴。</div>';
+  document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🔐</span> 内部筹码</div><div class="scene-sub">知道秘密和使用秘密是两件不同的事。</div>'+rows+'<button class="btn" onclick="backToScene()">返回</button></div>';
+}
+
+/* 关键人物分别决定是否替你升职背书。 */
+function promotionEndorsements(){
+  const keys=['cso','xiaoyuan','jialin','mingye','yijian','xiaoen','anyu','houpi'];
+  const support=[],neutral=[],oppose=[];
+  keys.forEach(function(k){
+    const p=socialPerson(k);
+    let score=(S.npc[k]||0)*0.38+(p.respect||0)*0.42+(p.favor||0)*7+tagEffectFor(k);
+    if(p.fear>55) score-=4; // 怕你 ≠ 愿意替你说话
+    if(k==='cso'||k==='xiaoyuan') score+=(S.reputation||0)*0.08;
+    if(score>=52) support.push(k); else if(score<34) oppose.push(k); else neutral.push(k);
+  });
+  const r={support:support,neutral:neutral,oppose:oppose};
+  ensureOrgSystems().endorsements=r; return r;
+}
+function showEndorsements(){
+  const r=promotionEndorsements();
+  const names=a=>a.map(k=>NPCs[k].name).join(' · ')||'无';
+  document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🏛</span> 晋升背书</div><div class="scene-sub">这不是投票结果，而是“如果老板现在问一句，你觉得他能不能带项目”，每个人会怎么回答。</div><div class="intel-item"><div class="it">明确支持</div><div class="ib">'+names(r.support)+'</div></div><div class="intel-item"><div class="it">中立</div><div class="ib">'+names(r.neutral)+'</div></div><div class="intel-item"><div class="it">明确反对</div><div class="ib">'+names(r.oppose)+'</div></div><button class="btn" onclick="backToScene()">返回</button></div>';
+}
+
+/* 1:1：不是大事件，而是大事件之后别人来重新解释自己刚才的行为。 */
+const PRIVATE_CHAT_SCRIPTS={
+  mingye:{line:'「刚才会上那句话我没接，是因为钟时昨天已经私下让我重跑第三版。我不是不同意你，我是不想当场炸。」',a:'我知道。下次提前告诉我。',b:'那你刚才就应该说。'},
+  anyu:{line:'「我不需要你每次都站我这边。我只需要风险提出来的时候，不要假装没看见。」',a:'以后风险先给我，我们一起定 owner。',b:'但项目不能什么都按最保守的做。'},
+  jialin:{line:'「安全问题我会坚持到底。你要是觉得我太慢，可以直接说，但别让我最后才知道医学已经做了决定。」',a:'你应该在决定前就进来。',b:'我只看最终医学判断。'},
+  yijian:{line:'「监管不是替你擦措辞。你们在会上答应的东西，最后都得有人写进文件。」',a:'下一次把你拉进决策前半段。',b:'先把 submission 过了再说。'},
+  linan:{line:'「我知道我有时候会漏。但你每次直接帮我补，我也不知道到底哪里最严重。」',a:'以后我补现场，你补记录。',b:'别想太多，先把活干完。'}
+};
+function maybePrivateChat(next){
+  ensureOrgSystems();
+  if(chapterIdx<2 || flags.privateChatCh===chapterIdx){next();return;}
+  if(chapterIdx%3!==1){next();return;} // 有节奏地出现，而不是每章打断
+  const cand=Object.keys(PRIVATE_CHAT_SCRIPTS).filter(k=>(S.npc[k]||0)>=48);
+  if(!cand.length){next();return;}
+  cand.sort((a,b)=>(S.npc[b]+socialPerson(b).respect)-(S.npc[a]+socialPerson(a).respect));
+  const k=cand[0], sc=PRIVATE_CHAT_SCRIPTS[k]; flags.privateChatCh=chapterIdx; window._privateChat={k:k,next:next};
+  document.getElementById('scene-area').innerHTML='<div class="scene"><span class="event-badge npc-ev">💬 1:1</span><div class="scene-title">'+NPCs[k].name+'没有立刻走</div><div class="vp-line">'+sc.line+'</div><div class="choices"><button class="choice" onclick="pickPrivateChat(0)"><span class="idx">A</span>'+sc.a+'</button><button class="choice" onclick="pickPrivateChat(1)"><span class="idx">B</span>'+sc.b+'</button></div></div>';
+}
+function pickPrivateChat(i){
+  const x=window._privateChat;if(!x)return; const p=socialPerson(x.k);
+  if(i===0){S.npc[x.k]=clamp(S.npc[x.k]+4);p.respect=clamp(p.respect+5);p.favor=clamp(p.favor+1);bumpLink(x.k,'me',2);}
+  else {S.npc[x.k]=clamp(S.npc[x.k]-2);p.fear=clamp(p.fear+3);p.respect=clamp(p.respect-1);}
+  ensureOrgSystems().privateChats.push({k:x.k,ch:chapterIdx,choice:i}); const n=x.next; window._privateChat=null;
+  showResult(i===0?'你没有把这段私聊变成另一次工作汇报。对方记住的是：你听懂了。':'谈话很快结束。对方以后仍会做事，但未必还会主动解释为什么。',[{label:i===0?'关系/专业认可 ↑':'敬畏 ↑，关系略降',kind:i===0?'up':'down'}],n);
+}
+
+/* Phase III 前后组织会洗牌；根据玩家长期站队，得到的不是同一个重组。 */
+function maybeRestructure(nextId){
+  ensureOrgSystems(); if(S.org.restructure||!['c10','c11','c12'].includes(nextId)) return;
+  const a=dominantPlayerAlignment(); let txt='';
+  if(a==='合规/留痕'){
+    S.org.restructure='compliance'; bumpLink('anyu','wenjing',8);bumpLink('anyu','jialin',6);socialPerson('anyu').respect=clamp(socialPerson('anyu').respect+5);
+    txt='安瑜被指定牵头跨部门风险例会，文静和加琳成为固定成员。你早期建立的“执行+合规”关系开始制度化。';
+  }else if(a==='执行/推进'){
+    S.org.restructure='execution'; bumpLink('qiaoqiao','zhuzong',8);bumpLink('qiaoqiao','miaomiao',6);S.npc.qiaoqiao=clamp(S.npc.qiaoqiao+4);
+    txt='乔乔被拉去牵头三期启动战情室，运营链条明显变强。合规团队开始担心“所有问题都被翻译成 timeline”。';
+  }else if(a==='权力/政治'){
+    S.org.restructure='politics'; bumpLink('xiaoke','ceo',10);socialPerson('xiaoke').fear=clamp(socialPerson('xiaoke').fear+5);
+    txt='小柯开始直接参加老板周会。一个原本只是“协调”的岗位突然拥有了信息上行权。';
+  }else{
+    S.org.restructure='science'; bumpLink('mingye','cso',8);bumpLink('mingye','yijian',5);socialPerson('mingye').respect=clamp(socialPerson('mingye').respect+4);
+    txt='二老板要求统计和注册直接参加关键开发决策。明夜突然比以前更早知道所有人的版本。';
+  }
+  seedGossip('zouting','me','POWER',2,'组织架构调整后，谁能直接进入关键房间发生了变化。','PUBLIC');
+  toast('🏢 组织重组：汇报线和信息流发生变化','up');
+  addOfficeMemory('orgRestructure','Phase III 组织调整');
+  S.org.restructureText=txt;
+}
+
+/* 资源争夺：不能同时满足所有人。 */
+const RESOURCE_CHOICES=[
+ {t:'把唯一的 programmer 给统计，先完成关键敏感性分析',e:{progress:4,merit:3},npc:{mingye:7,qiaoqiao:-5},social:{respect:{mingye:7,qiaoqiao:-3}},topic:'SCIENCE',visibility:'TEAM',r:'分析按时出来了；两个中心启动包晚了三天。乔乔没有吵，只把 timeline 截图发在群里。'},
+ {t:'把资源给中心启动，统计分析排到下周',e:{progress:4,blame:2},npc:{qiaoqiao:7,miaomiao:4,mingye:-6},social:{respect:{qiaoqiao:5,mingye:-5}},topic:'EXECUTION',visibility:'TEAM',r:'本周入组数字很好看。老板会上没人问那版敏感性分析——暂时。'},
+ {t:'一人半天，两个任务都做一半',e:{progress:1,morale:3},npc:{anyu:3},social:{respect:{anyu:3}},topic:'RELATION',r:'谁都没彻底满意，但谁也没彻底被放弃。安瑜说：“至少这次你承认资源真的不够。”'}
+];
+function maybeResourceConflict(next){
+  ensureOrgSystems();
+  if(flags.resourceConflictDone || chapterIdx<11){next();return;}
+  flags.resourceConflictDone=true; window._resourceNext=next;
+  document.getElementById('scene-area').innerHTML='<div class="scene"><span class="event-badge">⏳ 资源争夺</span><div class="scene-title">今天只有一个人能加班</div><div class="scene-sub">统计要 programmer 跑敏感性分析；运营要同一个人帮两个中心清启动数据。两边都说“今天必须”。</div><div class="choices">'+choiceHTML(RESOURCE_CHOICES,'pickResourceConflict')+'</div></div>';
+}
+function pickResourceConflict(i){
+  const c=RESOURCE_CHOICES[i],d=applyChoice(c); ensureOrgSystems().resourceChoices.push({ch:chapterIdx,i:i}); const n=window._resourceNext;window._resourceNext=null;
+  checkDeath(c.r,d,function(){showResult(c.r,d,n);});
 }
 
 const INTEL_TOTAL = INTEL.length;
@@ -1539,7 +1721,7 @@ function showScreen(id){
 function startGame(){
   S = {...INIT, npc:{}, intel:{}, log:[], officeMemory:{}, officeTrail:[]};
   Object.keys(NPCs).forEach(function(k){ S.npc[k] = NPCs[k].init; });
-  initSocial();
+  initSocial(); ensureOrgSystems();
   S.restLeft = REST_MAX; S.adLeft = AD_MAX;
   LOVE_META.a.ch = -1; LOVE_META.b.ch = -1; LOVE_META.c.ch = -1;
   const priorRuns=parseInt(localStorage.getItem('dragon_runs')||'0',10);
@@ -1570,6 +1752,7 @@ function supportCount(min){
    所以他不能被一次性买断，只能持续维护。这是整套关系经济里唯一的持续 sink。*/
 function applyChapterPassives(){
   processGossip(); // v9.1 · 每章让流言沿内部关系网传播一次
+  maybeSecretDrop(); reputationTags();
   // A. 漏水的桶：武总每章向初始值回落
   Object.keys(NPCs).forEach(function(k){
     const np = NPCs[k];
@@ -1588,7 +1771,7 @@ function applyChapterPassives(){
   // D. 安全感税
   applyPowerTax();
   // E. 关系高到一定程度后，人会主动行动，而不是只做数字。
-  const nx=runChapters[chapterIdx]; if(nx){ applyAllyAssist(nx.id); maybeInternalAssist(nx.id); }
+  const nx=runChapters[chapterIdx]; if(nx){ maybeRestructure(nx.id); applyAllyAssist(nx.id); maybeInternalAssist(nx.id); }
 }
 
 /* 高处税：变强本身要付费
@@ -1612,7 +1795,7 @@ function applyPowerTax(){
 const MEMORY_LABELS = {
   safetyTrail:"安全信号时间线", approvalChain:"审批链", doseMatrix:"剂量决策矩阵",
   imActions:"研究者会 Action Items", eop2Minutes:"EOP2 问答纪要", authorshipTrail:"贡献/署名分工",
-  writtenWarning:"书面确认邮件", privacyClosed:"隐私事件闭环", capaClosed:"CAPA 闭环", publicCredit:"公开贡献记录"
+  writtenWarning:"书面确认邮件", privacyClosed:"隐私事件闭环", capaClosed:"CAPA 闭环", publicCredit:"公开贡献记录", analysisRescue:"关键分析救火", regPreview:"监管提前预审", intelPrepared:"情报转化准备", orgRestructure:"组织重组记录"
 };
 function addOfficeMemory(tag, source){
   if(!tag) return;
@@ -2597,7 +2780,7 @@ function pickChapter(i){
   const next = function(){
     if(flags.fraud){ showEnding('be_fraud'); return; }
     if(chapterIdx === runChapters.length-1){ evaluateFinal(); return; }
-    maybeEvent(ch.id, function(){ chapterIdx++; applyChapterPassives(); maybeLove(renderChapter); });
+    maybeEvent(ch.id, function(){ chapterIdx++; applyChapterPassives(); maybeResourceConflict(function(){ maybePrivateChat(function(){ maybeLove(renderChapter); }); }); });
   };
   checkDeath(c.r, deltas, next);
 }
@@ -2791,10 +2974,11 @@ function finalizeEvaluation(){
   const highTicket = Math.max(S.npc.ceo, S.npc.cso);
   const maxRel = Math.max.apply(null, Object.keys(S.npc).map(function(k){ return S.npc[k]; }));
   const alive3 = S.trust >= 35 && S.morale >= 35 && S.sanity >= 35;
+  const promo = promotionEndorsements(); flags.promotionSupport=promo.support.length; flags.promotionOppose=promo.oppose.length;
   let key = null;
 
   // v7 · 功勋兑现：项目成功后先判断“公司是否已经无法把你从故事里删掉”。
-  if(S.progress >= 60 && (S.merit||0) >= 70 && (S.reputation||0) >= 45 && (S.bossTrust||0) >= 45 && (flags.duelWin || S.trust >= 30)) key='ge_promotion';
+  if(S.progress >= 60 && (S.merit||0) >= 70 && (S.reputation||0) >= 45 && (S.bossTrust||0) >= 45 && promo.support.length>=3 && promo.oppose.length<=3 && (flags.duelWin || S.trust >= 30)) key='ge_promotion';
   else if(S.progress >= 60 && (S.merit||0) >= 75 && (S.reputation||0) < 35) key='ge_unsung';
 
   // ① NPC 特化：关系真的建立了，比胜负更长
@@ -2887,7 +3071,7 @@ function showEnding(key){
   t.textContent = e.type; t.className = 'ending-type ' + e.cls;
   document.getElementById('ending-name').textContent = e.name;
   const profile=(S.merit>=70&&S.reputation>=50&&S.power>=55)?'组织型操盘手':(S.merit>=75&&S.reputation<35)?'项目救火队长':(S.piRep>=60)?'研究者联盟型开发者':(S.dragon>=7)?'政治型幸存者':'科学型执行者';
-  document.getElementById('ending-story').textContent = (withLove ? (e.story + '\n\n──────────\n' + LOVE_EPILOGUE) : e.story) + '\n\n【职业画像】'+profile+'\n组织记忆：'+memoryCount()+' 条；功勋 '+S.merit+'；声望 '+S.reputation+'；研究者声望 '+S.piRep+'。\n内部标签：'+dominantPlayerAlignment()+'；当前形成 '+allianceComponents().length+' 个稳定联盟。';
+  document.getElementById('ending-story').textContent = (withLove ? (e.story + '\n\n──────────\n' + LOVE_EPILOGUE) : e.story) + '\n\n【职业画像】'+profile+'\n组织记忆：'+memoryCount()+' 条；功勋 '+S.merit+'；声望 '+S.reputation+'；研究者声望 '+S.piRep+'。\n内部标签：'+dominantPlayerAlignment()+'；当前形成 '+allianceComponents().length+' 个稳定联盟。\n内部口碑：'+(reputationTags().join(' / ')||'未定型')+'。\n晋升背书：'+promotionEndorsements().support.length+' 支持 / '+promotionEndorsements().neutral.length+' 中立 / '+promotionEndorsements().oppose.length+' 反对。'+(ensureOrgSystems().restructureText?'\n组织重组：'+ensureOrgSystems().restructureText:'');
   document.getElementById('ending-stats').innerHTML =
     Object.keys(STAT_META).map(function(k){ return '<span class="s">'+STAT_META[k].name+' '+S[k]+'</span>'; }).join('')
     + '<span class="s" style="color:var(--purple);border-color:var(--purple)">龙性 '+S.dragon+'</span>'
