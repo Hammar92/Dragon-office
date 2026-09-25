@@ -200,7 +200,7 @@
 
     <div class="sec-title" data-page-node-id="s7QResumeSec01">你的上司 · 公开简历（HR 入职材料 · 第 3 页）</div>
     <div class="intro-box vp-card" id="vp-card" data-page-node-id="s7QResumeCard01"></div>
-    <div class="intro-hint" data-page-node-id="s7QResumeHint1">上面这页纸，是这家公司愿意摊开给你看的部分。剩下的，你自己在这 13 章里看。</div>
+    <div class="intro-hint" data-page-node-id="s7QResumeHint1">上面这页纸，是这家公司愿意摊开给你看的部分。剩下的，你自己在这 18 章里看。</div>
 
     <div id="cast-wrap" data-page-node-id="castWrap2026"></div>
     <button class="btn primary" onclick="startGame()" data-page-node-id="cGLdFZZxlDrO4bEGXyErH1">入职第一天</button>
@@ -268,7 +268,7 @@
    注意：career 不是死亡线。它归零不会让你输掉这一局，它只是夺走你"体面退场"的能力。
    [PLACEHOLDER · 由 tools/sim.js 校准] */
 const INIT = { trust:60, progress:25, morale:55, power:12, sanity:80, dragon:0, career:20,
-  stamina:60, heart:70, merit:0, reputation:8, piRep:5, blame:0, bossTrust:30 };
+  stamina:60, heart:70, merit:0, reputation:8, piRep:5, blame:0, bossTrust:30, officeMemory:{}, officeTrail:[] };
 
 const STAT_META = {
   stamina:{name:"⚡ 体力"}, heart:{name:"❤️ 心力"},
@@ -573,7 +573,7 @@ const CHAPTERS = [
       r:"你当着她的面拨通了加琳的电话，当晚交出了医学评估意见。\n\n钟时摔门而去。你在空办公室坐到凌晨一点，手心全是汗。\n\n那个月的 DSMB 结论是「加强监测，继续试验」。两条命可能还在各自的夜里安稳睡着。\n\n（以后加琳的每一份内部说明，都会自动抄送你一份。）" },
     { t:"「好，听您的，先压着等 DSMB。」", e:{trust:12, sanity:-5, dragon:2}, npc:{jialin:-12}, setFlag:"conceal",
       r:"钟时拍了拍你的肩：「稳。」\n\n那晚你失眠到三点，反复告诉自己可能只是聚集趋势。会议纪要里你没留下任何字——这是这份纪要第一次让你觉得烫手。\n\n加琳第二天在走廊拦住你，只说了一句：「你签的字，我看清楚了。」\n\n（龙看见了你压下去的东西。它记住了。）" },
-    { t:"按流程今晚上报，同时抄送钟时，邮件白纸黑字写明「已与钟时沟通，其意见为暂缓」——流程走我的，字留我的", e:{trust:-6, sanity:4, power:6}, npc:{jialin:5, yijian:3},
+    { t:"按流程今晚上报，同时抄送钟时，邮件白纸黑字写明「已与钟时沟通，其意见为暂缓」——流程走我的，字留我的", record:"safetyTrail", recordSource:"安全上报邮件", e:{trust:-6, sanity:4, power:6}, npc:{jialin:5, yijian:3},
       r:"邮件发出。上报按时完成，抄送列表第三位是钟时的名字。\n\n第二天她把你叫进办公室：「你什么意思？」\n\n「合规要求书面留痕，我在保护项目，也在保护您。」\n\n她盯着你看了十秒，没说话。从那天起她开会再也没让你「顺便」背过锅——因为你把锅都铸成了铁的。" },
   ]
 },
@@ -595,7 +595,7 @@ const CHAPTERS = [
   aside:{from:"一建（注册）", text:"预算会的纪要，谁先发出去谁占理。慢一步，锅就自动找上门——这是我在注册这行十年总结出来的物理学。"},
   text:"季度全员会。钟时讲到一半忽然停住，指着屏幕上你的 KOL 顾问会预算：\n\n「这个八百万，谁批的？我怎么不记得？」\n\n全场安静。那是她上周三亲口批准的。有邮件，有会议录音，有她签过字的 OA 流程——此刻正安静躺在你的收件箱里。",
   choices:[
-    { t:"当场翻出邮件投屏：「您上周三 16:42 批准的，这是审批链。」", e:{trust:-6, morale:10, sanity:4}, npc:{xiaoyuan:6, yijian:3, jialin:2},
+    { t:"当场翻出邮件投屏：「您上周三 16:42 批准的，这是审批链。」", record:"approvalChain", recordSource:"预算审批链", e:{trust:-6, morale:10, sanity:4}, npc:{xiaoyuan:6, yijian:3, jialin:2},
       r:"屏幕上的审批记录清清楚楚。钟时看了两秒，面不改色：「哦对，我想起来了，当时是有这个安排。」\n\n完美落地，仿佛什么都没发生过。\n\n会后三个部门的同事绕路来跟你握手。那天下午你在茶水间的地位达到职业巅峰。\n\n钟时记性不好，但她记仇的部分运作正常。" },
     { t:"会上先接下：「我再确认一下。」会后私发审批记录，附一句「您看是否需要我在会上补充说明」", e:{trust:5, power:3, sanity:-2}, npc:{yijian:5},
       r:"十分钟后他回复：「嗯，看到了。下次这种小事会上不用展开。」\n\n你保住了他的面子，也存下一张「他知道他欠你」的牌。这张牌不能常打——但你知道它在。\n\n（成年人的职场复仇，一半都发生在草稿箱里。）" },
@@ -742,15 +742,16 @@ const MILESTONE_CHAPTERS = {
     aside:{from:"苗苗（CRA 主管）",text:"首例给药。中心主任、护士长、老板和钟时都在。今天不是最难的一天，但今天所有人都会记住谁先开口。"},
     text:"FIH 首例给药后第七分钟，受试者血压短暂下降。数值还没到暂停标准，但研究者侯教授抬头问：\n\n「下一剂量组还升吗？」\n\n钟时先说：「这种波动很常见，按计划升。」随后又压低声音问你：「你觉得呢？老板也在。」\n\n这是你第一次发现：专业判断、上司信任和被老板看见，并不是同一件事。",
     choices:[
-      {t:"先确认预设暂停规则和完整生命体征趋势，再建议按方案观察后决定",e:{trust:4,progress:5,power:2},npc:{houpi:8,miaomiao:4,ceo:3},hidden:{merit:8,reputation:5,piRep:5},witnesses:["ceo","houpi"],r:"你没有抢结论。十五分钟后血压自行恢复，第二天安全评审同意继续。侯教授只说了一句：『你们医学至少是按规则做判断的。』老板记住了你的名字。"},
+      {t:"先确认预设暂停规则和完整生命体征趋势，再建议按方案观察后决定",e:{trust:4,progress:5,power:2},npc:{houpi:8,miaomiao:4,ceo:3},hidden:{merit:8,reputation:5,piRep:5},witnesses:["ceo","houpi"],record:"safetyTrail",recordSource:"FIH 安全评审",r:"你没有抢结论。十五分钟后血压自行恢复，第二天安全评审同意继续。侯教授只说了一句：『你们医学至少是按规则做判断的。』老板记住了你的名字。"},
       {t:"顺着钟时：『没到暂停标准，直接升。』",e:{trust:9,progress:5,sanity:-3},npc:{houpi:-5,jialin:-3},hidden:{merit:-2,blame:5},r:"进度很快，钟时很满意。但侯教授在病历讨论会上把‘为什么没有完整复盘’写进了自己的笔记。现在没人追究——记录会等。"},
-      {t:"当着老板说：『医学建议暂停升级 24 小时，先把这一个信号讲清楚。』",e:{trust:-5,progress:-3,power:5,sanity:3},npc:{houpi:10,jialin:5,ceo:5},hidden:{merit:10,reputation:8,piRep:7},witnesses:["ceo","cso","houpi"],r:"项目停了一天，没有停一个月。老板当天没夸你；一个季度后，他在另一个会上说：『一期那个医学判断，最后是谁做的？』这就是声望开始复利的方式。"}
+      {t:"当着老板说：『医学建议暂停升级 24 小时，先把这一个信号讲清楚。』",e:{trust:-5,progress:-3,power:5,sanity:3},npc:{houpi:10,jialin:5,ceo:5},hidden:{merit:10,reputation:8,piRep:7},witnesses:["ceo","cso","houpi"],r:"项目停了一天，没有停一个月。老板当天没夸你；一个季度后，他在另一个会上说：『一期那个医学判断，最后是谁做的？』这就是声望开始复利的方式。"},
+      {t:"【二周目】你记得这种短暂低血压后来会恢复：先让研究者把趋势说完，再主动提出 24 小时书面复盘",lock:{ngp:true},lockHint:"二周目知识",e:{trust:2,progress:3,power:4,sanity:2},npc:{houpi:9,ceo:4,jialin:4},hidden:{merit:11,reputation:6,piRep:6},witnesses:["ceo","houpi"],record:"safetyTrail",recordSource:"二周目 · FIH 复盘",r:"你没有预言未来，只是比第一次更早知道什么值得留下证据。血压恢复以后，侯教授主动要求把这套复盘模板用于后续所有剂量组。"}
     ]},
   x2:{id:"x2",act:"Phase I · 数据读出 / RP2D",title:"两个剂量，只能留一个",
     aside:{from:"明夜（统计）",text:"300 mg 的 PD 更漂亮，但 225 mg 的安全窗更宽。钟时刚刚在两个会里给了两个相反答案。"},
     text:"一期读出会。两个剂量都能往二期走，但预算只允许留一个。钟时上午对老板说要『追求最大药效』，下午对二老板又说『安全第一』。\n\n现在两个人同时在会议室里，等医学推荐剂量。你面前有完整 PK/PD、安全性和暴露-效应图。",
     choices:[
-      {t:"把决策标准写成一页：疗效增益、安全边际、二期可验证性；按标准推荐，不替任何人圆话",e:{progress:7,power:6,trust:-2},npc:{mingye:8,cso:5,ceo:5},hidden:{merit:12,reputation:8},witnesses:["ceo","cso","mingye"],r:"会议第一次没有围绕‘谁说过什么’展开，而是围绕一张表结束。推荐剂量定了。二老板会后要走了你那页图。"},
+      {t:"把决策标准写成一页：疗效增益、安全边际、二期可验证性；按标准推荐，不替任何人圆话",e:{progress:7,power:6,trust:-2},npc:{mingye:8,cso:5,ceo:5},hidden:{merit:12,reputation:8},witnesses:["ceo","cso","mingye"],record:"doseMatrix",recordSource:"RP2D 决策表",r:"会议第一次没有围绕‘谁说过什么’展开，而是围绕一张表结束。推荐剂量定了。二老板会后要走了你那页图。"},
       {t:"先问钟时现在倾向哪个，再把数据解释成那个答案",e:{trust:10,progress:4,sanity:-5,dragon:1},npc:{mingye:-6},hidden:{merit:1,reputation:-2,blame:3},r:"答案定得很快。明夜把模型文件另存了一份，文件名是 final_independent。你不知道他为什么这么命名，但你大概知道。"},
       {t:"把两个剂量都带进二期，避免现在得罪任何人",e:{trust:4,progress:-8,morale:-4},npc:{weilai:-10,mingye:-3},hidden:{merit:-5,blame:6},r:"所有人都暂时满意，除了财务和未来的你。二期样本量立刻膨胀，半年后大家会重新回来问：当时为什么不做决定。"}
     ]},
@@ -758,7 +759,7 @@ const MILESTONE_CHAPTERS = {
     aside:{from:"林医生（青年 PI）",text:"侯教授和牛教授对停药标准意见相反。张教授关心中心工作量。钟时刚答应了三个人三套不同的版本。"},
     text:"二期研究者会。第一排坐着四个会决定这项研究能不能入完组的人。\n\n侯教授要求把科学终点做得更严格；牛教授说现场根本执行不了；张教授追问额外采血谁付钱；林医生在问未来论文作者。\n\n钟时分别点头：『都可以考虑。』\n\n十分钟后，四个人同时看向你，问：『所以最终方案到底是什么？』",
     choices:[
-      {t:"当场把“不可变部分 / 可优化部分 / 会后决策时限”三栏写出来，逐项确认",e:{progress:6,power:7,trust:-3,morale:3},npc:{houpi:7,niupi:7,zhangpi:7,linpi:5},hidden:{merit:12,reputation:7,piRep:12},witnesses:["houpi","niupi","zhangpi","linpi","ceo"],r:"四个人没有都满意，但都知道下一步是什么。研究者会结束后，牛教授主动把三个高入组中心介绍给了苗苗。"},
+      {t:"当场把“不可变部分 / 可优化部分 / 会后决策时限”三栏写出来，逐项确认",e:{progress:6,power:7,trust:-3,morale:3},npc:{houpi:7,niupi:7,zhangpi:7,linpi:5},hidden:{merit:12,reputation:7,piRep:12},witnesses:["houpi","niupi","zhangpi","linpi","ceo"],record:"imActions",recordSource:"Investigator Meeting",r:"四个人没有都满意，但都知道下一步是什么。研究者会结束后，牛教授主动把三个高入组中心介绍给了苗苗。"},
       {t:"替钟时圆场：『钟总的意思是都可以，会后医学统一版本。』",e:{trust:8,progress:-4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-3,linpi:-2},hidden:{merit:-3,blame:5},r:"会开得很顺。接下来两周你分别收到四封追问邮件，每封都引用钟时不同的一句话。所谓‘都可以’，最终变成四份待办。"},
       {t:"让钟时逐项拍板，并把她每个答案同步投到屏幕上的决策表里",e:{trust:-7,power:6,progress:3,dragon:2},npc:{houpi:3,niupi:3,zhangpi:3},hidden:{merit:5,reputation:3,blame:-3},r:"她第一次发现自己刚刚答应过互相冲突的东西。她改了两次口。你没有纠正，只负责按下回车。研究者们看懂了，比你说任何一句坏话都快。"}
     ]},
@@ -766,7 +767,7 @@ const MILESTONE_CHAPTERS = {
     aside:{from:"一建（注册）",text:"FDA briefing package 已经锁版。今天任何一句临场发挥，都会比前面六个月写的 400 页更贵。"},
     text:"EOP2 会议。监管连续追问三件事：三期剂量、人群富集、主要终点。\n\n钟时回答第一题时开始绕回一期机制；第二题把探索性分析说成了预设；第三题停住，转头看你。\n\n老板、二老板都在远程会议室。你知道这十五分钟会决定公司是否直接进入三期。",
     choices:[
-      {t:"按 briefing book 的 question-by-question 结构接管回答，只说已有证据和明确 proposal",e:{progress:12,power:8,trust:-5},npc:{yijian:12,ceo:8,cso:6,mingye:5},hidden:{merit:18,reputation:15,blame:-5},witnesses:["ceo","cso","yijian"],r:"会议纪要最终写的是：总体同意进入确证性研究，三处细节补充书面说明。老板没有在会上说什么。会后他只发了一句：『今天医学准备得很好。』"},
+      {t:"按 briefing book 的 question-by-question 结构接管回答，只说已有证据和明确 proposal",e:{progress:12,power:8,trust:-5},npc:{yijian:12,ceo:8,cso:6,mingye:5},hidden:{merit:18,reputation:15,blame:-5},witnesses:["ceo","cso","yijian"],record:"eop2Minutes",recordSource:"EOP2 会议纪要",r:"会议纪要最终写的是：总体同意进入确证性研究，三处细节补充书面说明。老板没有在会上说什么。会后他只发了一句：『今天医学准备得很好。』"},
       {t:"继续让钟时答，只在她明显说错时补一句",e:{trust:7,progress:2,sanity:-4},npc:{yijian:-4,cso:-2},hidden:{merit:3,reputation:-2,blame:4},r:"会议没有炸，但留下了六条 follow-up question。钟时总结：『总体还是比较顺利。』你看着一建重新排出的六周时间线，没有接话。"},
       {t:"把富集问题主动抛给明夜、执行问题抛给牛教授，自己只守医学结论",e:{progress:9,power:9,trust:-3,morale:5},npc:{mingye:8,niupi:8,yijian:7},hidden:{merit:14,reputation:9,piRep:7},r:"你没有成为唯一的英雄。你让每个问题由最适合的人回答。监管会议比预定提前五分钟结束——这是药厂里少数真正值得庆祝的提前。"}
     ]},
@@ -774,7 +775,7 @@ const MILESTONE_CHAPTERS = {
     aside:{from:"邹婷（HR）",text:"老板让我准备明年的组织调整。你不用问我名单，我也不会告诉你。但你今晚怎么讲这个项目，他会记。"},
     text:"三期数据库锁定，主要终点阳性。Pre-NDA 前夜，老板临时要一页『三年关键决策与贡献』。\n\n钟时给你的模板里，第一页只有一句：『在钟时 VP 的领导下，团队成功完成……』\n\n而真正救过项目的 EOP2、DMC、安全性策略、统计方案和研究者冲突都有清楚记录。你有十五分钟决定这页怎么写。",
     choices:[
-      {t:"按里程碑列贡献人：谁做了什么、产生什么结果；把自己的贡献也写进去",e:{power:8,trust:-5,morale:6},npc:{ceo:8,cso:4,jialin:4,mingye:4,yijian:4},hidden:{merit:10,reputation:15,blame:-4},witnesses:["ceo","cso"],r:"老板看完只改了一个地方：把你的名字从第三行挪到了第一行。没有人公开讨论这件事，但第二天 HR 发来了新的岗位职责草案。"},
+      {t:"按里程碑列贡献人：谁做了什么、产生什么结果；把自己的贡献也写进去",e:{power:8,trust:-5,morale:6},npc:{ceo:8,cso:4,jialin:4,mingye:4,yijian:4},hidden:{merit:10,reputation:15,blame:-4},witnesses:["ceo","cso"],record:"authorshipTrail",recordSource:"Pre-NDA 贡献表",r:"老板看完只改了一个地方：把你的名字从第三行挪到了第一行。没有人公开讨论这件事，但第二天 HR 发来了新的岗位职责草案。"},
       {t:"完全按钟时模板，让她拿走全部叙事权",e:{trust:12,sanity:-8},npc:{ceo:-4,cso:-2},hidden:{merit:0,reputation:-10,blame:2},r:"材料很漂亮。老板在会上表扬了钟时‘三年持续领导’。你坐在第二排，知道每一个数字为什么在这里，却没有一个数字知道你的名字。"},
       {t:"只写事实，不写名字；把证据链和版本记录附在后面",e:{power:5,trust:-2,sanity:3},npc:{xiaoen:6,tongxin:5},hidden:{merit:6,reputation:5,blame:-8},r:"第一页没有英雄，只有节点。真正看得懂的人会翻到附件。老板翻了。钟时没翻。两个人因此看到的是两份完全不同的材料。"}
     ]}
@@ -878,7 +879,7 @@ const EVENTS = [
 { id:"e6", title:"第四次取消的一对一", npcEv:false,
   text:"钟时取消了本月和你第四次 one-on-one。\n\n理由从「临时有事」进化到「改天再说」，再进化到「你不发我也能看到周报」。\n\n你盯着日历，有点想笑，又笑不出来。",
   choices:[
-    { t:"补一封长邮件，把所有关键医学决策同步清楚", e:{sanity:-4, trust:4}, npc:{yijian:3},
+    { t:"补一封长邮件，把所有关键医学决策同步清楚", record:"writtenWarning", recordSource:"One-on-one 取消后的确认邮件", e:{sanity:-4, trust:4}, npc:{yijian:3},
       r:"你写了封两千字的同步邮件。三天后他回了个「收到」。\n\n一个字，两千字。这就是职场汇率。\n\n但至少关键决策有了书面记录——下一个爆雷时，这就是弹药。" },
     { t:"正好。拿这个时间做正事", e:{progress:6, sanity:4},
       r:"你用省下的时间清了积压的方案医学审阅。\n\n那周项目进度是季度最高。没有人表扬你，但数据不会说谎。\n\n（不被关注的时间，是职场里唯一的免税区。）" },
@@ -908,7 +909,7 @@ const EVENTS = [
 { id:"e9", title:"纸条", npcEv:true,
   text:"茶水间。明夜把一个便利贴按在你手心，上面写着一串日期：「他让我调整删失规则，三次。我都没签。你自己小心点。」\n\n然后他若无其事端着杯子走了。",
   choices:[
-    { t:"把纸条锁进抽屉，下次周会后发一封确认邮件给钟时与明夜", e:{power:6, sanity:-2}, npc:{mingye:10},
+    { t:"把纸条锁进抽屉，下次周会后发一封确认邮件给钟时与明夜", record:"writtenWarning", recordSource:"删失规则确认邮件", e:{power:6, sanity:-2}, npc:{mingye:10},
       r:"你发了一封措辞客气的确认邮件：「关于上周您提出的删失处理调整，我的理解如下……请确认。」\n\n钟时没有回复。但她再也没在会上提这件事。\n\n（留痕的价值：不是为了将来打官司，是为了让对方知道你留了痕。）" },
     { t:"把纸条内容告诉钟时，表明自己的忠诚", e:{trust:8, sanity:-6, dragon:2}, npc:{mingye:-15, jialin:-5, ceo:-4},
       r:"你去了她办公室。她听完笑了：「明夜啊，海归嘛，不懂事。」\n\n三天后明夜被换出了这个项目。接手的人，是钟时的老部下。\n\n（你换来了八个信任点，和一个再也不会有人提醒你的未来。）" },
@@ -922,7 +923,7 @@ const EVENTS = [
       r:"你在清晨六点按下发送。上午十点，老板在群里发了三个字：「辛苦了」，@ 的是一建。\n\n一建回：「应该的。」\n\n（你用一整夜，换来了他明天早会上的一句自我介绍。）" },
     { t:"写属于你的部分，明确划走他职责内的章节：「医学章节我出，注册策略你自己写」", e:{trust:-2, sanity:3, power:4}, npc:{yijian:-10, zouting:3, ceo:3},
       r:"你划得很清楚，语气很客气。他沉默了四十分钟，然后回：「行。」\n\n那天夜里他一个人写到了七点，递交时间晚了半天。老板问起原因，邮件里的分工表替你答了。\n\n（规矩有时候伤感情，但邮件里的时间戳不会。）" },
-    { t:"全写完，但要求联合署名并把分工表抄送老板", e:{sanity:-5, power:7, progress:5}, npc:{yijian:-3, ceo:5, xiaoen:4},
+    { t:"全写完，但要求联合署名并把分工表抄送老板", record:"publicCredit", recordSource:"注册递交分工表", e:{sanity:-5, power:7, progress:5}, npc:{yijian:-3, ceo:5, xiaoen:4},
       r:"文件递交了，署名页上五个部门的 logo 排成一排，分工表在附件第二页。\n\n老板的回复很简单：「这个分工很好，以后都这样。」\n\n一建在电梯里看了你两秒，笑了笑：「你这人，心眼挺细。」——这句评价在他是贬义，在你这儿是褒义。" },
   ]},
 { id:"e11", title:"告密", npcEv:true,
@@ -968,7 +969,7 @@ const EVENTS = [
 { id:"e15", title:"朱粽的微信群", npcEv:true,
   text:"朱粽把一个截图发进了「XX 项目推进群」——群里有 CRO 的人、中心的人，还有两位外部顾问。\n\n截图内容是受试者的筛查登记表：姓名、身份证号、联系电话，全部清晰可见。\n\n两分钟后他才意识到不对，撤回了。但撤回提示，比截图更刺眼。",
   choices:[
-    { t:"立即按隐私事件处理：报合规、报 PV、留存证据、要求中心出具说明", e:{sanity:-5, trust:-3, progress:-2}, npc:{xiaoen:14, jialin:8, zhuzong:-10, ceo:3},
+    { t:"立即按隐私事件处理：报合规、报 PV、留存证据、要求中心出具说明", record:"privacyClosed", recordSource:"隐私事件 CAPA", e:{sanity:-5, trust:-3, progress:-2}, npc:{xiaoen:14, jialin:8, zhuzong:-10, ceo:3},
       r:"你带着完整的时间线去找了合规。肖恩全程一言不发地听，最后说：「医学这边是干净的。」\n\n朱粽在复盘会上被记了一个书面提醒，从此在走廊撞见你就绕路。\n\n三年后公司被外部审计时，正是这份完整处理记录，把这件事从「重大违规」降级为「已闭环的一般事件」。" },
     { t:"私下提醒他删掉就算了，别把事情闹大", e:{trust:3, sanity:-2}, npc:{zhuzong:6, xiaoen:-8, heina:3},
       r:"他连声说谢谢，删了截图，也删了聊天记录。\n\n三个月后，同一个群里出现了第二张截图，这次是一位受试者的病历首页。\n\n（没记进制度的东西，一定会以更大的成本回来。）" },
@@ -978,7 +979,7 @@ const EVENTS = [
 { id:"e16", title:"肖恩的 CAPA", npcEv:true,
   text:"肖恩查出三个中心的知情同意书签署版本错误，批次涉及 47 人，直接联系人是朱粽。\n\n朱粽跑到你工位：「哥，你跟肖恩说两句？他最听有钱有道理的人说话——不对，他最听得进你这种讲证据的人。反正版本是当时钟时让大家快点签的嘛。」",
   choices:[
-    { t:"支持肖恩开正式 CAPA，并要求 PM 全面复核所有知情同意版本", e:{trust:-4, progress:-2, sanity:3}, npc:{xiaoen:14, zhuzong:-10, jialin:5, cso:4},
+    { t:"支持肖恩开正式 CAPA，并要求 PM 全面复核所有知情同意版本", record:"capaClosed", recordSource:"ICF CAPA", e:{trust:-4, progress:-2, sanity:3}, npc:{xiaoen:14, zhuzong:-10, jialin:5, cso:4},
       r:"肖恩听完你的表态，只说了一个字：「好。」然后他用了整整两周做完了全中心复核，把另外两个批次的问题也揪了出来。\n\n他在给老板的季度质量报告里，写了一句话：「医学部门在本次 CAPA 中提供了完整配合。」\n\n（QA 的记性比谁都长，但他们的笔也很公道。）" },
     { t:"替朱粽说情：「新人嘛，能不能先做个培训，别急着开 CAPA」", e:{trust:4, sanity:-4}, npc:{zhuzong:8, xiaoen:-12, jialin:-4},
       r:"肖恩看着你，沉默了很久：「可以。那我不写 CAPA，我写会议纪要。」\n\n那份纪要后来被检查方翻出来，作为「公司知悉但未整改」的证据。上面有你的名字。\n\n（替人说情的成本，从来不是当场那点尴尬。）" },
@@ -996,8 +997,8 @@ const EVENTS = [
       r:"你让他写一份《加速审批路径的合规论证》，由他自己署名提交伦理委员会。\n\n他熬夜写了三天，写完来谢你：「这才是 biotech 的做法——先做，再证明自己是对的。」\n\n文件最终被接受，六周省下来了，而且合规链条是完整的。二老板在会上说了一句：「这个思路可以推广。」" },
   ]},
 { id:"e18", title:"元老的提醒", npcEv:true,
-  text:"小圆在项目间隙拎着两杯咖啡过来：「我在这家公司二十年，看着它从三个人做起来的。我跟你说三句话，你听多少算多少。」\n\n「第一，老板不是不懂临床，他是不知道自己不懂。第二，二老板只看最后那页 PPT。第三，别得罪邹婷。」",
-  choices:[    { t:"请教她：请她讲讲当年创业时候的人和事", e:{sanity:2, power:5}, npc:{xiaoyuan:14, zouting:6, ceo:3},
+  text:"小圆在项目间隙拎着两杯咖啡过来：「我在这家公司二十年，看着它从三个人做起来的。我跟你说三句话，你听多少算多少。」\n\n「第一，老板不是不懂临床，他是不知道自己不懂。第二，二老板只看最后那页 PPT。第三，别得罪邹婷。」",  choices:[
+    { t:"请教她：请她讲讲当年创业时候的人和事", e:{sanity:2, power:5}, npc:{xiaoyuan:14, zouting:6, ceo:3},
       r:"她讲了两个小时，从第一次方向不对讲到现在这条管线。你第一次知道，钟时当年是被二老板拉来救急的。\n\n临走她说：「你现在想听这些，说明你还能往上走。大部分人到第三个年头就不问了。」\n\n（资历是最难传输的一种资产，只能靠一顿一顿咖啡转移。）" },
     { t:"把话题引到钟时的近况，摸清真实风向", e:{power:6, sanity:-2}, npc:{xiaoyuan:10, zouting:4},
       r:"她笑了一下：「你想知道他要走？他去年就想走了。这事儿邹婷比我清楚。」\n\n三天后，你果然在邹婷那里得到了更完整的时间表。\n\n（情报网的价值不在于信息本身，在于它告诉你可以去哪里要更多信息。）" },
@@ -1305,17 +1306,19 @@ function showScreen(id){
 }
 
 function startGame(){
-  S = {...INIT, npc:{}, intel:{}, log:[]};
+  S = {...INIT, npc:{}, intel:{}, log:[], officeMemory:{}, officeTrail:[]};
   Object.keys(NPCs).forEach(function(k){ S.npc[k] = NPCs[k].init; });
   S.restLeft = REST_MAX; S.adLeft = AD_MAX;
   LOVE_META.a.ch = -1; LOVE_META.b.ch = -1; LOVE_META.c.ch = -1;
-  flags = {}; usedEvents = []; usedHeina = []; chapterIdx = 0;
+  const priorRuns=parseInt(localStorage.getItem('dragon_runs')||'0',10);
+  flags = {newGamePlus:priorRuns>0}; localStorage.setItem('dragon_runs', String(priorRuns+1)); usedEvents = []; usedHeina = []; chapterIdx = 0;
   runChapters = buildDevelopmentTimeline();
   addLog({act:'入职第一天', from:'zouting', to:['me'], cc:[], subj:'欢迎加入临床开发部 · 岗位说明', attach:'JD_医学经理.pdf',
     body:'你的职责范围：方案医学合理性判断、SAE 医学评估、Narrative 与 CSR 撰写、获益风险宣讲。\n汇报线：直接向临床开发 VP 钟时汇报。\n岗位说明里最后一句写的是：本岗位需要与 PV、统计、注册、QA 及 CRO 紧密协作，确保合规性。\n（那句「合规性」三个字，你后来会反复想起。）'});
   addLog({act:'入职第一天', from:'zhong', to:['me'], cc:['xiaoyuan'], subj:'Re: 欢迎加入', attach:'钟时_公开简历.pdf',
     body:'欢迎。我们这个项目是公司最重要的资产，医学这边全靠你了。\n我在这个行业二十年，从早期研发到后期数据统计都做过，有什么你拿不准的可以直接来问我。\n明天九点半评审会，带上你的注册医学策略。——钟时'});
   showScreen('game-screen');
+  if(flags.newGamePlus) toast('↻ 二周目：部分节点会出现经验选项','up');
   renderHUD(); renderChapter();
 }
 
@@ -1351,6 +1354,8 @@ function applyChapterPassives(){
   if(flags.love && S.heart < 100){ S.heart = clamp(S.heart + 12); toast("💗 有人记得你几点下班（心力 +12）", "up"); }
   // D. 安全感税
   applyPowerTax();
+  // E. 关系高到一定程度后，人会主动行动，而不是只做数字。
+  const nx=runChapters[chapterIdx]; if(nx) applyAllyAssist(nx.id);
 }
 
 /* 高处税：变强本身要付费
@@ -1369,10 +1374,72 @@ function applyPowerTax(){
   toast("🌡 高处税：士气 -" + tax + "（你越有分量，同事们越开始算距离）", "down");
 }
 
+/* =====================  v8 · 组织记忆 / Office Memory  =====================
+   数值会消失，记录不会。这里存的是可以在后续会议、甩锅、决斗中被重新拿出来的证据。 */
+const MEMORY_LABELS = {
+  safetyTrail:"安全信号时间线", approvalChain:"审批链", doseMatrix:"剂量决策矩阵",
+  imActions:"研究者会 Action Items", eop2Minutes:"EOP2 问答纪要", authorshipTrail:"贡献/署名分工",
+  writtenWarning:"书面确认邮件", privacyClosed:"隐私事件闭环", capaClosed:"CAPA 闭环", publicCredit:"公开贡献记录"
+};
+function addOfficeMemory(tag, source){
+  if(!tag) return;
+  if(!S.officeMemory) S.officeMemory={}; if(!S.officeTrail) S.officeTrail=[];
+  if(!S.officeMemory[tag]){
+    S.officeMemory[tag]=true; S.officeTrail.push({tag:tag, source:source||'项目记录', ch:chapterIdx});
+    toast('🗂 留痕：'+(MEMORY_LABELS[tag]||tag),'up');
+  }
+}
+function memoryCount(){ return Object.keys((S&&S.officeMemory)||{}).length; }
+function hasMemory(tag){ return !!(S&&S.officeMemory&&S.officeMemory[tag]); }
+function showMemory(){
+  const arr=(S.officeTrail||[]);
+  const html=arr.length?arr.map(function(x,i){return '<div class="intel-item"><div class="ih"><span class="it">'+(i+1)+'. '+(MEMORY_LABELS[x.tag]||x.tag)+'</span><span class="isrc">第 '+(x.ch+1)+' 章 · '+x.source+'</span></div></div>';}).join(''):'<div class="intro-hint">目前还没有形成可核对的组织记录。</div>';
+  document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🗂</span> 组织记忆</div><div class="scene-sub">不是你记得什么，而是公司以后能查到什么。</div>'+html+'<button class="btn" onclick="backToScene()">返回</button></div>';
+}
+function applyAllyAssist(nextId){
+  if(!nextId) return;
+  const aid='assist_'+nextId;
+  if(flags[aid]) return;
+  if(nextId==='x4' && S.npc.mingye>=60){ flags[aid]=true; S.merit=clamp(S.merit+4); S.reputation=clamp(S.reputation+2); addLog({act:'EOP2 前夜',from:'mingye',to:['me'],cc:[],subj:'我把最容易被问的三张图重跑了',attach:'EOP2_sensitivity.xlsx',body:'你没开口求他。关系够了，他自己把东西发了过来。'}); toast('👥 明夜主动支援：功勋 +4','up'); }
+  else if((nextId==='c11'||nextId==='c12') && S.npc.jialin>=60){ flags[aid]=true; S.blame=clamp(S.blame-5); addLog({act:'三期风险前',from:'jialin',to:['me'],cc:[],subj:'PV 先把时间线给你',attach:'Safety_timeline.pdf',body:'关系够深以后，信息会在正式流程之前先到你桌上。'}); toast('👥 加琳提前预警：背锅风险 -5','up'); }
+  else if(nextId==='x5' && S.npc.yijian>=60){ flags[aid]=true; S.reputation=clamp(S.reputation+4); toast('👥 一建把你的贡献写进了 Pre-NDA 分工表','up'); addOfficeMemory('publicCredit','注册分工表'); }
+  else if((nextId==='c10'||nextId==='c11') && S.npc.houpi>=60){ flags[aid]=true; S.piRep=clamp(S.piRep+5); S.progress=clamp(S.progress+2); toast('👥 侯教授主动替方案背书：研究者声望 +5','up'); }
+}
+
+/* v8 · 研究者会控场小游戏：会前的关系与会中的动作都影响后续。 */
+let meetingState=null;
+const MEETING_ROUNDS=[
+ {who:'侯教授',q:'主要终点为什么不能再严格一点？',opts:['先让统计报把握度，再说明不可变部分','先答应，避免当场冲突','让钟时自由发挥'],best:0},
+ {who:'牛教授',q:'这个访视频率中心根本做不下来。',opts:['把可优化访视单列，现场记 Action Item','强调方案已经定稿','请他会后单独找钟时'],best:0},
+ {who:'张教授',q:'新增采血谁承担成本？',opts:['当场指定运营/财务 owner 和截止时间','说预算后面再看','让 CRO 回答'],best:0},
+ {who:'林医生',q:'论文作者顺序什么时候定？',opts:['明确先定贡献规则、不现场许名次','直接许第二作者','说现在谈作者不合适'],best:0}
+];
+function startMeetingControl(){ meetingState={round:0,score:0}; renderMeetingControl(); }
+function renderMeetingControl(){
+  const r=MEETING_ROUNDS[meetingState.round];
+  if(!r){ finishMeetingControl(); return; }
+  document.getElementById('scene-area').innerHTML='<div class="scene"><span class="event-badge npc-ev">🎙 研究者会控场 · '+(meetingState.round+1)+' / 4</span><div class="scene-title">'+r.who+' 把问题递到了你面前</div><div class="vp-line">'+r.q+'</div><div class="choices">'+r.opts.map(function(o,i){return '<button class="choice" onclick="meetingPick('+i+')"><span class="idx">'+'ABC'[i]+'</span>'+o+'</button>';}).join('')+'</div></div>';
+  window._sceneMode='meeting';
+}
+function meetingPick(i){
+  const r=MEETING_ROUNDS[meetingState.round], ok=i===r.best;
+  if(ok){ meetingState.score++; S.merit=clamp(S.merit+3); S.piRep=clamp(S.piRep+3); S.power=clamp(S.power+1); }
+  else { S.blame=clamp(S.blame+2); S.trust=clamp(S.trust+1); }
+  meetingState.round++;
+  showResult(ok?'你没有许一个模糊的“都可以”。你把问题变成 owner、边界和截止时间。':'眼前的气氛被稳住了，但问题没有被关闭。它会在后面的章节重新出现。',[{label:ok?'会议控制有效':'留下未决事项',kind:ok?'up':'down'}],renderMeetingControl);
+}
+function finishMeetingControl(){
+  flags.meetingDone=true;
+  if(meetingState.score>=3){ addOfficeMemory('imActions','Investigator Meeting'); S.reputation=clamp(S.reputation+5); }
+  else { flags.imLooseEnds=true; }
+  const sc=meetingState.score; meetingState=null;
+  showResult('研究者会前半场结束。你有效关闭了 '+sc+' / 4 个问题。'+(sc>=3?' 决策表被当场投到屏幕上，所有人都知道谁负责什么。':' 有几件事被留在“会后再说”里。这个文件夹从来不会自己消失。'),[],renderChapter);
+}
+
 function renderHUD(){
   const ch = runChapters[chapterIdx];
   document.getElementById('chapter-label').textContent = ch ? ch.act : "终幕";
-  document.getElementById('turn-label').textContent = "进度 " + Math.min(chapterIdx+1,13) + " / 13";
+  document.getElementById('turn-label').textContent = "进度 " + Math.min(chapterIdx+1,runChapters.length) + " / " + runChapters.length;
   document.getElementById('bars').innerHTML = Object.keys(STAT_META).map(function(k){
     const v = S[k];
     const color = v>=60 ? 'var(--green)' : v>=30 ? 'var(--accent)' : 'var(--red)';
@@ -1383,6 +1450,7 @@ function renderHUD(){
   document.getElementById('npcs').innerHTML =
     '<span class="npc-chip intel-chip" onclick="showIntel()" title="点击翻阅：你对她的观察笔记（每条解锁 +'+INTEL_POWER+' 权力）">📁 观察笔记 '+got+'/'+INTEL_TOTAL+'</span>'
     + '<span class="npc-chip intel-chip" onclick="showLog()" title="点击翻阅：这一局的工作日志 / 留痕档案">📮 工作日志 '+((S.log||[]).length)+'</span>'
+    + '<span class="npc-chip intel-chip" onclick="showMemory()" title="会在后续章节重新发挥作用的证据链">🗂 组织记忆 '+memoryCount()+'</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
     + (flags.love ? '<span class="npc-chip hi" title="有人记得你几点下班 —— 每章恢复 12 点心力">💗 有人等你</span>' : '')
     + Object.keys(NPCs).map(function(k){
@@ -1397,7 +1465,7 @@ function renderHUD(){
    交互压缩成一个动词 ——「签发」：选定一部分留痕，交给某个人。多余的编辑功能一律砍掉。 */
 const MAIL_TIME = ['周三 09:40','周四 22:17','周一 15:05','周二 11:38','周五 19:52','周日上午 10:14','周三 21:03','周四 08:55','周二 16:41','周五 23:26','周一 09:12','周三 20:30','周五 17:48'];
 
-/* 主线 13 章的邮件元数据（没有写到的走下面的默认合成） */
+/* 主线 18 章的邮件元数据（没有写到的走下面的默认合成） */
 const MAILS = {
   c1:{from:"钟时", to:["me"], cc:["mingye","xiaoyuan"], subj:"Re: 注册医学策略 v3（封面）", attach:"注册医学策略_v3.pptx",
       body:"逻辑还可以。但封面配色不对，我记得上次说过用蓝色——你回头查一下我到底说的是哪个蓝。\n另外这门出去是给外部看的，门面很重要。"},
@@ -1928,8 +1996,7 @@ function startStairs(){
   if(S.restLeft <= 0){ toast('这一章你已经歇过一次了','down'); return; }
   window._bt = {n:0, score:0, last:0, start:0, timer:null, ring:0};
   const b = window._bt;
-  b.start = b.last = Date.now();
-  clearInterval(b.timer);
+  b.start = b.last = Date.now();  clearInterval(b.timer);
   b.timer = setInterval(function(){                    // 节拍器：给玩家一个可跟随的呼吸
     const p = (Date.now() - b.start) % BEAT_TARGET / BEAT_TARGET;
     const el = document.getElementById('bt-ring');
@@ -1996,7 +2063,8 @@ function watchTraining(){
   window._inRest = true;
   document.getElementById('scene-area').innerHTML =
     '<div class="result-box">'
-    + '<h4>📺 线上必修课 · 《数据完整性意识 2026》第三讲</h4>'    + '<div class="ad-box"><div class="ad-slogan" id="ad-slogan">正在加载……</div>'
+    + '<h4>📺 线上必修课 · 《数据完整性意识 2026》第三讲</h4>'
+    + '<div class="ad-box"><div class="ad-slogan" id="ad-slogan">正在加载……</div>'
     + '<div class="ad-track"><div class="ad-fill" id="ad-fill"></div></div></div>'
     + '<div class="result-text" style="color:var(--dim)">跳过按钮是灰的。当然。</div>'
     + '<div style="margin-top:12px"><button class="btn primary" id="ad-done" style="display:none" onclick="finishTraining()">✓ 已完成学习</button></div>'
@@ -2170,11 +2238,16 @@ function unlocked(c){
   if(c.lock.support) return supportCount(c.lock.support) >= c.lock.n;
   if(c.lock.power) return S.power >= c.lock.power;
   if(c.lock.merit) return (S.merit||0) >= c.lock.merit;
+  if(c.lock.ngp) return !!flags.newGamePlus;
   return true;
 }
 
 function renderChapter(){
   const ch = runChapters[chapterIdx];
+  if(ch && ch.id==='x3' && !flags.meetingDone){ startMeetingControl(); return; }
+  if(ch && ch.id==='x4' && hasMemory('doseMatrix') && !flags.doseMemoryPaid){ flags.doseMemoryPaid=true; S.merit=clamp(S.merit+5); S.bossTrust=clamp(S.bossTrust+3); toast('🗂 一期剂量决策矩阵在 EOP2 被重新引用：功勋 +5','up'); }
+  if(ch && ch.id==='c10' && hasMemory('imActions') && !flags.imMemoryPaid){ flags.imMemoryPaid=true; S.progress=clamp(S.progress+4); toast('🗂 研究者会 Action Items 减少三期启动返工：进度 +4','up'); }
+  if(ch && ch.id==='c11' && hasMemory('safetyTrail') && !flags.safetyMemoryPaid){ flags.safetyMemoryPaid=true; S.blame=clamp(S.blame-8); toast('🗂 安全信号时间线仍然完整：背锅风险 -8','up'); }
   renderHUD();
   const aside = ch.aside ? '<div class="aside"><div class="from">📱 来自 '+ch.aside.from+'</div>'+ch.aside.text+'</div>' : '';
   document.getElementById('scene-area').innerHTML =
@@ -2243,6 +2316,7 @@ function applyChoice(c){
   const h=deriveHiddenImpact(c);
   ['merit','reputation','piRep','blame'].forEach(function(k){ S[k]=clamp((S[k]||0)+(h[k]||0)); });
   (c.witnesses||[]).forEach(function(k){ if(S.npc[k]!=null) S.npc[k]=clamp(S.npc[k]+2); });
+  if(c.record) addOfficeMemory(c.record, c.recordSource||'关键决策');
   const cv = deriveCareer(c);
   if(cv){
     S.career = clamp(S.career + cv.d);
@@ -2429,7 +2503,9 @@ function renderDuelRound(){
 function duelPick(i){
   if(!duelState) return;
   if(duelTimer){ clearTimeout(duelTimer); duelTimer=null; }
-  const r=DUEL_ROUNDS[duelState.round], ok=i===r.correct;
+  const r=DUEL_ROUNDS[duelState.round];
+  let ok=i===r.correct;
+  if(ok && memoryCount()>=4){ S.bossTrust=clamp((S.bossTrust||0)+2); } // 证据链让有效反驳更有重量
   if(ok){ duelState.score++; S.bossTrust=clamp((S.bossTrust||0)+10); S.npc.ceo=clamp(S.npc.ceo+4); S.power=clamp(S.power+2); }
   else { S.bossTrust=clamp((S.bossTrust||0)-7); S.npc.ceo=clamp(S.npc.ceo-2); S.blame=clamp((S.blame||0)+3); }
   duelState.round++;
@@ -2545,7 +2621,8 @@ function showEnding(key){
   const t = document.getElementById('ending-type');
   t.textContent = e.type; t.className = 'ending-type ' + e.cls;
   document.getElementById('ending-name').textContent = e.name;
-  document.getElementById('ending-story').textContent = withLove ? (e.story + '\n\n──────────\n' + LOVE_EPILOGUE) : e.story;
+  const profile=(S.merit>=70&&S.reputation>=50&&S.power>=55)?'组织型操盘手':(S.merit>=75&&S.reputation<35)?'项目救火队长':(S.piRep>=60)?'研究者联盟型开发者':(S.dragon>=7)?'政治型幸存者':'科学型执行者';
+  document.getElementById('ending-story').textContent = (withLove ? (e.story + '\n\n──────────\n' + LOVE_EPILOGUE) : e.story) + '\n\n【职业画像】'+profile+'\n组织记忆：'+memoryCount()+' 条；功勋 '+S.merit+'；声望 '+S.reputation+'；研究者声望 '+S.piRep+'。';
   document.getElementById('ending-stats').innerHTML =
     Object.keys(STAT_META).map(function(k){ return '<span class="s">'+STAT_META[k].name+' '+S[k]+'</span>'; }).join('')
     + '<span class="s" style="color:var(--purple);border-color:var(--purple)">龙性 '+S.dragon+'</span>'
