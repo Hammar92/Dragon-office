@@ -186,7 +186,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.5</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.6</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -2029,34 +2029,153 @@ function applyAllyAssist(nextId){
   else if((nextId==='c10'||nextId==='c11') && S.npc.houpi>=60){ flags[aid]=true; S.piRep=clamp(S.piRep+5); S.progress=clamp(S.progress+2); toast('👥 侯教授主动替方案背书：研究者声望 +5','up'); }
 }
 
-/* v8 · 研究者会控场小游戏：会前的关系与会中的动作都影响后续。 */
-let meetingState=null;
+/* =====================  v9.6 · Meeting Pressure QTE  =====================
+   研究者会不再是“背答案”。现场同时有 PI、VP、统计、RA/PM 的不同信号。
+   玩家必须在限时内决定先处理谁；难度、理智、关系、Favor、Office Memory 都会改变结果。 */
+let meetingState=null, meetingTimer=null;
 const MEETING_ROUNDS=[
- {who:'侯教授',q:'主要终点为什么不能再严格一点？',opts:['先让统计报把握度，再说明不可变部分','先答应，避免当场冲突','让钟时自由发挥'],best:0},
- {who:'牛教授',q:'这个访视频率中心根本做不下来。',opts:['把可优化访视单列，现场记 Action Item','强调方案已经定稿','请他会后单独找钟时'],best:0},
- {who:'张教授',q:'新增采血谁承担成本？',opts:['当场指定运营/财务 owner 和截止时间','说预算后面再看','让 CRO 回答'],best:0},
- {who:'林医生',q:'论文作者顺序什么时候定？',opts:['明确先定贡献规则、不现场许名次','直接许第二作者','说现在谈作者不合适'],best:0}
+ {who:'侯教授',q:'“主要终点为什么不能再严格一点？”',side:'明夜在你右侧小声说：“如果现场改，power 会直接掉。”',
+  opts:[
+   {id:'stats',text:'先让明夜报把握度，再说明哪些部分已经不能改',kind:'science',base:3},
+   {id:'promise',text:'先答应“可以优化”，回去再想办法',kind:'appease',base:-2},
+   {id:'vp',text:'让钟时回答，看她怎么接',kind:'politics',base:-1},
+   {id:'memory',text:'直接打开既有剂量/终点决策记录，把依据投到屏幕上',kind:'memory',memory:'doseMatrix',base:4}
+  ]},
+ {who:'牛教授',q:'“这个访视频率中心根本做不下来。”',side:'安瑜发来 Teams：“可以拆成 mandatory / optional，但别现场承诺删访视。”',
+  opts:[
+   {id:'owner',text:'把可优化访视单列，现场指定 owner 和截止时间',kind:'execution',base:4},
+   {id:'locked',text:'强调方案已经定稿，请中心按方案执行',kind:'rigid',base:-2},
+   {id:'pm',text:'让 PM 会后处理，不占用主席时间',kind:'delay',base:0},
+   {id:'ally',text:'请安瑜现场把执行方案拆成 mandatory / optional',kind:'ally',ally:'anyu',base:3}
+  ]},
+ {who:'张教授',q:'“新增采血谁承担成本？”',side:'财务没有参会。乔乔私聊：“别当场答 sponsor 全包。”',
+  opts:[
+   {id:'owner',text:'现场指定运营/财务 owner，48 小时给书面答复',kind:'execution',base:4},
+   {id:'sponsor',text:'“这个费用申办方承担。”先把场面稳住',kind:'promise',base:-3},
+   {id:'cro',text:'把问题转给 CRO，说合同上他们最清楚',kind:'blame',base:-1},
+   {id:'record',text:'把问题写进 Action Item，并明确未经批准前不新增操作',kind:'memory',memory:'approvalChain',base:4}
+  ]},
+ {who:'林医生',q:'“论文作者顺序什么时候定？”',side:'侯教授没有说话，但抬头看了你一眼。钟时已经准备开口。',
+  opts:[
+   {id:'criteria',text:'先定贡献规则和时间点，不现场许具体名次',kind:'science',base:4},
+   {id:'second',text:'先答应第二作者，避免年轻 PI 当场不满',kind:'appease',base:-3},
+   {id:'shut',text:'“现在谈作者不合适。”直接结束话题',kind:'rigid',base:-1},
+   {id:'trail',text:'把既有贡献/署名分工记录投屏，按规则继续补充',kind:'memory',memory:'authorshipTrail',base:4}
+  ]}
 ];
-function startMeetingControl(){ meetingState={round:0,score:0}; renderMeetingControl(); }
+function meetingTimeLimit(){
+  const d=difficulty().id;
+  let sec=d==='hard'?5:d==='story'?10:7;
+  const b=sanityBand().id;
+  if(b==='irritable') sec-=1;
+  if(b==='frayed') sec-=2;
+  return Math.max(3,sec);
+}
+function startMeetingControl(){
+  meetingState={round:0,score:0,closed:0,usedFavor:{},history:[]};
+  renderMeetingControl();
+}
+function meetingOptionScore(opt){
+  let s=opt.base||0;
+  if(opt.memory){
+    if(hasMemory(opt.memory)) s+=3;
+    else s-=3;
+  }
+  if(opt.ally){
+    const p=socialPerson(opt.ally);
+    if((S.npc[opt.ally]||0)>=52 || (p.favor||0)>0) s+=2;
+    else s-=2;
+  }
+  const band=sanityBand().id;
+  if(band==='irritable' && ['rigid','blame','politics'].includes(opt.kind)) s-=1;
+  if(band==='frayed') s-=2; // 失控边缘没有完美发挥
+  return s;
+}
+function meetingOptionText(opt,i){
+  let t=opt.text;
+  const b=sanityBand().id;
+  if(b==='irritable' && i%3===1) t='「这件事我们已经解释过了。」 '+t;
+  if(b==='frayed'){
+    const prefix=['「先别再加需求了。」','「现在谁能拍板就谁拍。」','「我不想再绕这个问题。」','「请把这句话记进纪要。」'][i%4];
+    t=prefix+' '+t;
+  }
+  if(opt.memory && !hasMemory(opt.memory)) t+='【你手上没有完整记录】';
+  if(opt.ally){
+    const p=socialPerson(opt.ally);
+    if((S.npc[opt.ally]||0)<52 && (p.favor||0)<=0) t+='【对方未必愿意接球】';
+  }
+  return t;
+}
 function renderMeetingControl(){
+  if(meetingTimer){clearTimeout(meetingTimer);meetingTimer=null;}
   const r=MEETING_ROUNDS[meetingState.round];
-  if(!r){ finishMeetingControl(); return; }
-  document.getElementById('scene-area').innerHTML='<div class="scene"><span class="event-badge npc-ev">🎙 研究者会控场 · '+(meetingState.round+1)+' / 4</span><div class="scene-title">'+r.who+' 把问题递到了你面前</div><div class="vp-line">'+r.q+'</div><div class="choices">'+r.opts.map(function(o,i){return '<button class="choice" onclick="meetingPick('+i+')"><span class="idx">'+'ABC'[i]+'</span>'+o+'</button>';}).join('')+'</div></div>';
+  if(!r){finishMeetingControl();return;}
+  const limit=meetingTimeLimit();
+  meetingState.deadline=Date.now()+limit*1000;
+  const order=r.opts.map((_,i)=>i).sort(()=>Math.random()-.5);
+  meetingState.order=order;
+  document.getElementById('scene-area').innerHTML='<div class="scene">'
+    +'<span class="event-badge npc-ev">🎙 Meeting Pressure · '+(meetingState.round+1)+' / '+MEETING_ROUNDS.length+'</span>'
+    +'<div class="scene-title">'+r.who+' 把问题递到了你面前</div>'
+    +'<div class="scene-sub">'+limit+' 秒内决定。现场没有暂停键；你只能决定先处理谁。</div>'
+    +'<div class="vp-line">'+r.q+'</div>'
+    +'<div class="aside"><div class="from">侧信号</div>'+r.side+'</div>'
+    +sanityWarning()
+    +'<div class="choices">'+order.map(function(idx,j){const o=r.opts[idx];return '<button class="choice" onclick="meetingPick('+idx+')"><span class="idx">'+'ABCD'[j]+'</span>'+meetingOptionText(o,idx)+'</button>';}).join('')+'</div></div>';
   window._sceneMode='meeting';
+  meetingTimer=setTimeout(function(){meetingPick(-1);},limit*1000);
 }
 function meetingPick(i){
-  const r=MEETING_ROUNDS[meetingState.round], ok=i===r.best;
-  if(ok){ meetingState.score++; S.merit=clamp(S.merit+3); S.piRep=clamp(S.piRep+3); S.power=clamp(S.power+1); }
-  else { S.blame=clamp(S.blame+2); S.trust=clamp(S.trust+1); }
+  if(!meetingState) return;
+  if(meetingTimer){clearTimeout(meetingTimer);meetingTimer=null;}
+  const r=MEETING_ROUNDS[meetingState.round];
+  let score=-4, opt=null, usedFavor=false;
+  if(i>=0){opt=r.opts[i];score=meetingOptionScore(opt);}
+  if(opt && opt.ally){
+    const p=socialPerson(opt.ally);
+    if((p.favor||0)>0 && (S.npc[opt.ally]||0)<52){
+      p.favor--; usedFavor=true; score+=2;
+    }
+  }
+  const success=score>=3, partial=score>=1&&score<3;
+  if(success){
+    meetingState.score+=2; meetingState.closed++;
+    S.merit=clamp((S.merit||0)+3); S.piRep=clamp((S.piRep||0)+3); S.power=clamp(S.power+1);
+    if(opt&&opt.memory) S.reputation=clamp((S.reputation||0)+1);
+  }else if(partial){
+    meetingState.score+=1; S.merit=clamp((S.merit||0)+1); S.blame=clamp((S.blame||0)+1);
+  }else{
+    S.blame=clamp((S.blame||0)+(difficulty().id==='hard'?4:2));
+    S.trust=clamp(S.trust+1);
+    if(i<0) S.sanity=clamp(S.sanity-2);
+  }
+  meetingState.history.push({round:meetingState.round,opt:i,score:score});
+  const who=r.who;
+  seedGossip('mingye','me',success?'CREDIT':'RELATION',success?3:-3,
+    success?who+'的问题被你当场关闭，会议没有留下模糊承诺。':who+'的问题没有真正关闭，会后已经有人在讨论“到底谁负责”。','TEAM');
   meetingState.round++;
-  showResult(ok?'你没有许一个模糊的“都可以”。你把问题变成 owner、边界和截止时间。':'眼前的气氛被稳住了，但问题没有被关闭。它会在后面的章节重新出现。',[{label:ok?'会议控制有效':'留下未决事项',kind:ok?'up':'down'}],renderMeetingControl);
+  const txt=i<0?'你停顿得太久。钟时抢过话头，给了一个听起来像答案、实际上没有 owner 的答案。':
+    success?'你没有追求“把所有人说服”。你把问题变成了边界、证据、owner 和截止时间。'+(usedFavor?' 这次你还花掉了一次人情。':''):
+    partial?'你暂时稳住了房间，但没有完全关闭问题。它会进入会后 Action Item。':
+    '场面暂时过去了，但你给出了一个以后需要解释的承诺。';
+  showResult(txt,[{label:success?'现场关闭问题':partial?'部分关闭':'未关闭',kind:success?'up':partial?'':'down'}],renderMeetingControl);
 }
 function finishMeetingControl(){
+  if(meetingTimer){clearTimeout(meetingTimer);meetingTimer=null;}
   flags.meetingDone=true;
-  if(meetingState.score>=3){ addOfficeMemory('imActions','Investigator Meeting'); S.reputation=clamp(S.reputation+5); }
-  else { flags.imLooseEnds=true; }
-  const sc=meetingState.score; meetingState=null;
-  showResult('研究者会前半场结束。你有效关闭了 '+sc+' / 4 个问题。'+(sc>=3?' 决策表被当场投到屏幕上，所有人都知道谁负责什么。':' 有几件事被留在“会后再说”里。这个文件夹从来不会自己消失。'),[],renderChapter);
+  const closed=meetingState.closed, pts=meetingState.score;
+  if(closed>=3){
+    addOfficeMemory('imActions','Investigator Meeting');
+    S.reputation=clamp((S.reputation||0)+5);
+    S.heart=clamp(S.heart+3); // 一场真正控住的会，会给人一点“我还做得到”的感觉
+  }else{
+    flags.imLooseEnds=true;
+    S.heart=clamp(S.heart-(difficulty().id==='hard'?5:3));
+  }
+  const sc=closed; meetingState=null;
+  showResult('研究者会前半场结束。你真正关闭了 '+sc+' / 4 个问题。'
+    +(sc>=3?' 决策表和 Action Items 当场发出。会后没人能说“我以为别人会跟”。':' 几个问题被留进“会后再说”。它们会在后面的章节重新回来。'),
+    [{label:sc>=3?'❤️ 心力 +3':'❤️ 心力下降',kind:sc>=3?'up':'down'}],renderChapter);
 }
 
 function renderHUD(){
@@ -2413,6 +2532,7 @@ function restPanel(){
     + '<h4>▎喘口气 · 第 '+(chapterIdx+1)+' 章（剩余 '+S.restLeft+' 次）</h4>'
     + '<div class="result-text">你的身体不是无限透支的资源 —— 虽然 HR 的 JD 上写得很像。\n\n'
     + '体力 ⚡ '+S.stamina+' / 100　·　心力 ❤️ '+S.heart+' / 100　·　理智 🧠 '+S.sanity+' / 100（'+sanityBand().name+'）</div>'
+    + '<div class="intro-hint">心力不是理智：理智决定你还能不能专业表达；心力决定你还愿不愿意继续承受这些人。电话、人际支持、边界和私人生活都会影响心力。</div>'
     + (S.restLeft > 0
         ? '<div class="choices">'+plans
           + '<button class="choice special" onclick="startCoffee()"><span class="idx">D</span>☕ 去茶水间冲一杯手冲（小游戏 · 上限最高，全看手）</button>'
@@ -3112,7 +3232,7 @@ function pickChapter(i){
   const next = function(){
     if(flags.fraud){ showEnding('be_fraud'); return; }
     if(chapterIdx === runChapters.length-1){ evaluateFinal(); return; }
-    maybeEvent(ch.id, function(){ chapterIdx++; applyChapterPassives(); maybeResourceConflict(function(){ maybePrivateChat(function(){ maybeLove(renderChapter); }); }); });
+    maybeEvent(ch.id, function(){ maybePhoneEvent(function(){ chapterIdx++; applyChapterPassives(); maybeResourceConflict(function(){ maybePrivateChat(function(){ maybeLove(renderChapter); }); }); }); });
   };
   checkDeath(c.r, deltas, next);
 }
@@ -3146,6 +3266,66 @@ const INTERNAL_EVENTS = [
    {t:'用权力直接要求她今晚完成',topic:'POWER',stance:'politics',lock:{power:60},lockHint:'需要足够权力',e:{progress:4,morale:-3},npc:{anyu:-7},social:{fear:{anyu:8},respect:{anyu:-8}},r:'她完成了。质量也很好。第二天她把所有事情都改成通过正式工单找你。你获得了服从，失去了提前预警。'}]}
 ];
 
+
+/* =====================  v9.6 · 电话随机事件 / Heart Economy  =====================
+   Heart 不再只靠恋爱线补给。电话是一条更频繁、但有代价的情绪来源：
+   有人关心你、有人把工作侵入私人时间、也有人把自己的崩溃打给你。 */
+const PHONE_EVENTS=[
+ {id:'ph_friend_dinner',phone:true,title:'“出来吃口东西吗？”',from:'老朋友',
+  text:'晚上十点二十。一个很久没见的朋友打电话来：“我就在你公司附近。出来吃口东西？二十分钟也行。”\n\n你桌上还有一版明早要交的 deck。',
+  choices:[
+   {t:'下楼。二十分钟不谈工作',e:{heart:14,sanity:5,progress:-2},r:'你们真的只吃了二十分钟。回去以后工作没有消失，但你重新记起自己不是一个岗位。'},
+   {t:'说“下次吧”，继续改 deck',e:{heart:-5,progress:4,trust:1},r:'deck 按时发出。朋友回了一个“好”。你盯着那个字看了一会儿。'},
+   {t:'开着电话，一边改一边聊',e:{heart:4,stamina:-4},r:'你们聊了四十分钟。你记不清自己改了什么，也记不清朋友说了什么，但至少电话没有挂。'}
+  ]},
+ {id:'ph_pi_thanks',phone:true,title:'侯教授的电话',from:'侯教授',
+  text:'周六下午，侯教授突然打来电话。你以为又是方案问题。他开口却说：“上次会上你处理得不错。年轻人能把话说清楚，不容易。”',
+  choices:[
+   {t:'认真说谢谢，然后把电话停在这里',e:{heart:10,sanity:3},npc:{houpi:2},r:'电话只有两分钟。你发现专业认可也能让人喘一口气。'},
+   {t:'顺势聊十分钟项目下一步',e:{heart:4,progress:2},npc:{houpi:3},r:'你还是把它聊回了工作。不过这次你并不觉得被占用。'},
+   {t:'客气几句，马上挂掉去继续工作',e:{heart:1,progress:2},r:'你处理得很专业。专业到连一句好话都没来得及真正听进去。'}
+  ]},
+ {id:'ph_pm_breakdown',phone:true,title:'林安在楼梯间哭',from:'林安',
+  text:'晚上九点，林安打来电话。背景里是楼梯间的回声。\n\n“我是不是特别不适合做 PM？我今天又漏了一个 follow-up。”',
+  choices:[
+   {t:'先听她说完，再一起列明天第一件要补的事',e:{heart:3,sanity:-1,morale:3},npc:{linan:6},social:{favor:{linan:1},respect:{linan:3}},r:'你没有替她说“没事”。你只是陪她把一团糟拆成了明天早上的第一步。'},
+   {t:'告诉她：“现在别哭，先把遗漏清单发我。”',e:{heart:-2,progress:2},npc:{linan:-3},social:{fear:{linan:4}},r:'她十分钟后发来了清单。事情推进了，人没有。'},
+   {t:'把电话转给她直属经理',e:{heart:-1,power:1},npc:{linan:-5},r:'流程上没有错。第二天她照常上班，只是以后不再在这种时候打给你。'}
+  ]},
+ {id:'ph_vp_midnight',phone:true,title:'凌晨 00:31',from:'钟时',
+  text:'手机震了三次。钟时来电。\n\n“我突然想到，明天是不是应该把三期主要终点再讨论一下？”',
+  choices:[
+   {t:'接，但只说：“明早九点我带现有决策记录，我们按记录讨论。”',e:{heart:-4,sanity:-2,trust:1},record:'writtenWarning',r:'电话四分钟结束。你没有在凌晨替公司重开一个已经关闭的决策。'},
+   {t:'接起来陪她讨论四十分钟',e:{heart:-12,sanity:-5,trust:6,stamina:-8},r:'她最后说：“那还是按原来的。”你用四十分钟回到了原点。'},
+   {t:'不开静音，明早再回',e:{heart:6,sanity:4,trust:-5},r:'早上八点四十五你回复。她说：“哦，昨晚就是突然想到，算了。”你保住了一整晚。'}
+  ]},
+ {id:'ph_mingye_gossip',phone:true,title:'明夜：“你现在方便说话吗？”',from:'明夜',
+  text:'明夜很少打电话。他通常只发消息。\n\n“你现在方便说话吗？有个事我觉得你最好今晚知道，但你别说是我说的。”',
+  choices:[
+   {t:'走到外面接完，把信息只用于准备',e:{heart:2,sanity:2},npc:{mingye:2},hidden:{blame:-2},r:'十分钟后你知道了明天会上可能有人甩锅。你没有转发，只把时间线打开。'},
+   {t:'让他直接发文字，留个记录',e:{heart:0,power:1},npc:{mingye:-2},r:'明夜沉默两秒：“……这种话我不发文字。”电话就这么结束了。'},
+   {t:'今晚不想知道，明天再说',e:{heart:7,sanity:3},npc:{mingye:-1},r:'你第一次主动拒绝了一条八卦。第二天世界没有因此毁灭。'}
+  ]},
+ {id:'ph_home',phone:true,title:'“你最近是不是总在公司？”',from:'家里',
+  text:'一个很普通的电话。对方问：“你最近是不是总在公司？”\n\n你下意识准备回答“项目关键期”。这句话已经说了很多次。',
+  choices:[
+   {t:'不解释项目，聊十分钟别的',e:{heart:12,sanity:4},r:'你们聊了天气、菜价和一个完全不重要的人。挂电话以后，你的肩膀松了一点。'},
+   {t:'解释项目为什么重要',e:{heart:1,power:1},r:'你讲得很完整。对方说“那你注意身体”。你们都不知道还能说什么。'},
+   {t:'说“忙，晚点打”，然后忘了回',e:{heart:-8,progress:3},r:'晚上两点你才想起来。那时候已经不适合再打回去。'}
+  ]}
+];
+function maybePhoneEvent(next){
+  const d=difficulty().id;
+  const rate=d==='hard'?.42:d==='story'?.28:.34;
+  if(Math.random()>rate){next();return;}
+  const left=PHONE_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0;});
+  if(!left.length){next();return;}
+  const ev=left[Math.floor(Math.random()*left.length)];
+  usedEvents.push(ev.id);
+  window._evObj={ev:ev,next:next,cro:false,phone:true};
+  renderEventFromObj();
+}
+
 /* 随机事件节奏：每章后掷一次。黑娜池优先抽 4 次（保证整局有稳定的 CRO 压力），其余走普通池 */
 const EVENT_RATES = {c1:.45,x1:.45,c2:.5,c3:.45,c4:.5,x2:.45,c5:.55,c6:.5,c7:.55,x3:.6,c8:.55,c9:.55,x4:.4,c10:.55,c11:.55,c12:.5,x5:.4};
 const HEINA_MAX = 4;
@@ -3157,9 +3337,9 @@ function renderEventFromObj(){
   const ev = b.ev, isHeina = b.cro;
   document.getElementById('scene-area').innerHTML =
     '<div class="scene">'
-    + '<span class="event-badge '+(isHeina?'cro-ev':(ev.npcEv?'npc-ev':''))+'">'+(isHeina?'黑娜挖坑 · CRO 事件':(ev.npcEv?'随机事件 · NPC 互动':'随机事件 · 突发'))+'</span>'
+    + '<span class="event-badge '+(isHeina?'cro-ev':(ev.phone?'npc-ev':(ev.npcEv?'npc-ev':'')))+'">'+(isHeina?'黑娜挖坑 · CRO 事件':(ev.phone?'📞 电话事件 · '+(ev.from||'来电'):(ev.npcEv?'随机事件 · NPC 互动':'随机事件 · 突发')))+'</span>'
     + '<div class="scene-title"><span class="accent">⚡</span>'+ev.title+'</div>'
-    + '<div class="scene-sub">'+(isHeina?'CRO PM 黑娜 · 这个坑你可以自己填，也可以推给别人':'计划外遭遇 · 无人为你挡刀')+'</div>'
+    + '<div class="scene-sub">'+(isHeina?'CRO PM 黑娜 · 这个坑你可以自己填，也可以推给别人':(ev.phone?'手机亮起时，你还可以决定这通电话要不要进入你的生活':'计划外遭遇 · 无人为你挡刀'))+'</div>'
     + '<div class="vp-line">'+ev.text+'</div>'
     + '<div class="choices">'+choiceHTML(ev.choices,'pickEvent')+'</div>'
     + '</div>';
@@ -3224,17 +3404,26 @@ function checkDeath(resultText, deltas, next){
   showResult(resultText, deltas, next);
 }
 
+function continueResult(){
+  const fn=window._next;
+  window._next=null;
+  if(typeof fn==='function'){ fn(); return; }
+  // 兜底：休息/小游戏结束后即使某个回调丢失，也能回到正确界面，不再出现“继续”无反应。
+  if(window._inRest){ restPanel(); return; }
+  if(window._evObj){ renderEventFromObj(); return; }
+  renderChapter();
+}
 function showResult(text, deltas, next){
   document.getElementById('scene-area').innerHTML =
     '<div class="result-box">'
     + '<h4>▎结果</h4>'
     + '<div class="result-text">'+text+'</div>'
-    + '<div class="deltas">'+deltas.map(function(d){
+    + '<div class="deltas">'+(deltas||[]).map(function(d){
         return '<span class="delta '+d.kind+(d.npc?' npc':'')+'">'+d.label+'</span>';
       }).join('')+'</div>'
-    + '<button class="btn primary" onclick="window._next()">继续</button>'
+    + '<button class="btn primary" onclick="continueResult()">继续</button>'
     + '</div>';
-  window._next = next;
+  window._next = (typeof next==='function') ? next : null;
   window.scrollTo(0, document.body.scrollHeight*0.18);
 }
 
