@@ -179,7 +179,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 23 位关键人物 · 22 个结局 · Demo v7</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -544,6 +544,122 @@ Object.assign(NPC_BIOS, {
   zhangpi:{want:"中心被尊重、工作量被提前说清",fear:"做了最多的活，最后既没有资源也没有署名",bio:"不是最大的专家，却掌握着非常稳定的入组能力。谁忽略中心现实，谁就会在入组曲线上看到他的态度。"},
   linpi:{want:"真正进入核心作者与学术网络",fear:"永远只做病例、永远排在 et al. 里",bio:"年轻、反应快、会看数据。对署名和学术机会非常敏感，但也因此愿意在项目最累的时候多做一步。"}
 });
+
+
+
+/* =====================  v9 · 内部 PM 生态  =====================
+   PM 不再是一个岗位模板，而是一组不同可靠性 / 权力偏好 / 工作风格的人。
+   他们不是固定派系；谁和谁成为一伙，由实际互动长出来。 */
+Object.assign(NPCs, {
+  anyu:    {name:"安瑜", role:"Senior PM · 极靠谱", init:34, faction:"internal", quote:"我把风险、owner 和截止时间都列好了。你只需要告诉我医学上哪一条不能退。"},
+  linan:   {name:"林安", role:"PM · 马虎型", init:40, faction:"internal", quote:"我记得发了呀……等一下，我可能发到另一个群了。"},
+  qiaoqiao:{name:"乔乔", role:"PM · 强推进型", init:30, faction:"internal", quote:"先把中心开起来，问题可以边跑边修。"},
+  wenjing: {name:"文静", role:"PM · 流程型", init:28, faction:"internal", quote:"没有签字我不会让中心启动。晚一周总比以后解释一年好。"},
+  xiaoke:  {name:"小柯", role:"PM · 领导导向型", init:36, faction:"internal", quote:"钟总怎么定我就怎么推进。老板要是有新方向，我们也可以马上切。"}
+});
+Object.assign(NPC_BIOS, {
+  anyu:{want:"一个风险透明、人人知道自己该做什么的项目",fear:"团队靠英雄主义救火，最后谁都说不清决策怎么来的",bio:"做过多个注册项目。她不热情，也很少在会上抢话，但会在会前把所有真正可能爆炸的地方标红。她不会因为喜欢你而帮你；她只在确认你说话算数之后，开始提前替你挡问题。"},
+  linan:{want:"大家觉得她好相处、别因为小错误否定她",fear:"被公开证明自己漏了关键步骤",bio:"人缘很好，响应很快，也是真的马虎。她能在十分钟内拉齐二十个人，却可能忘记把最终版发给其中最重要的那一个。长期替她补锅，她会非常忠诚；但忠诚不能自动变成能力。"},
+  qiaoqiao:{want:"timeline 永远是绿色",fear:"被说成项目推进不力",bio:"她对甘特图有近乎宗教式的信仰。她能把任何问题翻译成‘会不会影响首例入组’，所以和 VP 很容易同频，也因此经常和 PV、Medical、QA 正面冲突。"},
+  wenjing:{want:"每一步都有 owner、记录和批准",fear:"检查时有人说‘我们当时口头同意了’",bio:"流程派 PM。团队嫌她慢，但她做过的项目很少在核查时找不到文件。她不容易被权力压服，却会对真正专业、提前给边界的人产生很高尊重。"},
+  xiaoke:{want:"站在不会输的一边",fear:"权力中心换了而自己还没来得及换位置",bio:"执行能力中等，政治嗅觉极强。谁刚从老板办公室出来，她就会先问那个人‘有没有新方向’。她不是坏，她只是把组织权力当成天气预报。"}
+});
+
+const SOCIAL_PROFILES = {
+  ceo:{interests:['CREDIT','TIMELINE'],style:'power'}, cso:{interests:['SCIENCE','CREDIT'],style:'science'},
+  jialin:{interests:['SAFETY','COMPLIANCE'],style:'compliance'}, mingye:{interests:['SCIENCE','DATA'],style:'science'},
+  xiaoen:{interests:['COMPLIANCE','DOCUMENTATION'],style:'compliance'}, yijian:{interests:['REGULATORY','TIMELINE'],style:'compliance'},
+  miaomiao:{interests:['EXECUTION','CENTER'],style:'execution'}, zhuzong:{interests:['EXECUTION','RELATION'],style:'execution'},
+  anyu:{interests:['EXECUTION','COMPLIANCE','DOCUMENTATION'],style:'execution'}, linan:{interests:['RELATION','EXECUTION'],style:'social'},
+  qiaoqiao:{interests:['TIMELINE','EXECUTION'],style:'execution'}, wenjing:{interests:['COMPLIANCE','DOCUMENTATION'],style:'compliance'},
+  xiaoke:{interests:['POWER','TIMELINE'],style:'politics'}, heina:{interests:['CONTRACT','BLAME'],style:'politics'},
+  houpi:{interests:['SCIENCE','AUTHORSHIP'],style:'science'}, niupi:{interests:['EXECUTION','CENTER'],style:'execution'},
+  zhangpi:{interests:['CENTER','AUTHORSHIP'],style:'social'}, linpi:{interests:['AUTHORSHIP','SCIENCE'],style:'science'}
+};
+const BASE_INTERNAL_LINKS = [
+  ['jialin','xiaoen',68],['jialin','wenjing',62],['xiaoen','wenjing',72],['yijian','wenjing',58],
+  ['anyu','miaomiao',66],['anyu','jialin',58],['anyu','wenjing',61],['qiaoqiao','zhuzong',64],['qiaoqiao','xiaoke',55],
+  ['linan','zhuzong',60],['linan','xiaoke',57],['mingye','cso',62],['mingye','jialin',52],['xiaoke','ceo',42],
+  ['houpi','mingye',58],['houpi','niupi',56],['houpi','zhangpi',36],['linpi','houpi',51],['heina','zhuzong',48]
+];
+function pairKey(a,b){ return [a,b].sort().join('::'); }
+function initSocial(){
+  S.social={people:{},links:{},playerAlignment:{science:0,compliance:0,execution:0,politics:0,people:0},factionMemory:[],rumors:[]};
+  Object.keys(NPCs).forEach(function(k){
+    const p=SOCIAL_PROFILES[k]||{};
+    S.social.people[k]={respect:Math.max(15,Math.min(65,Math.round((NPCs[k].init||25)*0.8))),favor:0,fear:(NPCs[k].boss?8:12),style:p.style||'neutral'};
+  });
+  BASE_INTERNAL_LINKS.forEach(function(x){S.social.links[pairKey(x[0],x[1])]=x[2];});
+}
+function socialPerson(k){ if(!S.social) initSocial(); if(!S.social.people[k]) S.social.people[k]={respect:25,favor:0,fear:10,style:'neutral'}; return S.social.people[k]; }
+function linkVal(a,b){ if(!S.social) initSocial(); const k=pairKey(a,b); return S.social.links[k]==null?45:S.social.links[k]; }
+function bumpLink(a,b,d){ if(!a||!b||a===b) return; const k=pairKey(a,b); S.social.links[k]=clamp(linkVal(a,b)+d); }
+function topicOfChoice(c){
+  if(c.topic) return c.topic;
+  const t=(c.t||'')+' '+(c.r||'');
+  if(/安全|SAE|肝毒|停药/.test(t)) return 'SAFETY';
+  if(/统计|终点|数据|亚组|SAP/.test(t)) return 'SCIENCE';
+  if(/合规|记录|纪要|签字|邮件|流程/.test(t)) return 'COMPLIANCE';
+  if(/中心|入组|timeline|进度|启动/.test(t)) return 'EXECUTION';
+  if(/作者|署名|论文/.test(t)) return 'AUTHORSHIP';
+  if(/老板|领导|甩锅|责任/.test(t)) return 'POWER';
+  return 'RELATION';
+}
+function styleForTopic(topic){ return ({SCIENCE:'science',DATA:'science',SAFETY:'compliance',COMPLIANCE:'compliance',REGULATORY:'compliance',DOCUMENTATION:'compliance',EXECUTION:'execution',CENTER:'execution',TIMELINE:'execution',POWER:'politics',CREDIT:'politics',BLAME:'politics',RELATION:'people',AUTHORSHIP:'people'})[topic]||'people'; }
+function applyRelationshipRipple(actor,delta,topic,visibility){
+  if(!S.social||!NPCs[actor]||!delta) return;
+  const sp=socialPerson(actor); sp.respect=clamp(sp.respect + Math.round(delta*0.35));
+  const prof=SOCIAL_PROFILES[actor]||{};
+  if((prof.interests||[]).indexOf(topic)>=0) sp.respect=clamp(sp.respect + (delta>0?2:-2));
+  if(visibility==='PUBLIC'){
+    Object.keys(NPCs).forEach(function(o){
+      if(o===actor) return;
+      const L=linkVal(actor,o); let r=0;
+      if(L>=60) r=Math.sign(delta)*Math.max(1,Math.round(Math.abs(delta)*0.18));
+      else if(L<=32) r=-Math.sign(delta)*Math.max(1,Math.round(Math.abs(delta)*0.10));
+      if(r){ S.npc[o]=clamp(S.npc[o]+r); }
+    });
+    S.social.rumors.push({ch:chapterIdx,actor:actor,topic:topic,delta:delta});
+  }
+}
+function applySocialMeta(c){
+  if(!S.social) initSocial(); const sm=c.social||{};
+  ['respect','favor','fear'].forEach(function(dim){ Object.keys(sm[dim]||{}).forEach(function(k){ const p=socialPerson(k); p[dim]=clamp(p[dim]+sm[dim][k]); }); });
+  (sm.links||[]).forEach(function(x){ bumpLink(x[0],x[1],x[2]); });
+  const stance=c.stance||styleForTopic(topicOfChoice(c));
+  if(stance && S.social.playerAlignment[stance]!=null) S.social.playerAlignment[stance]=clamp(S.social.playerAlignment[stance]+(c.stanceWeight||3));
+  const coalition=sm.coalition||[];
+  for(let i=0;i<coalition.length;i++) for(let j=i+1;j<coalition.length;j++) bumpLink(coalition[i],coalition[j],4);
+  if(stance || coalition.length) S.social.factionMemory.push({ch:chapterIdx,stance:stance,people:coalition.slice(),title:c.t||'关键站队'});
+}
+function dominantPlayerAlignment(){
+  if(!S.social) return '未形成'; const a=S.social.playerAlignment; const ks=Object.keys(a); ks.sort((x,y)=>a[y]-a[x]);
+  const m={science:'科学/数据',compliance:'合规/留痕',execution:'执行/推进',politics:'权力/政治',people:'关系/协调'}; return m[ks[0]]||'未形成';
+}
+function allianceComponents(){
+  if(!S.social) return [];
+  const keys=Object.keys(NPCs).filter(k=>!NPCs[k].boss); const seen={}; const out=[];
+  keys.forEach(function(k){ if(seen[k]) return; const q=[k], comp=[]; seen[k]=true; while(q.length){ const a=q.shift(); comp.push(a); keys.forEach(function(b){if(!seen[b]&&linkVal(a,b)>=60){seen[b]=true;q.push(b);}}); } if(comp.length>=2) out.push(comp); });
+  return out.sort((a,b)=>b.length-a.length);
+}
+function allianceName(comp){
+  const cnt={science:0,compliance:0,execution:0,politics:0,social:0,neutral:0}; comp.forEach(k=>cnt[(SOCIAL_PROFILES[k]||{}).style||'neutral']++);
+  const s=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0]; return ({science:'科学/数据联盟',compliance:'合规联盟',execution:'执行联盟',politics:'权力联盟',social:'关系联盟',neutral:'松散联盟'})[s];
+}
+function showAlliances(){
+  const comps=allianceComponents();
+  const rows=comps.length?comps.slice(0,6).map(function(c){return '<div class="intel-item"><div class="ih"><span class="it">'+allianceName(c)+'</span><span class="isrc">动态形成</span></div><div class="ib">'+c.map(k=>NPCs[k].name).join(' · ')+'</div></div>';}).join(''):'<div class="intro-hint">目前还没有形成稳定的内部联盟。</div>';
+  const pmKeys=['anyu','linan','qiaoqiao','wenjing','xiaoke'];
+  const pm=pmKeys.map(function(k){const p=socialPerson(k);return '<div class="intel-item"><div class="ih"><span class="it">'+NPCs[k].name+' · '+NPCs[k].role+'</span><span class="isrc">关系 '+S.npc[k]+'</span></div><div class="ib">专业认可 '+p.respect+' ｜ 人情 '+p.favor+' ｜ 敬畏 '+p.fear+'</div></div>';}).join('');
+  document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🕸</span> 内部关系网</div><div class="scene-sub">阵营不是岗位决定的，而是共同站队、互相欠账和长期冲突长出来的。你目前更像：'+dominantPlayerAlignment()+'</div>'+rows+'<div class="sec-title">PM 生态</div>'+pm+'<button class="btn" onclick="backToScene()">返回</button></div>';
+}
+function consumeFavor(k,reason){ const p=socialPerson(k); if(p.favor<=0) return false; p.favor--; toast('🤝 '+NPCs[k].name+' 还了你一次人情：'+reason,'up'); return true; }
+function maybeInternalAssist(nextId){
+  if(!S.social) return;
+  if((nextId==='c10'||nextId==='c11') && socialPerson('anyu').respect>=58 && S.npc.anyu>=55 && !flags.anyuAssist){flags.anyuAssist=true;S.progress=clamp(S.progress+3);S.blame=clamp(S.blame-3);toast('🧭 安瑜提前把三期风险表补齐：进度 +3','up');}
+  if(nextId==='x5' && socialPerson('wenjing').respect>=55 && !flags.wenjingAssist){flags.wenjingAssist=true;addOfficeMemory('approvalChain','文静整理的批准链');toast('📎 文静把关键批准链整理成了一页','up');}
+  if(S.power>=65 && socialPerson('linan').fear>=55 && nextId==='c11' && !flags.linanObey){flags.linanObey=true;S.progress=clamp(S.progress+2);toast('⚔️ 林安这次没有漏：她知道你会追到底','up');}
+}
 
 const INTEL_TOTAL = INTEL.length;
 
@@ -1308,6 +1424,7 @@ function showScreen(id){
 function startGame(){
   S = {...INIT, npc:{}, intel:{}, log:[], officeMemory:{}, officeTrail:[]};
   Object.keys(NPCs).forEach(function(k){ S.npc[k] = NPCs[k].init; });
+  initSocial();
   S.restLeft = REST_MAX; S.adLeft = AD_MAX;
   LOVE_META.a.ch = -1; LOVE_META.b.ch = -1; LOVE_META.c.ch = -1;
   const priorRuns=parseInt(localStorage.getItem('dragon_runs')||'0',10);
@@ -1355,7 +1472,7 @@ function applyChapterPassives(){
   // D. 安全感税
   applyPowerTax();
   // E. 关系高到一定程度后，人会主动行动，而不是只做数字。
-  const nx=runChapters[chapterIdx]; if(nx) applyAllyAssist(nx.id);
+  const nx=runChapters[chapterIdx]; if(nx){ applyAllyAssist(nx.id); maybeInternalAssist(nx.id); }
 }
 
 /* 高处税：变强本身要付费
@@ -1451,6 +1568,7 @@ function renderHUD(){
     '<span class="npc-chip intel-chip" onclick="showIntel()" title="点击翻阅：你对她的观察笔记（每条解锁 +'+INTEL_POWER+' 权力）">📁 观察笔记 '+got+'/'+INTEL_TOTAL+'</span>'
     + '<span class="npc-chip intel-chip" onclick="showLog()" title="点击翻阅：这一局的工作日志 / 留痕档案">📮 工作日志 '+((S.log||[]).length)+'</span>'
     + '<span class="npc-chip intel-chip" onclick="showMemory()" title="会在后续章节重新发挥作用的证据链">🗂 组织记忆 '+memoryCount()+'</span>'
+    + '<span class="npc-chip intel-chip" onclick="showAlliances()" title="查看当前动态形成的内部联盟与 PM 关系">🕸 内部关系网</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
     + (flags.love ? '<span class="npc-chip hi" title="有人记得你几点下班 —— 每章恢复 12 点心力">💗 有人等你</span>' : '')
     + Object.keys(NPCs).map(function(k){
@@ -2335,8 +2453,10 @@ function applyChoice(c){
   Object.keys(c.npc||{}).forEach(function(k){
     const v = c.npc[k];
     S.npc[k] = clamp(S.npc[k]+v);
+    applyRelationshipRipple(k,v,topicOfChoice(c),c.visibility||'PRIVATE');
     deltas.push({label: NPCs[k].name + (v>0?' +':' ')+v, kind: v>0?'up':'down', npc:true});
   });
+  applySocialMeta(c);
   deltas.forEach(function(d){ toast(d.label, d.kind); });
   return deltas;
 }
@@ -2365,6 +2485,35 @@ function pickChapter(i){
   };
   checkDeath(c.r, deltas, next);
 }
+
+
+/* =====================  v9 · 内部人员冲突事件  ===================== */
+const INTERNAL_EVENTS = [
+ {id:'v9_pm_linan_letter',npcEv:true,title:'林安忘了发中心信',text:'周一早上中心问为什么还没收到上周已经定稿的 site letter。林安在群里发了三个问号，随后私聊你：\n\n「我记得发了呀……可能是没点出去。要不我们就说邮箱退信？」',choices:[
+   {t:'你先补发，同时让她自己发 deviation explanation',topic:'DOCUMENTATION',visibility:'PUBLIC',stance:'compliance',e:{progress:1,power:2},npc:{linan:-3,xiaoen:3},social:{respect:{linan:6,xiaoen:3},favor:{linan:1},links:[['linan','xiaoen',-3]],coalition:['xiaoen','wenjing']},record:'writtenWarning',r:'你救了现场，但没有替她抹掉事实。林安很尴尬，也第一次认真记住：你会补锅，但不会替她藏锅。'},
+   {t:'悄悄替她补发，群里说“系统延迟”',topic:'RELATION',stance:'people',e:{progress:3},npc:{linan:10},social:{favor:{linan:2},respect:{linan:-3}},r:'林安从此把你当自己人。问题是，她对“自己人”的定义包括：出了事可以先找你。'},
+   {t:'当众问：最终发送记录在哪里？',topic:'POWER',visibility:'PUBLIC',stance:'politics',e:{power:5,morale:-3},npc:{linan:-10,xiaoke:2},social:{fear:{linan:12},respect:{linan:-2}},r:'群里安静了。林安以后确实不太敢漏你的东西——也不再愿意第一时间告诉你她可能漏了什么。'}]},
+ {id:'v9_pm_anyu_risk',npcEv:true,title:'安瑜提前一周把雷放到桌上',text:'安瑜发来一页风险表：两个中心可能卡合同，一个供应商样本物流没有 backup，另有一项 SAE follow-up owner 还没定。\n\n她说：「现在处理会显得我们多事。下周处理会显得我们失职。」',choices:[
+   {t:'把风险表直接拉进核心周会，逐项定 owner',topic:'EXECUTION',visibility:'PUBLIC',stance:'execution',e:{progress:5,power:2},npc:{anyu:8,jialin:3,miaomiao:3},social:{respect:{anyu:8,jialin:3},favor:{anyu:1},coalition:['anyu','jialin','miaomiao','wenjing']},record:'approvalChain',r:'问题没有消失，但从今天开始每个问题都有名字。安瑜没有夸你，只在会后把下一版风险表的编辑权限给了你。'},
+   {t:'先别上会，等问题真的发生再处理',topic:'TIMELINE',stance:'politics',e:{trust:3,progress:-3},npc:{anyu:-8,qiaoqiao:4},social:{respect:{anyu:-10,qiaoqiao:2}},r:'钟时觉得你很稳，不制造焦虑。安瑜把风险表存回了自己的文件夹。三周后其中两条真的发生。'},
+   {t:'让她只把会影响 timeline 的三条留下',topic:'TIMELINE',stance:'execution',e:{progress:3},npc:{anyu:2,qiaoqiao:5},social:{links:[['anyu','qiaoqiao',2]],respect:{anyu:2}},r:'表变短了，也更容易被看完。代价是那条“不影响 timeline、但影响以后解释”的记录被划掉了。'}]},
+ {id:'v9_pm_push',npcEv:true,title:'乔乔要先开中心',text:'中心药物已经到库，但培训签字缺两页。乔乔说：\n\n「不影响实际操作，今天不开中心本月 KPI 就红了。先开，明天补签。」\n文静在群里只回了四个字：不建议启动。',choices:[
+   {t:'支持文静：签字没齐，不开',topic:'COMPLIANCE',visibility:'PUBLIC',stance:'compliance',e:{progress:-3,blame:-2},npc:{wenjing:9,jialin:4,qiaoqiao:-8},social:{respect:{wenjing:8,jialin:4,qiaoqiao:-2},links:[['wenjing','jialin',4],['wenjing','qiaoqiao',-5]],coalition:['wenjing','jialin','xiaoen']},r:'KPI 红了一格。三个月后 QA 抽到这个中心时，没有任何人需要解释“当时为什么觉得可以”。'},
+   {t:'支持乔乔：先开，培训今晚补',topic:'TIMELINE',visibility:'PUBLIC',stance:'execution',e:{progress:6,blame:6},npc:{qiaoqiao:9,wenjing:-10,xiaoen:-5},social:{favor:{qiaoqiao:1},respect:{qiaoqiao:4,wenjing:-6},links:[['qiaoqiao','zhuzong',3],['qiaoqiao','wenjing',-6]],coalition:['qiaoqiao','zhuzong']},r:'中心今天开了。晚上十一点半，两张签字页终于补齐。没人受伤，所有人都记住了你愿意怎么换时间。'},
+   {t:'⚔️ “我承担医学决定，按这个折中方案执行。”',topic:'POWER',visibility:'PUBLIC',stance:'politics',lock:{power:55},lockHint:'需要足够权力',e:{progress:2,power:2,morale:-2},npc:{qiaoqiao:1,wenjing:1},social:{fear:{qiaoqiao:5,wenjing:3},respect:{anyu:3}},record:'approvalChain',r:'你要求当日完成关键培训，次日早上再开中心。两边都不满意，但都执行了。权力的价值通常不是让别人同意你，而是让争论有结束时间。'}]},
+ {id:'v9_pm_xiaoke',npcEv:true,title:'小柯的立场更新得比会议纪要快',text:'上午小柯支持你把数据库锁定推迟三天。下午她从钟时办公室出来，在群里写：\n\n「综合管理层意见，建议仍按原计划锁库。」\n\n她随后私聊你：「方向变了，我也没办法。」',choices:[
+   {t:'把上午的决定和下午的新意见并排写进 decision log',topic:'DOCUMENTATION',visibility:'PUBLIC',stance:'compliance',e:{power:3},npc:{xiaoke:-4,xiaoen:4},social:{fear:{xiaoke:5},respect:{xiaoke:2,xiaoen:3},links:[['xiaoke','xiaoen',-4]]},record:'approvalChain',r:'你没有指责她。你只是把两个版本放在了一页纸上。第二天钟时说“我没说一定要原计划”，小柯第一次没接话。'},
+   {t:'顺着新方向走，别让 PM 难做',topic:'POWER',stance:'people',e:{trust:5,progress:2},npc:{xiaoke:8},social:{favor:{xiaoke:1},respect:{xiaoke:-2}},r:'小柯很感激。她以后会更快告诉你风向——但不会替你挡风。'},
+   {t:'在老板会上问“这个改变是谁批准的？”',topic:'POWER',visibility:'PUBLIC',stance:'politics',e:{power:6,trust:-5},npc:{ceo:3,xiaoke:-8},social:{fear:{xiaoke:10},respect:{ceo:2}},r:'没人喜欢这个问题。但从那天开始，小柯每次说“管理层意见”时都会附上名字。'}]},
+ {id:'v9_internal_safety',npcEv:true,title:'PV 和 PM 同时找你',text:'同一天下午，加琳要求暂停一个中心等待 SAE follow-up；乔乔坚持暂停会影响入组里程碑。两个人都把你抄送在邮件第一行。',choices:[
+   {t:'支持 PV，先 hold',topic:'SAFETY',visibility:'PUBLIC',stance:'compliance',e:{progress:-3,blame:-4},npc:{jialin:8,qiaoqiao:-6},social:{respect:{jialin:7,qiaoqiao:-2},links:[['jialin','qiaoqiao',-5]],coalition:['jialin','xiaoen','wenjing']},record:'safetyTrail',r:'中心停了两天。入组数字难看了一点，但安全时间线变得非常干净。'},
+   {t:'支持 PM，继续入组，同时加急 follow-up',topic:'TIMELINE',visibility:'PUBLIC',stance:'execution',e:{progress:5,blame:5},npc:{qiaoqiao:7,jialin:-7},social:{favor:{qiaoqiao:1},respect:{jialin:-5},links:[['jialin','qiaoqiao',-4]]},r:'项目没停。加琳在邮件里第一次写了“医学团队决定继续”。这句话以后还会回来。'},
+   {t:'要求钟时书面确认风险接受',topic:'POWER',visibility:'PUBLIC',stance:'politics',e:{trust:-3,power:4,blame:-3},npc:{jialin:3,wenjing:3},social:{respect:{jialin:3,wenjing:4},fear:{xiaoke:2}},record:'writtenWarning',r:'钟时最后回了一个“同意按医学建议处理”。你没有赢得任何人的喜欢，但这条责任链从此有了起点。'}]},
+ {id:'v9_pm_favor',npcEv:true,title:'靠谱的人也会来讨人情',text:'安瑜告诉你，她今晚能替你把三个中心的 action item 全部追完，但她下周需要你在资源会上替项目组争一个额外 CRA 名额。\n\n「不是交换。」她停了一下，「但确实是互相帮忙。」',choices:[
+   {t:'答应，并明确下周替她争资源',topic:'RELATION',stance:'people',e:{progress:3},npc:{anyu:6,miaomiao:2},social:{favor:{anyu:-1,miaomiao:1},respect:{anyu:3},links:[['anyu','miaomiao',3]],coalition:['anyu','miaomiao']},r:'她今晚把事情追完了。你也多了一笔未来必须兑现的承诺。可靠的人不是没有诉求，只是他们把诉求说得更清楚。'},
+   {t:'不做交换，按职责各自完成',topic:'COMPLIANCE',stance:'compliance',e:{progress:1},npc:{anyu:-2},social:{respect:{anyu:4}},r:'她点头，没有不高兴。你们之间少了一笔人情，多了一点职业尊重。'},
+   {t:'用权力直接要求她今晚完成',topic:'POWER',stance:'politics',lock:{power:60},lockHint:'需要足够权力',e:{progress:4,morale:-3},npc:{anyu:-7},social:{fear:{anyu:8},respect:{anyu:-8}},r:'她完成了。质量也很好。第二天她把所有事情都改成通过正式工单找你。你获得了服从，失去了提前预警。'}]}
+];
 
 /* 随机事件节奏：每章后掷一次。黑娜池优先抽 4 次（保证整局有稳定的 CRO 压力），其余走普通池 */
 const EVENT_RATES = {c1:.45,x1:.45,c2:.5,c3:.45,c4:.5,x2:.45,c5:.55,c6:.5,c7:.55,x3:.6,c8:.55,c9:.55,x4:.4,c10:.55,c11:.55,c12:.5,x5:.4};
@@ -2399,7 +2548,7 @@ function maybeEvent(chapterId, next){
   if(Math.random() > EVENT_RATES[chapterId]){ next(); return; }
   let pool, isHeina = false;
   const heinaLeft = HEINA_EVENTS.filter(function(e){ return usedHeina.indexOf(e.id)<0; });
-  const normalLeft = EVENTS.filter(function(e){ return usedEvents.indexOf(e.id)<0; });
+  const normalLeft = EVENTS.concat(INTERNAL_EVENTS).filter(function(e){ return usedEvents.indexOf(e.id)<0; });
   if(usedHeina.length < HEINA_MAX && heinaLeft.length){
     pool = heinaLeft; isHeina = true;
   } else if(normalLeft.length){
@@ -2622,7 +2771,7 @@ function showEnding(key){
   t.textContent = e.type; t.className = 'ending-type ' + e.cls;
   document.getElementById('ending-name').textContent = e.name;
   const profile=(S.merit>=70&&S.reputation>=50&&S.power>=55)?'组织型操盘手':(S.merit>=75&&S.reputation<35)?'项目救火队长':(S.piRep>=60)?'研究者联盟型开发者':(S.dragon>=7)?'政治型幸存者':'科学型执行者';
-  document.getElementById('ending-story').textContent = (withLove ? (e.story + '\n\n──────────\n' + LOVE_EPILOGUE) : e.story) + '\n\n【职业画像】'+profile+'\n组织记忆：'+memoryCount()+' 条；功勋 '+S.merit+'；声望 '+S.reputation+'；研究者声望 '+S.piRep+'。';
+  document.getElementById('ending-story').textContent = (withLove ? (e.story + '\n\n──────────\n' + LOVE_EPILOGUE) : e.story) + '\n\n【职业画像】'+profile+'\n组织记忆：'+memoryCount()+' 条；功勋 '+S.merit+'；声望 '+S.reputation+'；研究者声望 '+S.piRep+'。\n内部标签：'+dominantPlayerAlignment()+'；当前形成 '+allianceComponents().length+' 个稳定联盟。';
   document.getElementById('ending-stats').innerHTML =
     Object.keys(STAT_META).map(function(k){ return '<span class="s">'+STAT_META[k].name+' '+S[k]+'</span>'; }).join('')
     + '<span class="s" style="color:var(--purple);border-color:var(--purple)">龙性 '+S.dragon+'</span>'
@@ -2666,7 +2815,7 @@ function toast(msg, kind){
 function buildCast(){
   const wrap = document.getElementById('cast-wrap');
   if(!wrap) return;
-  const head = '<div class="sec-title">📇 人物志 · 19 位同事（入职前建议翻一遍）</div>'
+  const head = '<div class="sec-title">📇 人物志 · '+Object.keys(NPCs).length+' 位关键人物（入职前建议翻一遍）</div>'
     + '<div class="intro-hint">每个人都<b>想要</b>一件东西，也都<b>害怕</b>一件东西——这两件事决定他在任何一场冲突里怎么反应。'
     + '点开任意一张卡，看他的小传。<br>（注意：同事的动机是明牌，但<b>你上司的形状</b>，要你在共事里自己看出来。）</div>';
   const cards = Object.keys(NPCs).map(function(k){
