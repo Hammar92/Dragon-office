@@ -1,6 +1,6 @@
 # 药厂生存记 · 临床开发部
 
-## Demo v9.1 · Alliances, Rivalries & Gossipnces & Rivalries
+## Demo v9.2 · Organization Consequencesnces, Rivalries & Gossipnces & Rivalries
 
 纯 HTML/CSS/JavaScript 的临床开发职场剧情小游戏。
 
@@ -20,3 +20,10 @@
 
 直接打开 `index.html`，或通过 GitHub Pages 试玩。
 \n- Office Gossip System：流言沿内部关系网传播，统计是高权重传播节点，支持提前预警与版本偏差\n
+- Favor 调用：人情可被消耗以换取临时分析、加急执行、监管预审或 PI 背书
+- 晋升背书：关键人物分别形成支持 / 中立 / 反对意见
+- 1:1 私聊：大型事件后的人际解释会改变 Respect / Favor / Fear
+- 组织重组：Phase III 前后汇报线和信息流会根据玩家长期站队重排
+- 秘密/筹码：内部消息可选择用于准备或主动放出
+- 动态口碑：靠谱、救火队长、老板的人、统计那边的人、高压主管等标签会影响他人判断
+- 资源争夺：统计分析与中心启动等任务会争抢同一资源，必须明确舍弃一边
