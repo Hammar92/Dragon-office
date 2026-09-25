@@ -1,6 +1,6 @@
 # 药厂生存记 · 临床开发部
 
-## Demo v9 · Alliances & Rivalries
+## Demo v9.1 · Alliances, Rivalries & Gossipnces & Rivalries
 
 纯 HTML/CSS/JavaScript 的临床开发职场剧情小游戏。
 
@@ -19,3 +19,4 @@
 ## 试玩
 
 直接打开 `index.html`，或通过 GitHub Pages 试玩。
+\n- Office Gossip System：流言沿内部关系网传播，统计是高权重传播节点，支持提前预警与版本偏差\n
