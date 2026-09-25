@@ -144,7 +144,14 @@
   .toast-wrap{position:fixed;right:20px;top:110px;z-index:100;display:flex;flex-direction:column;gap:8px;}
   .toast{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 15px;font-size:12.5px;animation:slidein .3s;}
   @keyframes slidein{from{opacity:0;transform:translateX(30px);}to{opacity:1;transform:none;}}
-  @media (max-width:680px){.scene,.result-box{padding:20px;}.game-title{font-size:29px;}}
+  .difficulty-wrap{max-width:760px;margin:18px auto 14px;text-align:left;}
+  .difficulty-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .difficulty-card{border:1px solid var(--line);background:var(--panel2);border-radius:10px;padding:12px 14px;cursor:pointer;transition:.16s;}
+  .difficulty-card:hover{border-color:var(--accent2);transform:translateY(-1px);}
+  .difficulty-card.selected{border-color:var(--accent);box-shadow:0 0 0 1px rgba(224,168,60,.25) inset;}
+  .difficulty-card .dh{font-weight:bold;font-size:14px;margin-bottom:4px;}
+  .difficulty-card .dd{font-size:11.8px;color:var(--dim);line-height:1.55;}
+  @media (max-width:680px){.scene,.result-box{padding:20px;}.game-title{font-size:29px;}.difficulty-grid{grid-template-columns:1fr;}}
   .choice .badge.cost{color:var(--dim);font-size:11px;}
   .choice.warn .badge.cost{color:var(--red);}
   /* ☕ 手冲小游戏 */
@@ -179,7 +186,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.4</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.5</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -203,6 +210,23 @@
     <div class="intro-hint" data-page-node-id="s7QResumeHint1">上面这页纸，是这家公司愿意摊开给你看的部分。剩下的，你自己在这 18 章里看。</div>
 
     <div id="cast-wrap" data-page-node-id="castWrap2026"></div>
+    <div class="difficulty-wrap">
+      <div class="sec-title" style="margin-top:8px">选择难度</div>
+      <div class="difficulty-grid" id="difficulty-grid">
+        <div class="difficulty-card" data-diff="story" onclick="selectDifficulty('story')">
+          <div class="dh">📖 剧情模式</div>
+          <div class="dd">负面后果较轻，理智更耐磨，适合先看人物和支线。</div>
+        </div>
+        <div class="difficulty-card selected" data-diff="normal" onclick="selectDifficulty('normal')">
+          <div class="dh">⚖ 标准模式</div>
+          <div class="dd">当前推荐平衡。关系、理智、项目和政治都有代价。</div>
+        </div>
+        <div class="difficulty-card" data-diff="hard" onclick="selectDifficulty('hard')">
+          <div class="dh">🔥 困难模式</div>
+          <div class="dd">坏消息传得更快、情绪更容易失控、关系收益更慢、背书更难拿。</div>
+        </div>
+      </div>
+    </div>
     <button class="btn primary" onclick="startGame()" data-page-node-id="cGLdFZZxlDrO4bEGXyErH1">入职第一天</button>
     <div class="ending-gallery" data-page-node-id="Ce7jxFcHfrflgRcgi0yVL4">
       <h3 data-page-node-id="abLY1OcA2Ql9EV8vvHDjCs">结局图鉴（本机存档）</h3>
@@ -675,8 +699,9 @@ function processGossip(){
     if(r.age>5) return;
     const carriers=Object.keys(r.heard||{});
     carriers.forEach(function(carrier){
-      const gp=gossipProfile(carrier);
-      if(Math.random()>gp.spread) return;
+      const gp=gossipProfile(carrier), _df=difficulty();
+      const spread=Math.min(1,gp.spread*((r.delta||0)<0?_df.gossipNegative:_df.gossipPositive));
+      if(Math.random()>spread) return;
       const candidates=all.filter(function(k){return !r.heard[k] && k!==r.subject && (linkVal(carrier,k)>=48 || (NPCs[k].boss&&Math.random()<gp.upward));});
       if(!candidates.length) return;
       const n=carrier==='mingye'?Math.min(3,candidates.length):1;
@@ -985,7 +1010,8 @@ function promotionEndorsements(){
     let score=(S.npc[k]||0)*0.38+(p.respect||0)*0.42+(p.favor||0)*7+tagEffectFor(k);
     if(p.fear>55) score-=4; // 怕你 ≠ 愿意替你说话
     if(k==='cso'||k==='xiaoyuan') score+=(S.reputation||0)*0.08;
-    if(score>=52) support.push(k); else if(score<34) oppose.push(k); else neutral.push(k);
+    const et=difficulty().endorseThreshold;
+    if(score>=et) support.push(k); else if(score<Math.max(30,et-18)) oppose.push(k); else neutral.push(k);
   });
   const r={support:support,neutral:neutral,oppose:oppose};
   ensureOrgSystems().endorsements=r; return r;
@@ -1815,6 +1841,74 @@ ENDINGS.ge_promotion = {type:"GE · 晋升",cls:"ge",name:"GE · 名字写在第
 ENDINGS.ge_unsung = {type:"中结局 · 高功勋",cls:"mid",name:"中结局 · 无名功臣",
  story:"项目成功递交。庆功 PPT 有 38 页，没有一页出现你的名字。\n\n奇怪的是，所有真正做过项目的人都知道。加琳知道，明夜知道，一建知道，四位 PI 也知道。你有足够高的功勋，却没有在该露脸的时候留下声望。\n\n半年后猎头打来电话，第一句话是：『有几位研究者都提到你。』\n\n公司没有给你升职，但行业替你记了账。——不是所有功劳都会在原公司兑现。"};
 
+
+/* =====================  v9.5 · Difficulty System  =====================
+   难度不直接掷骰子决定坏结局，而是改变整个组织生态的“摩擦系数”。 */
+const DIFFICULTIES={
+  story:{
+    id:'story',name:'剧情模式',
+    init:{trust:5,sanity:10,heart:10,stamina:10},
+    negative:0.78,positive:1.08,npcPositive:1.08,npcNegative:0.82,
+    gossipNegative:0.72,gossipPositive:1.05,
+    endorseThreshold:47,passiveSanity:0,passiveHeart:0,
+    sanity:{stable:50,tense:34,irritable:18}
+  },
+  normal:{
+    id:'normal',name:'标准模式',
+    init:{},negative:1,positive:1,npcPositive:1,npcNegative:1,
+    gossipNegative:1,gossipPositive:1,
+    endorseThreshold:52,passiveSanity:0,passiveHeart:0,
+    sanity:{stable:55,tense:38,irritable:22}
+  },
+  hard:{
+    id:'hard',name:'困难模式',
+    init:{trust:-5,sanity:-8,heart:-8,stamina:-5,morale:-3},
+    negative:1.28,positive:0.92,npcPositive:0.86,npcNegative:1.18,
+    gossipNegative:1.22,gossipPositive:0.88,
+    endorseThreshold:57,passiveSanity:-1,passiveHeart:-2,
+    sanity:{stable:62,tense:44,irritable:28}
+  }
+};
+let selectedDifficulty='normal';
+function difficulty(){ return DIFFICULTIES[(S&&S.difficulty)||selectedDifficulty]||DIFFICULTIES.normal; }
+function selectDifficulty(id){
+  if(!DIFFICULTIES[id]) return;
+  selectedDifficulty=id;
+  try{localStorage.setItem('dragon_difficulty',id);}catch(e){}
+  document.querySelectorAll('.difficulty-card').forEach(function(el){el.classList.toggle('selected',el.getAttribute('data-diff')===id);});
+}
+function initDifficultySelector(){
+  let saved='normal'; try{saved=localStorage.getItem('dragon_difficulty')||'normal';}catch(e){}
+  if(!DIFFICULTIES[saved]) saved='normal';
+  selectedDifficulty=saved;
+  document.querySelectorAll('.difficulty-card').forEach(function(el){el.classList.toggle('selected',el.getAttribute('data-diff')===saved);});
+}
+function difficultyAdjustedChoice(c){
+  if(!c) return c;
+  const d=difficulty();
+  if(d.id==='normal') return c;
+  const x=Object.assign({},c,{e:Object.assign({},c.e||{}),npc:Object.assign({},c.npc||{}),hidden:Object.assign({},c.hidden||{})});
+  Object.keys(x.e).forEach(function(k){
+    if(['stamina','heart'].includes(k)) return;
+    const v=x.e[k];
+    if(typeof v!=='number') return;
+    const m=v<0?d.negative:d.positive;
+    x.e[k]=Math.trunc(v*m);
+    if(v!==0 && x.e[k]===0) x.e[k]=v>0?1:-1;
+  });
+  Object.keys(x.npc).forEach(function(k){
+    const v=x.npc[k]; if(typeof v!=='number') return;
+    const m=v<0?d.npcNegative:d.npcPositive;
+    x.npc[k]=Math.trunc(v*m);
+    if(v!==0 && x.npc[k]===0) x.npc[k]=v>0?1:-1;
+  });
+  ['merit','reputation','piRep'].forEach(function(k){
+    if(typeof x.hidden[k]==='number' && x.hidden[k]>0) x.hidden[k]=Math.max(1,Math.trunc(x.hidden[k]*d.positive));
+  });
+  if(typeof x.hidden.blame==='number' && x.hidden.blame>0) x.hidden.blame=Math.max(1,Math.trunc(x.hidden.blame*d.negative));
+  return x;
+}
+
 /* =====================  流程  ===================== */
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
@@ -1824,6 +1918,9 @@ function showScreen(id){
 
 function startGame(){
   S = {...INIT, npc:{}, intel:{}, log:[], officeMemory:{}, officeTrail:[]};
+  S.difficulty=selectedDifficulty;
+  const _df=DIFFICULTIES[S.difficulty]||DIFFICULTIES.normal;
+  Object.keys(_df.init||{}).forEach(function(k){S[k]=clamp((S[k]||0)+_df.init[k]);});
   Object.keys(NPCs).forEach(function(k){ S.npc[k] = NPCs[k].init; });
   initSocial(); ensureOrgSystems();
   S.restLeft = REST_MAX; S.adLeft = AD_MAX; S.sanityCareLeft = 1; S.relationTalkLeft = 1; S.sanityCareLeft = 1;
@@ -1836,6 +1933,7 @@ function startGame(){
   addLog({act:'入职第一天', from:'zhong', to:['me'], cc:['xiaoyuan'], subj:'Re: 欢迎加入', attach:'钟时_公开简历.pdf',
     body:'欢迎。我们这个项目是公司最重要的资产，医学这边全靠你了。\n我在这个行业二十年，从早期研发到后期数据统计都做过，有什么你拿不准的可以直接来问我。\n明天九点半评审会，带上你的注册医学策略。——钟时'});
   showScreen('game-screen');
+  toast('难度：'+difficulty().name, difficulty().id==='hard'?'down':'up');
   if(flags.newGamePlus) toast('↻ 二周目：部分节点会出现经验选项','up');
   renderHUD(); renderChapter();
 }
@@ -1855,6 +1953,9 @@ function supportCount(min){
    他今天说「你这思路我完全认同」，明天和老板吃饭时还是「大家都挺好」——
    所以他不能被一次性买断，只能持续维护。这是整套关系经济里唯一的持续 sink。*/
 function applyChapterPassives(){
+  const _d=difficulty();
+  if(_d.passiveSanity){S.sanity=clamp(S.sanity+_d.passiveSanity);toast('🧠 困难模式：长期磨损 '+_d.passiveSanity,'down');}
+  if(_d.passiveHeart){S.heart=clamp(S.heart+_d.passiveHeart);}
   processGossip(); // v9.1 · 每章让流言沿内部关系网传播一次
   maybeSecretDrop(); reputationTags();
   // A. 漏水的桶：武总每章向初始值回落
@@ -1888,8 +1989,10 @@ function applyChapterPassives(){
    校准记录：曾试过对信任征收（≥60/-1、≥80/-2 与 ≥85/-1 两版），
              均衡派信任死亡率从 27% 分别飙到 65% / 54% —— 记录在此，别再回头试。 */
 function applyPowerTax(){
-  if(S.power < 70) return;
-  const tax = S.power >= 88 ? 2 : 1;
+  const d=difficulty();
+  const threshold=d.id==='hard'?65:(d.id==='story'?76:70);
+  if(S.power < threshold) return;
+  const tax = S.power >= (d.id==='hard'?84:88) ? 2 : 1;
   S.morale = clamp(S.morale - tax);
   toast("🌡 高处税：士气 -" + tax + "（你越有分量，同事们越开始算距离）", "down");
 }
@@ -1978,6 +2081,7 @@ function renderHUD(){
     + '<span class="npc-chip intel-chip" onclick="showReputationTags()" title="别人正在用什么标签理解你">🏷 内部口碑</span>'
     + '<span class="npc-chip intel-chip" onclick="showEndorsements()" title="关键人物是否愿意替你的晋升说话">🏛 晋升背书</span>'
     + '<span class="npc-chip" title="理智越低，选项越容易被情绪污染">'+sanityBand().icon+' 情绪 '+sanityBand().name+'</span>'
+    + '<span class="npc-chip" title="本局难度">'+(difficulty().id==='hard'?'🔥':difficulty().id==='story'?'📖':'⚖')+' '+difficulty().name+'</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
     + (flags.love ? '<span class="npc-chip hi" title="有人记得你几点下班 —— 每章恢复 12 点心力">💗 有人等你</span>' : '')
     + '<span class="npc-chip intel-chip" onclick="showRelationshipDesk()" title="通过沟通判断别人怎么看你">💬 关系判断</span>'
@@ -2725,9 +2829,10 @@ function lovePick(i){
    sanity 不再只是死亡线，而是“你是否还能把脑子里那句话翻译成职业语言”。
    低 sanity 不锁死玩家，而是污染选项：越低越冲动、讽刺、消极，且没有无代价的最优解。 */
 function sanityBand(){
-  if(S.sanity>=55) return {id:'stable',name:'稳定',icon:'🟢'};
-  if(S.sanity>=38) return {id:'tense',name:'绷紧',icon:'🟡'};
-  if(S.sanity>=22) return {id:'irritable',name:'易怒',icon:'🟠'};
+  const t=difficulty().sanity;
+  if(S.sanity>=t.stable) return {id:'stable',name:'稳定',icon:'🟢'};
+  if(S.sanity>=t.tense) return {id:'tense',name:'绷紧',icon:'🟡'};
+  if(S.sanity>=t.irritable) return {id:'irritable',name:'易怒',icon:'🟠'};
   return {id:'frayed',name:'失控边缘',icon:'🔴'};
 }
 function mergeObj(a,b){
@@ -2788,7 +2893,7 @@ function emotionalizeChoice(c,i){
   }
   return x;
 }
-function presentedChoice(list,i){ return emotionalizeChoice(list[i],i); }
+function presentedChoice(list,i){ return emotionalizeChoice(difficultyAdjustedChoice(list[i]),i); }
 function sanityWarning(){
   const b=sanityBand();
   if(b.id==='stable') return '';
@@ -3205,7 +3310,7 @@ function finalizeEvaluation(){
   let key = null;
 
   // v7 · 功勋兑现：项目成功后先判断“公司是否已经无法把你从故事里删掉”。
-  if(S.progress >= 60 && (S.merit||0) >= 70 && (S.reputation||0) >= 45 && (S.bossTrust||0) >= 45 && promo.support.length>=3 && promo.oppose.length<=3 && (flags.duelWin || S.trust >= 30)) key='ge_promotion';
+  if(S.progress >= 60 && (S.merit||0) >= 70 && (S.reputation||0) >= 45 && (S.bossTrust||0) >= 45 && promo.support.length>=(difficulty().id==='hard'?4:3) && promo.oppose.length<=(difficulty().id==='hard'?2:3) && (flags.duelWin || S.trust >= 30)) key='ge_promotion';
   else if(S.progress >= 60 && (S.merit||0) >= 75 && (S.reputation||0) < 35) key='ge_unsung';
 
   // ① NPC 特化：关系真的建立了，比胜负更长
@@ -3373,6 +3478,7 @@ function renderVP(){
 buildCast();
 renderVP();
 renderGallery();
+initDifficultySelector();
 </script>
 </body>
 </html>
