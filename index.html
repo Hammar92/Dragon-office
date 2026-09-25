@@ -377,7 +377,7 @@ const NPCs = {
   zouting: {name:"邹婷",   role:"HR",          init:28, boss:true, faction:"core", quote:"我不评价对错，我只是每天听很多人讲心事。"},
   // —— 专业 / 合规 / 支撑：决定项目能不能做完、坑有多大 ——
   jialin:  {name:"加琳",   role:"PV",          init:32, faction:"pro", quote:"数据格式要统一。整数也要写成 12.0——规定就是规定。"},
-  mingye:  {name:"明夜",   role:"统计",        init:30, faction:"pro", quote:"我算得很快，但我确实不知道 GCP 第七条在说什么。"},
+  mingye:  {name:"明夜",   role:"统计",        init:30, faction:"pro", quote:"你别说是我说的——但我听说昨天十一点 endpoint 又改回去了。"},
   xiaoen:  {name:"肖恩",   role:"QA",          init:36, faction:"pro", quote:"我不跟朱粽说话，我说的是制度。"},
   yijian:  {name:"一建",   role:"REG",         init:22, faction:"pro", quote:"各位，今晚把章节写完，我明早一起递交。"},
   weilai:  {name:"卫来",   role:"财务",        init:26, faction:"pro", quote:"我不懂你说的那个科学。我只知道这个月还剩九万，下个月更少。"},
@@ -567,7 +567,7 @@ Object.assign(NPC_BIOS, {
 
 const SOCIAL_PROFILES = {
   ceo:{interests:['CREDIT','TIMELINE'],style:'power'}, cso:{interests:['SCIENCE','CREDIT'],style:'science'},
-  jialin:{interests:['SAFETY','COMPLIANCE'],style:'compliance'}, mingye:{interests:['SCIENCE','DATA'],style:'science'},
+  jialin:{interests:['SAFETY','COMPLIANCE'],style:'compliance'}, mingye:{interests:['SCIENCE','DATA','CREDIT','BLAME'],style:'science',gossip:0.95,accuracy:0.88,spin:'science'},
   xiaoen:{interests:['COMPLIANCE','DOCUMENTATION'],style:'compliance'}, yijian:{interests:['REGULATORY','TIMELINE'],style:'compliance'},
   miaomiao:{interests:['EXECUTION','CENTER'],style:'execution'}, zhuzong:{interests:['EXECUTION','RELATION'],style:'execution'},
   anyu:{interests:['EXECUTION','COMPLIANCE','DOCUMENTATION'],style:'execution'}, linan:{interests:['RELATION','EXECUTION'],style:'social'},
@@ -606,6 +606,114 @@ function topicOfChoice(c){
   return 'RELATION';
 }
 function styleForTopic(topic){ return ({SCIENCE:'science',DATA:'science',SAFETY:'compliance',COMPLIANCE:'compliance',REGULATORY:'compliance',DOCUMENTATION:'compliance',EXECUTION:'execution',CENTER:'execution',TIMELINE:'execution',POWER:'politics',CREDIT:'politics',BLAME:'politics',RELATION:'people',AUTHORSHIP:'people'})[topic]||'people'; }
+
+/* =====================  v9.1 · Office Gossip System  =====================
+   gossip 不是随机笑话，而是组织里的二次信息流：
+   事件先发生 → 某人听见 → 经传播节点转述 → 旁观者依据“版本”改变 Respect / Fear / Reputation。
+   明夜（统计）是最高权重的内部传播节点：消息通常较准，但会附带专业评价。 */
+const GOSSIP_PROFILES = {
+  mingye:{spread:.95,accuracy:.88,upward:.45,commentary:'science'},
+  zouting:{spread:.82,accuracy:.72,upward:.70,commentary:'people'},
+  linan:{spread:.76,accuracy:.68,upward:.42,commentary:'people'},
+  xiaoke:{spread:.70,accuracy:.62,upward:.88,commentary:'politics'},
+  qiaoqiao:{spread:.58,accuracy:.74,upward:.66,commentary:'execution'},
+  anyu:{spread:.22,accuracy:.92,upward:.45,commentary:'execution'},
+  wenjing:{spread:.16,accuracy:.96,upward:.38,commentary:'compliance'},
+  xiaoen:{spread:.12,accuracy:.97,upward:.55,commentary:'compliance'},
+  jialin:{spread:.20,accuracy:.94,upward:.40,commentary:'compliance'}
+};
+function gossipProfile(k){ return GOSSIP_PROFILES[k]||{spread:.28,accuracy:.78,upward:.35,commentary:(SOCIAL_PROFILES[k]||{}).style||'people'}; }
+function gossipLabel(topic){
+  return ({SCIENCE:'科学/数据',SAFETY:'安全',COMPLIANCE:'合规/留痕',EXECUTION:'执行/进度',AUTHORSHIP:'署名',POWER:'高层政治',RELATION:'人际',CREDIT:'功劳',BLAME:'责任归属'})[topic]||topic;
+}
+function seedGossip(source,subject,topic,delta,text,visibility){
+  if(!S.social) initSocial();
+  const r={
+    id:'g'+Date.now()+Math.floor(Math.random()*10000),ch:chapterIdx,age:0,
+    source:source||'unknown',subject:subject||source||'unknown',topic:topic||'RELATION',
+    delta:delta||0,text:text||'',visibility:visibility||'TEAM',heard:{}
+  };
+  if(source) r.heard[source]=true;
+  S.social.rumors.push(r);
+  if(S.social.rumors.length>30) S.social.rumors.shift();
+  return r;
+}
+function rumorVersion(r,carrier){
+  const p=gossipProfile(carrier), accurate=Math.random()<p.accuracy;
+  let base=r.text||((NPCs[r.subject]?NPCs[r.subject].name:'有人')+'在 '+gossipLabel(r.topic)+' 这件事上出了动静。');
+  if(accurate){
+    if(carrier==='mingye'){
+      if(r.delta>0) return '「你别说是我说的，但这次 '+(NPCs[r.subject]?NPCs[r.subject].name:'他')+' 的处理其实有数据依据。」';
+      if(r.delta<0) return '「我只讲事实：这个版本前后对不上。至于是谁改的，你自己猜。」';
+      return '「我没说是谁啊，但 '+gossipLabel(r.topic)+' 这件事已经有人在问了。」';
+    }
+    return base;
+  }
+  if(r.delta>0) return base+' —— 传到这儿已经变成“他早就知道会这样”。';
+  if(r.delta<0) return base+' —— 传到这儿已经变成“这锅八成有人要背”。';
+  return base+' —— 细节已经没人说得清了。';
+}
+function applyRumorImpact(listener,r,carrier){
+  if(!NPCs[listener]) return;
+  const lp=socialPerson(listener), prof=SOCIAL_PROFILES[listener]||{}, same=(prof.interests||[]).indexOf(r.topic)>=0;
+  const sign=Math.sign(r.delta||0);
+  if(sign){
+    if(same) lp.respect=clamp(lp.respect + sign*2);
+    if(r.topic==='POWER'||r.topic==='BLAME') lp.fear=clamp(lp.fear + (sign<0?1:0));
+    if(listener==='ceo'||listener==='cso'){
+      if(r.topic==='CREDIT'&&sign>0) S.reputation=clamp((S.reputation||0)+1);
+      if(r.topic==='BLAME'&&sign<0) S.blame=clamp((S.blame||0)+1);
+    }
+  }
+  r.heard[listener]=true;
+}
+function processGossip(){
+  if(!S.social||!S.social.rumors) return;
+  const all=Object.keys(NPCs);
+  S.social.rumors.forEach(function(r){
+    r.age=(r.age||0)+1;
+    if(r.age>5) return;
+    const carriers=Object.keys(r.heard||{});
+    carriers.forEach(function(carrier){
+      const gp=gossipProfile(carrier);
+      if(Math.random()>gp.spread) return;
+      const candidates=all.filter(function(k){return !r.heard[k] && k!==r.subject && (linkVal(carrier,k)>=48 || (NPCs[k].boss&&Math.random()<gp.upward));});
+      if(!candidates.length) return;
+      const n=carrier==='mingye'?Math.min(3,candidates.length):1;
+      candidates.sort(function(a,b){return linkVal(carrier,b)-linkVal(carrier,a);});
+      for(let i=0;i<n;i++){
+        const listener=candidates[i];
+        applyRumorImpact(listener,r,carrier);
+        if(carrier==='mingye' && !r.lastToast && S.npc.mingye>=50){
+          r.lastToast=true;
+          toast('🗣 明夜：'+rumorVersion(r,carrier),'up');
+        }
+      }
+    });
+  });
+  // 高关系统计：提前预警。不是凭空加成，而是把已经在传播的锅/功劳提前告诉你。
+  if(S.npc.mingye>=55 && socialPerson('mingye').respect>=50){
+    const hot=S.social.rumors.slice().reverse().find(function(r){return !r.warned && r.age<=3 && (r.topic==='BLAME'||r.topic==='POWER'||r.topic==='CREDIT'||r.topic==='SCIENCE');});
+    if(hot){
+      hot.warned=true;
+      if(hot.topic==='BLAME'||hot.topic==='POWER') S.blame=clamp((S.blame||0)-2);
+      else S.reputation=clamp((S.reputation||0)+1);
+      toast('📊 明夜私聊：'+rumorVersion(hot,'mingye'),'up');
+    }
+  }
+}
+function showGossip(){
+  if(!S.social||!S.social.rumors||!S.social.rumors.length){
+    document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🗣</span> 办公室风声</div><div class="intro-hint">目前还没有形成值得记录的风声。</div><button class="btn" onclick="backToScene()">返回</button></div>'; return;
+  }
+  const rows=S.social.rumors.slice().reverse().slice(0,12).map(function(r){
+    const heard=Object.keys(r.heard||{}).length;
+    const src=NPCs[r.source]?NPCs[r.source].name:'未知来源';
+    return '<div class="intel-item"><div class="ih"><span class="it">'+gossipLabel(r.topic)+'</span><span class="isrc">来源 '+src+' · 已传 '+heard+' 人</span></div><div class="ib">'+(r.text||'这件事正在公司里流动。')+'</div></div>';
+  }).join('');
+  document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🗣</span> 办公室风声</div><div class="scene-sub">这里显示的是你已经察觉到的传播，不代表你知道每个人听到了哪个版本。统计是目前最活跃的内部传播节点之一。</div>'+rows+'<button class="btn" onclick="backToScene()">返回</button></div>';
+}
+
 function applyRelationshipRipple(actor,delta,topic,visibility){
   if(!S.social||!NPCs[actor]||!delta) return;
   const sp=socialPerson(actor); sp.respect=clamp(sp.respect + Math.round(delta*0.35));
@@ -619,10 +727,17 @@ function applyRelationshipRipple(actor,delta,topic,visibility){
       else if(L<=32) r=-Math.sign(delta)*Math.max(1,Math.round(Math.abs(delta)*0.10));
       if(r){ S.npc[o]=clamp(S.npc[o]+r); }
     });
-    S.social.rumors.push({ch:chapterIdx,actor:actor,topic:topic,delta:delta});
+    seedGossip(actor,actor,topic,delta,(NPCs[actor]?NPCs[actor].name:'有人')+' 在 '+gossipLabel(topic)+' 事件中的表现已经被人注意到。','PUBLIC');
+  }
+  /* gossip-seed-hook */
+  if(visibility==='TEAM' && actor && Math.abs(delta)>=6){
+    seedGossip(actor,actor,topic,delta,(NPCs[actor]?NPCs[actor].name:'有人')+' 在小范围讨论中留下了一个版本。','TEAM');
   }
 }
 function applySocialMeta(c){
+  if(c.gossipSeed){
+    seedGossip(c.gossipSeed.source||'mingye',c.gossipSeed.subject||c.gossipSeed.source||'mingye',c.gossipSeed.topic||topicOfChoice(c),c.gossipSeed.delta||0,c.gossipSeed.text||c.r||c.t,c.gossipSeed.visibility||'TEAM');
+  }
   if(!S.social) initSocial(); const sm=c.social||{};
   ['respect','favor','fear'].forEach(function(dim){ Object.keys(sm[dim]||{}).forEach(function(k){ const p=socialPerson(k); p[dim]=clamp(p[dim]+sm[dim][k]); }); });
   (sm.links||[]).forEach(function(x){ bumpLink(x[0],x[1],x[2]); });
@@ -1454,6 +1569,7 @@ function supportCount(min){
    他今天说「你这思路我完全认同」，明天和老板吃饭时还是「大家都挺好」——
    所以他不能被一次性买断，只能持续维护。这是整套关系经济里唯一的持续 sink。*/
 function applyChapterPassives(){
+  processGossip(); // v9.1 · 每章让流言沿内部关系网传播一次
   // A. 漏水的桶：武总每章向初始值回落
   Object.keys(NPCs).forEach(function(k){
     const np = NPCs[k];
