@@ -873,8 +873,8 @@ function showRelationshipDesk(){
     const known=!!intel[k];
     return '<div class="intel-item"><div class="ih"><span class="it">'+NPCs[k].name+' · '+NPCs[k].role+'</span><span class="isrc">'+(known?'已有判断':'未知')+'</span></div>'
       +relationIntelCard(k)
-      +'<div style="margin-top:8px"><button class="btn" '+((S.relationTalkLeft||0)<=0?'disabled':'onclick="directRelationshipTalk(\\''+k+'\\')"')+'>和本人聊聊</button> '
-      +'<button class="btn" '+((S.relationTalkLeft||0)<=0?'disabled':'onclick="askMingyeAbout(\\''+k+'\\')"')+'>问明夜</button></div></div>';
+      +'<div style="margin-top:8px"><button class="btn" '+((S.relationTalkLeft||0)<=0?'disabled':'onclick="directRelationshipTalk(\''+k+'\')"')+'>和本人聊聊</button> '
+      +'<button class="btn" '+((S.relationTalkLeft||0)<=0?'disabled':'onclick="askMingyeAbout(\''+k+'\')"')+'>问明夜</button></div></div>';
   }).join('');
   document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title"><span class="accent">💬</span> 关系判断</div>'
     +'<div class="scene-sub">这里没有好感数字。你只能通过沟通逐渐判断别人是否信任你、认可你、欠你人情，还是只是忌惮你的权力。每章可主动沟通 1 次；明夜的信息更快，但未必完整。</div>'
