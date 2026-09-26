@@ -5232,12 +5232,31 @@ renderLifeBuilder();
   ENDINGS.be_vendor={type:"BE · 运营",cls:"be",name:"Sponsor确认过",story:"稽查会上，CRO把你们自己的确认邮件投上屏。那一刻所有人都突然非常尊重书面记录。"};
   ENDINGS.ge_project={type:"GE · 项目",cls:"ge",name:"药做出来了",story:"项目完成关键递交。没有英雄，只有一长串本来可能把项目做死、最后却被人一件件接住的决定。"};
   ENDINGS.ge_system={type:"GE · 治理",cls:"ge",name:"吵着把事做完",story:"很多人仍然互相不喜欢。但大家终于知道什么时候可以争、谁来拍板、什么必须留下记录。组织没有变温柔，只是开始能工作。"};
-  ENDINGS.ge_science={type:"GE · 学术",cls:"ge",name:"几年后指南里见",story:"主研究做成，长期随访和机制研究也继续长出来。PI们仍然会争学术空间，但争论开始产生论文、问题和下一项研究。"};
-  ENDINGS.ge_escape={type:"GE · 职业",cls:"ge",name:"做成以后还能走",story:"项目做成，你的履历也没有被这家公司吞掉。猎头电话来的时候，你第一次发现自己留下来和离开都可以是选择。"};
+  ENDINGS.ge_court={type:"GE · 权斗",cls:"ge",name:"听调不听宣",story:"你没有正式夺权，也没有公开挑战谁。只是到了后期，重要项目会先来问你、关键PI先找你、老板遇到复杂问题也会直接问你一句。\n\n组织图没有变化。\n\n真正的汇报线已经变了。"};
+  ENDINGS.ge_regent={type:"GE · 权斗",cls:"ge",name:"摄政",story:"钟时仍然坐在VP的位置上。她参加会议、看文件、留comment。\n\n而项目怎么拆、谁负责、什么先做、哪些问题必须升级，越来越多由你决定。\n\n她拥有title。\n\n你拥有运行权。"};
+  ENDINGS.ge_coalition={type:"GE · 权斗",cls:"ge",name:"没有王座的多数派",story:"你没有成为任何人的绝对亲信。CEO、CSO、K总、QA、统计和几个核心PI对你的看法也并不完全一致。\n\n但重大节点到了，足够多的人愿意跟你把同一件事做完。\n\n在这个公司里，最稳定的权力不是某个人喜欢你。\n\n是没人能轻易绕开你组织起来的那张网。"};
+  ENDINGS.ge_puppetmaster={type:"GE · 权斗",cls:"ge",name:"老板说得对",story:"你学会了最安全的一种影响决策的方法：让方案最后看起来像是老板自己想到的。\n\n钟时觉得自己仍在管理，老板觉得方向一直在自己手里，其他人知道真正把材料、顺序和选择题摆好的人是谁。\n\n你没有坐到最前面。\n\n但很多决定在进入会议室以前就已经完成了。"};
+  ENDINGS.ge_succession={type:"GE · 权斗",cls:"ge",name:"继承人名单上没有名字",story:"没有人正式宣布你接替谁。\n\n只是钟时越来越少被叫去解决真正复杂的问题，老板越来越习惯直接问你，二老板也开始把一些跨部门问题交给你。\n\nHR从未发过通知。\n\n组织已经先完成了选择。"};
   ENDINGS.true_dragon={type:"隐藏结局",cls:"true",name:"屠龙",story:"你终于拥有足够的记录、成果、盟友和权力，让钟时不再能重新定义你的工作。\n\n只是最后一次高层会上，你打断别人、替所有人拍板、要求统一出口。\n\n明夜低头笑了一下。\n\n你忽然知道他在笑什么。\n\n屠龙的人，离龙最近。"};
   let _checkDeathV11=checkDeath;
   checkDeath=function(resultText,deltas,next){if(chapterIdx<=2&&S.trust<=24){showResult(resultText,deltas,function(){showEnding("be_probation");});return;}if(S.stamina<=3&&S.heart<=15){showResult(resultText,deltas,function(){showEnding("be_burnout");});return;}if(flags.vendorCaptured&&chapterIdx>=8&&S.blame>=18){showResult(resultText,deltas,function(){showEnding("be_vendor");});return;}return _checkDeathV11(resultText,deltas,next);};
-  finalizeEvaluation=function(){if(S.dragon>=26&&S.power>=72&&S.merit>=55){showEnding("true_dragon");return;}if(S.progress>=72){if((S.piRep||0)>=45){showEnding("ge_science");return;}if((S.morale||0)>=62&&(S.power||0)>=48){showEnding("ge_system");return;}if((S.career||0)>=65){showEnding("ge_escape");return;}showEnding("ge_project");return;}if((S.progress||0)<35){showEnding("be_progress");return;}showEnding("ge_survivor");};
+  finalizeEvaluation=function(){
+    if(S.dragon>=26&&S.power>=72&&S.merit>=55){showEnding("true_dragon");return;}
+    if(S.progress>=72){
+      var allyCount=Object.keys(S.npc||{}).filter(function(k){return (S.npc[k]||0)>=58;}).length;
+      var bossBand=((S.npc.ceo||0)+(S.npc.cso||0)+(S.npc.xiaoyuan||0))/3;
+      var proBand=((S.npc.kzong||0)+(S.npc.xiaoen||0)+(S.npc.zihan||0)+(S.npc.mingye||0))/4;
+      if(S.power>=68&&bossBand>=58&&S.trust>=50){showEnding("ge_succession");return;}
+      if(S.power>=64&&S.trust>=58&&bossBand>=55&&S.morale<62){showEnding("ge_puppetmaster");return;}
+      if(S.power>=60&&proBand>=55&&S.trust<55){showEnding("ge_regent");return;}
+      if(allyCount>=7&&S.morale>=58&&S.power>=48){showEnding("ge_coalition");return;}
+      if(S.power>=52&&S.trust>=50){showEnding("ge_court");return;}
+      if((S.morale||0)>=62&&(S.power||0)>=48){showEnding("ge_system");return;}
+      showEnding("ge_project");return;
+    }
+    if((S.progress||0)<35){showEnding("be_progress");return;}
+    showEnding("ge_survivor");
+  };
   let _showEndingV11=showEnding;showEnding=function(k){try{if(S&&S.player&&S.player.traits)localStorage.setItem("dragon_last_traits",JSON.stringify(S.player.traits.slice(0,12)));if(k==="be_probation")unlockAchievement("a99");if(k==="true_dragon")unlockAchievement("a95");if(k&&k.indexOf("ge_")===0)unlockAchievement("a97");}catch(e){}return _showEndingV11(k);};
 
   function installAchievementPanel(){let title=document.getElementById("title-screen");if(!title||document.getElementById("achievement-panel"))return;let d=document.createElement("div");d.id="achievement-panel";d.className="intro-box";d.style.marginTop="18px";let u=achUnlocked();d.innerHTML='<b>🏆 成就系统 · 99</b><div class="creator-note">黑色幽默会在你真的经历以后才解锁。当前 '+u.length+' / 99；部分成就奖励轮回点。</div><div class="gallery-grid" style="margin-top:10px">'+ACHIEVEMENTS.map(function(a){return '<span class="g '+(u.includes(a.id)?'got ge':'')+'">'+(u.includes(a.id)?a.name:'？？？')+'</span>';}).join('')+'</div>';title.appendChild(d);}
