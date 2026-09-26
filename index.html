@@ -4373,20 +4373,20 @@ function showGrowthShop(){
 var _startGameV99=startGame;
 startGame=function(){
   _startGameV99();
+  /* Legacy compatibility only. The canonical player is rebuilt by the Life Build wrapper below.
+     Do NOT expose the obsolete PLAYER_DRAFT defaults here, otherwise a female Life Build can
+     briefly appear as the old default "male" during entry. */
+  var canonicalGender=(typeof LIFE_DRAFT!=="undefined"&&LIFE_DRAFT&&LIFE_DRAFT.gender)?LIFE_DRAFT.gender:PLAYER_DRAFT.gender;
   S.player={
-    gender:PLAYER_DRAFT.gender,
-    background:Object.assign({},PLAYER_DRAFT),
+    gender:canonicalGender,
+    background:{legacyBootstrap:true},
     skills:playerBaseSkills(),
     skillPoints:0,
     growthMarks:{}
   };
+  PLAYER_DRAFT.gender=canonicalGender;
   v10EnsureOrg();
-  /* 女性玩家：苏苏不降低专业Respect，但初始更谨慎；男性玩家走更直接的能力评价通道。
-     这里只做很轻的初始差异，真正差异在后续CEO互动中累积。 */
-  if(S.player.gender==="female"){S.npc.weilai=clamp(S.npc.weilai-1);socialPerson("weilai").fear=clamp(socialPerson("weilai").fear+2);}
-  else if(S.player.gender==="male"&&S.player.skills.professional>=58){socialPerson("weilai").respect=clamp(socialPerson("weilai").respect+2);}
   renderHUD();
-  toast("入职档案已建立："+(S.player.gender==="female"?"女":S.player.gender==="male"?"男":"未透露")+" · 专业 "+S.player.skills.professional+" · 社交 "+S.player.skills.social,"up");
 };
 var _applyChoiceV99=applyChoice;
 applyChoice=function(c){
@@ -6127,6 +6127,80 @@ renderLifeBuilder();
   renderLifeBuilder();
   var sub=document.querySelector("#title-screen .subtitle");
   if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Expanded Life Build · Demo v13.2";
+})();
+
+
+/* =====================  v13.2.1 · PLAYER IDENTITY SYNC FIX  ===================== */
+(function(){
+  function ageLabelNow(){
+    var a=(window.AGE_OPTIONS&&AGE_OPTIONS[PLAYER_AGE])||null;
+    return a?a.label.split(" · ")[0]:"未设置";
+  }
+  function genderLabelNow(){
+    return ({male:"男",female:"女",unspecified:"不透露"})[(LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified"]||"不透露";
+  }
+
+  /* Persist only the creator selections themselves; this prevents stale legacy defaults from
+     becoming the visible identity after the player has already chosen a gender/age. */
+  var _setLifeGender1321=setLifeGender;
+  setLifeGender=function(g){
+    _setLifeGender1321(g);
+    try{localStorage.setItem("dragon_gender",g);}catch(e){}
+    if(typeof PLAYER_DRAFT!=="undefined")PLAYER_DRAFT.gender=g;
+  };
+  var _setPlayerAge1321=setPlayerAge;
+  setPlayerAge=function(a){
+    _setPlayerAge1321(a);
+    try{localStorage.setItem("dragon_age",a);}catch(e){}
+  };
+
+  try{
+    var savedG=localStorage.getItem("dragon_gender");
+    if(savedG&&["male","female","unspecified"].indexOf(savedG)>=0){
+      LIFE_DRAFT.gender=savedG;
+      if(typeof PLAYER_DRAFT!=="undefined")PLAYER_DRAFT.gender=savedG;
+    }
+  }catch(e){}
+
+  /* Final wrapper is the single source of truth after every old compatibility wrapper has run. */
+  var _startIdentity1321=startGame;
+  startGame=function(){
+    var chosenGender=LIFE_DRAFT.gender;
+    var chosenAge=PLAYER_AGE;
+    _startIdentity1321();
+
+    if(!S.player)S.player={};
+    S.player.gender=chosenGender;
+    S.player.age=chosenAge;
+    S.player.ageLabel=((AGE_OPTIONS[chosenAge]||{}).label||chosenAge).split(" · ")[0];
+    S.player.genderLabel=({male:"男",female:"女",unspecified:"不透露"})[chosenGender]||"不透露";
+    S.player.creatorSnapshot={
+      gender:chosenGender,
+      age:chosenAge,
+      ageLabel:S.player.ageLabel
+    };
+    if(typeof PLAYER_DRAFT!=="undefined")PLAYER_DRAFT.gender=chosenGender;
+
+    /* Re-render the first scene/HUD once with the canonical identity. The old start chain renders
+       before all compatibility wrappers finish, so this removes any first-frame mismatch. */
+    renderHUD();
+    renderChapter();
+    toast("入职档案："+S.player.genderLabel+" · "+S.player.ageLabel,"up");
+  };
+
+  /* Small visible self-check in HUD so the creator choice can be verified immediately. */
+  var _renderHUDIdentity1321=renderHUD;
+  renderHUD=function(){
+    _renderHUDIdentity1321();
+    if(!S||!S.player)return;
+    var n=document.getElementById("npcs");
+    if(!n)return;
+    if(n.querySelector(".player-identity-chip"))return;
+    var gl=S.player.genderLabel||genderLabelNow(),al=S.player.ageLabel||ageLabelNow();
+    n.insertAdjacentHTML("afterbegin",'<span class="npc-chip player-identity-chip" title="来自本周目捏人选择">👤 '+gl+' · '+al+'</span>');
+  };
+
+  renderLifeBuilder();
 })();
 
 buildCast();
