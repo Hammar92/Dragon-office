@@ -5683,6 +5683,159 @@ renderLifeBuilder();
   if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · 18章分支网 · 99互斥成就 · 多周目 · Demo v12.0";
 })();
 
+
+/* =====================  v13.0 · 10 NEW RANDOM EVENTS + CROSS-RUN HIDDEN ROUTES  ===================== */
+(function(){
+  /* ---------- 1. Ten more character-driven random events ---------- */
+  var V13_EVENTS=[
+    {id:"v13e_ceo_detail",title:"老板突然问到一个数字",npcEv:true,text:"高层会开到一半，老板忽然问：\n\n「这个亚组为什么是这个数？」\n\n钟时低头翻材料，翻了半分钟：「这个……我印象里统计之前解释过。」\n\n明夜在桌下给你发消息：「她上午刚听过。」",choices:[
+      {t:"先回答数字，再补一句这个数字对当前decision意味着什么。",route:"govern",e:{progress:4,power:2},npc:{ceo:4,mingye:3},r:"老板点头：「好，这样说清楚了。」钟时会后说：「以后这种关键数字你们要提前给我。」",branchFlag:"v13_ceo_number"},
+      {t:"把完整分析表翻出来，从第一行开始讲。",route:"appease",e:{trust:3,stamina:-3},npc:{ceo:-2},r:"老板听到第三个分层就打断：「我不是让你读表。」"},
+      {t:"让钟时自己回答。",route:"power",e:{power:3,trust:-4},npc:{ceo:-1},r:"钟时最后说：「这个我们会后再核实。」老板没再追，但会后Clinical多了一个今晚必须完成的任务。"}]},
+    {id:"v13e_cso_deepdive",title:"二老板随机深挖",npcEv:true,text:"二老板原本只是路过会议室，听见一句「整体可控」后停下来。\n\n「哪个风险整体可控？怎么判断的？」\n\n加琳开始讲流程，钟时开始翻PPT，PVP看着桌面。\n\n二老板又问：「谁能直接回答医学上为什么？」",choices:[
+      {t:"让真正负责医学判断的人先回答，再由流程owner补充。",route:"govern",e:{progress:4,power:2},npc:{cso:5,pvp:4,jialin:-2},r:"二老板听完只说：「这就行。」会议比预想中短了二十分钟。",branchFlag:"v13_cso_owner"},
+      {t:"大家轮流把自己知道的部分都讲一遍。",route:"appease",e:{trust:3,stamina:-5},r:"二老板最后问：「所以刚才是谁在回答我的问题？」"},
+      {t:"直接指出PV职责边界不清。",route:"power",e:{power:5,morale:-3},npc:{cso:3,jialin:-7},r:"二老板没有反驳，只说：「那你们回去把边界理出来。」加琳整场会没再看你。"}]},
+    {id:"v13e_xiaoyuan_translate",title:"老板一句话，小圆一张表",npcEv:true,text:"老板在群里说：「这个项目要再快一点。」\n\n钟时转发：「大家想办法提速。」\n\n十分钟后，小圆发来一张表：合同、中心、数据、决策、资源，分别能压几天、代价是什么。\n\n他问你：「你觉得真正能动的是哪两项？」",choices:[
+      {t:"和小圆一起把‘快一点’翻成两个可执行动作。",route:"govern",e:{progress:6},npc:{xiaoyuan:6},r:"老板第二天只看到两个动作和一个需要他拍板的代价。项目真的快了几天。",branchFlag:"v13_translate"},
+      {t:"先把所有部门都叫来brainstorm。",route:"appease",e:{trust:3,stamina:-5},npc:{yangyang:3,xiaoyuan:-2},r:"会上收集了17条建议。会后小圆还是把它们压成了两条。"},
+      {t:"告诉老板现有timeline已经最优。",route:"power",e:{power:4,trust:-4},npc:{ceo:-3,xiaoyuan:2},r:"老板回了句：「没有最优，只有想没想办法。」小圆私聊你：「别跟这句话硬碰。」"}]},
+    {id:"v13e_hr_patch",title:"HR建议做一次工作坊",npcEv:true,text:"Clinical和PV连续两周争同一个边界问题。\n\n邹婷说：「要不我们做一次协作工作坊？把大家的痛点都说出来，可能会好很多。」\n\nK总看着你：「边界没写清楚，工作坊能把谁的职责写出来吗？」",choices:[
+      {t:"先把职责和decision rights写出来，再决定是否需要工作坊。",route:"govern",e:{progress:4,power:2},npc:{zouting:2,kzong:5},r:"工作坊最后缩成半小时。大家没有互相理解更多，但至少知道以后谁决定。",branchFlag:"v13_hr_structure"},
+      {t:"先做工作坊，关系好了再谈职责。",route:"appease",e:{morale:4,progress:-2},npc:{zouting:6},r:"大家写了很多便利贴。两周后，同一个边界问题再次出现。"},
+      {t:"直接说这是组织设计问题，不是沟通问题。",route:"power",e:{power:4,trust:-3},npc:{zouting:-4,kzong:3},r:"邹婷没反驳，只说：「表达方式可以柔和一点。」"}]},
+    {id:"v13e_yijian_secret",title:"这个文件为什么你们看不到",npcEv:true,text:"一建发消息说：「这个监管反馈目前只在REG内部流转，先不要扩散。」\n\n但Clinical正在根据旧版本准备回复。\n\n则韩问：「我们作为内容owner为什么不能看原文？」\n\n一建回复：「主要是考虑信息管理。」",choices:[
+      {t:"要求建立need-to-know清单，内容owner必须拿到原文。",route:"govern",e:{progress:5,power:2},npc:{zihan:4,yijian:-2},r:"一建最后开放了权限。文件没有因此泄密，反而第一次有人能真正回答监管问题。",branchFlag:"v13_reg_access"},
+      {t:"尊重REG流程，让一建摘要转述。",route:"appease",e:{trust:4,progress:-2},npc:{yijian:5},r:"摘要里少了一句限定条件。两天后大家重做了一版。"},
+      {t:"找老板要原文。",route:"power",e:{power:5,trust:-5},npc:{yijian:-6,ceo:1},r:"权限很快开了。一建之后每封邮件都开始抄钟时。"}]},
+    {id:"v13e_caolan_xianren",title:"谁来讲产品",npcEv:true,text:"专家会前彩排。\n\n贤人讲到关键数据时停了一下：「这个亚组是不是70%？」\n\n曹兰在旁边轻声补：「100–1000那组，定义和时间点别漏。」\n\n武总皱眉：「到底谁来讲？」",choices:[
+      {t:"贤人负责专家关系和提问，曹兰负责证据内容，Medical把边界收住。",route:"govern",e:{progress:4},npc:{xianren:2,caolan:5,wuzong:3},r:"会上贤人让专家愿意多说，曹兰没讲错数据，Medical也没有让市场替代医学判断。",branchFlag:"v13_postlaunch_roles"},
+      {t:"让贤人自己讲，毕竟他是MA。",route:"appease",e:{trust:3},npc:{xianren:4,caolan:-2},r:"专家很给面子。会后有两处数据需要澄清。"},
+      {t:"直接让曹兰主讲。",route:"power",e:{progress:5,power:2},npc:{caolan:6,xianren:-6},r:"内容明显更强。组织里的实际医学接口也更模糊了一点。"}]},
+    {id:"v13e_guyu_safety",title:"BD最怕买方自己发现",npcEv:true,text:"谷雨在尽调准备会上问：「这几个肾脏case我们准备怎么讲？」\n\n加琳说：「目前没有形成signal，不需要主动展开太多。」\n\n谷雨摇头：「我不是问要不要主动讲。我是问对方自己看到以后，我们有没有一个经得起追问的答案。」",choices:[
+      {t:"把case事实、医学判断和公司当前结论分三层准备。",route:"govern",e:{progress:4,career:2},npc:{guyu:6,pvp:3,jialin:-1},r:"尽调时对方真的问了。你们没有因为‘没形成signal’就显得像没看见case。",branchFlag:"v13_dd_safety"},
+      {t:"按加琳口径，只在被问到时回应。",route:"appease",e:{trust:3},npc:{jialin:5,guyu:-3},r:"对方被问到时确实问了，而且第一句就是：「你们内部怎么判断这几个case？」"},
+      {t:"让谷雨自己决定怎么包装。",route:"power",e:{progress:3},npc:{guyu:4,pvp:-2},r:"故事很顺。PVP后来看到那页slide，问：「这句是谁写的？」"}]},
+    {id:"v13e_linline",title:"又多一次访视",npcEv:true,text:"杨杨提议为了‘保险’再加一次确认访视。\n\n琳琳当场问：「一个中心多一次，一百个受试者就是一百次。谁去？患者来吗？CRC时间谁出？」\n\n杨杨说：「但这样风险更低。」",choices:[
+      {t:"先说清这次访视具体要降低哪个风险，再找替代方式。",route:"govern",e:{progress:4,morale:3},npc:{miaomiao:6,yangyang:1},r:"最后没有新增现场访视，改成了既有访视合并检查。琳琳只说了一句：「这才叫管理。」",branchFlag:"v13_visit_tradeoff"},
+      {t:"安全优先，增加访视。",route:"appease",e:{trust:3,stamina:-4},npc:{yangyang:5,miaomiao:-5},r:"方案更厚了一点，中心日历也更厚了一点。"},
+      {t:"直接否掉：「不要为了管理感加访视。」",route:"power",e:{power:4,trust:-3},npc:{yangyang:-6,miaomiao:4},r:"决定很快。杨杨之后每次提类似建议都会先说：「我知道你不喜欢加动作。」"}]},
+    {id:"v13e_lindan_mingye",title:"午饭桌上的组织图",npcEv:true,text:"午饭时林丹和明夜坐你旁边。\n\n林丹说：「听说老板最近对某条线很不满意。」\n\n明夜没抬头：「你说的是他昨天随口那句，还是已经有人要掉下去了？」\n\n林丹笑：「所以才问你嘛。」",choices:[
+      {t:"只把它当风向，不拿去做正式判断。",route:"govern",e:{insight:3},npc:{linan:3,mingye:4},r:"你得到了一条有用但不可靠的信息。它后来帮你提前准备，却没有进入任何Decision Log。",branchFlag:"v13_gossip_used"},
+      {t:"马上调整站位，离那条线远一点。",route:"appease",e:{power:2},npc:{linan:4},r:"两周后老板又夸了那条线一次。你开始理解风向和天气预报的区别。"},
+      {t:"追问林丹消息源。",route:"power",e:{insight:2},npc:{linan:-3,mingye:3},r:"她笑着换了话题。你知道她有信息，也知道她不打算把供应链交给你。"}]},
+    {id:"v13e_susu_wu",title:"谁拥有医学判断",npcEv:true,text:"武总说：「MA这边今天必须给出一个post-marketing研究方向。」\n\n苏苏问：「这个方向是业务负责人定，还是医学负责人定？」\n\n武总笑：「我管理MA，当然要推动他们给结果。」\n\n贤人在旁边点头点得很认真。",choices:[
+      {t:"把业务目标、医学问题和最终医学判断拆开，分别定owner。",route:"govern",e:{progress:4,power:2},npc:{weilai:5,wuzong:2,xianren:1},r:"武总仍然负责推动，但‘管理MA’第一次没有自动变成‘替MA做医学判断’。",branchFlag:"v13_medical_boundary"},
+      {t:"既然MA归武总，就由他统一。",route:"appease",e:{trust:4},npc:{wuzong:5,weilai:-4},r:"推进快了。贤人的下一版研究问题也更像业务问题。"},
+      {t:"直接说武总没有医学判断权。",route:"power",e:{power:5,trust:-4},npc:{wuzong:-7,weilai:3},r:"边界很清楚。合作气氛也很清楚。"}]}
+  ];
+  if(window.V11_EVENTS){
+    V13_EVENTS.forEach(function(e){ if(!window.V11_EVENTS.some(function(x){return x.id===e.id;})) window.V11_EVENTS.push(e); });
+  }
+
+  /* ---------- 2. Cross-run hidden routes ---------- */
+  function allAchNames(){
+    var ids=[];try{ids=JSON.parse(localStorage.getItem("dragon_achievements")||"[]");}catch(e){}
+    return ids.map(function(id){var a=(window.ACHIEVEMENTS||[]).find(function(x){return x.id===id;});return a&&a.name;}).filter(Boolean);
+  }
+  function endingHistory(){
+    try{return JSON.parse(localStorage.getItem("dragon_endings")||"[]");}catch(e){return[];}
+  }
+  function hasNames(arr,names){return names.every(function(n){return arr.indexOf(n)>=0;});}
+  window.META_ROUTES={
+    archivist:{name:"留痕者",desc:"你已经在别的周目里被‘我记得不是这样’教育过。新周目更早建立组织记忆。",unlock:function(a,h){return hasNames(a,["给记忆留台阶","Comment Triage"])||hasNames(a,["唯一纪要","给记忆留台阶"]);}},
+    operator:{name:"影子操盘手",desc:"你已经走过老板直连和真实权力线。新周目更早看到正式组织图背后的第二张图。",unlock:function(a,h){return h.indexOf("ge_court")>=0||h.indexOf("ge_regent")>=0||hasNames(a,["汇报线第一次分叉","权力写进规则"]);}},
+    weaver:{name:"织网者",desc:"你知道‘所有人都喜欢你’不是联盟。新周目能更早把互相不喜欢的人放进同一个临时合作。",unlock:function(a,h){return h.indexOf("ge_coalition")>=0||hasNames(a,["没有王座的多数派","制度不是一个人"]);}},
+    echo:{name:"龙之回声",desc:"你已经坐过那把椅子。这个周目会出现只有屠过龙的人才看得见的选择。",unlock:function(a,h){return h.indexOf("true_dragon")>=0||hasNames(a,["公开夺权","龙椅终于空了"]);}}
+  };
+  window.SELECTED_META_ROUTE="";
+  window.unlockedMetaRoutes=function(){var a=allAchNames(),h=endingHistory();return Object.keys(META_ROUTES).filter(function(k){return META_ROUTES[k].unlock(a,h);});};
+  window.selectMetaRoute=function(k){if(unlockedMetaRoutes().indexOf(k)<0)return;SELECTED_META_ROUTE=(SELECTED_META_ROUTE===k?"":k);localStorage.setItem("dragon_meta_route",SELECTED_META_ROUTE);renderNGPanel();};
+
+  var _renderNGPanelV13=renderNGPanel;
+  renderNGPanel=function(){
+    _renderNGPanelV13();
+    var el=document.getElementById("ng-panel");if(!el)return;
+    var u=unlockedMetaRoutes();
+    var html='<div class="sec-title">跨周目隐藏路线</div>';
+    if(!u.length)html+='<div class="creator-note">？？？ · 某些成就组合或特殊结局会让下一周目出现新的“前世经验”。</div>';
+    else{
+      html+='<div class="creator-note">每周目最多选择一条。它不会直接给你结局，只会让某些事件提前改变。</div><div class="creator-row">';
+      html+=u.map(function(k){var x=META_ROUTES[k];return '<button class="creator-chip '+(SELECTED_META_ROUTE===k?'selected':'')+'" onclick="selectMetaRoute(\''+k+'\')" title="'+x.desc+'">'+x.name+'</button>';}).join('');
+      html+='</div>';
+      if(SELECTED_META_ROUTE)html+='<div class="creator-note">'+META_ROUTES[SELECTED_META_ROUTE].desc+'</div>';
+    }
+    el.insertAdjacentHTML('beforeend',html);
+  };
+
+  /* Snapshot the selected route at start so achievements earned this run cannot unlock it mid-run. */
+  var _startGameV13=startGame;
+  startGame=function(){
+    var allowed=unlockedMetaRoutes(),picked=SELECTED_META_ROUTE||localStorage.getItem("dragon_meta_route")||"";
+    if(allowed.indexOf(picked)<0)picked="";
+    _startGameV13();
+    flags.metaRoute=picked;flags.metaSeen=false;
+    if(picked==="archivist"){S.insight=clamp((S.insight||50)+4);S.power=clamp(S.power+1);}
+    if(picked==="operator"){S.power=clamp(S.power+4);S.trust=clamp(S.trust-2);}
+    if(picked==="weaver"){S.morale=clamp(S.morale+5);S.power=clamp(S.power+1);}
+    if(picked==="echo"){S.heart=clamp(S.heart-3);S.insight=clamp((S.insight||50)+6);}
+    renderHUD();
+  };
+
+  function metaEventFor(k){
+    var E={
+      archivist:{id:"meta_archivist",title:"你已经见过这句话",npcEv:true,text:"钟时在会上说：「这个我们先按A。」\n\n你脑子里几乎条件反射地冒出另一个画面：几天以后，她问『我们为什么一直按A？』\n\n这一周目，你还没有被这件事坑过。\n\n但你已经知道会发生什么。",choices:[
+        {t:"会后立刻发三行Decision Note：选A、原因、什么情况才重新打开。",route:"govern",e:{progress:3,power:2},npc:{zihan:3},r:"没有人觉得这是什么大动作。两周后它救了你四小时。",branchFlag:"meta_memory_early"},
+        {t:"这周目还没发生，别把自己活成PTSD。",route:"appease",e:{heart:2},r:"你决定尊重新的时间线。新的时间线很快也尊重了旧公司的物理规律。"},
+        {t:"当场问钟时：「这个算final吗？」",route:"power",e:{power:2,trust:-2},r:"她说：「先按这个做，不要什么都叫final。」你记下了这句并不具有法律效力的话。"}]},
+      operator:{id:"meta_operator",title:"你知道谁会在会后打电话",npcEv:true,text:"一次跨部门会结束，所有人都说「回去再对一下」。\n\n你已经经历过另一个周目，所以很清楚：真正的decision不会发生在这张桌子上，而会发生在散会后的三通电话里。\n\n你现在还有机会决定自己要不要进入那三通电话。",choices:[
+        {t:"先把三方真正分歧写清，分别沟通，再回到正式会确认。",route:"govern",e:{power:4,progress:3},r:"你进入了真实决策链，但最后的决定仍然回到了有记录的地方。",branchFlag:"meta_shadow_clean"},
+        {t:"等正式流程自己走。",route:"appease",e:{trust:3},r:"第二天你收到一句：「方向已经基本定了。」没人说是在哪个会议定的。"},
+        {t:"分别打电话，把三方都推向你想要的方向。",route:"power",e:{power:7,dragon:3},r:"第二天会上大家惊讶地发现‘已经形成共识’。只有你知道共识是怎么形成的。",branchFlag:"meta_shadow_control"}]},
+      weaver:{id:"meta_weaver",title:"把互相不喜欢的人放在同一件事上",npcEv:true,text:"肖恩不信任朱粽，琳琳烦杨杨，明夜看不上很多人，K总对低能力几乎没有耐心。\n\n另一个周目里你已经知道：让他们互相喜欢是不可能的。\n\n现在一个中心风险需要四个人同时配合。",choices:[
+        {t:"不谈关系，只给每个人一个无法被别人替代的角色和共同截止点。",route:"govern",e:{progress:5,morale:4,power:2},npc:{xiaoen:3,miaomiao:3,kzong:3},r:"他们仍然不喜欢彼此。事情完成了。你第一次在这么早的章节看到‘吵着把事做完’。",branchFlag:"meta_coalition_early"},
+        {t:"先做一次关系修复再推进。",route:"appease",e:{morale:3,progress:-2},r:"大家表达了很多感受。问题还在等人处理。"},
+        {t:"指定你自己为唯一协调人。",route:"power",e:{power:6,stamina:-5},r:"事情完成。所有线都穿过你。你也因此成了系统最忙的单点故障。"}]},
+      echo:{id:"meta_echo",title:"你认得这把椅子",npcEv:true,text:"钟时又一次没有拍板。\n\n会议里所有人下意识看向你。\n\n这个场景你见过。另一个周目里，你后来坐上了所有人都等你说话的位置。\n\n明夜也看了你一眼，像是某种跨周目的既视感。",choices:[
+        {t:"把决定拆回角色和规则，不接那种‘所有人都等你’的权力。",route:"govern",e:{power:3,morale:5,dragon:-3},npc:{mingye:5,kzong:4},r:"你没有把决定推出去，也没有把它吞进自己。那把椅子第一次显得没那么重要。",branchFlag:"meta_echo_refuse"},
+        {t:"先替大家拍板，这次只救一次。",route:"appease",e:{progress:5,power:4,dragon:2},r:"所有人都松了一口气。你很熟悉这种感觉。",branchFlag:"meta_echo_once"},
+        {t:"既然大家都在等，就别装了。直接接管。",route:"power",e:{power:9,dragon:6,morale:-4},npc:{mingye:-3},r:"效率高得令人怀念。你也很清楚这条路通向哪里。",branchFlag:"meta_echo_take"}]}
+    };
+    return E[k]||null;
+  }
+
+  var _maybeEventV13=maybeEvent;
+  maybeEvent=function(chapterId,next){
+    if(flags&&flags.metaRoute&&!flags.metaSeen&&chapterIdx>=2){
+      flags.metaSeen=true;
+      var ev=metaEventFor(flags.metaRoute);
+      if(ev){usedEvents.push(ev.id);renderHUD();window._evObj={ev:ev,next:next,cro:false};renderEventFromObj();return;}
+    }
+    return _maybeEventV13(chapterId,next);
+  };
+
+  /* Special second-life ending: only available after previously reaching the Dragon ending and refusing it this run. */
+  ENDINGS.true_afterdragon={type:"跨周目隐藏结局",cls:"true",name:"龙见过你，你没坐下",story:"你不是第一次走到这里。\n\n上一个周目里，你最终拥有了所有人都等你说话的权力。\n\n这一次，同样的椅子又空出来。\n\n你没有假装自己不需要权力，也没有把所有决定重新收进自己手里。你把它拆成规则、角色、记录和一群互相不喜欢却能合作的人。\n\n明夜最后说：「这次不像她了。」\n\n你知道他说的是谁。\n\n也知道他说的可能不只是钟时。"};
+  var _finalEvalV13=finalizeEvaluation;
+  finalizeEvaluation=function(){
+    if(flags&&flags.metaRoute==="echo"&&flags.meta_echo_refuse&&S.progress>=72&&(S.morale||0)>=58&&(S.dragon||0)<20){showEnding("true_afterdragon");return;}
+    return _finalEvalV13();
+  };
+
+  /* Persist endings for future runs. */
+  var _showEndingV13=showEnding;
+  showEnding=function(k){
+    try{
+      var h=endingHistory();
+      if(h.indexOf(k)<0){h.push(k);localStorage.setItem("dragon_endings",JSON.stringify(h));}
+    }catch(e){}
+    return _showEndingV13(k);
+  };
+
+  var sub=document.querySelector("#title-screen .subtitle");
+  if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · 18章分支网 · 25随机事件 · 跨周目隐藏路线 · Demo v13.0";
+})();
+
 buildCast();
 renderVP();
 renderGallery();
