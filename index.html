@@ -186,7 +186,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.8</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.9</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -1331,41 +1331,41 @@ const MILESTONE_CHAPTERS = {
 const REALISTIC_EXTRA_CHOICES={
  c1:[
   {t:'引用上次会议纪要：配色尚未最终决定；今天先锁医学内容，封面由模板 owner 会后确认',e:{progress:5,trust:1,sanity:2},npc:{xiaoen:2},record:'writtenWarning',r:'会议纪要成为共同事实。医学内容按议程完成，封面被放进 parking lot。'},
-  {t:'请安瑜重述今天必须形成的三个决策，格式问题列入 action list',e:{progress:7,power:3,trust:-2},npc:{anyu:5},social:{respect:{anyu:4}},r:'安瑜没有替你争辩，只把 owner、截止时间和未决事项重新投到屏幕上。会议回到了项目。'}
+  {t:'转向安瑜：“把今天必须拍板的三件事、owner 和截止时间投出来；封面放 parking lot。”',interact:{with:'anyu',mode:'owner',favor:true},e:{progress:7,power:3,trust:-2},npc:{anyu:5},social:{respect:{anyu:4}},r:'安瑜没有替你争辩，只把 owner、截止时间和未决事项重新投到屏幕上。会议回到了项目。'}
  ],
  c2:[
-  {t:'按时限完成 SAE 医学评估，同时启动 ad hoc safety review：核对基线、合并用药、时序和中心聚集性',e:{progress:1,trust:-5,sanity:4},npc:{jialin:9,mingye:5,xiaoen:3},record:'safetyTrail',hidden:{merit:8,blame:-4},r:'加琳负责报告链，明夜核趋势，你负责医学判断。上报和因果结论被拆成了两件事。'},
-  {t:'上报不延迟，但建议该中心暂缓下一例给药，24 小时内完成快速医学复核',e:{progress:-2,trust:-4,power:3},npc:{jialin:7,miaomiao:4,houpi:4},record:'safetyTrail',hidden:{merit:7,piRep:3},r:'你没有停整个项目，只把控制措施限定在信息最不完整的中心。侯教授接受了这个边界。'}
+  {t:'对加琳说：“报告链你按时走，我来签医学评估；明夜今天把两例时序和中心趋势拉出来，我们今晚一起关掉第一版判断。”',interact:[{with:'jialin',mode:'shared_signature',favor:true},{with:'mingye',mode:'analysis'}],e:{progress:1,trust:-5,sanity:4},npc:{jialin:9,mingye:5,xiaoen:3},record:'safetyTrail',hidden:{merit:8,blame:-4},r:'加琳负责报告链，明夜核趋势，你负责医学判断。上报和因果结论被拆成了两件事。'},
+  {t:'和侯教授直接确认：“报告不延迟；这个中心下一例先不进，24 小时内我和加琳给您完整医学复核，再决定恢复。”',interact:[{with:'houpi',mode:'evidence'},{with:'jialin',mode:'safety'}],e:{progress:-2,trust:-4,power:3},npc:{jialin:7,miaomiao:4,houpi:4},record:'safetyTrail',hidden:{merit:7,piRep:3},r:'你没有停整个项目，只把控制措施限定在信息最不完整的中心。侯教授接受了这个边界。'}
  ],
  c3:[
-  {t:'请主持人把字号放进 parking lot，先完成中心延期、SAP 时间点和材料锁版三个议题',e:{progress:9,trust:-1,power:3,sanity:1},npc:{anyu:4,mingye:4},r:'安瑜立刻重排议程，明夜终于有时间讲 SAP。字号在最后五分钟按模板处理。'},
-  {t:'指定固定 corporate template owner；以后字体、字号、封面不再进医学评审会',e:{progress:4,power:5,trust:-2},npc:{xiaoen:3,anyu:3},record:'approvalChain',r:'肖恩支持把模板管理制度化。你没有解决一页 PPT，而是关掉了以后几十场同类争论。'}
+  {t:'对安瑜说：“字号放 parking lot。你帮我把中心延期、SAP 锁版和讲者材料三个 decision point 重新投出来。”',interact:[{with:'anyu',mode:'owner'},{with:'mingye',mode:'version'}],e:{progress:9,trust:-1,power:3,sanity:1},npc:{anyu:4,mingye:4},r:'安瑜立刻重排议程，明夜终于有时间讲 SAP。字号在最后五分钟按模板处理。'},
+  {t:'问肖恩：“能不能把模板规范固化成受控模板？以后医学会只讨论内容，不再逐页拍格式。”',interact:{with:'xiaoen',mode:'documentation',favor:true},e:{progress:4,power:5,trust:-2},npc:{xiaoen:3,anyu:3},record:'approvalChain',r:'肖恩支持把模板管理制度化。你没有解决一页 PPT，而是关掉了以后几十场同类争论。'}
  ],
  c4:[
-  {t:'请财务当场调 OA/PO 审批链，先确认事实；只有确实缺失才补流程',e:{trust:-1,power:3,sanity:2},npc:{weilai:7,yijian:3},record:'approvalChain',hidden:{merit:5,blame:-4},r:'卫来只用了不到一分钟确认审批有效。会议没有继续讨论谁记得什么。'},
-  {t:'会后发 corrected minutes：原审批继续有效，仅补充预算使用边界、owner 和变更规则',e:{progress:3,trust:2,power:2},npc:{weilai:4,xiaoen:3},record:'approvalChain',r:'你没有重走一个不存在的问题，只把正式记录修正到可执行。'}
+  {t:'转向卫来：“先别重走流程。请你把 OA、PO 和预算版本投出来，我们先确认现在到底缺不缺审批。”',interact:{with:'weilai',mode:'cost_visibility'},e:{trust:-1,power:3,sanity:2},npc:{weilai:7,yijian:3},record:'approvalChain',hidden:{merit:5,blame:-4},r:'卫来只用了不到一分钟确认审批有效。会议没有继续讨论谁记得什么。'},
+  {t:'和肖恩确认：“我会后发 corrected minutes，原审批不动，只补预算边界、owner 和以后什么情况需要重批。你帮我看记录是否够核查。”',interact:{with:'xiaoen',mode:'audit_trail'},e:{progress:3,trust:2,power:2},npc:{weilai:4,xiaoen:3},record:'approvalChain',r:'你没有重走一个不存在的问题，只把正式记录修正到可执行。'}
  ],
  c6:[
-  {t:'要求 RCA 改成可验证 timeline：医学审阅、VP approval、CRO 变更、中心执行分别列日期和 owner',e:{power:8,trust:-3,sanity:3},npc:{yijian:6,xiaoen:5,anyu:4},record:'writtenWarning',hidden:{merit:8,blame:-5},r:'一建关心截止点，肖恩关心证据链，安瑜关心 owner。三个人从不同角度把一句“医学问题”拆成了真实延误链。'},
-  {t:'24 小时内提交 cross-functional RCA draft，由医学、PM、注册、QA 联合确认后替换当前页面',e:{progress:2,power:5,trust:1},npc:{anyu:5,yijian:5,xiaoen:4},hidden:{merit:6,blame:-3},r:'你没有在高层会上争输赢，也没有接受错误归因。第二天联合版本替换了原页。'}
+  {t:'请安瑜把 RCA 页面改成 timeline；让一建补监管节点、肖恩补证据来源，你负责医学审阅日期，不接受一句“医学问题”结案',interact:[{with:'anyu',mode:'owner'},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'audit_trail'}],e:{power:8,trust:-3,sanity:3},npc:{yijian:6,xiaoen:5,anyu:4},record:'writtenWarning',hidden:{merit:8,blame:-5},r:'一建关心截止点，肖恩关心证据链，安瑜关心 owner。三个人从不同角度把一句“医学问题”拆成了真实延误链。'},
+  {t:'对安瑜说：“今晚你起 RCA 骨架；一建和肖恩各确认自己那一栏，我明天中午前把医学时间线补齐，我们四方签完再替换这页。”',interact:[{with:'anyu',mode:'decision_log',favor:true},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'documentation'}],e:{progress:2,power:5,trust:1},npc:{anyu:5,yijian:5,xiaoen:4},hidden:{merit:6,blame:-3},r:'你没有在高层会上争输赢，也没有接受错误归因。第二天联合版本替换了原页。'}
  ],
  c13:[
-  {t:'只补充自己负责的医学证据：样本量、终点、安全信号；管理决策由负责人自己解释',e:{progress:5,power:8,trust:-3,sanity:4},npc:{ceo:7,cso:5,mingye:4,jialin:4},hidden:{merit:10,reputation:8,blame:-4},r:'你把责任边界说清楚：统计讲数字，PV讲安全，医学整合证据；你不替任何人重写管理历史。'},
-  {t:'请主席逐题指定 decision owner：明夜答样本量，加琳答安全，一建答监管承诺，你整合医学结论',e:{progress:7,power:7,trust:-4,morale:5},npc:{mingye:6,jialin:6,yijian:6,ceo:4},hidden:{merit:12,reputation:7},r:'明夜终于不是“跑数的”，加琳不用一个人扛安全，一建只回答真正的监管承诺。房间第一次按专业分工运转。'}
+  {t:'先看向明夜和加琳：“样本量你答，安全你答；我只整合医学证据。钟总的管理决策请她自己说明。”',interact:[{with:'mingye',mode:'evidence'},{with:'jialin',mode:'shared_signature'}],e:{progress:5,power:8,trust:-3,sanity:4},npc:{ceo:7,cso:5,mingye:4,jialin:4},hidden:{merit:10,reputation:8,blame:-4},r:'你把责任边界说清楚：统计讲数字，PV讲安全，医学整合证据；你不替任何人重写管理历史。'},
+  {t:'请主席按专业点名：明夜解释样本量，加琳解释安全信号，一建解释监管承诺；你负责把三块证据连成开发结论',interact:[{with:'mingye',mode:'analysis',favor:true},{with:'jialin',mode:'safety',favor:true},{with:'yijian',mode:'regulatory',favor:true}],e:{progress:7,power:7,trust:-4,morale:5},npc:{mingye:6,jialin:6,yijian:6,ceo:4},hidden:{merit:12,reputation:7},r:'明夜终于不是“跑数的”，加琳不用一个人扛安全，一建只回答真正的监管承诺。房间第一次按专业分工运转。'}
  ],
  x2:[
-  {t:'先定义 dose-selection 标准：PK/PD、安全边际、暴露-效应、可执行性，再按同一套标准比较两个剂量',e:{progress:6,power:5,trust:-1},npc:{mingye:7,cso:4,jialin:3},record:'doseMatrix',hidden:{merit:10,reputation:6},r:'明夜负责量化，二老板看科学逻辑，加琳守安全边界。大家先同意“怎么选”，再讨论“选哪个”。'},
+  {t:'让明夜先把两剂量按同一套 PK/PD 和暴露-效应框架量化；再请加琳把安全边际写进同一张 decision matrix',interact:[{with:'mingye',mode:'predefined_rule',favor:true},{with:'jialin',mode:'safety'}],e:{progress:6,power:5,trust:-1},npc:{mingye:7,cso:4,jialin:3},record:'doseMatrix',hidden:{merit:10,reputation:6},r:'明夜负责量化，二老板看科学逻辑，加琳守安全边界。大家先同意“怎么选”，再讨论“选哪个”。'},
   {t:'若证据仍不足，进入二期时预设 dose-confirmation 目标和决策门槛，而不是无限保留两个剂量',e:{progress:2,power:4,trust:1},npc:{mingye:4,weilai:2},hidden:{merit:6,blame:-2},r:'你没有假装一期已经回答所有问题，也没有让财务承担一个没有终点的双剂量方案。'}
  ],
  x3:[
-  {t:'明确“研究者意见记录 ≠ 方案变更”；会后 48 小时发统一 response matrix',e:{progress:4,power:5,trust:-2},npc:{houpi:4,niupi:4,zhangpi:4,linpi:3,yijian:3},record:'imActions',hidden:{merit:8,piRep:7,blame:-3},r:'侯教授的科学问题、牛教授的执行问题、张教授的资源问题、林医生的学术诉求被分栏记录，没有任何一个“点头”自动变成方案承诺。'}
+  {t:'逐一回应四位 PI：“侯教授的科学问题、牛教授的执行问题、张教授的资源问题、林医生的作者问题都会进入 response matrix；今天的讨论不等于已经改方案。”',interact:[{with:'houpi',mode:'peer_defensible'},{with:'niupi',mode:'site_feasible'},{with:'zhangpi',mode:'respect_center'},{with:'linpi',mode:'authorship_rule'}],e:{progress:4,power:5,trust:-2},npc:{houpi:4,niupi:4,zhangpi:4,linpi:3,yijian:3},record:'imActions',hidden:{merit:8,piRep:7,blame:-3},r:'侯教授的科学问题、牛教授的执行问题、张教授的资源问题、林医生的学术诉求被分栏记录，没有任何一个“点头”自动变成方案承诺。'}
  ],
  x4:[
   {t:'对证据不足的问题明确说“现有数据不足以现场承诺”，给出当前 proposal，并承诺书面 follow-up',e:{progress:7,power:6,trust:-2},npc:{yijian:10,ceo:4,cso:4},record:'eop2Minutes',hidden:{merit:12,reputation:8,blame:-5},r:'一建接受这种回答，因为它有明确 follow-up 和截止点。监管没有要求你现场发明确定性。'},
-  {t:'由一建主持 question log：先复述 agency concern，再由预先指定 responder 回答，医学只做整合',e:{progress:10,power:7,trust:-3,morale:4},npc:{yijian:12,mingye:6,niupi:4},record:'eop2Minutes',hidden:{merit:14,reputation:9},r:'一建最怕错过承诺和窗口，这次每个问题、owner、书面补充项都在现场被锁定。'}
+  {t:'把主持权交给一建：“每题先复述 agency concern、记 owner 和 follow-up；明夜只答统计，牛教授只答执行，我来整合医学结论。”',interact:[{with:'yijian',mode:'question_log',favor:true},{with:'mingye',mode:'analysis'},{with:'niupi',mode:'site_feasible'}],e:{progress:10,power:7,trust:-3,morale:4},npc:{yijian:12,mingye:6,niupi:4},record:'eop2Minutes',hidden:{merit:14,reputation:9},r:'一建最怕错过承诺和窗口，这次每个问题、owner、书面补充项都在现场被锁定。'}
  ],
  x5:[
-  {t:'做一页贡献矩阵：里程碑、decision owner、主要贡献者、可核对证据；不写“谁最重要”',e:{power:7,trust:-3,morale:5},npc:{ceo:7,cso:4,zouting:5,yijian:4},record:'authorshipTrail',hidden:{merit:9,reputation:12,blame:-5},r:'邹婷关心组织事实，一建在意交付贡献，老板看到的是可核对的工作，而不是形容词。'},
+  {t:'找邹婷和一建一起过贡献矩阵：“你看组织事实，他看交付节点；我只把每个 decision owner 和证据填完整，不写谁最重要。”',interact:[{with:'zouting',mode:'power_signal'},{with:'yijian',mode:'written_followup'}],e:{power:7,trust:-3,morale:5},npc:{ceo:7,cso:4,zouting:5,yijian:4},record:'authorshipTrail',hidden:{merit:9,reputation:12,blame:-5},r:'邹婷关心组织事实，一建在意交付贡献，老板看到的是可核对的工作，而不是形容词。'},
   {t:'和钟时对齐两层材料：封面保留负责人叙事，附件保留真实 contribution trail',e:{trust:5,power:3,sanity:1},npc:{zouting:3,xiaoen:3},record:'authorshipTrail',hidden:{merit:5,reputation:5,blame:-3},r:'你没有要求负责人从标题页消失，但肖恩确保内部记录不会跟着宣传口径一起消失。'}
  ]
 };
@@ -3241,8 +3241,61 @@ function deriveHiddenImpact(c){
   return h;
 }
 
+
+/* =====================  v9.9 · Character-driven Interaction  =====================
+   涉及 NPC 的选项不是“点这个人 +5”，而是你具体怎么和这个人合作。
+   匹配人物小传中的 want/fear 会提高 Respect / Favor；踩中恐惧会降低 Respect，
+   即使对方因为权力而配合，也不等于真的认可你。 */
+const CHARACTER_INTERACTION_RULES={
+  anyu:{likes:['owner','risk','early_warning','decision_log'],dislikes:['hide_risk','heroic_rescue','vague'],voice:'她更在意问题有没有 owner，而不是你说得好不好听。'},
+  linan:{likes:['private_support','repair','teach'],dislikes:['public_shame','cover_up','dump'],voice:'她最怕公开证明自己漏了关键步骤。'},
+  qiaoqiao:{likes:['timeline','execute','clear_boundary'],dislikes:['delay_without_plan','open_ended'],voice:'她会先问：这件事影响不影响首例入组。'},
+  wenjing:{likes:['approval','documentation','boundary','decision_log'],dislikes:['bypass','backfill','oral_only'],voice:'她不怕慢，她怕以后有人说“当时口头同意了”。'},
+  xiaoke:{likes:['power_signal','clear_boss','visibility'],dislikes:['isolated','losing_side'],voice:'她首先判断谁现在拥有真正的决策权。'},
+  mingye:{likes:['evidence','analysis','version','predefined_rule'],dislikes:['blame_stats','use_as_tool','rewrite_result'],voice:'他要的是有人真正读懂分析，而不是只让他跑数。'},
+  jialin:{likes:['safety','shared_signature','completeness','report_on_time'],dislikes:['suppress','delay_reporting','leave_alone'],voice:'她不需要你永远同意她，只需要别让她一个人签。'},
+  xiaoen:{likes:['documentation','approval','capa','audit_trail'],dislikes:['bypass','backfill','exception_without_record'],voice:'他相信当时签下来的那张纸，不相信半年后的解释。'},
+  yijian:{likes:['deadline','regulatory','question_log','written_followup'],dislikes:['miss_window','vague_commitment','late_change'],voice:'他最怕的不是加班，是错过递交窗口。'},
+  weilai:{likes:['budget','scope','cost_visibility'],dislikes:['open_ended_cost','unknown_owner'],voice:'他不反对花钱，他反对钱花出去了没人知道。'},
+  miaomiao:{likes:['site_feasible','advance_notice','clear_request'],dislikes:['last_minute','repeat_rework','site_embarrassment'],voice:'她要的是别让她的人在中心替总部的反复买单。'},
+  houpi:{likes:['science','evidence','peer_defensible'],dislikes:['premature_promise','use_reputation'],voice:'他愿意替科学站台，不愿替不成熟方案背书。'},
+  niupi:{likes:['site_feasible','execution','patient_burden'],dislikes:['ppt_only','unworkable_visit'],voice:'他只看这套方案在真实中心能不能跑。'},
+  zhangpi:{likes:['site_resource','workload','respect_center'],dislikes:['extra_work_no_resource','ignore_center'],voice:'他会把被忽略的态度直接写进入组曲线。'},
+  linpi:{likes:['authorship_rule','academic_opportunity','data_role'],dislikes:['empty_promise','et_al_only'],voice:'他愿意多做一步，但要知道学术贡献如何被承认。'}
+};
+function characterInteractionImpact(c){
+  if(!c.interact) return;
+  const xs=Array.isArray(c.interact)?c.interact:[c.interact];
+  xs.forEach(function(it){
+    const k=it.with, mode=it.mode, rule=CHARACTER_INTERACTION_RULES[k];
+    if(!rule||!NPCs[k]) return;
+    const p=socialPerson(k);
+    if(rule.likes.indexOf(mode)>=0){
+      p.respect=clamp((p.respect||0)+3);
+      S.npc[k]=clamp((S.npc[k]||0)+2);
+      if(it.favor) p.favor=clamp((p.favor||0)+1);
+      toast('💬 '+NPCs[k].name+'：'+rule.voice,'up');
+      saveRelationshipIntel(k,'joint',2);
+    }else if(rule.dislikes.indexOf(mode)>=0){
+      p.respect=clamp((p.respect||0)-4);
+      S.npc[k]=clamp((S.npc[k]||0)-3);
+      p.fear=clamp((p.fear||0)+(it.public?2:0));
+      toast('💬 '+NPCs[k].name+'明显收紧了态度：'+rule.voice,'down');
+      saveRelationshipIntel(k,'joint',2);
+    }
+  });
+}
+function npcQualitativeReaction(k,v){
+  if(Math.abs(v)<5) return null;
+  if(v>=10) return NPCs[k].name+'明显更愿意主动和你合作';
+  if(v>=5) return NPCs[k].name+'对这次处理表现出认可';
+  if(v<=-10) return NPCs[k].name+'明显开始回避与你直接协作';
+  return NPCs[k].name+'对你的处理方式产生了保留';
+}
+
 function applyChoice(c){
   const deltas = [];
+  characterInteractionImpact(c);
   const h=deriveHiddenImpact(c);
   ['merit','reputation','piRep','blame'].forEach(function(k){ S[k]=clamp((S[k]||0)+(h[k]||0)); });
   (c.witnesses||[]).forEach(function(k){ if(S.npc[k]!=null) S.npc[k]=clamp(S.npc[k]+2); });
@@ -3268,7 +3321,8 @@ function applyChoice(c){
     const v = c.npc[k];
     S.npc[k] = clamp(S.npc[k]+v);
     applyRelationshipRipple(k,v,topicOfChoice(c),c.visibility||'PRIVATE');
-    deltas.push({label: NPCs[k].name + (v>0?' +':' ')+v, kind: v>0?'up':'down', npc:true});
+    const qr=npcQualitativeReaction(k,v);
+    if(qr) deltas.push({label:qr, kind:v>0?'up':'down', npc:true});
   });
   applySocialMeta(c);
   deltas.forEach(function(d){ toast(d.label, d.kind); });
@@ -3312,7 +3366,7 @@ const INTERNAL_EVENTS = [
    {t:'先别上会，等问题真的发生再处理',topic:'TIMELINE',stance:'politics',e:{trust:3,progress:-3},npc:{anyu:-8,qiaoqiao:4},social:{respect:{anyu:-10,qiaoqiao:2}},r:'钟时觉得你很稳，不制造焦虑。安瑜把风险表存回了自己的文件夹。三周后其中两条真的发生。'},
    {t:'让她只把会影响 timeline 的三条留下',topic:'TIMELINE',stance:'execution',e:{progress:3},npc:{anyu:2,qiaoqiao:5},social:{links:[['anyu','qiaoqiao',2]],respect:{anyu:2}},r:'表变短了，也更容易被看完。代价是那条“不影响 timeline、但影响以后解释”的记录被划掉了。'}]},
  {id:'v9_pm_push',npcEv:true,title:'乔乔要先开中心',text:'中心药物已经到库，但培训签字缺两页。乔乔说：\n\n「不影响实际操作，今天不开中心本月 KPI 就红了。先开，明天补签。」\n文静在群里只回了四个字：不建议启动。',choices:[
-   {t:'支持文静：签字没齐，不开',topic:'COMPLIANCE',visibility:'PUBLIC',stance:'compliance',e:{progress:-3,blame:-2},npc:{wenjing:9,jialin:4,qiaoqiao:-8},social:{respect:{wenjing:8,jialin:4,qiaoqiao:-2},links:[['wenjing','jialin',4],['wenjing','qiaoqiao',-5]],coalition:['wenjing','jialin','xiaoen']},r:'KPI 红了一格。三个月后 QA 抽到这个中心时，没有任何人需要解释“当时为什么觉得可以”。'},
+   {t:'对文静说：“你把缺的两页和批准责任人列清楚；签字没齐之前不开。”',interact:{with:'wenjing',mode:'approval',favor:true},topic:'COMPLIANCE',visibility:'PUBLIC',stance:'compliance',e:{progress:-3,blame:-2},npc:{wenjing:9,jialin:4,qiaoqiao:-8},social:{respect:{wenjing:8,jialin:4,qiaoqiao:-2},links:[['wenjing','jialin',4],['wenjing','qiaoqiao',-5]],coalition:['wenjing','jialin','xiaoen']},r:'KPI 红了一格。三个月后 QA 抽到这个中心时，没有任何人需要解释“当时为什么觉得可以”。'},
    {t:'支持乔乔：先开，培训今晚补',topic:'TIMELINE',visibility:'PUBLIC',stance:'execution',e:{progress:6,blame:6},npc:{qiaoqiao:9,wenjing:-10,xiaoen:-5},social:{favor:{qiaoqiao:1},respect:{qiaoqiao:4,wenjing:-6},links:[['qiaoqiao','zhuzong',3],['qiaoqiao','wenjing',-6]],coalition:['qiaoqiao','zhuzong']},r:'中心今天开了。晚上十一点半，两张签字页终于补齐。没人受伤，所有人都记住了你愿意怎么换时间。'},
    {t:'⚔️ “我承担医学决定，按这个折中方案执行。”',topic:'POWER',visibility:'PUBLIC',stance:'politics',lock:{power:55},lockHint:'需要足够权力',e:{progress:2,power:2,morale:-2},npc:{qiaoqiao:1,wenjing:1},social:{fear:{qiaoqiao:5,wenjing:3},respect:{anyu:3}},record:'approvalChain',r:'你要求当日完成关键培训，次日早上再开中心。两边都不满意，但都执行了。权力的价值通常不是让别人同意你，而是让争论有结束时间。'}]},
  {id:'v9_pm_xiaoke',npcEv:true,title:'小柯的立场更新得比会议纪要快',text:'上午小柯支持你把数据库锁定推迟三天。下午她从钟时办公室出来，在群里写：\n\n「综合管理层意见，建议仍按原计划锁库。」\n\n她随后私聊你：「方向变了，我也没办法。」',choices:[
