@@ -4429,6 +4429,382 @@ initSocial=function(){
 
 /* 把“能力门槛”写进事件数据以后，所有事件类型都会自动继承上面的 unlocked / choiceHTML 逻辑。 */
 
+
+/* =====================  v10.1 · Life Build / Personality / Emotion  =====================
+   捏人不再直接“购买北大/专业优秀”等结果，而是在不同人生阶段花有限时间点。
+   经历先改变能力/性格/身心，再由经历组合自动拼出品质词条。
+   所有时间点、阈值、倍率均为 PLACEHOLDER，最终统一跑模拟校准。 */
+
+/* ---------- I. 六个人生阶段与经历 ---------- */
+var LIFE_STAGE_META=[
+  {id:"school",name:"高中以前",time:4,desc:"第一次决定：时间用在成绩、人群还是身体上。"},
+  {id:"college",name:"大学",time:4,desc:"学校只是起点；你真正把时间花在哪里，会留下更久。"},
+  {id:"graduate",name:"研究生 / 博士",time:4,desc:"专业深度、导师体系、抗压方式开始定型。"},
+  {id:"early",name:"入行 0–3 年",time:4,desc:"第一次学会什么叫交付，也第一次学会什么叫甩锅。"},
+  {id:"middle",name:"工作 3–6 年",time:4,desc:"从做事的人变成让别人一起做事的人。"},
+  {id:"senior",name:"工作 6 年+",time:4,desc:"开始决定资源、团队和项目，而不只是完成任务。"}
+];
+var LIFE_EVENTS={
+  school:[
+    {id:"school_study",name:"埋头学习",cost:2,desc:"把大量时间换成扎实基础。",skill:{professional:4,insight:2},personality:{drive:4,control:2},exp:["study"]},
+    {id:"school_social",name:"社团与朋友",cost:2,desc:"很早就学会读空气和与人相处。",skill:{social:5,charm:2},personality:{trust:3,conflict:-1},exp:["social"]},
+    {id:"school_sport",name:"长期运动",cost:2,desc:"身体是最早可以积累的资本。",skill:{fitness:6},body:{maxStamina:8,recovery:5},personality:{stability:2},exp:["sport"]},
+    {id:"school_compete",name:"竞赛型成长",cost:2,desc:"习惯把输赢和自我证明绑在一起。",skill:{professional:3,insight:2},personality:{drive:7,stability:-2},exp:["competition"]}
+  ],
+  college:[
+    {id:"college_top",name:"冲顶尖高校",cost:3,desc:"把大学阶段继续押在学业上。",skill:{professional:5,insight:4},personality:{drive:3},exp:["top_school"]},
+    {id:"college_org",name:"学生组织负责人",cost:2,desc:"第一次发现组织不是把自己的事做好。",skill:{management:5,social:3},personality:{control:1,conflict:2},exp:["leadership"]},
+    {id:"college_lab",name:"实验室搬砖",cost:2,desc:"科研训练让你对证据和版本更敏感。",skill:{professional:4,insight:4},personality:{control:2},exp:["research"]},
+    {id:"college_social",name:"高频社交",cost:2,desc:"你认识的人比课程表上的课更多。",skill:{social:6,charm:4},personality:{trust:3},exp:["social"]},
+    {id:"college_sport",name:"坚持运动",cost:2,desc:"没有把所有青春都换成CV。",skill:{fitness:5},body:{maxStamina:6,recovery:5},personality:{stability:3},exp:["sport"]},
+    {id:"college_boundary",name:"第一次学会拒绝",cost:2,desc:"小组作业有人失约时，你没有再替他通宵。",skill:{management:2,social:2},personality:{boundary:6,conflict:2},exp:["boundary"]}
+  ],
+  graduate:[
+    {id:"grad_deep",name:"专业深挖",cost:2,desc:"几年里真正把一个领域做深。",skill:{professional:7,insight:3},personality:{drive:3},exp:["deep_specialty"]},
+    {id:"grad_paper",name:"高压科研产出",cost:2,desc:"会写、会改、会在凌晨两点继续工作。",skill:{professional:4},body:{maxStamina:3},heart:{resilience:-1},personality:{drive:5,boundary:-2},exp:["overwork"]},
+    {id:"grad_mentor",name:"强导师体系",cost:2,desc:"学会在权威面前表达不同意见。",skill:{social:3,insight:4},personality:{stability:3,boundary:4,conflict:2},exp:["mentor"]},
+    {id:"grad_overseas",name:"海外训练",cost:3,desc:"重新适应语言、规则和陌生组织。",skill:{professional:4,social:4,insight:4},personality:{stability:2,trust:-1},exp:["overseas"]},
+    {id:"grad_setback",name:"经历一次重大挫折并走出来",cost:2,desc:"没有赢，但开始学会不把失败等同于自己。",skill:{insight:3},heart:{resilience:7,recovery:4},personality:{stability:7,drive:-1},exp:["setback"]}
+  ],
+  early:[
+    {id:"early_cro",name:"CRO高强度执行",cost:2,desc:"知道交付、中心和供应商是怎么真正跑起来的。",skill:{management:4,social:2,insight:2},body:{maxStamina:3},exp:["cro","execution"]},
+    {id:"early_biotech",name:"早期Biotech",cost:2,desc:"没人替你补空白，很多事情必须自己摸出来。",skill:{management:4,professional:2,insight:3},personality:{control:2},exp:["biotech","ownership"]},
+    {id:"early_mnc",name:"跨国药企训练",cost:2,desc:"流程、角色边界和成熟体系留下肌肉记忆。",skill:{professional:3,management:3,social:2},personality:{boundary:2},exp:["mnc"]},
+    {id:"early_owner",name:"主动接一个小项目",cost:2,desc:"第一次真正对一个结果负责。",skill:{management:6,insight:2},personality:{drive:3,boundary:2},exp:["ownership"]},
+    {id:"early_rescue",name:"总替领导救火",cost:2,desc:"执行力越来越强，边界却越来越模糊。",skill:{management:3,professional:2},body:{maxStamina:3},personality:{boundary:-5,control:4,drive:3},exp:["rescue","overwork"]},
+    {id:"early_life",name:"保留工作之外的生活",cost:2,desc:"不是所有时间都用来证明职业价值。",heart:{resilience:5,recovery:6},personality:{stability:4,boundary:3},exp:["life"]}
+  ],
+  middle:[
+    {id:"mid_cross",name:"负责跨部门项目",cost:2,desc:"开始处理依赖、owner和决策，而不是只催任务。",skill:{management:7,social:3,insight:3},personality:{boundary:2},exp:["crossfunctional","ownership"]},
+    {id:"mid_team",name:"真正带过团队",cost:2,desc:"学会别人的错误也是管理成本。",skill:{management:7,social:4},personality:{control:-2,trust:1},exp:["people_manager"]},
+    {id:"mid_phase2",name:"完整做过一次二期",cost:2,desc:"第一次看完整个临床项目从设计跑到结果。",skill:{professional:5,management:5,insight:3},exp:["phase2"]},
+    {id:"mid_conflict",name:"处理一次严重跨部门冲突",cost:2,desc:"你可以不让他们和解，但必须让事情继续。",skill:{management:5,social:4,insight:4},personality:{stability:4,conflict:2},exp:["conflict_management"]},
+    {id:"mid_politics",name:"踩过一次办公室政治的坑",cost:2,desc:"从此知道‘大家都同意’不是证据。",skill:{insight:7,social:2},personality:{trust:-5,stability:2},exp:["politics"]}
+  ],
+  senior:[
+    {id:"senior_phase3",name:"完整三期经验",cost:3,desc:"真正理解Critical Path、中心规模和后期治理。",skill:{management:8,professional:4,insight:4},exp:["phase3"]},
+    {id:"senior_portfolio",name:"管理多项目Portfolio",cost:3,desc:"资源配置开始比单项目执行更重要。",skill:{management:9,insight:5},personality:{control:-2},exp:["portfolio"]},
+    {id:"senior_exec",name:"频繁向高层汇报",cost:2,desc:"学会把复杂问题压缩成管理层能做的决定。",skill:{social:6,charm:3,insight:4},personality:{stability:2},exp:["executive_comm"]},
+    {id:"senior_nda",name:"从FIH一路做到NDA",cost:4,desc:"极贵，但你真的看过完整开发链条。",skill:{professional:9,management:9,insight:6},personality:{drive:3},exp:["fih_nda"]},
+    {id:"senior_boundary",name:"学会删掉工作",cost:2,desc:"管理不是增加动作，而是决定什么不做。",skill:{management:6,insight:4},personality:{boundary:5,control:-3},heart:{resilience:3},exp:["stop_doing"]}
+  ]
+};
+var LIFE_DRAFT={gender:"male",selected:{}};
+function resetLifeDraft(){
+  LIFE_DRAFT={gender:LIFE_DRAFT.gender||"male",selected:{}};
+  renderLifeBuilder();
+}
+function stageSpent(stageId){
+  var ids=LIFE_DRAFT.selected[stageId]||[];
+  return ids.reduce(function(s,id){
+    var e=(LIFE_EVENTS[stageId]||[]).find(function(x){return x.id===id;});
+    return s+(e?e.cost:0);
+  },0);
+}
+function lifeEventSelected(stage,id){
+  return (LIFE_DRAFT.selected[stage]||[]).indexOf(id)>=0;
+}
+function toggleLifeEvent(stage,id){
+  var st=LIFE_STAGE_META.find(function(x){return x.id===stage;});
+  var e=(LIFE_EVENTS[stage]||[]).find(function(x){return x.id===id;});
+  if(!st||!e) return;
+  var arr=LIFE_DRAFT.selected[stage]||(LIFE_DRAFT.selected[stage]=[]);
+  var at=arr.indexOf(id);
+  if(at>=0){arr.splice(at,1);renderLifeBuilder();return;}
+  if(stageSpent(stage)+e.cost>st.time){toast("这个阶段的时间已经不够了","down");return;}
+  arr.push(id);renderLifeBuilder();
+}
+function setLifeGender(g){LIFE_DRAFT.gender=g;renderLifeBuilder();}
+function lifeSummary(){
+  var x={
+    skills:{professional:38,social:38,charm:38,management:36,project:36,insight:38,fitness:40},
+    personality:{stability:50,boundary:50,conflict:50,control:50,drive:50,trust:50},
+    body:{maxStamina:60,recovery:10},
+    heart:{resilience:50,recovery:8},
+    exp:[],
+    events:[]
+  };
+  Object.keys(LIFE_DRAFT.selected).forEach(function(stage){
+    (LIFE_DRAFT.selected[stage]||[]).forEach(function(id){
+      var e=(LIFE_EVENTS[stage]||[]).find(function(z){return z.id===id;});
+      if(!e) return;x.events.push(id);
+      Object.keys(e.skill||{}).forEach(function(k){x.skills[k]=(x.skills[k]||0)+e.skill[k];});
+      Object.keys(e.personality||{}).forEach(function(k){x.personality[k]=(x.personality[k]||50)+e.personality[k];});
+      Object.keys(e.body||{}).forEach(function(k){x.body[k]=(x.body[k]||0)+e.body[k];});
+      Object.keys(e.heart||{}).forEach(function(k){x.heart[k]=(x.heart[k]||0)+e.heart[k];});
+      (e.exp||[]).forEach(function(tag){if(x.exp.indexOf(tag)<0)x.exp.push(tag);});
+    });
+  });
+  x.skills.project=x.skills.management; // 兼容v10之前的项目管理门槛
+  Object.keys(x.skills).forEach(function(k){x.skills[k]=clamp(x.skills[k]);});
+  Object.keys(x.personality).forEach(function(k){x.personality[k]=clamp(x.personality[k]);});
+  x.body.maxStamina=Math.max(45,Math.min(100,x.body.maxStamina));
+  x.heart.resilience=clamp(x.heart.resilience);
+  return x;
+}
+var TRAIT_RECIPES=[
+  {id:"pku",name:"北大毕业",rarity:"epic",need:["study","top_school"],test:function(x){return x.skills.professional>=48&&x.skills.insight>=44;},desc:"学业与洞察起点高；高能力NPC更快认真对待你，老板对你的期待也更高。"},
+  {id:"pro",name:"专业优秀",rarity:"epic",need:["deep_specialty"],test:function(x){return x.skills.professional>=54;},desc:"高阶医学/临床判断更容易达到能力门槛。"},
+  {id:"socialstrong",name:"社交能力较强",rarity:"rare",need:["social"],test:function(x){return x.skills.social>=47;},desc:"说服与私聊收益更高，冲突关系损失略缓。"},
+  {id:"manager",name:"优秀项目经理",rarity:"epic",need:["ownership","crossfunctional"],test:function(x){return x.skills.management>=50;},desc:"能区分Critical Path、Decision和Task；治理工具更有效。"},
+  {id:"orgleader",name:"组织型领导者",rarity:"legendary",need:["people_manager","conflict_management","portfolio"],test:function(x){return x.skills.management>=57&&x.skills.social>=45;},desc:"私人关系可以继续很差，但Functional Cooperation更不容易崩。"},
+  {id:"phase3",name:"完整三期经验",rarity:"epic",need:["phase3"],desc:"后期项目治理、中心规模与资源冲突出现高级解法。"},
+  {id:"nda",name:"从FIH做到NDA",rarity:"legendary",need:["fih_nda"],desc:"真正经历完整开发路径；专业Respect高，也更容易被低能力管理者视为威胁。"},
+  {id:"fit",name:"精力旺盛",rarity:"rare",need:["sport"],test:function(x){return x.body.maxStamina>=70;},desc:"最大体力和恢复能力更高。"},
+  {id:"iron",name:"铁人",rarity:"epic",need:["sport"],test:function(x){return x.body.maxStamina>=78&&x.personality.stability>=54;},desc:"高强度阶段更少被迫趴桌，休息收益更高。"},
+  {id:"boundary",name:"边界清晰",rarity:"rare",need:["boundary"],test:function(x){return x.personality.boundary>=56;},desc:"拒绝不合理工作时心力和关系损失更小。"},
+  {id:"resilient",name:"抗压能力强",rarity:"rare",need:["setback"],test:function(x){return x.heart.resilience>=56;},desc:"被否定、公开质疑和反复返工造成的心力消耗降低。"},
+  {id:"stable",name:"内核稳定",rarity:"epic",need:["setback","life"],test:function(x){return x.personality.stability>=59&&x.personality.boundary>=53;},desc:"职位、老板态度和自我价值分得更开。"},
+  {id:"selfcontrol",name:"高度自控",rarity:"epic",need:["setback"],test:function(x){return emotionalControlFrom(x)>=62;},desc:"有情绪，但低Heart时仍较容易保留理性行动。"},
+  {id:"cool",name:"泰山崩于前而色不变",rarity:"legendary",need:["setback","conflict_management","stop_doing"],test:function(x){return emotionalControlFrom(x)>=70;},desc:"压力会影响你，但较难直接接管你的决策。"},
+  {id:"workaholic",name:"工作狂",rarity:"rare",need:["overwork","rescue"],desc:"高强度交付更能扛，但边界和长期恢复更差。"},
+  {id:"smartlazy",name:"聪明地偷懒",rarity:"epic",need:["stop_doing","crossfunctional"],test:function(x){return x.skills.management>=50&&x.skills.insight>=48;},desc:"不是硬扛，而是删掉不影响结果的工作。"},
+  {id:"political",name:"政治敏感",rarity:"rare",need:["politics"],desc:"更快识别甩锅、站队与非正式权力，但默认信任更低。"},
+  {id:"highdrive",name:"胜负欲强",rarity:"rare",need:["competition"],test:function(x){return x.personality.drive>=58;},desc:"成功时功勋感更强，被否定或抢功时也更容易被点燃。"}
+];
+function hasAll(xs,need){return (need||[]).every(function(k){return xs.indexOf(k)>=0;});}
+function emotionalControlFrom(x){
+  x=x||lifeSummary();
+  var p=x.personality,h=x.heart,s=x.skills;
+  return clamp(Math.round(p.stability*.34+p.boundary*.18+s.insight*.17+h.resilience*.21+(100-Math.abs(p.drive-55))*.10));
+}
+function derivedTraits(x){
+  x=x||lifeSummary();
+  return TRAIT_RECIPES.filter(function(t){return hasAll(x.exp,t.need)&&(!t.test||t.test(x));});
+}
+function rarityName(r){return ({common:"普通",uncommon:"优秀",rare:"精良",epic:"史诗",legendary:"传说"})[r]||r;}
+function lifeBuilderHTML(){
+  var x=lifeSummary(),traits=derivedTraits(x);
+  var stages=LIFE_STAGE_META.map(function(st){
+    var used=stageSpent(st.id);
+    var ev=(LIFE_EVENTS[st.id]||[]).map(function(e){
+      var on=lifeEventSelected(st.id,e.id);
+      return '<button type="button" class="life-event '+(on?"selected":"")+'" onclick="toggleLifeEvent(\''+st.id+'\',\''+e.id+'\')">'
+       +'<span class="life-ename">'+e.name+'</span><span class="life-cost">⏳'+e.cost+'</span><span class="life-desc">'+e.desc+'</span></button>';
+    }).join("");
+    return '<div class="life-stage"><div class="life-stage-head"><b>'+st.name+'</b><span>时间 '+used+' / '+st.time+'</span></div><div class="life-stage-desc">'+st.desc+'</div><div class="life-events">'+ev+'</div></div>';
+  }).join("");
+  var tr=traits.length?traits.map(function(t){return '<span class="trait '+t.rarity+'" title="'+t.desc+'">'+rarityName(t.rarity)+' · '+t.name+'</span>';}).join(""):'<span class="creator-note">还没有拼出成型词条。</span>';
+  var p=x.personality;
+  return '<div class="creator-row"><span class="creator-label">性别</span>'
+    +["male","female","unspecified"].map(function(g){return '<button class="creator-chip '+(LIFE_DRAFT.gender===g?"selected":"")+'" onclick="setLifeGender(\''+g+'\')">'+({male:"男",female:"女",unspecified:"不透露"})[g]+'</button>';}).join("")+'</div>'
+    +stages
+    +'<div class="sec-title">当前能力</div><div class="creator-stats">'
+    +["professional","social","charm","management","insight","fitness"].map(function(k){return '<span>'+skillName(k)+' <b>'+x.skills[k]+'</b></span>';}).join("")
+    +'<span>⚡体力上限 <b>'+x.body.maxStamina+'</b></span><span>❤️心力韧性 <b>'+x.heart.resilience+'</b></span><span>🧘情绪控制 <b>'+emotionalControlFrom(x)+'</b></span></div>'
+    +'<div class="sec-title">拼出的词条</div><div class="trait-row">'+tr+'</div>'
+    +'<div class="creator-note">性格底层轴（情绪稳定 / 边界 / 冲突 / 控制 / 成就驱动 / 人际信任）不直接作为“最优值”展示；它们会改变你在高压下看到的选项和心力消耗。当前时间点和阈值均待最终数值测试。</div>'
+    +'<button class="btn" type="button" onclick="resetLifeDraft()" style="margin-top:10px">重置人生履历</button>';
+}
+function renderLifeBuilder(){
+  var root=document.getElementById("character-creator");if(!root)return;
+  root.innerHTML='<div class="sec-title" style="margin-top:0">捏人 · 人生履历构筑</div>'
+    +'<div class="creator-note">你不直接购买“北大毕业”“专业优秀”等词条。把有限时间花在不同人生阶段，经历组合会自动拼成普通 / 优秀 / 精良 / 史诗 / 传说词条。</div>'
+    +lifeBuilderHTML();
+}
+var lifeStyle=document.createElement("style");
+lifeStyle.textContent=
+ '.life-stage{border-top:1px dashed var(--line);padding:12px 0}.life-stage-head{display:flex;justify-content:space-between;font-size:13px}.life-stage-head span{color:var(--accent)}'
++'.life-stage-desc{font-size:11.5px;color:var(--dim);margin:3px 0 8px}.life-events{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:7px}'
++'.life-event{position:relative;text-align:left;border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;padding:9px 34px 9px 10px;cursor:pointer;font-family:inherit}'
++'.life-event.selected{border-color:var(--accent);box-shadow:0 0 0 1px rgba(224,168,60,.2) inset}.life-ename{display:block;font-size:12.5px;font-weight:700}.life-desc{display:block;font-size:10.8px;color:var(--dim);line-height:1.45;margin-top:3px}'
++'.life-cost{position:absolute;right:8px;top:8px;font-size:10px;color:var(--accent)}.trait-row{display:flex;flex-wrap:wrap;gap:7px;margin:7px 0 5px}'
++'.trait{font-size:11.5px;padding:3px 9px;border-radius:16px;border:1px solid}.trait.common{color:#d7d7d7;border-color:#777}.trait.uncommon{color:#55c66a;border-color:#317e41}'
++'.trait.rare{color:#4f8cff;border-color:#365fa7}.trait.epic{color:#b071ff;border-color:#7146a9}.trait.legendary{color:#ff9f31;border-color:#ae651a}';
+document.head.appendChild(lifeStyle);
+renderLifeBuilder();
+
+/* skillName升级：项目管理正式并入“管理能力”，同时保留project兼容旧门槛。 */
+skillName=function(k){return ({professional:"专业",social:"社交",charm:"魅力",management:"管理",project:"管理",insight:"洞察",fitness:"体能"})[k]||k;};
+playerBaseSkills=function(){return lifeSummary().skills;};
+
+/* ---------- J. 身心与人格真正进入主循环 ---------- */
+function ensurePlayerPsych(){
+  if(!S||!S.player)return null;
+  if(!S.player.personality){
+    var x=lifeSummary();
+    S.player.personality=Object.assign({},x.personality);
+    S.player.body=Object.assign({},x.body);
+    S.player.heartProfile=Object.assign({},x.heart);
+    S.player.traits=derivedTraits(x).map(function(t){return t.id;});
+    S.player.lifeEvents=x.events.slice();
+    S.player.emotionalControl=emotionalControlFrom(x);
+  }
+  return S.player;
+}
+function playerHasTrait(id){var p=ensurePlayerPsych();return !!(p&&p.traits&&p.traits.indexOf(id)>=0);}
+function currentEmotionalControl(){
+  var p=ensurePlayerPsych();if(!p)return 50;
+  var ps=p.personality,hp=p.heartProfile||{resilience:50};
+  var raw=ps.stability*.30+ps.boundary*.16+(p.skills.insight||40)*.16+hp.resilience*.18+(S.heart||50)*.20;
+  if((S.sanity||50)<35) raw-=8;
+  if((S.stamina||50)<20) raw-=6;
+  return clamp(Math.round(raw));
+}
+var _costHeartV10=costHeart;
+costHeart=function(c,heavy){
+  var base=_costHeartV10(c,heavy);
+  if(!S||!S.player)return base;
+  var p=ensurePlayerPsych(),ps=p.personality,hp=p.heartProfile||{resilience:50};
+  var mult=1-(hp.resilience-50)/220-(ps.stability-50)/260-(ps.boundary-50)/320;
+  if(playerHasTrait("resilient"))mult-=.08;
+  if(playerHasTrait("stable"))mult-=.09;
+  if(playerHasTrait("cool"))mult-=.12;
+  /* 好胜者在公开否定 / 权力冲突中更容易被点燃。 */
+  if(ps.drive>=60&&(topicOfChoice(c)==="POWER"||((c.e||{}).trust||0)<0)) mult+=.10;
+  return Math.max(0,Math.round(base*Math.max(.55,Math.min(1.45,mult))));
+};
+var _costStaminaV10=costStamina;
+costStamina=function(c){
+  var base=_costStaminaV10(c);
+  if(!S||!S.player)return base;
+  var p=ensurePlayerPsych(),fit=p.skills.fitness||40;
+  var mult=1-(fit-40)/260;
+  if(playerHasTrait("fit"))mult-=.05;
+  if(playerHasTrait("iron"))mult-=.08;
+  if(playerHasTrait("smartlazy")&&(topicOfChoice(c)==="EXECUTION"||topicOfChoice(c)==="TIMELINE"))mult-=.08;
+  return Math.max(1,Math.round(base*Math.max(.60,Math.min(1.25,mult))));
+};
+/* 休息恢复也受体能/心力恢复能力影响。原grant仍作为唯一结算通道，不改变事件数据。 */
+var _grantV10=grant;
+grant=function(e,npc){
+  if(S&&S.player){
+    var p=ensurePlayerPsych();
+    e=Object.assign({},e||{});
+    if((e.stamina||0)>0)e.stamina=Math.round(e.stamina*(1+(p.body.recovery||0)/100));
+    if((e.heart||0)>0)e.heart=Math.round(e.heart*(1+(p.heartProfile.recovery||0)/100));
+  }
+  return _grantV10(e,npc);
+};
+
+/* ---------- K. 情绪状态会影响“是否还能选择理性方案” ---------- */
+function emotionallyLocked(c){
+  if(!S||!S.player||!c)return false;
+  var ec=currentEmotionalControl(),tp=topicOfChoice(c);
+  if(S.heart>=28)return false;
+  /* 高压下，复杂治理/克制型选项需要足够自控；传说词条提供一次机制豁免。 */
+  var rational=(tp==="COMPLIANCE"||tp==="DOCUMENTATION"||tp==="SCIENCE"||tp==="EXECUTION")&&((c.e||{}).dragon||0)<=0;
+  if(!rational)return false;
+  if(playerHasTrait("cool"))return false;
+  return ec<48;
+}
+var _unlockedV101=unlocked;
+unlocked=function(c){
+  if(emotionallyLocked(c))return false;
+  return _unlockedV101(c);
+};
+var _skillRequirementTextV10=skillRequirementText;
+skillRequirementText=function(c){
+  if(emotionallyLocked(c))return "当前情绪控制不足";
+  return _skillRequirementTextV10(c);
+};
+
+/* ---------- L. 游戏中的行为会让人格漂移 ---------- */
+function applyPersonalityDrift(c){
+  if(!S||!S.player||!c)return;
+  var p=ensurePlayerPsych(),ps=p.personality,e=c.e||{},tp=topicOfChoice(c),delta={};
+  if((e.trust||0)>4){delta.boundary=-1;delta.trust=1;}
+  if((e.trust||0)<-4&&((e.dragon||0)===0)){delta.boundary=1;delta.conflict=1;}
+  if((e.dragon||0)>=2){delta.control=1;delta.trust=-1;}
+  if(c.record){delta.boundary=1;delta.stability=1;}
+  if(tp==="POWER"&&(e.power||0)>3)delta.drive=1;
+  if(c.stance==="people")delta.trust=1;
+  if(c.stance==="compliance")delta.control=1;
+  Object.keys(delta).forEach(function(k){ps[k]=clamp((ps[k]||50)+delta[k]);});
+  p.emotionalControl=currentEmotionalControl();
+}
+var _applyChoiceV101=applyChoice;
+applyChoice=function(c){
+  var d=_applyChoiceV101(c);
+  applyPersonalityDrift(c);
+  return d;
+};
+
+/* ---------- M. Management强化组织治理，而不是单纯+进度 ---------- */
+var _useGovernanceToolV10=useGovernanceTool;
+useGovernanceTool=function(k){
+  if(!S||!S.player)return _useGovernanceToolV10(k);
+  var p=ensurePlayerPsych(),before=v10EnsureOrg().cohesion;
+  _useGovernanceToolV10(k);
+  var mg=p.skills.management||p.skills.project||40;
+  if(mg>=50){
+    var bonus=mg>=60?3:2; // PLACEHOLDER
+    v10EnsureOrg().cohesion=clamp(v10EnsureOrg().cohesion+bonus);
+    if(k==="critical"&&playerHasTrait("manager"))S.progress=clamp(S.progress+1);
+    toast("🧭 管理能力让治理机制额外生效","up");
+  }
+};
+
+/* ---------- N. 成长商店加入管理 / 体能 / 心力韧性 ---------- */
+buySkill=function(k){
+  if(!S||!S.player)return;
+  ensurePlayerPsych();
+  if((S.player.skillPoints||0)<SKILL_UPGRADE_COST){toast("成长点不足","down");return;}
+  S.player.skillPoints-=SKILL_UPGRADE_COST;
+  if(k==="heartResilience"){
+    S.player.heartProfile.resilience=clamp(S.player.heartProfile.resilience+5);
+  }else{
+    S.player.skills[k]=clamp((S.player.skills[k]||0)+5);
+    if(k==="management")S.player.skills.project=S.player.skills.management;
+    if(k==="fitness")S.player.body.maxStamina=Math.min(100,S.player.body.maxStamina+3);
+  }
+  S.player.emotionalControl=currentEmotionalControl();
+  toast("🛍 "+(k==="heartResilience"?"心力韧性":skillName(k))+"提升","up");renderHUD();showGrowthShop();
+};
+showGrowthShop=function(){
+  if(!S)return;var p=ensurePlayerPsych(),sk=p.skills||{};
+  var keys=["professional","social","charm","management","insight","fitness"];
+  var rows=keys.map(function(k){
+    return '<button class="choice" onclick="buySkill(\''+k+'\')"><b>'+skillName(k)+' '+sk[k]+'</b><span class="badge cost">成长点 '+SKILL_UPGRADE_COST+'</span></button>';
+  }).join("")
+  +'<button class="choice" onclick="buySkill(\'heartResilience\')"><b>心力韧性 '+p.heartProfile.resilience+'</b><span class="badge cost">成长点 '+SKILL_UPGRADE_COST+'</span></button>';
+  document.getElementById("scene-area").innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🛍</span> 成长商店</div>'
+    +'<div class="scene-sub">可用成长点：'+(p.skillPoints||0)+'。晋升后不是只能“更专业”，也可以把自己练成更会管理、更能扛或更稳定的人。</div>'
+    +'<div class="choices">'+rows+'</div><button class="btn" onclick="backToScene()">返回</button></div>';
+};
+
+/* ---------- O. 覆盖开局：真正保存人生构筑，而不是旧下拉词条 ---------- */
+var _startGameV101=startGame;
+startGame=function(){
+  /* 旧startGame内部会先按v10建立一个临时player；随后这里用life build覆盖。 */
+  _startGameV101();
+  var x=lifeSummary();
+  S.player={
+    gender:LIFE_DRAFT.gender,
+    background:{lifeBuild:true},
+    skills:Object.assign({},x.skills),
+    personality:Object.assign({},x.personality),
+    body:Object.assign({},x.body),
+    heartProfile:Object.assign({},x.heart),
+    traits:derivedTraits(x).map(function(t){return t.id;}),
+    lifeEvents:x.events.slice(),
+    emotionalControl:emotionalControlFrom(x),
+    skillPoints:0,
+    growthMarks:{}
+  };
+  PLAYER_DRAFT.gender=LIFE_DRAFT.gender; // 兼容苏苏性别策略
+  S.stamina=Math.min(S.player.body.maxStamina,S.stamina+Math.max(0,S.player.body.maxStamina-60));
+  /* 重新应用苏苏的开局性别判断，避免旧临时player影响。 */
+  if(S.player.gender==="female"){S.npc.weilai=clamp(S.npc.weilai-1);socialPerson("weilai").fear=clamp(socialPerson("weilai").fear+1);}
+  else if(S.player.gender==="male"&&S.player.skills.professional>=58){socialPerson("weilai").respect=clamp(socialPerson("weilai").respect+1);}
+  renderHUD();
+  toast("人生履历已生成："+S.player.traits.length+" 个成型词条 · 情绪控制 "+S.player.emotionalControl,"up");
+};
+
+/* ---------- P. HUD：能力 + 人格状态 ---------- */
+var _renderHUDV101=renderHUD;
+renderHUD=function(){
+  _renderHUDV101();
+  if(!S||!S.player)return;
+  var p=ensurePlayerPsych(),n=document.getElementById("npcs");if(!n)return;
+  var state=(S.heart<25?"高压失控边缘":S.heart<45?"情绪绷紧":"情绪稳定");
+  n.insertAdjacentHTML("beforeend",
+    '<span class="npc-chip" title="管理能力决定你能否通过治理而不是刷好感推进项目">🧭 管理 '+p.skills.management+'</span>'
+    +'<span class="npc-chip" title="体能影响工作消耗与恢复">🏃 体能 '+p.skills.fitness+'</span>'
+    +'<span class="npc-chip" title="由人格、洞察、心力和经历派生">🧘 '+state+' · 自控 '+currentEmotionalControl()+'</span>');
+};
+
+
 buildCast();
 renderVP();
 renderGallery();
