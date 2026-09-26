@@ -5247,6 +5247,69 @@ renderLifeBuilder();
   let savedAge=localStorage.getItem("dragon_age");if(savedAge&&AGE_OPTIONS[savedAge])PLAYER_AGE=savedAge;trimUnavailableLifeStages();
 })();
 
+
+/* =====================  v11.1 · CANON RANDOM EVENTS / NO STALE NPC DIALOGUE  ===================== */
+(function(){
+  function traitLabel(id){var t=TRAIT_RECIPES.find(function(x){return x.id===id;});return t?t.name:id;}
+  var _renderNGPanelV111=renderNGPanel;
+  renderNGPanel=function(){
+    _renderNGPanelV111();
+    var el=document.getElementById("ng-panel");if(!el)return;
+    el.querySelectorAll("[onclick^=\"ngKeep\"]").forEach(function(btn){
+      var m=btn.getAttribute("onclick").match(/ngKeep\('([^']+)'\)/);if(m)btn.textContent=traitLabel(m[1]);
+    });
+  };
+
+  window.V11_EVENTS=[
+    {id:"v11e_comment",title:"62条Comment",npcEv:true,text:"钟时把一份12页文件退回来。右侧62条comment。\n\n则韩扫了一眼：「真正影响结论的三条。剩下的大部分是在记录她阅读时想到什么。」\n\n钟时在群里问：「大家今天能不能全部处理完？」",choices:[
+      {t:"先标出3条会改变结论的，今晚只关这3条。",e:{progress:4,power:2},npc:{zihan:5},achievement:"a88",r:"三条改完，文件主线稳了。其余comment被放进语言QC。钟时第二天问了一次，没再追。"},
+      {t:"62条逐条回复。",e:{trust:5,stamina:-8,heart:-5},achievement:"a17",r:"凌晨一点半，comment数字终于归零。文件比白天长了四页。"},
+      {t:"给每条comment写一段为什么不改。",e:{progress:-4,heart:-4},achievement:"a18",r:"你成功写出了第二份需要review的文件。"}]},
+    {id:"v11e_resource",title:"大家辛苦一下",npcEv:true,text:"同一个Medical同时背着三期、NDA、安全性汇总和新Combo。\n\nK总说：「已经不是时间管理问题，是人不够。」\n\n钟时回答：「这段时间大家先辛苦一下，后面再看资源。」",choices:[
+      {t:"把四块工作按停一天的后果排出来，要求现场删一块。",e:{power:3,progress:4},npc:{kzong:6},achievement:"a51",r:"最后真的删掉了一块。没有新增HC，但至少也没有继续假装一个人有四双手。"},
+      {t:"全部接住。",e:{trust:4,stamina:-9,heart:-6},achievement:"a52",r:"晚上十一点，四个项目都在等同一个人的回复。"},
+      {t:"把最重要的一块直接交给林丹。",e:{progress:3},npc:{linan:5},achievement:"a41",r:"第二天老板的会上，那块工作确实完成得非常漂亮。剩下三块仍然没人接。"}]},
+    {id:"v11e_ai",title:"这段话怎么这么熟",npcEv:true,text:"瑞冬发来一段机制解释。写得比她平时流畅很多，但其中一个术语和原始毒理报告不一致。\n\n明夜看了一眼：「这段像是从哪儿整段来的。」\n\n瑞冬很快补了一句：「我再核一下原始资料。」",choices:[
+      {t:"不猜来源，只要求每个关键判断都能回到原始报告。",e:{progress:4},npc:{ruidong:1,xiaoen:3},achievement:"a61",r:"十分钟后她改了两处。你没有问她从哪里得到那段话，只问得出哪一句能被证据撑住。"},
+      {t:"当群里问：「这是AI写的吗？」",e:{power:2,morale:-3},npc:{ruidong:-9,ceo:-3},achievement:"a62",r:"群里安静了很久。老板随后回复：「工具不是问题，关键是人要负责。」讨论从毒理判断变成了工具使用。"},
+      {t:"直接帮她把错误修掉。",e:{progress:2,heart:-3},npc:{ruidong:4},achievement:"a63",r:"文件过了。下次她还是先把草稿发给你。"}]},
+    {id:"v11e_visible",title:"老板刚问过",npcEv:true,text:"一个没人愿意做的后台核查已经挂了一周。\n\n老板在群里问：「这个谁在跟？」\n\n林丹三分钟后回复：「我来。」\n\n琳琳私聊你：「她前面知道这事。」",choices:[
+      {t:"让林丹接Visible汇报，同时把后台核查也明确给她。",e:{progress:4,power:2},npc:{linan:2,miaomiao:4},achievement:"a43",r:"她接了。速度没有上午那么快，但最终确实收了尾。"},
+      {t:"只让她对老板汇报，后台继续由CRA做。",e:{trust:3,morale:-4},npc:{linan:6,miaomiao:-6},achievement:"a45",r:"老板记住了林丹。CRA记住了别的东西。"},
+      {t:"当众提醒这件事已经挂了一周。",e:{power:2},npc:{linan:-7},achievement:"a44",r:"林丹仍然笑着说「是的，我前面也在持续跟」。从此她仍然跟你聊天，但不再提前给你风声。"}]},
+    {id:"v11e_cro",title:"为了记录清楚",npcEv:true,text:"黑娜把一封邮件草稿发给朱粽：「最好由Sponsor发，这样后续记录清楚。」\n\n朱粽回复：「好的。」\n\nK总看完转给你，只写了四个字：「为什么我们？」",choices:[
+      {t:"先把事实、责任和decision owner分开，再决定谁发。",e:{progress:4,power:3},npc:{kzong:6,heina:3},achievement:"a26",r:"黑娜没有争，只是把事实表补得很完整。她知道你们这边有人看得懂边界。"},
+      {t:"让朱粽发，先把问题关掉。",e:{progress:3,blame:6},npc:{zhuzong:4,heina:4,xiaoen:-5},achievement:"a65",r:"Action关了。责任也顺便被关进了Sponsor邮箱。"},
+      {t:"把邮件退给CRO：「你们的问题你们自己解释。」",e:{power:2,progress:-2},npc:{heina:-5},achievement:"a80",r:"黑娜礼貌回复：「如涉及Sponsor decision，我们无法代为确认。」边界没有因为语气变硬而消失。"}]},
+    {id:"v11e_pvp",title:"统一出口",npcEv:true,text:"Clinical在群里直接@PVP问一个case。\n\nPVP正在输入。\n\n几秒后，加琳先回复：「PV这边内部确认后统一给大家。」\n\nPVP的‘正在输入’消失了。",choices:[
+      {t:"私下问PVP他的医学判断，再和加琳确认正式出口。",e:{progress:3},npc:{pvp:5,jialin:-2},achievement:"a21",r:"你得到两个答案：一个是医学判断，一个是团队口径。至少你知道它们不是一回事。"},
+      {t:"只等加琳统一回复。",e:{trust:2},npc:{jialin:4,pvp:-3},achievement:"a24",r:"第二天回复到了。里面有流程、有时间线，也有一句很谨慎的医学结论。没有人知道那句是谁写的。"},
+      {t:"群里直接追问PVP：「我问的是你的判断。」",e:{power:3},npc:{pvp:4,jialin:-6},achievement:"a22",r:"PVP回答了。之后加琳单独找他聊了很久。"}]},
+    {id:"v11e_pi",title:"关系很好",npcEv:true,text:"Parker从MK主任那里回来，第一句话是：「关系做得挺好。」\n\n你问：「主任对方案有什么意见？」\n\nParker想了两秒：「他说后面可以再深入讨论。」",choices:[
+      {t:"让他把主任真正问过的三个问题写下来。",e:{progress:3},npc:{parker:1},achievement:"a31",r:"三个问题写下来以后，Parker自己也发现：饭聊得不错，不等于研究聊明白了。"},
+      {t:"既然关系好，下次继续让Parker单独去。",e:{trust:2,piRep:-2},npc:{parker:5,houpi:-3},achievement:"a69",r:"关系继续很好。真正重要的会，主任秘书后来直接找了Medical。"},
+      {t:"下次你和统计一起去。",e:{piRep:4,progress:3},npc:{houpi:4,mingye:3,parker:-2},achievement:"a32",r:"主任很快进入数据问题。Parker坐在旁边，也第一次知道‘关系’之外还能聊这么多东西。"}]},
+    {id:"v11e_zhuzong",title:"Action已经Close",npcEv:true,text:"朱粽在周会上说：「这个问题CRO已经close了。」\n\n肖恩问：「根因呢？」\n\n朱粽翻了翻Tracker：「Action已经完成了呀。」\n\n会议室安静了两秒。",choices:[
+      {t:"把‘Action完成’和‘风险关闭’拆成两列。",e:{progress:4,power:2},npc:{xiaoen:5,zhuzong:-2},achievement:"a28",r:"朱粽觉得表更复杂了。肖恩觉得终于开始说同一件事。"},
+      {t:"既然CRO close了，就先过。",e:{progress:3,blame:5},npc:{zhuzong:4,xiaoen:-5},achievement:"a27",r:"Tracker绿了。风险没有收到通知。"},
+      {t:"让朱粽现场解释为什么可以close。",e:{power:3},npc:{zhuzong:-7,xiaoen:3},achievement:"a64",r:"她讲了时间线、CRO动作和邮件。讲到最后，所有人都更确定她其实不知道为什么可以close。"}]}
+  ];
+
+  /* Disable legacy battle/private-event layers that contained deleted or outdated characters. */
+  maybeProjectBattle=function(chId,next){next();};
+  maybeResourceConflict=function(next){next();};
+  maybePrivateChat=function(next){next();};
+
+  maybeEvent=function(chapterId,next){
+    var rate=difficulty().id==="hard"?.62:difficulty().id==="story"?.28:.44;
+    if(Math.random()>rate){next();return;}
+    var pool=V11_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0;});
+    if(!pool.length){next();return;}
+    var ev=pool[Math.floor(Math.random()*pool.length)];usedEvents.push(ev.id);
+    renderHUD();window._evObj={ev:ev,next:next,cro:false};renderEventFromObj();
+  };
+})();
+
 buildCast();
 renderVP();
 renderGallery();
