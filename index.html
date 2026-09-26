@@ -186,7 +186,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 29 位关键人物 · 22 个结局 · Demo v10.0</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 29 位关键人物 · 22 个结局 · Demo v10.2</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -4803,6 +4803,193 @@ renderHUD=function(){
     +'<span class="npc-chip" title="体能影响工作消耗与恢复">🏃 体能 '+p.skills.fitness+'</span>'
     +'<span class="npc-chip" title="由人格、洞察、心力和经历派生">🧘 '+state+' · 自控 '+currentEmotionalControl()+'</span>');
 };
+
+
+/* =====================  v10.2 · Expanded Life Events / Relationship History  =====================
+   事件池扩展到“能力 + 管理 + 身心 + 性格 + 情感经历”共同塑造角色。
+   情感经历不是恋爱Buff：稳定关系、分手、背叛、长期单身、照顾家庭等会以不同方式影响
+   初始Heart / Sanity / Morale、人格边界、信任、洞察、恢复能力与后续情绪控制。
+   所有数值仍为 PLACEHOLDER，待完整事件池与主线事件完成后统一跑模拟。 */
+
+/* ---------- Q. 扩展人生事件池 ---------- */
+function addLifeEvents(stage,events){
+  if(!LIFE_EVENTS[stage]) LIFE_EVENTS[stage]=[];
+  events.forEach(function(e){
+    if(!LIFE_EVENTS[stage].some(function(x){return x.id===e.id;})) LIFE_EVENTS[stage].push(e);
+  });
+}
+addLifeEvents("school",[
+  {id:"school_family_support",name:"💗 家里一直有人接住你",cost:2,category:"emotion",exclusive:"school_home",desc:"成绩不好、比赛输了，回家仍然有人问你吃没吃饭。",skill:{social:2},heart:{resilience:4,recovery:5},personality:{stability:5,trust:5},initial:{heart:6,sanity:3,morale:2},exp:["secure_support","life"]},
+  {id:"school_family_tense",name:"💗 很早学会看脸色",cost:2,category:"emotion",exclusive:"school_home",desc:"家庭气氛不稳定，你很早学会判断谁今天不能惹。",skill:{insight:6,social:2},heart:{resilience:2},personality:{stability:-3,trust:-4,conflict:-3},initial:{heart:-3,sanity:-2},exp:["tense_home","read_room"]},
+  {id:"school_first_crush",name:"💗 第一次认真喜欢一个人",cost:1,category:"emotion",exclusive:"school_romance",desc:"不一定在一起，但第一次发现别人一句话会影响你一整天。",skill:{social:2,charm:1},personality:{trust:2,stability:-1},initial:{heart:2},exp:["first_crush"]},
+  {id:"school_solitary",name:"习惯一个人待着",cost:1,desc:"朋友不多，但你很早学会自己恢复。",skill:{insight:2},heart:{recovery:3},personality:{trust:-2,stability:3},initial:{sanity:2},exp:["solitary"]},
+  {id:"school_debate",name:"参加辩论 / 演讲",cost:2,desc:"学会在别人盯着你的时候把一句话讲完整。",skill:{social:5,charm:3,insight:2},personality:{conflict:3,stability:2},exp:["public_speaking"]},
+  {id:"school_care",name:"承担家庭里的照顾责任",cost:2,category:"emotion",desc:"你很早就知道，有些事情没人做就真的没人做。",skill:{management:3,social:2},heart:{resilience:4},personality:{boundary:-2,control:3,stability:2},initial:{heart:-1,morale:2},exp:["caregiver"]}
+]);
+
+addLifeEvents("college",[
+  {id:"college_firstlove",name:"💗 一段认真而稳定的恋爱",cost:2,category:"emotion",exclusive:"college_romance",desc:"有人见过你最狼狈的时候，也没因此离开。",skill:{social:3,charm:2},heart:{resilience:5,recovery:6},personality:{trust:5,stability:4,boundary:2},initial:{heart:8,sanity:3,morale:3},exp:["stable_relationship","loved"]},
+  {id:"college_breakup",name:"💔 第一次被认真地分手",cost:2,category:"emotion",exclusive:"college_romance",desc:"一段关系结束后，你花了很久才把自我价值和“被选择”分开。",skill:{insight:4,social:1},heart:{resilience:4,recovery:2},personality:{trust:-3,stability:2,boundary:3},initial:{heart:-4,sanity:-2},exp:["breakup","setback"]},
+  {id:"college_betrayal",name:"💔 被最信任的人骗过",cost:2,category:"emotion",exclusive:"college_romance",desc:"你开始知道，亲近和可靠不是同一个概念。",skill:{insight:6},heart:{resilience:2},personality:{trust:-8,boundary:5,stability:-2},initial:{heart:-6,sanity:-3},exp:["betrayal","relationship_scar"]},
+  {id:"college_single",name:"💗 长期单身，但过得不错",cost:1,category:"emotion",exclusive:"college_romance",desc:"你没有把“必须有人陪”当成人生项目。",skill:{insight:2},heart:{recovery:4},personality:{boundary:4,stability:4,trust:-1},initial:{heart:3,sanity:2},exp:["single_content","life"]},
+  {id:"college_intern",name:"第一次实习",cost:2,desc:"第一次知道课本和工作交付不是一件事。",skill:{professional:2,management:3,social:2},exp:["internship","execution"]},
+  {id:"college_volunteer",name:"长期志愿活动",cost:2,desc:"和完全不同背景的人一起把事情做完。",skill:{social:4,management:2},personality:{trust:3,conflict:-1},initial:{morale:2},exp:["community"]},
+  {id:"college_data",name:"学会编程 / 数据分析",cost:2,desc:"开始习惯让数据替自己回答一部分问题。",skill:{professional:3,insight:5},exp:["data_skill"]},
+  {id:"college_parttime",name:"长期兼职",cost:2,desc:"时间和钱都有限以后，你开始真正学会优先级。",skill:{management:4,social:2},body:{maxStamina:2},personality:{boundary:2,drive:2},exp:["work_early"]}
+]);
+
+addLifeEvents("graduate",[
+  {id:"grad_stable_partner",name:"💗 有一个稳定伴侣",cost:2,category:"emotion",exclusive:"grad_romance",desc:"高压阶段有人能听懂你说“今天不想聊工作”。",skill:{social:2},heart:{resilience:5,recovery:7},personality:{stability:5,trust:4,boundary:3},initial:{heart:9,sanity:4,morale:3},exp:["stable_relationship","life"]},
+  {id:"grad_longdistance",name:"💗 一段长期异地关系",cost:2,category:"emotion",exclusive:"grad_romance",desc:"你学会沟通、等待，也学会没有即时反馈时不立刻下结论。",skill:{social:4,insight:2},heart:{resilience:3},personality:{stability:3,trust:2,boundary:2},initial:{heart:2},exp:["long_distance","relationship_work"]},
+  {id:"grad_breakup_recover",name:"💔 分手后重新把生活搭起来",cost:2,category:"emotion",exclusive:"grad_romance",desc:"你真正练过一次：难受可以存在，但第二天还是可以起床。",skill:{insight:4},heart:{resilience:8,recovery:5},personality:{stability:7,boundary:5,trust:-2},initial:{heart:-1,sanity:2},exp:["breakup","recovered","setback"]},
+  {id:"grad_avoid_intimacy",name:"💗 把所有精力都放进工作",cost:1,category:"emotion",exclusive:"grad_romance",desc:"没有关系问题，也没有太多关系。",skill:{professional:3},body:{maxStamina:2},heart:{recovery:-2},personality:{drive:4,trust:-3,boundary:2},initial:{career:2,heart:-2},exp:["work_first","solitary"]},
+  {id:"grad_teach",name:"带本科生 / 助教",cost:2,desc:"第一次发现会做和会教别人做完全不同。",skill:{management:4,social:4,professional:2},personality:{control:-1},exp:["teaching","people_manager"]},
+  {id:"grad_conference",name:"频繁做学术报告",cost:2,desc:"学会面对质疑，不把每个问题都理解成攻击。",skill:{social:4,charm:3,professional:2},personality:{stability:4,conflict:2},exp:["public_speaking","academic_network"]},
+  {id:"grad_burnout",name:"把自己卷到一次真正Burnout",cost:2,desc:"你知道自己能撑多久，也知道撑过头是什么样。",skill:{professional:3},heart:{resilience:3,recovery:-4},body:{maxStamina:-3,recovery:-2},personality:{boundary:3,stability:-2},initial:{heart:-6,sanity:-5},exp:["burnout","overwork","setback"]},
+  {id:"grad_mentor_conflict",name:"和导师正面冲突过一次",cost:2,desc:"你第一次用证据而不是顺从处理权威冲突。",skill:{social:3,insight:5},personality:{boundary:5,conflict:5,stability:2},initial:{sanity:1},exp:["authority_conflict","boundary"]}
+]);
+
+addLifeEvents("early",[
+  {id:"early_partner_support",name:"💗 伴侣支持你的职业起步",cost:2,category:"emotion",exclusive:"early_romance",desc:"最累的几年里，有人把“你今天回来吗”说成关心而不是审判。",skill:{social:2},heart:{resilience:5,recovery:8},personality:{stability:5,trust:4},initial:{heart:10,sanity:3,morale:3},exp:["stable_relationship","supportive_partner","life"]},
+  {id:"early_relationship_conflict",name:"💔 工作开始侵蚀一段关系",cost:2,category:"emotion",exclusive:"early_romance",desc:"你开始理解：职业成功和关系维护消耗的是同一种时间。",skill:{insight:4},heart:{resilience:2,recovery:-2},personality:{boundary:3,drive:3,stability:-2},initial:{heart:-5,sanity:-2},exp:["relationship_conflict","work_first"]},
+  {id:"early_cheated",name:"💔 经历伴侣背叛",cost:2,category:"emotion",exclusive:"early_romance",desc:"你变得更难轻易相信，但也更敏感于关系里的边界和异常。",skill:{insight:7},heart:{resilience:4},personality:{trust:-10,boundary:7,stability:-3},initial:{heart:-8,sanity:-4,morale:-2},exp:["betrayal","relationship_scar","setback"]},
+  {id:"early_single_focus",name:"💗 主动选择单身几年",cost:1,category:"emotion",exclusive:"early_romance",desc:"把时间留给职业，也保留了一块不需要向任何人解释的私人空间。",skill:{professional:2,management:1},heart:{recovery:3},personality:{boundary:4,stability:3},initial:{career:2,heart:2},exp:["single_content","work_focus"]},
+  {id:"early_goodboss",name:"遇到过一个真正会带人的上司",cost:2,desc:"你第一次看到管理可以减少工作，而不是制造工作。",skill:{management:6,insight:3},personality:{trust:3,control:-2},initial:{career:2,morale:2},exp:["good_manager","management_model"]},
+  {id:"early_badboss",name:"被一个差上司折腾过",cost:2,desc:"你很早见过反复改口、甩锅和低价值Micromanagement。",skill:{insight:6,management:2},heart:{resilience:3},personality:{trust:-4,boundary:3,control:2},initial:{heart:-3,sanity:-2},exp:["bad_manager","politics"]},
+  {id:"early_promotion",name:"第一次晋升",cost:2,desc:"第一次知道做得好和被看见是两件事。",skill:{management:3,social:3},personality:{drive:4},initial:{career:5,power:2,morale:2},exp:["promotion"]},
+  {id:"early_move",name:"为了工作换城市",cost:2,desc:"重新建立生活网络让你更独立，也更清楚机会成本。",skill:{social:3,insight:2},heart:{resilience:3},personality:{stability:2,trust:-1},initial:{career:2,heart:-1},exp:["relocation","independent"]}
+]);
+
+addLifeEvents("middle",[
+  {id:"mid_marriage",name:"💗 建立长期稳定家庭",cost:2,category:"emotion",exclusive:"mid_romance",desc:"你开始真正理解长期关系靠的不是浪漫，而是日复一日的可靠。",skill:{management:2,social:3},heart:{resilience:6,recovery:8},personality:{stability:6,trust:5,boundary:4},initial:{heart:10,sanity:4,morale:4},exp:["stable_relationship","family","long_term"]},
+  {id:"mid_divorce",name:"💔 一段婚姻 / 长期关系结束",cost:2,category:"emotion",exclusive:"mid_romance",desc:"生活被拆过一次以后，你重新决定哪些东西仍然属于自己。",skill:{insight:5},heart:{resilience:7,recovery:2},personality:{stability:3,boundary:6,trust:-5},initial:{heart:-7,sanity:-4,morale:-2},exp:["divorce","setback","rebuild"]},
+  {id:"mid_betrayal",name:"💔 长期关系中的反复背叛",cost:2,category:"emotion",exclusive:"mid_romance",desc:"不是一次冲击，而是一次次重新判断‘这次是不是会不一样’。",skill:{insight:7},heart:{resilience:5},personality:{trust:-12,boundary:7,stability:-4,control:3},initial:{heart:-10,sanity:-5,morale:-3},exp:["betrayal","repeated_betrayal","relationship_scar"]},
+  {id:"mid_single",name:"💗 一个人把生活过得很完整",cost:1,category:"emotion",exclusive:"mid_romance",desc:"你已经不需要靠关系证明自己值得被喜欢。",skill:{insight:3},heart:{resilience:4,recovery:5},personality:{stability:5,boundary:5,trust:-1},initial:{heart:5,sanity:3},exp:["single_content","self_sufficient","life"]},
+  {id:"mid_caregiver",name:"承担长期家庭照顾",cost:2,category:"emotion",desc:"工作之外还有真正不能延期的人和事。",skill:{management:4,social:3},heart:{resilience:5,recovery:-1},body:{maxStamina:-2},personality:{stability:4,boundary:2,control:2},initial:{heart:-2,morale:3},exp:["caregiver","family"]},
+  {id:"mid_therapy",name:"系统学过情绪调节 / 接受过心理支持",cost:2,category:"emotion",desc:"开始能分清‘我现在很生气’和‘我现在应该做什么’。",skill:{insight:5,social:2},heart:{resilience:7,recovery:5},personality:{stability:8,boundary:4,conflict:-1},initial:{sanity:5,heart:4},exp:["self_work","emotion_regulation","setback"]},
+  {id:"mid_budget",name:"真正管过预算和资源",cost:2,desc:"第一次体会多给一个项目资源，就是从另一个项目拿走。",skill:{management:6,insight:4},personality:{control:-1,boundary:2},exp:["resource_management"]},
+  {id:"mid_fire",name:"处理过一次低绩效成员",cost:2,desc:"你学会善意和无限延期不是一回事。",skill:{management:6,social:2},personality:{boundary:5,conflict:3,trust:-1},exp:["people_decision","boundary"]}
+]);
+
+addLifeEvents("senior",[
+  {id:"senior_stable_family",name:"💗 家庭成为真正的后方",cost:2,category:"emotion",exclusive:"senior_romance",desc:"工作输了不会把整个人生一起输掉。",heart:{resilience:8,recovery:10},personality:{stability:7,trust:4,boundary:5},initial:{heart:12,sanity:5,morale:4},exp:["stable_relationship","family","secure_support","life"]},
+  {id:"senior_divorce_rebuild",name:"💔 离婚后重新建立自己的生活",cost:2,category:"emotion",exclusive:"senior_romance",desc:"不是变得不相信关系，而是不再把自己的价值交给关系判定。",skill:{insight:5},heart:{resilience:9,recovery:5},personality:{stability:7,boundary:8,trust:-3},initial:{heart:1,sanity:4},exp:["divorce","rebuild","self_sufficient","setback"]},
+  {id:"senior_lonely",name:"💗 职业走得很快，私人生活几乎空白",cost:1,category:"emotion",exclusive:"senior_romance",desc:"你很能工作，也很少有人知道你工作之外是什么样。",skill:{professional:2,management:2},heart:{recovery:-3},personality:{drive:5,trust:-4,boundary:3},initial:{career:4,heart:-4,morale:-1},exp:["career_first","solitary"]},
+  {id:"senior_complicated",name:"💔 一段边界模糊的关系",cost:2,category:"emotion",exclusive:"senior_romance",desc:"你知道关系中的权力、依赖和需要并不总能分得很清。",skill:{insight:5,social:3},heart:{resilience:1},personality:{trust:-3,boundary:-4,stability:-3},initial:{heart:-5,sanity:-3},exp:["blurred_boundary","relationship_scar"]},
+  {id:"senior_mentor",name:"长期带年轻人",cost:2,desc:"从‘我来做更快’变成‘让别人以后也会做’。",skill:{management:7,social:4},personality:{control:-5,trust:3,stability:2},initial:{reputation:3,morale:2},exp:["mentor_others","people_manager"]},
+  {id:"senior_crisis",name:"真正处理过一次项目危机",cost:2,desc:"不是开更多会，而是在信息不完整时确定决策人、底线和下一步。",skill:{management:7,insight:5,professional:2},heart:{resilience:4},personality:{stability:4,boundary:3},exp:["crisis_management","conflict_management"]},
+  {id:"senior_board",name:"参与董事会 / 投资人汇报",cost:2,desc:"学会高层真正听的不是过程，而是选择、风险和代价。",skill:{social:5,charm:3,management:3,insight:4},personality:{stability:2},initial:{career:3,reputation:2},exp:["board_exposure","executive_comm"]},
+  {id:"senior_health",name:"一次身体警报迫使你重排生活",cost:2,desc:"你第一次把‘不做什么’当作长期能力。",skill:{fitness:2,insight:3},body:{maxStamina:-2,recovery:5},heart:{resilience:4,recovery:5},personality:{boundary:6,drive:-2,stability:4},initial:{heart:3,sanity:3},exp:["health_wakeup","stop_doing"]}
+]);
+
+/* ---------- R. 同一时期的互斥经历 ---------- */
+var _toggleLifeEventV101=toggleLifeEvent;
+toggleLifeEvent=function(stage,id){
+  var e=(LIFE_EVENTS[stage]||[]).find(function(x){return x.id===id;});
+  if(!e||!e.exclusive) return _toggleLifeEventV101(stage,id);
+  var arr=LIFE_DRAFT.selected[stage]||(LIFE_DRAFT.selected[stage]=[]);
+  var existing=arr.slice();
+  existing.forEach(function(oldId){
+    var old=(LIFE_EVENTS[stage]||[]).find(function(x){return x.id===oldId;});
+    if(old&&old.exclusive===e.exclusive&&old.id!==e.id){
+      var at=arr.indexOf(old.id);if(at>=0)arr.splice(at,1);
+    }
+  });
+  return _toggleLifeEventV101(stage,id);
+};
+
+/* ---------- S. 情感经历对“入职时你已经是什么状态”产生直接影响 ---------- */
+var _lifeSummaryV101=lifeSummary;
+lifeSummary=function(){
+  var x=_lifeSummaryV101();
+  x.initial={heart:0,sanity:0,morale:0,career:0,power:0,reputation:0,trust:0};
+  Object.keys(LIFE_DRAFT.selected).forEach(function(stage){
+    (LIFE_DRAFT.selected[stage]||[]).forEach(function(id){
+      var e=(LIFE_EVENTS[stage]||[]).find(function(z){return z.id===id;});
+      Object.keys((e&&e.initial)||{}).forEach(function(k){x.initial[k]=(x.initial[k]||0)+e.initial[k];});
+    });
+  });
+  x.relationshipHistory=(x.exp||[]).filter(function(t){
+    return ["stable_relationship","loved","breakup","betrayal","relationship_scar","single_content","divorce","rebuild","supportive_partner","long_distance","relationship_conflict","family","secure_support","repeated_betrayal","self_sufficient","blurred_boundary"].indexOf(t)>=0;
+  });
+  return x;
+};
+
+/* ---------- T. 情感 / 人格词条 ---------- */
+[
+ {id:"beenloved",name:"被好好爱过",rarity:"rare",need:["stable_relationship"],test:function(x){return x.personality.trust>=53&&x.personality.stability>=54;},desc:"对亲近关系的默认预期更安全；初始Heart与恢复更稳。"},
+ {id:"contentalone",name:"一个人也过得很好",rarity:"rare",need:["single_content"],test:function(x){return x.personality.boundary>=54;},desc:"不把孤独自动理解成失败，工作之外的自我恢复更稳定。"},
+ {id:"scarred",name:"关系里受过伤",rarity:"rare",need:["relationship_scar"],desc:"更快识别边界异常和关系风险，但默认信任更低。"},
+ {id:"rebuild",name:"把自己重新搭起来过",rarity:"epic",need:["rebuild","setback"],test:function(x){return x.heart.resilience>=58&&x.personality.boundary>=56;},desc:"经历关系断裂后仍能重建生活；低Heart时恢复效率更高。"},
+ {id:"securebase",name:"稳定后方",rarity:"epic",need:["stable_relationship","life"],test:function(x){return x.heart.recovery>=17;},desc:"工作失败不会自动等于人生失败，每章心力恢复更稳定。"},
+ {id:"hardtotrust",name:"不轻易交付信任",rarity:"rare",need:["betrayal"],test:function(x){return x.personality.trust<=46;},desc:"政治与甩锅事件洞察更强，但Favor与私人关系建立更慢。"},
+ {id:"emotionreg",name:"会处理自己的情绪",rarity:"epic",need:["emotion_regulation"],test:function(x){return emotionalControlFrom(x)>=62;},desc:"能把‘我现在很生气’和‘我现在应该做什么’分开。"},
+ {id:"caregiver",name:"长期照顾者",rarity:"epic",need:["caregiver"],test:function(x){return x.heart.resilience>=54&&x.skills.management>=42;},desc:"对真实责任和别人是否只在表演努力非常敏感；但更容易替人兜底。"},
+ {id:"relationshipwise",name:"关系不是项目",rarity:"legendary",need:["rebuild","stable_relationship","self_work"],test:function(x){return x.personality.boundary>=60&&x.personality.stability>=62;},desc:"既能投入关系，也能保留边界；极端关系事件不容易直接接管职业判断。"}
+].forEach(function(t){
+  if(!TRAIT_RECIPES.some(function(x){return x.id===t.id;})) TRAIT_RECIPES.push(t);
+});
+
+/* ---------- U. 情感经历影响关系收益方式，而非简单“恋爱经历=社交加成” ---------- */
+var _playerRelationMultiplierV101=playerRelationMultiplier;
+playerRelationMultiplier=function(c){
+  var m=_playerRelationMultiplierV101(c);
+  if(!S||!S.player)return m;
+  var p=ensurePlayerPsych();
+  if(playerHasTrait("beenloved")&&topicOfChoice(c)==="RELATION")m*=1.04;
+  if(playerHasTrait("hardtotrust")&&topicOfChoice(c)==="RELATION")m*=.94;
+  if(playerHasTrait("contentalone")&&((c.e||{}).trust||0)>0)m*=.98; // 不急于通过讨好换关系
+  return Math.max(.70,Math.min(1.42,m));
+};
+
+/* ---------- V. Heart恢复：稳定后方 / 重建能力 ---------- */
+var _applyChapterPassivesV102=applyChapterPassives;
+applyChapterPassives=function(){
+  _applyChapterPassivesV102();
+  if(!S||!S.player)return;
+  if(playerHasTrait("securebase")&&S.heart<100){
+    S.heart=clamp(S.heart+3);toast("💗 稳定后方：心力 +3","up");
+  }else if(playerHasTrait("rebuild")&&S.heart<35){
+    S.heart=clamp(S.heart+2);toast("🧩 你知道低谷不是永久状态：心力 +2","up");
+  }
+};
+
+/* ---------- W. 开局把人生经历的直接数值写入主状态 ---------- */
+var _startGameV102=startGame;
+startGame=function(){
+  _startGameV102();
+  var x=lifeSummary(),ini=x.initial||{};
+  ["heart","sanity","morale","career","power","reputation","trust"].forEach(function(k){
+    if(typeof ini[k]==="number"&&ini[k]!==0&&S[k]!=null) S[k]=clamp(S[k]+ini[k]);
+  });
+  /* 体力以构筑后的最大体力为上限；高体能不是白送无限行动，只改变起点和恢复。 */
+  S.stamina=Math.min(S.player.body.maxStamina,clamp(S.stamina+Math.max(0,(S.player.skills.fitness||40)-40)/4));
+  S.player.initialState=Object.assign({},ini);
+  S.player.relationshipHistory=x.relationshipHistory||[];
+  renderHUD();
+  var emoCount=(S.player.relationshipHistory||[]).length;
+  if(emoCount) toast("💗 过去的关系经历已经写进你的初始状态","up");
+};
+
+/* ---------- X. Builder展示情感经历对初始状态的预估 ---------- */
+var _lifeBuilderHTMLV101=lifeBuilderHTML;
+lifeBuilderHTML=function(){
+  var base=_lifeBuilderHTMLV101(),x=lifeSummary(),ini=x.initial||{};
+  var labels={heart:"❤️心力",sanity:"🧠理智",morale:"🫂士气",career:"💼履历",power:"⚔权力",reputation:"🏷声望",trust:"🤝上级信任"};
+  var vals=Object.keys(labels).filter(function(k){return ini[k];}).map(function(k){
+    return '<span>'+labels[k]+' <b>'+(ini[k]>0?"+":"")+ini[k]+'</b></span>';
+  }).join("");
+  var emotional=(x.relationshipHistory||[]).length;
+  var block='<div class="sec-title">入职状态影响</div><div class="creator-stats">'+(vals||'<span>当前经历没有直接改变基础状态</span>')+'</div>'
+    +'<div class="creator-note">情感经历计入隐藏人格和恢复方式，不代表“恋爱越多越强”。稳定关系、长期单身、分手、背叛、离婚与重建提供的是不同Build。当前已记录 '+emotional+' 个关系经历标签。</div>';
+  return base.replace('<div class="sec-title">拼出的词条</div>',block+'<div class="sec-title">拼出的词条</div>');
+};
+
+/* 情感类事件轻微区分视觉，不改变品质。 */
+var relationshipStyle=document.createElement("style");
+relationshipStyle.textContent='.life-event.selected .life-ename{color:var(--accent)} .life-event .life-ename:first-letter{letter-spacing:0}';
+document.head.appendChild(relationshipStyle);
+renderLifeBuilder();
 
 
 buildCast();
