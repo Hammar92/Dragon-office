@@ -186,7 +186,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 28 位关键人物 · 22 个结局 · Demo v9.9</div>
+    <div class="subtitle">SURVIVAL IN BIG PHARMA · 医学经理线 · 18 章 · 29 位关键人物 · 22 个结局 · Demo v10.0</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -4027,6 +4027,408 @@ function renderVP(){
     + '<div class="vp-meta" style="margin:12px 0 8px">教育背景：'+r.edu.join(' · ')+'</div>'
     + '<div class="tags">'+r.tags.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</div>';
 }
+
+/* =====================  v10.0 · Character Creation / Coalition Governance  =====================
+   这版先把机制接进主循环，不做最终数值平衡。
+   所有初始点数、门槛、成长点产出与倍率均标记为 PLACEHOLDER，待完整事件设计完成后统一模拟校准。 */
+
+/* ---------- A. 当前人物表修订：删除童欣；卫来改为苏苏；加入则韩、杨杨 ---------- */
+delete NPCs.tongxin;
+delete NPC_BIOS.tongxin;
+NPCs.weilai.name="苏苏";
+NPCs.weilai.role="财务";
+NPCs.weilai.quote="先别讲故事。这个判断的依据是什么，错了以后代价是什么？";
+NPC_BIOS.weilai={
+  want:"让公司和家庭都能长期成立，而不是靠一场漂亮的汇报撑过去",
+  fear:"高管用虚荣、忙碌感和短期故事替代真正的判断",
+  bio:"有多年海外大厂财务工作经验。她讲话不多，但通常很快就能把一个复杂问题压缩成几个假设、成本和最差结果。她不太吃“我们已经很努力”这一套，更在意事情到底有没有想清楚。她对聪明人明显更有耐心，也很少需要靠职位证明自己。"
+};
+NPCs.zihan={name:"则韩",role:"统计D",init:31,faction:"pro",quote:"先别急着改。这个设计当初为什么这么定？之前有没有和监管沟通过？"};
+NPC_BIOS.zihan={
+  want:"先把组织地图和历史承诺看清，再用专业判断解决问题",
+  fear:"刚回国就被拉进旧政治，最后替历史决定背书",
+  bio:"博士背景，在海外药企做了十余年统计工作，最近回国加入公司。和明夜相比，他说话更慢、更谨慎。他习惯先问历史、监管承诺和最终decision owner，再判断一个分析能不能真正进入submission。"
+};
+NPCs.yangyang={name:"杨杨",role:"PMD",init:30,faction:"pre",quote:"正式节点是月底，我们内部最好提前两周。这个再拉个专项会吧。"};
+NPC_BIOS.yangyang={
+  want:"把每一个乱掉的项目重新变成有人跟、有人做、有人汇报",
+  fear:"项目突然失控，而自己没有提前留足时间和人手",
+  bio:"三十多岁，肿瘤生物学背景。老板很喜欢把混乱项目交给她盯。她热心、高响应，擅长Tracker、Action List和细节跟进；时间线有风险时，她通常会把内部目标再往前排，并增加会议和人手。基础科学不陌生，但真正涉及医学、临床开发和复杂项目治理时更依赖各职能判断。"
+};
+if(typeof SOCIAL_PROFILES!=="undefined"){
+  SOCIAL_PROFILES.weilai=Object.assign({},SOCIAL_PROFILES.weilai||{},{style:"science",interests:["POWER","EXECUTION","CREDIT"]});
+  SOCIAL_PROFILES.zihan={style:"science",interests:["SCIENCE","DATA","REGULATORY","DOCUMENTATION"]};
+  SOCIAL_PROFILES.yangyang={style:"execution",interests:["EXECUTION","TIMELINE","RELATION"]};
+}
+if(typeof BASE_INTERNAL_LINKS!=="undefined"){
+  BASE_INTERNAL_LINKS.push(["weilai","yangyang",22],["ceo","yangyang",62],["ceo","weilai",72],["mingye","weilai",58],["zihan","mingye",58],["xiaoen","zhuzong",16],["cso","xiaoen",34]);
+}
+if(typeof ENDINGS!=="undefined" && ENDINGS.nc_tongxin) delete ENDINGS.nc_tongxin;
+
+/* ---------- B. 捏人：背景词条 + 能力 ---------- */
+var PLAYER_DRAFT={
+  gender:"male",
+  education:"master",
+  years:"3-5",
+  specialty:"solid",
+  social:"normal",
+  charm:"normal"
+};
+var PLAYER_OPTION_META={
+  education:{
+    bachelor:{label:"本科",mods:{professional:0,insight:0}},
+    master:{label:"硕士",mods:{professional:4,insight:3}},
+    phd:{label:"博士",mods:{professional:7,insight:5}},
+    pku:{label:"北大毕业",mods:{professional:8,social:3,insight:7}},
+    overseas:{label:"海外名校",mods:{professional:7,social:4,insight:6}}
+  },
+  years:{
+    "0-2":{label:"0–2年",mods:{professional:-4,project:-4,insight:1}},
+    "3-5":{label:"3–5年",mods:{professional:2,project:2,insight:2}},
+    "6-10":{label:"6–10年",mods:{professional:6,project:6,insight:4}},
+    "10+":{label:"10年以上",mods:{professional:9,project:9,insight:5}}
+  },
+  specialty:{
+    basic:{label:"专业一般",mods:{professional:-6}},
+    solid:{label:"专业扎实",mods:{professional:4}},
+    excellent:{label:"专业优秀",mods:{professional:12,insight:3}}
+  },
+  social:{
+    quiet:{label:"不善社交",mods:{social:-8}},
+    normal:{label:"社交正常",mods:{social:2}},
+    strong:{label:"社交能力较强",mods:{social:12,charm:3}}
+  },
+  charm:{
+    plain:{label:"存在感较低",mods:{charm:-6}},
+    normal:{label:"有亲和力",mods:{charm:3}},
+    strong:{label:"魅力突出",mods:{charm:12,social:2}}
+  }
+};
+function playerBaseSkills(){
+  var x={professional:42,social:42,charm:42,project:40,insight:40}; // PLACEHOLDER
+  ["education","years","specialty","social","charm"].forEach(function(g){
+    var m=PLAYER_OPTION_META[g][PLAYER_DRAFT[g]];
+    Object.keys((m&&m.mods)||{}).forEach(function(k){x[k]=Math.max(0,Math.min(100,(x[k]||0)+m.mods[k]));});
+  });
+  return x;
+}
+function skillName(k){return ({professional:"专业",social:"社交",charm:"魅力",project:"项目管理",insight:"洞察"})[k]||k;}
+function setPlayerDraft(group,val){
+  PLAYER_DRAFT[group]=val;
+  renderCreatorState();
+}
+function renderCreatorState(){
+  var box=document.getElementById("creator-preview");
+  if(!box) return;
+  var x=playerBaseSkills();
+  box.innerHTML='<div class="creator-stats">'+Object.keys(x).map(function(k){return '<span>'+skillName(k)+' <b>'+x[k]+'</b></span>';}).join("")+'</div>'
+    +'<div class="creator-note">当前数值仅用于机制验证，初始预算、词条成本和最优解将在完整事件设计后统一校准。</div>';
+  document.querySelectorAll("[data-create-group]").forEach(function(el){
+    var g=el.getAttribute("data-create-group"),v=el.getAttribute("data-create-value");
+    el.classList.toggle("selected",PLAYER_DRAFT[g]===v);
+  });
+}
+function creatorButtons(group){
+  return Object.keys(PLAYER_OPTION_META[group]).map(function(k){
+    return '<button type="button" class="creator-chip" data-create-group="'+group+'" data-create-value="'+k+'" onclick="setPlayerDraft(\''+group+'\',\''+k+'\')">'+PLAYER_OPTION_META[group][k].label+'</button>';
+  }).join("");
+}
+function mountCharacterCreator(){
+  var diff=document.querySelector(".difficulty-wrap");
+  if(!diff||document.getElementById("character-creator")) return;
+  diff.insertAdjacentHTML("beforebegin",
+    '<div class="creator-wrap" id="character-creator">'
+    +'<div class="sec-title" style="margin-top:8px">捏人 · 入职档案</div>'
+    +'<div class="creator-row"><span class="creator-label">性别</span>'
+    +'<button class="creator-chip selected" data-create-group="gender" data-create-value="male" onclick="setPlayerDraft(\'gender\',\'male\')">男</button>'
+    +'<button class="creator-chip" data-create-group="gender" data-create-value="female" onclick="setPlayerDraft(\'gender\',\'female\')">女</button>'
+    +'<button class="creator-chip" data-create-group="gender" data-create-value="unspecified" onclick="setPlayerDraft(\'gender\',\'unspecified\')">不透露</button></div>'
+    +'<div class="creator-row"><span class="creator-label">学业背景</span>'+creatorButtons("education")+'</div>'
+    +'<div class="creator-row"><span class="creator-label">工作年限</span>'+creatorButtons("years")+'</div>'
+    +'<div class="creator-row"><span class="creator-label">专业能力</span>'+creatorButtons("specialty")+'</div>'
+    +'<div class="creator-row"><span class="creator-label">社交底色</span>'+creatorButtons("social")+'</div>'
+    +'<div class="creator-row"><span class="creator-label">个人魅力</span>'+creatorButtons("charm")+'</div>'
+    +'<div id="creator-preview"></div></div>');
+  renderCreatorState();
+}
+var creatorStyle=document.createElement("style");
+creatorStyle.textContent=
+  '.creator-wrap{max-width:760px;margin:18px auto;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}'
+ +'.creator-row{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:9px 0}.creator-label{width:72px;font-size:12px;color:var(--dim)}'
+ +'.creator-chip{border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:5px 10px;border-radius:16px;font:inherit;font-size:12px;cursor:pointer}'
+ +'.creator-chip.selected{border-color:var(--accent);color:var(--accent);box-shadow:0 0 0 1px rgba(224,168,60,.18) inset}'
+ +'.creator-stats{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.creator-stats span{font-size:12px;border:1px solid var(--line);padding:3px 9px;border-radius:6px;color:var(--dim)}'
+ +'.creator-stats b{color:var(--text)}.creator-note{font-size:11.5px;color:#6f7791;margin-top:8px;line-height:1.6}';
+document.head.appendChild(creatorStyle);
+mountCharacterCreator();
+
+/* ---------- C. 能力门槛 ---------- */
+var _unlockedV99=unlocked;
+unlocked=function(c){
+  if(c&&c.lock&&c.lock.skill){
+    var sk=(S&&S.player&&S.player.skills)||{};
+    var req=c.lock.skill;
+    for(var k in req){ if((sk[k]||0)<req[k]) return false; }
+  }
+  return _unlockedV99(c);
+};
+function skillRequirementText(c){
+  if(!c||!c.lock||!c.lock.skill) return "";
+  return Object.keys(c.lock.skill).map(function(k){return skillName(k)+" "+c.lock.skill[k];}).join(" / ");
+}
+var _choiceHTMLV99=choiceHTML;
+choiceHTML=function(list,handler){
+  var affordable=0;
+  var html=list.map(function(raw,i){
+    var c0=presentedChoice(list,i),letter="ABCDE"[i];
+    if(c0.lock&&!unlocked(c0)){
+      if(c0.lock.npc||c0.lock.support) return "";
+      affordable++;
+      var req=skillRequirementText(c0);
+      return '<div class="choice locked"><span class="idx">'+letter+'</span>🔒 '+(req?("需要 "+req):"现在还做不到")+'</div>';
+    }
+    var st=costStamina(c0);
+    if(S.stamina<st) return '<div class="choice locked"><span class="idx">'+letter+'</span>⚡ 这一版你今晚改不动了（需要 '+st+' 体力，现在只有 '+S.stamina+'）</div>';
+    affordable++;
+    var special=c0.warn?" warn":"",tag=c0.warn?"【不可逆】":"",cls=c0.warn?" warnx":"";
+    return '<button class="choice'+special+'" onclick="'+handler+'('+i+')"><span class="idx">'+letter+'</span>'+c0.t
+      +(tag?'<span class="badge'+cls+'">'+tag+'</span>':"")
+      +(c0.lock&&c0.lock.skill?'<span class="badge cost">能力检定</span>':"")
+      +(st>0?'<span class="badge cost">⚡'+st+'</span>':"")+'</button>';
+  }).join("");
+  if(affordable===0) return html+'<button class="choice warn" onclick="collapse()"><span class="idx">Z</span>你趴在了桌上（睡过去四十分钟）</button>';
+  return html;
+};
+function addSkillGate(chId,index,req){
+  var ch=CHAPTERS.find(function(x){return x.id===chId;});
+  if(ch&&ch.choices&&ch.choices[index]) ch.choices[index].lock=Object.assign({},ch.choices[index].lock||{},{skill:req});
+}
+/* PLACEHOLDER：先验证“能力不足看得到但选不了”的体验，最终门槛后续统一重算。 */
+addSkillGate("c2",2,{professional:44});
+addSkillGate("c3",1,{project:40});
+addSkillGate("c4",0,{social:40,insight:42});
+
+/* ---------- D. 魅力 / 社交倍率 ---------- */
+function playerRelationMultiplier(c){
+  var sk=(S&&S.player&&S.player.skills)||{social:50,charm:50};
+  var charm=1+(sk.charm-50)/220; // PLACEHOLDER
+  var social=1;
+  var tp=topicOfChoice(c||{});
+  if(tp==="RELATION"||tp==="POWER"||(c&&c.interact)) social=1+(sk.social-50)/260;
+  return Math.max(.72,Math.min(1.38,charm*social));
+}
+function scalePlayerSocialChoice(c){
+  if(!c||!S||!S.player) return c;
+  var x=Object.assign({},c,{npc:Object.assign({},c.npc||{}),social:Object.assign({},c.social||{})});
+  var mult=playerRelationMultiplier(c);
+  Object.keys(x.npc).forEach(function(k){
+    var v=x.npc[k];
+    if(typeof v!=="number") return;
+    if(v>0) x.npc[k]=Math.max(1,Math.round(v*mult));
+    else if(v<0 && ((S.player.skills.social||0)>=60)) x.npc[k]=Math.round(v*.90);
+  });
+  ["respect","favor"].forEach(function(dim){
+    if(!x.social[dim]) return;
+    x.social[dim]=Object.assign({},x.social[dim]);
+    Object.keys(x.social[dim]).forEach(function(k){
+      var v=x.social[dim][k];
+      if(typeof v==="number"&&v>0) x.social[dim][k]=Math.max(1,Math.round(v*mult));
+    });
+  });
+  return x;
+}
+
+/* ---------- E. 苏苏：根据玩家性别采用不同判断策略 ---------- */
+function applySusuGenderStrategy(originalChoice){
+  if(!S||!S.player||!NPCs.weilai) return;
+  var sk=S.player.skills||{},sex=S.player.gender;
+  var ceoGain=((originalChoice&&originalChoice.npc)||{}).ceo||0;
+  var tp=topicOfChoice(originalChoice||{});
+  var susu=socialPerson("weilai");
+  if(sex==="female"){
+    /* 她仍然会认可专业能力，但当“年轻女性 + 魅力/能力 + 老板明显关注”同时出现时，
+       Relation/Trust 增长更慢，警戒上升。这里表达的是苏苏的主观偏差，不是客观评价。 */
+    if(ceoGain>0&&(sk.charm||0)>=52){
+      S.npc.weilai=clamp((S.npc.weilai||0)-1);
+      susu.fear=clamp((susu.fear||0)+2);
+      if((sk.professional||0)>=58&&(tp==="SCIENCE"||tp==="SAFETY"||tp==="COMPLIANCE")) susu.respect=clamp(susu.respect+1);
+    }
+  }else if(sex==="male"){
+    /* 男性玩家主要走能力评价通道：聪明、逻辑清楚会更快获得她的专业Respect。 */
+    if((sk.professional||0)>=60&&(sk.insight||0)>=55&&(tp==="SCIENCE"||tp==="EXECUTION"||tp==="POWER")){
+      susu.respect=clamp(susu.respect+1);
+    }
+  }
+}
+
+/* ---------- F. 阵营 / Functional Cooperation / Cohesion / Political Debt ---------- */
+var V10_FACTIONS={
+  founder:{name:"创始核心圈",members:["ceo","cso","xiaoyuan","weilai"]},
+  professional:{name:"专业主义",members:["xiaoen","zihan","mingye","jialin"]},
+  execution:{name:"执行推进",members:["xiaoyuan","yangyang","anyu","qiaoqiao","miaomiao","zhuzong"]},
+  positional:{name:"位置型权力",members:["yijian","jialin","xiaoke"]},
+  external:{name:"外部资源",members:["heina","houpi","niupi","zhangpi","linpi"]}
+};
+function v10EnsureOrg(){
+  ensureOrgSystems();
+  if(!S.org.functionalLinks) S.org.functionalLinks={};
+  if(!S.org.politicalDebt) S.org.politicalDebt={founder:0,professional:0,execution:0,positional:0,external:0};
+  if(S.org.cohesion==null) S.org.cohesion=50; // PLACEHOLDER
+  if(S.org.governanceUsedChapter==null) S.org.governanceUsedChapter=-1;
+  return S.org;
+}
+function fPair(a,b){return [a,b].sort().join("|");}
+function functionalLink(a,b){
+  var o=v10EnsureOrg(),k=fPair(a,b);
+  if(o.functionalLinks[k]==null) o.functionalLinks[k]=Math.max(28,Math.min(72,Math.round(linkVal(a,b)*.75+18)));
+  return o.functionalLinks[k];
+}
+function bumpFunctional(a,b,d){
+  var o=v10EnsureOrg(),k=fPair(a,b);
+  o.functionalLinks[k]=clamp(functionalLink(a,b)+d);
+}
+function cohesionBand(v){return v>=70?"能吵但能交付":v>=52?"基本能协作":v>=35?"跨职能脆弱":"阵营割裂";}
+function cooperationBand(v){return v>=68?"能稳定合作":v>=50?"可在规则下合作":v>=35?"合作脆弱":"高冲突";}
+function factionOfNpc(k){
+  var out=[];Object.keys(V10_FACTIONS).forEach(function(f){if(V10_FACTIONS[f].members.indexOf(k)>=0) out.push(f);});return out;
+}
+function addPoliticalDebtForChoice(c){
+  var o=v10EnsureOrg(),people=[];
+  Object.keys((c&&c.npc)||{}).forEach(function(k){if(((c.npc[k]||0)>0)) people.push(k);});
+  ((c&&c.social&&c.social.coalition)||[]).forEach(function(k){if(people.indexOf(k)<0) people.push(k);});
+  var touched={};
+  people.forEach(function(k){factionOfNpc(k).forEach(function(f){touched[f]=true;});});
+  Object.keys(touched).forEach(function(f){o.politicalDebt[f]=Math.min(99,(o.politicalDebt[f]||0)+1);});
+}
+var GOVERNANCE_TOOLS={
+  raci:{name:"RACI重画",desc:"不要求肖恩和朱粽和解，只把做、批、咨询、知会重新写清楚。",pairs:[["xiaoen","zhuzong",10]],cohesion:4},
+  critical:{name:"关键路径板",desc:"把“所有事情都提前”改成真正的Critical Path、Float和资源约束。",pairs:[["weilai","yangyang",10],["zihan","yangyang",7]],cohesion:5},
+  decision:{name:"Decision Log",desc:"把反复变化的高层意见变成版本、owner和决策日期。",pairs:[["cso","xiaoen",6],["yangyang","xiaoen",6]],cohesion:4},
+  preread:{name:"Pre-read + 决策会",desc:"把二老板的随机深潜放到会前，会议只处理真正需要决定的问题。",pairs:[["cso","xiaoen",8],["cso","zihan",6]],cohesion:4},
+  access:{name:"Access Matrix",desc:"把need-to-know和人为信息控制分开，避免相关职能看不到完整上下文。",pairs:[["yijian","zihan",6],["yijian","jialin",5]],cohesion:3}
+};
+function useGovernanceTool(k){
+  var o=v10EnsureOrg(),g=GOVERNANCE_TOOLS[k];
+  if(!g) return;
+  if(o.governanceUsedChapter===chapterIdx){toast("本章已经重画过一次治理机制","down");return;}
+  o.governanceUsedChapter=chapterIdx;
+  g.pairs.forEach(function(x){bumpFunctional(x[0],x[1],x[2]);});
+  o.cohesion=clamp(o.cohesion+g.cohesion);
+  S.progress=clamp(S.progress+1);
+  addOfficeMemory("meetingBattle",g.name);
+  toast("🧭 "+g.name+"：私人关系没变，但项目合作变得更可控","up");
+  renderHUD();showGovernance();
+}
+function showGovernance(){
+  if(!S) return;
+  var o=v10EnsureOrg();
+  var conflicts=[["xiaoen","zhuzong"],["cso","xiaoen"],["weilai","yangyang"],["zihan","mingye"],["yijian","zihan"]];
+  var fac=Object.keys(V10_FACTIONS).map(function(f){
+    var x=V10_FACTIONS[f],mem=x.members.filter(function(k){return NPCs[k];});
+    return '<div class="intel-item"><div class="ih"><span class="it">'+x.name+'</span><span class="isrc">可重叠，不等于盟友</span></div><div class="ib">'+mem.map(function(k){return NPCs[k].name;}).join(" · ")+'</div></div>';
+  }).join("");
+  var cf=conflicts.map(function(x){
+    return '<div class="intel-item"><div class="ih"><span class="it">'+NPCs[x[0]].name+' × '+NPCs[x[1]].name+'</span><span class="isrc">'+cooperationBand(functionalLink(x[0],x[1]))+'</span></div><div class="ib">私人关系可以很差；这里只表示当前项目是否还能在治理机制下继续合作。</div></div>';
+  }).join("");
+  var toolsHtml=Object.keys(GOVERNANCE_TOOLS).map(function(k){var g=GOVERNANCE_TOOLS[k];return '<button class="choice" onclick="useGovernanceTool(\''+k+'\')"><b>'+g.name+'</b><br><span style="font-size:12px;color:var(--dim)">'+g.desc+'</span></button>';}).join("");
+  document.getElementById("scene-area").innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🧭</span> 组织治理</div>'
+    +'<div class="scene-sub">组织凝聚力：'+cohesionBand(o.cohesion)+'。目标不是让所有人互相喜欢，而是让有矛盾的人仍然交付。</div>'
+    +'<div class="sec-title">结构性阵营</div>'+fac+'<div class="sec-title">高摩擦合作对</div>'+cf
+    +'<div class="sec-title">本章治理工具</div><div class="choices">'+toolsHtml+'</div><button class="btn" onclick="backToScene()">返回</button></div>';
+}
+
+/* ---------- G. 成长商店 ---------- */
+var SKILL_UPGRADE_COST=1; // PLACEHOLDER
+function maybeGrantGrowthPoints(){
+  if(!S||!S.player) return;
+  var milestones=[5,10,14];
+  S.player.growthMarks=S.player.growthMarks||{};
+  milestones.forEach(function(m){
+    if(chapterIdx>=m&&!S.player.growthMarks["ch"+m]){
+      S.player.growthMarks["ch"+m]=true;S.player.skillPoints++;toast("✨ 项目经历转化为 1 点成长点","up");
+    }
+  });
+  if(S.career>=45&&!S.player.growthMarks.promo1){S.player.growthMarks.promo1=true;S.player.skillPoints++;toast("📈 职业层级提升：获得 1 点成长点","up");}
+  if(S.power>=60&&!S.player.growthMarks.promo2){S.player.growthMarks.promo2=true;S.player.skillPoints++;toast("📈 影响力升级：获得 1 点成长点","up");}
+}
+function buySkill(k){
+  if(!S||!S.player) return;
+  if((S.player.skillPoints||0)<SKILL_UPGRADE_COST){toast("成长点不足","down");return;}
+  S.player.skillPoints-=SKILL_UPGRADE_COST;
+  S.player.skills[k]=clamp((S.player.skills[k]||0)+5); // PLACEHOLDER
+  toast("🛍 "+skillName(k)+"提升","up");renderHUD();showGrowthShop();
+}
+function showGrowthShop(){
+  if(!S) return;
+  var p=S.player||{},sk=p.skills||{};
+  var rows=Object.keys(sk).map(function(k){
+    return '<button class="choice" onclick="buySkill(\''+k+'\')"><b>'+skillName(k)+' '+sk[k]+'</b><span class="badge cost">成长点 '+SKILL_UPGRADE_COST+'</span><br><span style="font-size:12px;color:var(--dim)">晋升和关键项目经历后可以继续提升；最终增幅与成本待数值测试。</span></button>';
+  }).join("");
+  document.getElementById("scene-area").innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🛍</span> 成长商店</div>'
+    +'<div class="scene-sub">可用成长点：'+(p.skillPoints||0)+'。能力会解锁事件选项；社交影响说服效果，魅力影响NPC态度与关系收益倍率。</div>'
+    +'<div class="choices">'+rows+'</div><button class="btn" onclick="backToScene()">返回</button></div>';
+}
+
+/* ---------- H. 把新系统接入原有流程 ---------- */
+var _startGameV99=startGame;
+startGame=function(){
+  _startGameV99();
+  S.player={
+    gender:PLAYER_DRAFT.gender,
+    background:Object.assign({},PLAYER_DRAFT),
+    skills:playerBaseSkills(),
+    skillPoints:0,
+    growthMarks:{}
+  };
+  v10EnsureOrg();
+  /* 女性玩家：苏苏不降低专业Respect，但初始更谨慎；男性玩家走更直接的能力评价通道。
+     这里只做很轻的初始差异，真正差异在后续CEO互动中累积。 */
+  if(S.player.gender==="female"){S.npc.weilai=clamp(S.npc.weilai-1);socialPerson("weilai").fear=clamp(socialPerson("weilai").fear+2);}
+  else if(S.player.gender==="male"&&S.player.skills.professional>=58){socialPerson("weilai").respect=clamp(socialPerson("weilai").respect+2);}
+  renderHUD();
+  toast("入职档案已建立："+(S.player.gender==="female"?"女":S.player.gender==="male"?"男":"未透露")+" · 专业 "+S.player.skills.professional+" · 社交 "+S.player.skills.social,"up");
+};
+var _applyChoiceV99=applyChoice;
+applyChoice=function(c){
+  var scaled=scalePlayerSocialChoice(c);
+  var d=_applyChoiceV99(scaled);
+  applySusuGenderStrategy(c);
+  addPoliticalDebtForChoice(scaled);
+  maybeGrantGrowthPoints();
+  return d;
+};
+var _applyChapterPassivesV99=applyChapterPassives;
+applyChapterPassives=function(){
+  _applyChapterPassivesV99();
+  maybeGrantGrowthPoints();
+  var o=v10EnsureOrg();
+  /* Cohesion低时，同样的人际冲突会更容易拖累项目；高时则允许“吵着把事做完”。 */
+  if(o.cohesion<35){S.progress=clamp(S.progress-1);toast("🧭 跨职能割裂正在吞噬项目进度","down");}
+};
+var _renderHUDV99=renderHUD;
+renderHUD=function(){
+  _renderHUDV99();
+  if(!S||!S.player) return;
+  var n=document.getElementById("npcs");
+  if(!n) return;
+  n.insertAdjacentHTML("beforeend",
+    '<span class="npc-chip intel-chip" onclick="showGovernance()" title="让互相不喜欢的人仍然能推进项目">🧭 组织治理</span>'
+    +'<span class="npc-chip intel-chip" onclick="showGrowthShop()" title="晋升/关键经历后使用成长点提升能力">🛍 成长 '+(S.player.skillPoints||0)+'</span>'
+    +'<span class="npc-chip" title="专业 / 社交 / 魅力 / 项目管理 / 洞察">🧬 '+S.player.skills.professional+'·'+S.player.skills.social+'·'+S.player.skills.charm+'·'+S.player.skills.project+'·'+S.player.skills.insight+'</span>');
+};
+
+/* 当前角色关系的几个固定冲突：私人关系低，不代表项目合作必须失败。 */
+var _initSocialV99=initSocial;
+initSocial=function(){
+  _initSocialV99();
+  if(S&&S.social){
+    if(S.social.people.yangyang) S.social.people.yangyang.respect=28;
+    if(S.social.people.zihan) S.social.people.zihan.respect=38;
+  }
+};
+
+/* 把“能力门槛”写进事件数据以后，所有事件类型都会自动继承上面的 unlocked / choiceHTML 逻辑。 */
+
 buildCast();
 renderVP();
 renderGallery();
