@@ -6051,6 +6051,84 @@ renderLifeBuilder();
   var sub=document.querySelector("#title-screen .subtitle");if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Mobile Creator · 多周目阅历点 · Demo v13.1";
 })();
 
+
+/* =====================  v13.2 · MORE STUDY / WORK / RELATIONSHIP LIFE EVENTS  ===================== */
+(function(){
+  var V132_MORE={
+    school:[
+      {id:"school_topclass",name:"长期成绩拔尖",cost:2,desc:"很早就习惯被期待，也容易把价值感和表现绑定。",skill:{professional:3,insight:2},personality:{drive:4,stability:-1},exp:["academic_success"]},
+      {id:"school_ordinary",name:"一直只是中等生",cost:1,desc:"没有被天赋叙事包围，反而更早学会靠准备和稳定输出。",skill:{management:2,professional:1},personality:{stability:2,drive:1},exp:["steady"]},
+      {id:"school_crush",name:"第一次喜欢一个人",cost:1,desc:"第一次学会在意一个人的反应，也第一次知道很多话说不出口。",skill:{social:1,charm:2},personality:{trust:2,boundary:-1},exp:["first_crush"]},
+      {id:"school_reject",name:"第一次被拒绝",cost:1,desc:"第一次知道喜欢并不自动换来回应。",skill:{insight:2},heart:{resilience:2},personality:{trust:-1,stability:1},exp:["rejection"]},
+      {id:"school_parentpressure",name:"高期待家庭",cost:2,desc:"成绩、学校和未来都被反复讨论，你很早就学会了什么叫‘不能让人失望’。",skill:{professional:2},personality:{drive:5,boundary:-3,control:2},heart:{resilience:-1},exp:["family_pressure"]},
+      {id:"school_friendgroup",name:"有一群很稳定的朋友",cost:1,desc:"长期稳定的同伴关系让你更容易相信关系可以持续。",skill:{social:3},personality:{trust:4,stability:2},exp:["stable_friends"]}
+    ],
+    college:[
+      {id:"college_majorlove",name:"真心喜欢自己的专业",cost:2,desc:"学习本身能带来满足，不只是为了绩点或工作。",skill:{professional:4,insight:2},personality:{drive:2,stability:1},exp:["academic_intrinsic"]},
+      {id:"college_wrongmajor",name:"读了不喜欢的专业",cost:1,desc:"学会把兴趣和谋生拆开，也更早意识到路径可以重选。",skill:{insight:3},personality:{drive:-1,boundary:2},exp:["wrong_major"]},
+      {id:"college_research",name:"本科就进实验室",cost:2,desc:"第一次知道科研不等于漂亮结果，也第一次遇到重复失败。",skill:{professional:4,insight:3},heart:{resilience:1},exp:["research"]},
+      {id:"college_campuslead",name:"学生组织负责人",cost:2,desc:"开始学会分工、拉人、协调和承担别人没做完的事。",skill:{management:4,social:3,charm:2},personality:{control:2},exp:["leadership"]},
+      {id:"college_longlove",name:"一段持续多年的恋爱",cost:2,desc:"第一次把长期规划和另一个人放在同一张时间表里。",skill:{social:2},heart:{resilience:2,recovery:2},personality:{trust:4,boundary:2},exp:["long_relationship"]},
+      {id:"college_longdistance",name:"经历过异地恋",cost:1,desc:"学会安排时间、确认期待，也更早暴露出信任和边界问题。",skill:{social:2,management:1},personality:{trust:1,boundary:3},exp:["long_distance"]},
+      {id:"college_breakup",name:"大学时认真分过一次手",cost:1,desc:"关系结束后，你第一次重新搭生活结构。",skill:{insight:2},heart:{resilience:3,recovery:1},personality:{trust:-2,stability:2},exp:["breakup"]},
+      {id:"college_party",name:"社交生活非常丰富",cost:1,desc:"认识很多人、见过很多圈子，也更熟悉关系中的位置感。",skill:{social:4,charm:3,insight:1},personality:{trust:2},exp:["social_network"]}
+    ],
+    graduate:[
+      {id:"grad_paper",name:"第一作者硬啃一篇论文",cost:2,desc:"从数据、图表、回复审稿人一路做完，第一次真正知道‘成稿’意味着什么。",skill:{professional:5,management:2,insight:3},exp:["publication"]},
+      {id:"grad_rejectpaper",name:"被期刊连续拒稿",cost:1,desc:"学会把否定从自我价值里拆出来，也学会重写而不是只争辩。",skill:{professional:2,insight:3},heart:{resilience:3},personality:{stability:2},exp:["academic_rejection"]},
+      {id:"grad_abroad",name:"海外读研 / 读博",cost:3,desc:"语言、文化和科研体系都变了，开始习惯不同组织规则并存。",skill:{professional:3,social:3,insight:4},personality:{stability:2},exp:["overseas"]},
+      {id:"grad_dropout",name:"没有完成博士",cost:1,desc:"你学会了一个很难的事实：路径没有完成，不等于人生没有继续。",skill:{insight:4},heart:{resilience:3},personality:{stability:3,drive:-1},exp:["unfinished_phd"]},
+      {id:"grad_partner",name:"研究生阶段遇到支持型伴侣",cost:2,desc:"在最累的时候，有人不是来评判产出，而是帮你保住生活。",heart:{resilience:4,recovery:5},personality:{trust:5,stability:3},exp:["supportive_partner"]},
+      {id:"grad_betrayal",name:"长期关系中被背叛",cost:2,desc:"你重新学习信任，也可能从此对关系中的模糊边界更敏感。",skill:{insight:3},heart:{resilience:2},personality:{trust:-6,boundary:5,stability:-1},exp:["betrayal"]},
+      {id:"grad_single",name:"主动保持长期单身",cost:1,desc:"你把大量时间留给自己，不把亲密关系当作必须完成的任务。",heart:{recovery:3},personality:{boundary:4,stability:2},exp:["intentional_single"]},
+      {id:"grad_coauthor",name:"和很难相处的人合作发文",cost:1,desc:"第一次发现合作不需要互相喜欢，只需要规则和边界。",skill:{management:3,social:2,insight:3},personality:{boundary:2},exp:["difficult_collab"]}
+    ],
+    early:[
+      {id:"early_firstproject",name:"第一次独立负责一个小项目",cost:2,desc:"第一次没有人替你兜底，事情没闭环就真的会回来找你。",skill:{management:5,professional:2},personality:{drive:2,boundary:2},exp:["ownership"]},
+      {id:"early_trialfail",name:"亲历一次项目失败",cost:2,desc:"第一次知道项目失败不一定是谁不努力，而可能是问题本身选错了。",skill:{insight:5,professional:2},heart:{resilience:2},personality:{drive:-1},exp:["project_failure"]},
+      {id:"early_mentor",name:"被一个前辈真正带过",cost:2,desc:"有人会告诉你为什么，而不只是告诉你怎么改。",skill:{professional:4,management:3,insight:3},personality:{trust:3},exp:["mentor"]},
+      {id:"early_creditstolen",name:"成果被上级拿走",cost:1,desc:"第一次意识到Merit、Reputation和Power不是同一件事。",skill:{insight:4},personality:{trust:-3,boundary:4},exp:["credit_stolen"]},
+      {id:"early_officecrush",name:"喜欢过同事",cost:1,desc:"办公室关系第一次变得不只是工作关系。",skill:{social:2,charm:2},personality:{boundary:-1,trust:2},exp:["office_crush"]},
+      {id:"early_badromance",name:"职场关系和私人关系纠缠过",cost:2,desc:"你学会了界限的重要，也知道工作里很多‘客观’判断其实并不完全客观。",skill:{insight:4},personality:{boundary:5,trust:-2},heart:{resilience:2},exp:["boundary_blur"]},
+      {id:"early_livealone",name:"第一次长期独居",cost:1,desc:"很多情绪没有观众，只能自己处理。",heart:{recovery:3,resilience:2},personality:{stability:3,boundary:2},exp:["independent_life"]},
+      {id:"early_overtime",name:"经历过长期高强度加班",cost:1,desc:"你知道自己能撑，也更容易把‘能撑’误认为‘应该撑’。",body:{maxStamina:2,recovery:-2},heart:{resilience:2,recovery:-2},personality:{drive:3,boundary:-2},exp:["overwork"]}
+    ],
+    middle:[
+      {id:"mid_phase3",name:"完整做过一次III期",cost:3,desc:"真正见过样本量、中心、偏差、数据、医学和监管一起往前走。",skill:{professional:6,management:6,insight:4},exp:["phase3"]},
+      {id:"mid_submission",name:"扛过一次NDA / BLA递交",cost:3,desc:"知道所谓‘最后一公里’其实是一百个小问题同时到期。",skill:{professional:5,management:6,insight:4},body:{recovery:-1},exp:["submission"]},
+      {id:"mid_peoplemanage",name:"开始正式带人",cost:2,desc:"第一次发现自己做得快，不代表别人知道怎么做。",skill:{management:6,social:3},personality:{control:2,trust:1},exp:["people_management"]},
+      {id:"mid_badpromotion",name:"升职后发现自己不会管理",cost:1,desc:"Title先到了，管理能力只能重新补课。",skill:{insight:4,management:2},personality:{stability:-1,drive:2},exp:["management_gap"]},
+      {id:"mid_marriage",name:"结婚 / 建立稳定家庭",cost:2,desc:"工作之外开始出现稳定而真实的责任。",heart:{resilience:4,recovery:3},personality:{trust:4,boundary:3},exp:["family"]},
+      {id:"mid_divorce",name:"离婚",cost:2,desc:"一段长期关系正式结束，你不得不重新定义生活结构。",skill:{insight:3},heart:{resilience:3,recovery:-1},personality:{trust:-3,boundary:5,stability:1},exp:["divorce"]},
+      {id:"mid_child",name:"有了孩子",cost:2,desc:"时间突然变得非常具体，也开始更敏感地计算什么值得加班。",skill:{management:2},heart:{resilience:3},personality:{boundary:4,drive:1},exp:["parenthood"]},
+      {id:"mid_caregiver",name:"照顾生病的家人",cost:2,desc:"你第一次长期在工作责任和家庭责任之间做真正的资源分配。",skill:{management:3},heart:{resilience:4,recovery:-1},personality:{boundary:4,stability:2},exp:["caregiver"]}
+    ],
+    senior:[
+      {id:"senior_launch",name:"经历过产品上市",cost:3,desc:"知道开发结束不是终点，市场、医学、销售和真实世界才刚开始。",skill:{professional:4,management:6,insight:5},exp:["launch"]},
+      {id:"senior_failprogram",name:"亲手关掉一个做了很多年的项目",cost:2,desc:"终于明白沉没成本不是继续投入的理由。",skill:{management:6,insight:6},heart:{resilience:3},personality:{boundary:4,control:-2},exp:["program_stop"]},
+      {id:"senior_reorg",name:"经历过组织重组",cost:2,desc:"看过title、汇报线和真实权力同时变化，也更少相信组织图本身。",skill:{insight:6,management:4},personality:{trust:-1,boundary:3},exp:["reorg","politics"]},
+      {id:"senior_sponsorlead",name:"真正做过Sponsor端负责人",cost:3,desc:"不再只看自己那一块，而是必须承担整个项目怎么跑。",skill:{management:8,professional:4,insight:5},exp:["sponsor_lead"]},
+      {id:"senior_secondmarriage",name:"重新建立一段长期关系",cost:2,desc:"在经历过失望后，重新决定信任另一个人。",heart:{resilience:5,recovery:4},personality:{trust:4,boundary:4,stability:3},exp:["relationship_rebuild"]},
+      {id:"senior_emptyhome",name:"事业很满，私人生活很空",cost:1,desc:"你拥有越来越多工作上的确定性，也越来越少下班后的安排。",skill:{professional:2,management:2},heart:{recovery:-3},personality:{drive:4,trust:-1},exp:["career_dominant"]},
+      {id:"senior_therapy",name:"系统做过心理咨询 / 情绪训练",cost:2,desc:"开始能区分情绪、事实和行动，不再把所有不舒服都变成工作决定。",skill:{insight:5},heart:{resilience:6,recovery:5},personality:{stability:6,boundary:4,conflict:-2},exp:["therapy"]},
+      {id:"senior_mentorothers",name:"真正带出过一个人",cost:2,desc:"不是把活替他做完，而是让他以后不再需要你。",skill:{management:6,social:4},personality:{trust:3,control:-2},exp:["mentor_others"]}
+    ]
+  };
+  Object.keys(V132_MORE).forEach(function(stage){
+    var ids=(LIFE_EVENTS[stage]||[]).map(function(e){return e.id;});
+    V132_MORE[stage].forEach(function(e){if(ids.indexOf(e.id)<0)LIFE_EVENTS[stage].push(e);});
+  });
+
+  /* mobile reading: visually separate academic/work/relationship-heavy long lists without adding hard filters */
+  var style=document.createElement("style");
+  style.textContent='@media(max-width:600px){.life-stage{margin-bottom:18px}.life-events{gap:8px}.life-event{min-height:76px}.life-desc{margin-top:4px;line-height:1.45}}';
+  document.head.appendChild(style);
+
+  renderLifeBuilder();
+  var sub=document.querySelector("#title-screen .subtitle");
+  if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Expanded Life Build · Demo v13.2";
+})();
+
 buildCast();
 renderVP();
 renderGallery();
