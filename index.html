@@ -5671,14 +5671,9 @@ renderLifeBuilder();
     usedEvents.push(ev.id);renderHUD();window._evObj={ev:ev,next:next,cro:false};renderEventFromObj();
   };
 
-  /* make event choice route/branch consequences persistent */
+  /* applyChoice already persists route and branchFlag for both chapters and random events. */
   var _pickEventV12=pickEvent;
-  pickEvent=function(i){
-    var bundle=window._evObj,ev=bundle&&bundle.ev,ch=ev&&presentedChoice(ev.choices,i);
-    if(ch&&ch.route){var rr=routeState();rr[ch.route]=(rr[ch.route]||0)+1;}
-    if(ch&&ch.branchFlag)flags[ch.branchFlag]=true;
-    return _pickEventV12(i);
-  };
+  pickEvent=function(i){ return _pickEventV12(i); };
 
   /* stop v11 ending wrapper from giving event achievements for free */
   var _showEndingV12=showEnding;
