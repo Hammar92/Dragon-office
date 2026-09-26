@@ -5836,6 +5836,229 @@ renderLifeBuilder();
   if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · 18章分支网 · 25随机事件 · 跨周目隐藏路线 · Demo v13.0";
 })();
 
+
+/* =====================  v13.1 · MOBILE CREATOR + EXPANDED LIFE BUILD + CHEAT CODES  ===================== */
+(function(){
+  /* ---------- A. More life-stage choices ---------- */
+  var EXTRA_LIFE_EVENTS={
+    school:[
+      {id:"school_read",name:"大量阅读",cost:1,desc:"很早就习惯自己找答案，而不是等别人教。",skill:{professional:2,insight:3},personality:{drive:1},exp:["selflearn"]},
+      {id:"school_family",name:"承担家庭责任",cost:2,desc:"比同龄人更早学会照顾别人，也更早知道精力不是无限的。",skill:{social:2},heart:{resilience:3},personality:{boundary:1,stability:2},exp:["caregiver"]},
+      {id:"school_rebel",name:"和权威狠狠干过一架",cost:1,desc:"第一次知道“老师说的”不自动等于正确。",skill:{insight:2,social:1},personality:{boundary:4,conflict:4,trust:-2},exp:["authority_conflict"]},
+      {id:"school_art",name:"长期做一件没用但喜欢的事",cost:1,desc:"音乐、画画、写作或别的爱好，让你没有把所有价值都绑在成绩上。",skill:{charm:3},heart:{recovery:3},personality:{stability:2},exp:["hobby"]},
+      {id:"school_move",name:"转学 / 搬家",cost:1,desc:"重新进入一个陌生群体，学会快速观察关系。",skill:{social:2,insight:3},personality:{trust:-1},exp:["adapt"]},
+      {id:"school_cram",name:"临考突击型选手",cost:1,desc:"平时一般，关键节点能把自己压到很高转速。",skill:{professional:2},body:{recovery:-1},personality:{drive:3,boundary:-1},exp:["sprint"]}
+    ],
+    college:[
+      {id:"college_intern",name:"早早开始实习",cost:2,desc:"比同学更早看见真正的职场不是课程作业。",skill:{management:3,social:2,insight:2},exp:["internship"]},
+      {id:"college_exchange",name:"交换 / 异地学习",cost:2,desc:"在陌生环境里重新搭关系和生活。",skill:{social:3,insight:3,charm:1},personality:{stability:2},exp:["adapt","overseas_lite"]},
+      {id:"college_debate",name:"辩论 / 模联",cost:1,desc:"学会把观点说得像观点，而不是情绪。",skill:{social:3,charm:2,insight:2},personality:{conflict:2},exp:["argument"]},
+      {id:"college_sidejob",name:"打工养自己",cost:2,desc:"知道时间、钱和体力都要算成本。",skill:{management:2,social:2},body:{maxStamina:2},personality:{boundary:3},exp:["independence"]},
+      {id:"college_love",name:"认真谈过一段恋爱",cost:1,desc:"第一次长期把另一个人的需求纳入自己的生活。",skill:{social:2,charm:2},personality:{trust:3,boundary:1},heart:{resilience:1},exp:["relationship"]},
+      {id:"college_fail",name:"挂过一门重要的课",cost:1,desc:"第一次发现聪明不等于永远不会翻车。",skill:{insight:2},heart:{resilience:2},personality:{stability:2,drive:-1},exp:["setback_small"]}
+    ],
+    graduate:[
+      {id:"grad_stats",name:"补统计 / 编程",cost:2,desc:"被数据折磨过以后，对‘看起来有差异’更谨慎。",skill:{professional:3,insight:5},exp:["quant"]},
+      {id:"grad_teach",name:"带本科生 / 教学",cost:1,desc:"第一次发现会做和会教是两种能力。",skill:{social:3,management:2},personality:{trust:1},exp:["teaching"]},
+      {id:"grad_badmentor",name:"遇到控制型导师",cost:2,desc:"你学会在高权力关系里保护边界，也可能留下过度警觉。",skill:{insight:4},personality:{boundary:5,trust:-4,conflict:2},heart:{resilience:2},exp:["badboss","politics"]},
+      {id:"grad_collab",name:"跨实验室合作",cost:1,desc:"第一次真正和不是自己体系的人共同交付。",skill:{management:3,social:3},exp:["crossfunctional"]},
+      {id:"grad_burnout",name:"科研过劳一次",cost:1,desc:"你知道自己可以撑很久，也知道撑久了会坏。",skill:{professional:2},heart:{resilience:2,recovery:-2},personality:{boundary:2},exp:["burnout"]},
+      {id:"grad_quit",name:"认真想过退学",cost:1,desc:"最后留下或离开都不重要；重要的是你第一次重新决定自己为什么继续。",skill:{insight:4},personality:{stability:3,drive:-2},heart:{resilience:3},exp:["rethink"]}
+    ],
+    early:[
+      {id:"early_crc",name:"做过CRC",cost:2,desc:"知道总部一句话落到中心到底会变成多少工作。",skill:{management:3,social:3,insight:2},exp:["crc","site_reality"]},
+      {id:"early_cra",name:"做过CRA",cost:2,desc:"知道中心说‘没问题’和真的没问题之间还有多少层。",skill:{management:4,professional:2,insight:3},exp:["cra","site_reality"]},
+      {id:"early_vendor",name:"被供应商坑过一次",cost:1,desc:"从此看到‘请Sponsor确认’会多问一句为什么。",skill:{insight:4,management:2},personality:{trust:-2,boundary:2},exp:["vendor_scar"]},
+      {id:"early_goodboss",name:"遇到一个真正会带人的老板",cost:2,desc:"知道好的指导不是替你做，而是告诉你怎么想。",skill:{professional:2,management:4,insight:3},personality:{trust:3},exp:["goodboss"]},
+      {id:"early_badboss",name:"遇到一个不会带人的老板",cost:2,desc:"你学会在缺少指导时自己搭框架，也可能更不信任上级。",skill:{insight:4,management:2},personality:{trust:-4,boundary:3},exp:["badboss"]},
+      {id:"early_switch",name:"跳槽一次",cost:1,desc:"第一次发现职位名称相同，组织现实可以完全不同。",skill:{social:2,insight:3},personality:{stability:1},exp:["jobchange"]}
+    ],
+    middle:[
+      {id:"mid_phase1",name:"做过完整早期临床",cost:2,desc:"知道早期开发不是缩小版三期，而是不断做取舍。",skill:{professional:5,insight:4},exp:["phase1"]},
+      {id:"mid_safety",name:"扛过一次安全性危机",cost:2,desc:"学会事实、医学判断和管理动作必须分开。",skill:{professional:4,management:4,insight:4},heart:{resilience:2},exp:["safety_crisis"]},
+      {id:"mid_reg",name:"亲自参加过监管沟通",cost:2,desc:"知道监管不是来替团队想清楚问题的。",skill:{professional:4,social:3,insight:4},exp:["regulatory"]},
+      {id:"mid_vendor",name:"真正管过大型CRO",cost:2,desc:"开始能分辨资源不足、scope变化和责任转移。",skill:{management:6,insight:4},personality:{boundary:2},exp:["vendor_management"]},
+      {id:"mid_fire",name:"亲手停掉一个低价值项目",cost:2,desc:"第一次理解管理不仅是推进，也包括停止。",skill:{management:5,insight:5},personality:{boundary:4,control:-2},exp:["stop_doing"]},
+      {id:"mid_promote",name:"升职太快",cost:1,desc:"Title先到了，能力只能边跑边补。",skill:{management:2,charm:2},personality:{drive:4,stability:-2},exp:["fast_promotion"]}
+    ],
+    senior:[
+      {id:"senior_board",name:"向董事会 / 投资人汇报",cost:2,desc:"学会十分钟内回答‘所以呢’。",skill:{social:5,charm:3,insight:5},exp:["board"]},
+      {id:"senior_crisis",name:"处理过一次组织级危机",cost:3,desc:"项目问题最后总会变成人和权力问题。",skill:{management:8,insight:6,social:3},heart:{resilience:3},exp:["org_crisis"]},
+      {id:"senior_hire",name:"搭过一支团队",cost:2,desc:"你知道招到人不等于拥有能力，岗位设计比人数更重要。",skill:{management:7,social:3,insight:3},exp:["team_build"]},
+      {id:"senior_fire",name:"做过艰难人员决定",cost:2,desc:"你知道‘再培养一下’有时只是延迟问题。",skill:{management:5,insight:4},personality:{boundary:4,stability:2},exp:["people_decision"]},
+      {id:"senior_global",name:"真正做过全球项目",cost:3,desc:"跨时区、跨文化、跨监管，不再把本地经验当世界规则。",skill:{professional:5,social:4,management:5,insight:4},exp:["global"]},
+      {id:"senior_reset",name:"主动降速一年",cost:1,desc:"你第一次不是因为失败，而是主动决定不再把所有时间卖给工作。",heart:{resilience:4,recovery:6},personality:{boundary:5,stability:4,drive:-2},exp:["life","reset"]}
+    ]
+  };
+  Object.keys(EXTRA_LIFE_EVENTS).forEach(function(k){
+    var exist=(LIFE_EVENTS[k]||[]).map(function(x){return x.id;});
+    EXTRA_LIFE_EVENTS[k].forEach(function(e){if(exist.indexOf(e.id)<0)LIFE_EVENTS[k].push(e);});
+  });
+
+  /* ---------- B. Multi-run points can buy life-stage time as well as skill points ---------- */
+  window.NG_STAGE_ALLOC=window.NG_STAGE_ALLOC||{school:0,college:0,graduate:0,early:0,middle:0,senior:0};
+  function v131EarnedPoints(){return parseInt(localStorage.getItem("dragon_ng_points")||"0",10)||0;}
+  function v131CheatBonus(){return parseInt(sessionStorage.getItem("dragon_cheat_bonus")||"0",10)||0;}
+  function v131TotalPoints(){return v131EarnedPoints()+v131CheatBonus();}
+  function v131SkillSpent(){return Object.keys(window.NG_ALLOC||{}).reduce(function(s,k){return s+(window.NG_ALLOC[k]||0);},0);}
+  function v131StageSpent(){return Object.keys(window.NG_STAGE_ALLOC||{}).reduce(function(s,k){return s+(window.NG_STAGE_ALLOC[k]||0);},0);}
+  function v131Spent(){return v131SkillSpent()+v131StageSpent();}
+  function v131Remaining(){return Math.max(0,v131TotalPoints()-v131Spent());}
+  function v131StageBudget(id){
+    var st=LIFE_STAGE_META.find(function(x){return x.id===id;});
+    return (st?st.time:0)+(window.NG_STAGE_ALLOC[id]||0);
+  }
+  window.ngSpend=function(k,d){
+    if(!window.NG_ALLOC||window.NG_ALLOC[k]==null)return;
+    if(d>0&&v131Remaining()<=0)return;
+    window.NG_ALLOC[k]=Math.max(0,(window.NG_ALLOC[k]||0)+d);
+    renderNGPanel();renderLifeBuilder();
+  };
+  window.ngStageSpend=function(k,d){
+    if(window.NG_STAGE_ALLOC[k]==null)return;
+    if(d>0&&v131Remaining()<=0)return;
+    var next=Math.max(0,(window.NG_STAGE_ALLOC[k]||0)+d);
+    if(d<0&&stageSpent(k)>v131StageBudget(k)-1){toast("先取消这个阶段的一些经历，再退还阅历点","down");return;}
+    window.NG_STAGE_ALLOC[k]=next;
+    renderNGPanel();renderLifeBuilder();
+  };
+  window.resetNGPoints=function(){
+    Object.keys(window.NG_ALLOC||{}).forEach(function(k){window.NG_ALLOC[k]=0;});
+    Object.keys(window.NG_STAGE_ALLOC||{}).forEach(function(k){window.NG_STAGE_ALLOC[k]=0;});
+    renderNGPanel();renderLifeBuilder();
+  };
+
+  /* override life selection budget */
+  window.toggleLifeEvent=function(stage,id){
+    var st=LIFE_STAGE_META.find(function(x){return x.id===stage;});
+    var e=(LIFE_EVENTS[stage]||[]).find(function(x){return x.id===id;});
+    if(!st||!e)return;
+    var arr=LIFE_DRAFT.selected[stage]||(LIFE_DRAFT.selected[stage]=[]);
+    var at=arr.indexOf(id);
+    if(at>=0){arr.splice(at,1);renderLifeBuilder();return;}
+    if(stageSpent(stage)+e.cost>v131StageBudget(stage)){toast("这个阶段的阅历点不够；可用多周目点数扩充","down");return;}
+    arr.push(id);renderLifeBuilder();
+  };
+
+  /* ---------- C. Mobile-first NG+ panel and cheat code ---------- */
+  window.applyCheatCode=function(){
+    var input=document.getElementById("cheat-code-input");if(!input)return;
+    var code=(input.value||"").trim(),bonus=0,msg="";
+    if(code==="RanRan"){bonus=9999;msg="RanRan：可用加点 +9999";}
+    else if(code==="作者牛逼"){bonus=88;msg="作者牛逼：可用加点 +88";}
+    else {toast("作弊码无效","down");return;}
+    var old=v131CheatBonus();
+    if(bonus>old)sessionStorage.setItem("dragon_cheat_bonus",String(bonus));
+    input.value="";
+    toast("🧪 "+msg,"up");
+    renderNGPanel();renderLifeBuilder();
+  };
+  window.clearCheatCode=function(){
+    sessionStorage.removeItem("dragon_cheat_bonus");
+    resetNGPoints();
+    toast("本次会话作弊点已清除","up");
+  };
+
+  window.renderNGPanel=function(){
+    var el=document.getElementById("ng-panel");if(!el)return;
+    var left=v131Remaining(),total=v131TotalPoints(),earned=v131EarnedPoints(),cheat=v131CheatBonus();
+    var skillKeys=["professional","social","charm","management","insight","fitness"];
+    /* ensure charm exists for old saves */
+    if(window.NG_ALLOC&&window.NG_ALLOC.charm==null)window.NG_ALLOC.charm=0;
+    var ageAllowed=function(id){
+      var order=LIFE_STAGE_META.map(function(x){return x.id;}),idx=order.indexOf(id);
+      var mx=(AGE_OPTIONS[PLAYER_AGE]||AGE_OPTIONS.g3).maxStage;return idx<=mx;
+    };
+    var old=[];try{old=JSON.parse(localStorage.getItem("dragon_last_traits")||"[]");}catch(e){}
+    function traitLabel13(id){var t=TRAIT_RECIPES.find(function(x){return x.id===id;});return t?t.name:id;}
+    var meta="";
+    if(typeof unlockedMetaRoutes==="function"){
+      var u=unlockedMetaRoutes();
+      meta='<div class="ng-section"><div class="sec-title">跨周目隐藏路线</div>';
+      if(!u.length)meta+='<div class="creator-note">？？？ · 某些成就组合或特殊结局会让下一周目出现新的“前世经验”。</div>';
+      else{
+        meta+='<div class="creator-note">每周目最多选择一条。</div><div class="ng-wrap">';
+        meta+=u.map(function(k){var x=META_ROUTES[k];return '<button class="creator-chip '+(SELECTED_META_ROUTE===k?'selected':'')+'" onclick="selectMetaRoute(\''+k+'\')">'+x.name+'</button>';}).join('');
+        meta+='</div>';
+        if(SELECTED_META_ROUTE)meta+='<div class="creator-note">'+META_ROUTES[SELECTED_META_ROUTE].desc+'</div>';
+      }
+      meta+='</div>';
+    }
+    el.innerHTML=
+      '<div class="ng-head"><div><div class="sec-title">多周目 · 可用加点</div><div class="ng-points"><b>'+left+'</b><span> / '+total+' 点</span></div></div>'
+      +'<div class="ng-source">成就 '+earned+(cheat?' · 作弊 +'+cheat:'')+'</div></div>'
+      +'<div class="creator-note">点数可自由投入能力，或增加某个人生阶段的可用时间；开局前都可以退还重选。</div>'
+      +'<div class="ng-section"><div class="sec-title">能力加点</div><div class="ng-skill-grid">'
+      +skillKeys.map(function(k){return '<div class="ng-stepper"><span>'+skillName(k)+'</span><div><button onclick="ngSpend(\''+k+'\',-1)">−</button><b>'+(window.NG_ALLOC[k]||0)+'</b><button onclick="ngSpend(\''+k+'\',1)">＋</button></div></div>';}).join('')
+      +'</div></div>'
+      +'<div class="ng-section"><div class="sec-title">人生阅历点</div><div class="creator-note">1点 = 对应阶段额外1点时间。年龄尚未到达的阶段不能提前购买。</div><div class="ng-stage-grid">'
+      +LIFE_STAGE_META.filter(function(st){return ageAllowed(st.id);}).map(function(st){return '<div class="ng-stepper"><span>'+st.name+'</span><div><button onclick="ngStageSpend(\''+st.id+'\',-1)">−</button><b>+'+(window.NG_STAGE_ALLOC[st.id]||0)+'</b><button onclick="ngStageSpend(\''+st.id+'\',1)">＋</button></div></div>';}).join('')
+      +'</div></div>'
+      +'<div class="ng-section"><div class="sec-title">保留一个上一周目词条</div><div class="ng-wrap">'+(old.length?old.map(function(t){return '<button class="creator-chip '+(NG_KEEP===t?'selected':'')+'" onclick="ngKeep(\''+t+'\')">'+traitLabel13(t)+'</button>';}).join(''):'<span class="creator-note">上一周目还没有可继承词条</span>')+'</div></div>'
+      +meta
+      +'<div class="ng-section cheat-box"><div class="sec-title">作弊码</div><div class="cheat-row"><input id="cheat-code-input" type="text" autocomplete="off" placeholder="输入作弊码"><button class="btn" onclick="applyCheatCode()">确认</button></div><div class="creator-note">作弊点只在当前浏览器会话生效，不覆盖正常成就点。</div></div>'
+      +'<button class="btn ng-reset" onclick="resetNGPoints()">退还本页全部加点</button>';
+  };
+
+  /* ---------- D. Re-render life builder with mobile-safe line breaks and new budgets ---------- */
+  window.lifeBuilderHTML=function(){
+    var x=lifeSummary(),traits=derivedTraits(x);
+    var ageAllowed=function(stageId){
+      var order=LIFE_STAGE_META.map(function(z){return z.id;}),idx=order.indexOf(stageId),mx=(AGE_OPTIONS[PLAYER_AGE]||AGE_OPTIONS.g3).maxStage;
+      return idx<=mx;
+    };
+    var stages=LIFE_STAGE_META.filter(function(st){return ageAllowed(st.id);}).map(function(st){
+      var used=stageSpent(st.id),budget=v131StageBudget(st.id);
+      var ev=(LIFE_EVENTS[st.id]||[]).map(function(e){
+        var on=lifeEventSelected(st.id,e.id);
+        return '<button type="button" class="life-event '+(on?'selected':'')+'" onclick="toggleLifeEvent(\''+st.id+'\',\''+e.id+'\')"><span class="life-ename">'+e.name+'</span><span class="life-cost">⏳'+e.cost+'</span><span class="life-desc">'+e.desc+'</span></button>';
+      }).join("");
+      return '<div class="life-stage"><div class="life-stage-head"><b>'+st.name+'</b><span>时间 '+used+' / '+budget+(window.NG_STAGE_ALLOC[st.id]?'（多周目 +'+window.NG_STAGE_ALLOC[st.id]+'）':'')+'</span></div><div class="life-stage-desc">'+st.desc+'</div><div class="life-events">'+ev+'</div></div>';
+    }).join("");
+    var tr=traits.length?traits.map(function(t){return '<span class="trait '+t.rarity+'" title="'+t.desc+'">'+rarityName(t.rarity)+' · '+t.name+'</span>';}).join(""):'<span class="creator-note">还没有拼出成型词条。</span>';
+    var ini=x.initial||{},labels={heart:"❤️心力",sanity:"🧠理智",morale:"🫂士气",career:"💼履历",power:"⚔权力",reputation:"🏷声望",trust:"🤝上级信任"};
+    var vals=Object.keys(labels).filter(function(k){return ini[k];}).map(function(k){return '<span>'+labels[k]+' <b>'+(ini[k]>0?'+':'')+ini[k]+'</b></span>';}).join("");
+    return '<div class="creator-row creator-row-stack"><span class="creator-label">年龄</span><div class="ng-wrap">'+Object.keys(AGE_OPTIONS).map(function(k){return '<button class="creator-chip '+(PLAYER_AGE===k?'selected':'')+'" onclick="setPlayerAge(\''+k+'\')">'+AGE_OPTIONS[k].label+'</button>';}).join('')+'</div></div>'
+      +'<div class="creator-row creator-row-stack"><span class="creator-label">性别</span><div class="ng-wrap">'+["male","female","unspecified"].map(function(g){return '<button class="creator-chip '+(LIFE_DRAFT.gender===g?'selected':'')+'" onclick="setLifeGender(\''+g+'\')">'+({male:"男",female:"女",unspecified:"不透露"})[g]+'</button>';}).join('')+'</div></div>'
+      +stages
+      +'<div class="sec-title">当前能力</div><div class="creator-stats">'+["professional","social","charm","management","insight","fitness"].map(function(k){return '<span>'+skillName(k)+' <b>'+x.skills[k]+'</b></span>';}).join('')
+      +'<span>⚡体力上限 <b>'+x.body.maxStamina+'</b></span><span>❤️心力韧性 <b>'+x.heart.resilience+'</b></span><span>🧘情绪控制 <b>'+emotionalControlFrom(x)+'</b></span></div>'
+      +'<div class="sec-title">入职状态影响</div><div class="creator-stats">'+(vals||'<span>当前经历没有直接改变基础状态</span>')+'</div>'
+      +'<div class="sec-title">拼出的词条</div><div class="trait-row">'+tr+'</div>'
+      +'<div class="creator-note">年龄决定可选择的人生阶段；多周目阅历点只能增加已经到达阶段的时间。人生经历会影响能力、隐藏人格、关系恢复和部分事件选项。</div>'
+      +'<button class="btn" type="button" onclick="resetLifeDraft()" style="margin-top:10px">重置人生履历</button>';
+  };
+
+  /* NG skill points: +2 per point, including Charm. Keep values usable even with cheat codes. */
+  var _lifeSummaryV131=lifeSummary;
+  lifeSummary=function(){
+    var x=_lifeSummaryV131();
+    ["professional","social","charm","management","insight","fitness"].forEach(function(k){
+      var add=(window.NG_ALLOC&&window.NG_ALLOC[k])||0;
+      x.skills[k]=Math.max(0,Math.min(9999,(x.skills[k]||0)+add*2));
+    });
+    x.skills.project=x.skills.management;
+    return x;
+  };
+
+  /* ---------- E. Mobile CSS ---------- */
+  var st=document.createElement("style");
+  st.textContent=
+    '.ng-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.ng-points{font-size:24px;line-height:1}.ng-points b{color:var(--accent)}.ng-points span{font-size:12px;color:var(--dim)}.ng-source{font-size:11px;color:var(--dim);padding-top:4px}'
+   +'.ng-section{border-top:1px dashed var(--line);padding-top:12px;margin-top:12px}.ng-wrap{display:flex;flex-wrap:wrap;gap:7px;min-width:0}.ng-skill-grid,.ng-stage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}'
+   +'.ng-stepper{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);background:var(--panel2);border-radius:9px;padding:8px 9px;min-width:0}.ng-stepper>span{font-size:12px;min-width:0;overflow-wrap:anywhere}.ng-stepper>div{display:flex;align-items:center;gap:5px;flex:0 0 auto}.ng-stepper button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:17px;line-height:1;cursor:pointer}.ng-stepper b{min-width:28px;text-align:center;font-size:12px}'
+   +'.cheat-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.cheat-row input{min-width:0;width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);padding:9px 10px;font:inherit}.ng-reset{margin-top:12px;width:100%}'
+   +'.creator-row-stack{align-items:flex-start}.creator-row-stack>.creator-label{padding-top:6px}.life-stage-head{gap:8px;flex-wrap:wrap}.life-stage-head span{white-space:normal;text-align:right}.life-ename,.life-desc,.creator-note,.creator-chip{overflow-wrap:anywhere;word-break:break-word}'
+   +'@media(max-width:600px){.creator-wrap{margin:10px 8px;padding:13px 12px}.creator-row{align-items:flex-start}.creator-row-stack{display:block}.creator-row-stack>.creator-label{display:block;width:auto;margin-bottom:7px;padding:0}.creator-chip{white-space:normal;text-align:left;line-height:1.35;max-width:100%}.ng-skill-grid,.ng-stage-grid{grid-template-columns:1fr}.ng-stepper{width:100%;box-sizing:border-box}.life-events{grid-template-columns:1fr}.life-event{min-width:0;width:100%;box-sizing:border-box;padding-right:42px}.creator-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.creator-stats span{min-width:0;overflow-wrap:anywhere}.cheat-row{grid-template-columns:1fr}.cheat-row .btn{width:100%}.ng-head{display:block}.ng-source{margin-top:6px}.life-stage-head{display:block}.life-stage-head span{display:block;text-align:left;margin-top:4px}.trait-row{align-items:flex-start}.trait{white-space:normal;line-height:1.35}}'
+   +'@media(max-width:380px){.creator-stats{grid-template-columns:1fr}.creator-wrap{margin-left:4px;margin-right:4px}.game-title{overflow-wrap:anywhere}}';
+  document.head.appendChild(st);
+
+  /* load persisted selected meta route; cheat bonus intentionally session-only */
+  try{var savedMeta=localStorage.getItem("dragon_meta_route");if(savedMeta)SELECTED_META_ROUTE=savedMeta;}catch(e){}
+  renderLifeBuilder();renderNGPanel();
+  var sub=document.querySelector("#title-screen .subtitle");if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Mobile Creator · 多周目阅历点 · Demo v13.1";
+})();
+
 buildCast();
 renderVP();
 renderGallery();
