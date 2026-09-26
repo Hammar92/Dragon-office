@@ -6029,17 +6029,9 @@ renderLifeBuilder();
       +'<button class="btn" type="button" onclick="resetLifeDraft()" style="margin-top:10px">重置人生履历</button>';
   };
 
-  /* NG skill points: +2 per point, including Charm. Keep values usable even with cheat codes. */
-  var _lifeSummaryV131=lifeSummary;
-  lifeSummary=function(){
-    var x=_lifeSummaryV131();
-    ["professional","social","charm","management","insight","fitness"].forEach(function(k){
-      var add=(window.NG_ALLOC&&window.NG_ALLOC[k])||0;
-      x.skills[k]=Math.max(0,Math.min(9999,(x.skills[k]||0)+add*2));
-    });
-    x.skills.project=x.skills.management;
-    return x;
-  };
+  /* v11 already applies NG ability points inside lifeSummary. Add Charm to that same allocation map
+     rather than applying a second multiplier here. */
+  if(window.NG_ALLOC&&window.NG_ALLOC.charm==null)window.NG_ALLOC.charm=0;
 
   /* ---------- E. Mobile CSS ---------- */
   var st=document.createElement("style");
