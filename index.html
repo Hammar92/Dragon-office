@@ -5944,8 +5944,8 @@ renderLifeBuilder();
   window.applyCheatCode=function(){
     var input=document.getElementById("cheat-code-input");if(!input)return;
     var code=(input.value||"").trim(),bonus=0,msg="";
-    if(code==="RanRan"){bonus=9999;msg="RanRan：可用加点 +9999";}
-    else if(code==="作者牛逼"){bonus=88;msg="作者牛逼：可用加点 +88";}
+    if(code==="RanRan"){bonus=9999;msg="作弊码已生效：可用加点 +9999";}
+    else if(code==="作者牛逼"){bonus=88;msg="作弊码已生效：可用加点 +88";}
     else {toast("作弊码无效","down");return;}
     var old=v131CheatBonus();
     if(bonus>old)sessionStorage.setItem("dragon_cheat_bonus",String(bonus));
@@ -5996,7 +5996,7 @@ renderLifeBuilder();
       +'</div></div>'
       +'<div class="ng-section"><div class="sec-title">保留一个上一周目词条</div><div class="ng-wrap">'+(old.length?old.map(function(t){return '<button class="creator-chip '+(NG_KEEP===t?'selected':'')+'" onclick="ngKeep(\''+t+'\')">'+traitLabel13(t)+'</button>';}).join(''):'<span class="creator-note">上一周目还没有可继承词条</span>')+'</div></div>'
       +meta
-      +'<div class="ng-section cheat-box"><div class="sec-title">作弊码</div><div class="cheat-row"><input id="cheat-code-input" type="text" autocomplete="off" placeholder="输入作弊码"><button class="btn" onclick="applyCheatCode()">确认</button></div><div class="creator-note">作弊点只在当前浏览器会话生效，不覆盖正常成就点。</div></div>'
+      +'<div class="ng-section cheat-box"><div class="sec-title">作弊码</div><div class="cheat-row"><input id="cheat-code-input" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="输入作弊码"><button class="btn" onclick="applyCheatCode()">确认</button></div><div class="creator-note">作弊点只在当前浏览器会话生效，不覆盖正常成就点。</div></div>'
       +'<button class="btn ng-reset" onclick="resetNGPoints()">退还本页全部加点</button>';
   };
 
