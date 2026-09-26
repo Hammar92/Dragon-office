@@ -5329,6 +5329,365 @@ renderLifeBuilder();
   };
 })();
 
+
+/* =====================  v12.0 · BRANCH NETWORK + 99 CONCRETE ACHIEVEMENTS  ===================== */
+(function(){
+  /* ---------- A. Branch state: early decisions keep following you ---------- */
+  function routeState(){
+    if(!S)return {govern:0,appease:0,power:0,care:0};
+    if(!S.route)S.route={govern:0,appease:0,power:0,care:0};
+    return S.route;
+  }
+  function routeWinner(){
+    var r=routeState(),keys=["govern","appease","power","care"];
+    keys.sort(function(a,b){return (r[b]||0)-(r[a]||0);});
+    return keys[0];
+  }
+  var routeByChoice=[
+    ["govern","power","appease"],["govern","appease","power"],["govern","appease","appease"],
+    ["govern","power","appease"],["govern","appease","power"],["govern","care","power"],
+    ["govern","appease","power"],["govern","appease","power"],["govern","appease","power"],
+    ["govern","appease","power"],["govern","appease","appease"],["govern","power","power"],
+    ["govern","appease","appease"],["govern","appease","appease"],["govern","appease","power"],
+    ["govern","appease","power"],["govern","appease","power"],["govern","appease","power"]
+  ];
+  V11_CHAPTERS.forEach(function(ch,ci){
+    (ch.choices||[]).forEach(function(opt,oi){
+      opt.route=(routeByChoice[ci]&&routeByChoice[ci][oi])||"govern";
+      opt.setFlag="main_"+(ci+1)+"_"+(oi+1);
+      opt.achievement="a"+(ci*3+oi+1);
+    });
+  });
+
+  var _applyChoiceV12=applyChoice;
+  applyChoice=function(ch){
+    var out=_applyChoiceV12(ch),r=routeState();
+    if(ch&&ch.route)r[ch.route]=(r[ch.route]||0)+1;
+    if(ch&&ch.branchFlag)flags[ch.branchFlag]=true;
+    return out;
+  };
+
+  /* ---------- B. 18-chapter graph: later chapters are selected at render time ---------- */
+  function branchChapter(id,act,title,from,aside,text,choices){
+    return {id:id,act:act,title:title,aside:{from:from,text:aside},text:text,choices:choices.map(function(x,i){
+      return {t:x[0],e:x[1]||{},npc:x[2]||{},r:x[3],route:x[4]||(["govern","appease","power"][i]||"govern"),setFlag:x[5]||null,achievement:null};
+    })};
+  }
+  window.V12_BRANCH_VARIANTS={
+    2:function(){
+      if(flags.main_2_2)return branchChapter("v12_3_overload","Phase I","三个群同时亮红","K总","你昨天答应三个项目一起开。今天它们真的一起开了。",
+        "上午九点，8006问安全性；九点十分，8016要方案；九点二十，Combo群里老板@全体：\n\n「今天能不能给我一个思路？」\n\n杨杨已经建好三个专项会，时间分别是10点、11点和12点。\n\nK总看着你的日历：「现在你知道‘都做’是什么意思了。」",[
+          ["把三个会合成一个，只处理今天会让项目停下来的问题。",{progress:6,power:2},{kzong:5},"十二点前真的关掉了一个风险。剩下两件事第一次被允许明天再说。","govern","overload_triage"],
+          ["三个会都去。",{trust:5,stamina:-10,heart:-5},{yangyang:5},"下午两点你已经听不清第四个人在说哪个项目。","appease","overload_allin"],
+          ["直接在群里说资源不足，要求钟时定优先级。",{power:5,trust:-6},{kzong:4},"钟时回复：「你们先内部协调，不要什么都往上推。」K总给你看了一个‘我就知道’的表情。","power","overload_escalate"]
+        ]);
+      if(flags.main_2_3)return branchChapter("v12_3_rebellion","Phase I","你刚来就说做不到","邹婷","钟时觉得你能力不错，就是‘方式可以再柔和一点’。",
+        "你上周当面说「要么加人，要么减事」。今天邹婷约你喝咖啡。\n\n「钟时觉得你太快进入管理者姿态。试用期还是要注意合作方式。」\n\n你刚坐下，钟时又发来消息：「那三个项目你现在怎么安排？」",[
+          ["把优先级写成她可以直接勾选的三行。",{trust:2,progress:5},{zouting:3},"她勾了第一行。邹婷说：「这就比‘做不到’好很多。」","govern","probation_repair"],
+          ["回复：「都在推进。」",{trust:6,progress:-3},{zouting:2},"这句话非常安全，因为没有任何可验证的内容。","appease","probation_blur"],
+          ["把资源表抄送老板。",{power:6,trust:-10},{ceo:2,zouting:-3},"老板真的看了。钟时也真的看见你抄送了老板。","power","probation_bypass"]
+        ]);
+      return null;
+    },
+    4:function(){
+      if(flags.main_4_2)return branchChapter("v12_5_memoryfight","Phase II","邮件不是用来打脸的","则韩","你上次当众指出她记错了。今天她每句话都在看你。",
+        "项目会上，钟时忽然说：「上次你说那个分析不需要做，对吧？」\n\n你很确定自己从来没说过。\n\n则韩把会议纪要推到你面前，没有说话。\n\n钟时看着你：「怎么，不记得了？」",[
+          ["只讲记录：「纪要里当时是待评估，没有形成否定结论。」",{progress:4,power:2},{zihan:5},"她看了两秒：「那就按待评估继续。」这次你没有赢她，只保住了事实。","govern","memory_neutral"],
+          ["「可能是我记错了。」",{trust:6,sanity:-4},{},"会议继续得很顺。你第一次开始怀疑自己是不是也真的记错了。","appease","memory_selfdoubt"],
+          ["把纪要投屏。",{power:5,trust:-8},{mingye:4},"全场都看见了。钟时说：「我说的不是这个意思。」你赢了记录，输了空气。","power","memory_screen"]
+        ]);
+      return null;
+    },
+    6:function(){
+      if(flags.main_5_1||flags.main_5_3)return branchChapter("v12_7_pvsplit","Phase II","PV里有两个答案","PVP","加琳让我改了一句，我不知道医学上是不是还完全一样。",
+        "你上次让PVP说了自己的判断。今天他私下给你看两个版本。\n\n第一版写：「时间关系支持相关可能。」\n\n第二版写：「目前证据不足以支持相关性。」\n\nPVP小声说：「第二版是最后出去的。」",[
+          ["让PVP列出两版差异的医学依据，再和加琳一起确认。",{progress:5,power:2},{pvp:6,jialin:-2,xiaoen:3},"讨论很难看，但最后文件里第一次留下了谁负责医学判断。","govern","pv_dualrecord"],
+          ["既然已对外，就别再翻。",{trust:3,progress:1},{jialin:5,pvp:-4},"事情过去了。PVP下次写第一版时，已经更接近第二版。","appease","pv_calibrated"],
+          ["把两个版本直接发给二老板。",{power:6,trust:-7},{cso:3,jialin:-8,pvp:-2},"二老板问的第一句话不是‘谁改的’，而是‘你们PV到底谁负责医学判断？’","power","pv_escalated"]
+        ]);
+      if(flags.main_5_2)return branchChapter("v12_7_silence","Phase II","没人再直接问PVP","加琳","统一出口以后效率其实更高，避免大家各说各的。",
+        "两个月过去，Clinical已经习惯直接问加琳。\n\n今天二老板临时问PVP：「你最近最担心哪个case？」\n\nPVP愣了几秒：「这个……我们整体看目前没有特别的。」\n\n加琳接话：「对，整体可控。」",[
+          ["会后单独让PVP做一次case review，只听他的医学判断。",{progress:4},{pvp:6},"他一开始说得很慢，到第三个case才开始真正像一个Safety Physician。","govern","pvp_rebuild"],
+          ["组织一直这么运行，就继续。",{trust:4},{jialin:5,pvp:-3},"流程很顺。PVP越来越像一项组织架构，而不是一个声音。","appease","shadow_pvp"],
+          ["在下次Safety Committee明确要求PVP独立汇报。",{power:5,trust:-4},{pvp:4,jialin:-6},"加琳提前给他review了整套slides。独立汇报从三轮内部统一开始。","power","pvp_stage"]
+        ]);
+      return null;
+    },
+    7:function(){
+      if(flags.main_7_2||flags.v11_cro_sponsor_mail)return branchChapter("v12_8_vendortrap","Phase II","Sponsor已经确认","肖恩","我找到那封邮件了。先别解释，先看你们当时写了什么。",
+        "质量复盘会上，黑娜投出一封旧邮件。\n\n发件人：朱粽。\n\n正文：「Sponsor确认该处理方式可接受。」\n\n黑娜很客气：「所以CRO当时是按照Sponsor确认执行的。」\n\n朱粽转头看你：「这封是不是当时只是为了留记录？」",[
+          ["把当时完整时间线拉出来，拆开‘事实确认’和‘处理批准’。",{blame:-5,progress:4,power:2},{xiaoen:6,heina:2},"邮件还在那里，但它不再是唯一一张纸。","govern","vendor_rescue"],
+          ["承认Sponsor确认过，先把复盘过掉。",{trust:3,blame:7},{zhuzong:3,heina:4},"会议很快结束。风险没有消失，只是正式换了owner。","appease","vendor_accept"],
+          ["当场说是CRO诱导朱粽发的。",{power:4,morale:-4},{heina:-8,zhuzong:2},"黑娜没有提高音量，只把她最初的邮件也投了出来。","power","vendor_accuse"]
+        ]);
+      return null;
+    },
+    8:function(){
+      if((S.npc.houpi||0)>=35)return branchChapter("v12_9_mkdoor","Phase II","MK主任开始直接找你","Parker","主任刚才是不是直接给你发消息了？",
+        "晚上十点，MK主任给你发来一句：\n\n「明天有空聊一下长期随访吗？」\n\nParker很快也发来：「主任是不是有事？我可以一起。」\n\n钟时随后问：「MK主任找你什么事？」",[
+          ["回复MK主任，同时把Parker和钟时都放在明确角色里。",{piRep:4,power:2},{houpi:4,parker:1},"第二天会很顺。Parker负责中心执行，你负责科学问题，钟时收到了会后结论。没有人完全满意，但也没人被突然绕过。","govern","mk_structured"],
+          ["让Parker继续做唯一窗口。",{trust:4,piRep:-2},{parker:5},"主任第二天没再约。他直接把问题发给了统计。","appease","mk_gatekeep"],
+          ["自己去，不抄任何人。",{power:6,piRep:4,trust:-6},{houpi:5,parker:-5},"讨论很有价值。回公司后，钟时问的第一句是：「为什么我不知道？」","power","mk_direct"]
+        ]);
+      return null;
+    },
+    9:function(){
+      if(flags.mk_direct||flags.main_8_3)return branchChapter("v12_10_territory","长期随访","两位PI都直接找你","N院长","MK那边已经在想长期随访了？那机制这块最好别再晚。",
+        "同一天上午，MK主任问你主文章框架；下午，N院长问你样本和机制。\n\n两边都没有提对方。\n\n明夜说：「你现在不是在维护两个PI关系。你是在替他们划边界。」",[
+          ["把两边的问题写成一张研究地图，明确交叉和各自主线。",{piRep:6,power:3},{houpi:4,niupi:5,mingye:3},"两位都改了几处。真正敏感的地方反而第一次写在纸面上。","govern","territory_map"],
+          ["分别答应两边，先别让他们碰面。",{piRep:3,heart:-4},{houpi:3,niupi:3},"你暂时拥有两个都满意的版本，以及一个迟早要爆炸的日历。","appease","territory_doublepromise"],
+          ["告诉N院长主研究由MK主任leading，机制他自己争取。",{power:3,piRep:-3},{niupi:-6,houpi:3},"边界很清楚。合作空间也一起变窄了。","power","territory_hardline"]
+        ]);
+      return null;
+    },
+    11:function(){
+      if(flags.main_11_3||flags.territory_doublepromise)return branchChapter("v12_12_promises","Phase III","你答应过的东西开始回来","林主任","我不是来催。只是之前说过的事情，大家最好都记得。",
+        "林主任问后续substudy，N院长也已经在推进机制，MK主任希望长期随访继续由自己团队牵头。\n\n一建在作者表旁边加了一列：「待确认」。\n\n那一列越来越长。",[
+          ["把所有口头承诺拉成一张表，能兑现的兑现，不能的现在说清。",{progress:4,piRep:4,power:2},{zhangpi:5,houpi:2,niupi:2},"有两个人不高兴，但没有人到最后一天才发现自己被忘了。","govern","promise_ledger"],
+          ["先不碰，等文章真写起来再说。",{trust:2,piRep:-3},{},"短期没人吵。长期每个人都保留着自己的版本。","appease","promise_defer"],
+          ["谁贡献大谁拿，其他口头承诺作废。",{power:5,piRep:-4},{zhangpi:-4},"规则很硬，也很干净。问题是有些人记得你当时不是这么说的。","power","promise_reset"]
+        ]);
+      return null;
+    },
+    13:function(){
+      if(routeWinner()==="appease")return branchChapter("v12_14_meetingculture","Phase III","会议越来越多","杨杨","大家最近配合挺好的，就是会议排得有点满。",
+        "你的日历今天有九个会。\n\n钟时七个都参加。\n\n下午第五个会上，她问：「这个问题是不是我们之前讨论过？」\n\n没人马上回答，因为大家一时想不起她指的是哪一次。",[
+          ["取消两个只做信息同步的会，改成书面更新。",{progress:5,morale:5},{kzong:4},"晚上第一次出现一块完整的45分钟空白。你差点以为系统坏了。","govern","calendar_cut"],
+          ["都保留，重要时期多对齐没坏处。",{trust:5,stamina:-8,morale:-4},{yangyang:4},"第九个会结束时，所有人都已经知道第十个会为什么必要。","appease","calendar_full"],
+          ["直接把钟时从两个会里移出去。",{power:5,trust:-8},{kzong:3},"两个会效率确实提高。钟时第二天问：「为什么这个我没被邀请？」","power","calendar_exclude"]
+        ]);
+      if(routeWinner()==="power")return branchChapter("v12_14_control","Phase III","所有邮件都抄我","钟时","最近很多事情我最后才知道，这样不行。",
+        "钟时发来一条新要求：\n\n「以后Clinical相关邮件都抄我，重要PI沟通先和我对齐，跨部门会我尽量都参加。」\n\n明夜私聊你：「恭喜，你把她的Control Threat打出来了。」",[
+          ["只定义哪些算‘需要抄VP’的事项，并写进沟通规则。",{power:3,trust:1},{zihan:4},"她没有完全满意，但至少没有真的收到每一封site follow-up。","govern","control_scope"],
+          ["全部照做。",{trust:7,progress:-4,stamina:-4},{},"她的邮箱三天后未读999+。但规则仍然存在。","appease","control_allcc"],
+          ["继续按原来方式，不回应。",{power:6,trust:-10},{mingye:4},"项目没有立刻停。但每一个没抄她的邮件都开始具备政治意义。","power","control_ignore"]
+        ]);
+      return null;
+    },
+    14:function(){
+      if((S.power||0)>=48||flags.mk_direct||flags.probation_bypass)return branchChapter("v12_15_bossdm","Pre-NDA","老板直接问你","老板","钟时那边材料太长。你用五分钟告诉我现在真正的问题。",
+        "晚上十点四十，老板直接发你微信：\n\n「现在这个项目到底卡在哪？」\n\n没有抄钟时。\n\n你盯着输入框。五分钟后，钟时又发来：「老板是不是找你了？」",[
+          ["给老板三行答案，同时马上同步钟时‘老板问了什么、我怎么答的’。",{power:6,trust:1},{ceo:5,kzong:4},"老板回了一个「好」。钟时沉默了一阵，只说：「以后提前告诉我。」真正的汇报线第一次分叉，但没有断。","govern","boss_direct_logged"],
+          ["先告诉钟时，让她统一回复老板。",{trust:8,power:-2},{ceo:-2},"半小时后老板又来问你：「所以结论是什么？」","appease","boss_returned"],
+          ["直接给老板完整建议，不同步钟时。",{power:9,trust:-9},{ceo:6},"你的建议第二天出现在高层会上。钟时第一次不是因为内容，而是因为‘谁先知道’明显动怒。","power","boss_privatechannel"]
+        ]);
+      return null;
+    },
+    15:function(){
+      if(flags.boss_privatechannel||flags.control_ignore)return branchChapter("v12_16_powerline","NDA","谁在真正负责","二老板","现在很多人有问题先找你。这个状态不能一直靠默认。",
+        "二老板把你和钟时一起叫进办公室。\n\n「项目现在有两个事实：钟时是VP；但很多关键问题已经直接到你这里。这个状态继续下去，迟早出事。」\n\n钟时没有看你：「我也觉得汇报线需要理顺。」",[
+          ["建议把专业decision rights、项目运行权和正式汇报线分开写清。",{power:6,morale:4},{cso:5,zihan:3,kzong:4},"没有人升职，也没有人降职。但从那天开始，‘谁能决定什么’不再完全靠猜。","govern","power_formalize"],
+          ["强调钟时仍是负责人，所有事情回到她那里。",{trust:8,power:-5},{cso:1},"会议非常和谐。两周后老板又直接来问你。","appease","power_restore"],
+          ["明确说现状证明你应该接管项目。",{power:10,trust:-12,morale:-4},{cso:-2},"房间里第一次出现了真正的权斗，而不是项目管理。","power","power_claim"]
+        ]);
+      if(routeWinner()==="govern")return branchChapter("v12_16_coalition","NDA","没有人完全站你这边","肖恩","挺好的。真到大事上，有七个人愿意接电话，比一个人说喜欢你有用。",
+        "关键递交前夜，钟时的意见又变了。\n\n你没有去找一个‘最强盟友’。\n\n统计、QA、K总、Clinical、两位PI和二老板分别从自己的角度给出意见。它们并不完全一致。\n\n但有一件事一致：今晚不能按一个临时想法把整个包重做。",[
+          ["把不同意见压成共同底线，只守住不能动的部分。",{progress:7,power:5,morale:5},{xiaoen:4,zihan:4,kzong:4},"没人说‘听你的’，但所有人都按同一条底线行动。","govern","coalition_floor"],
+          ["请二老板直接拍板。",{progress:5,power:1},{cso:5},"问题解决了。你的联盟把最后一步重新外包给了最高层。","appease","coalition_escalate"],
+          ["宣布按你版本执行。",{progress:6,power:7,morale:-3},{xiaoen:-2},"大家执行了，因为时间不够。Functional Cooperation还在，信任少了一点。","power","coalition_command"]
+        ]);
+      return null;
+    },
+    16:function(){
+      if(flags.power_claim)return branchChapter("v12_17_succession","NDA","HR没有发通知","邹婷","没人说要换谁。但组织已经开始自己找最省事的路径。",
+        "最近三周，老板两次直接找你，二老板让你主持了一次跨部门会，MK主任也把一个关键问题先发给你。\n\n钟时仍然是VP。\n\n邹婷问得很轻：「你有没有想过，如果这种状态继续下去，你和钟时其实都很危险？」",[
+          ["要求正式定义你的职责，不讨论谁取代谁。",{power:5,career:3},{zouting:5},"邹婷说：「这至少是一个能写进组织图的答案。」","govern","succession_role"],
+          ["表示没有任何权力诉求。",{trust:6,power:-2},{zouting:3},"她点头。组织并没有因此停止继续把事情送给你。","appease","succession_deny"],
+          ["问她：老板有没有讨论过调整钟时。",{power:6,trust:-5},{zouting:-2},"邹婷笑了一下：「你现在问这个问题，本身就是一个信息。」","power","succession_probe"]
+        ]);
+      if(flags.boss_direct_logged||routeWinner()==="govern")return branchChapter("v12_17_shadoworg","NDA","组织图和真实组织","K总","正式汇报线是一张图。真正谁会给谁打电话，是另一张图。",
+        "K总在白板上画了两张图。\n\n第一张是正式组织架构。\n\n第二张是最近一个月关键decision真正流动的路径。\n\n第二张里，你在中间。钟时仍然在最上面，但很多线已经绕开她以后又回来。",[
+          ["把第二张图变成RACI和固定决策机制，减少对你个人的依赖。",{power:4,morale:6,progress:4},{kzong:6},"网络还在，但不再只靠你在线。你第一次能请一天假。","govern","shadow_to_system"],
+          ["继续保持现状，别把潜规则写出来。",{power:6,heart:-3},{kzong:1},"运行得很好，前提是你永远在线。","appease","shadow_personal"],
+          ["主动把更多决策集中到自己。",{power:9,dragon:5,morale:-5},{kzong:-4},"效率短期更高。明夜开始用一种熟悉的眼神看你。","power","shadow_capture"]
+        ]);
+      return null;
+    },
+    17:function(){
+      if(flags.shadow_capture||flags.power_claim)return branchChapter("v12_18_dragonpath","终局","最后一张椅子","明夜","你现在开会的样子，有一点眼熟。",
+        "项目做成了。\n\n最后一次复盘，钟时还在解释某个comment为什么必须补。老板直接打断：「后续类似项目，先让你来牵头。」\n\n所有人看向你。\n\n你突然拥有了当年你最希望有人拥有的权力。",[
+          ["先建立规则，让关键decision以后不依赖某一个人。",{progress:8,power:4,morale:6,dragon:-2},{mingye:5,kzong:5},"你没有拒绝权力，只是拒绝让它再次变成一个人的性格。","govern","dragon_refuse"],
+          ["先接下来，以后再慢慢改。",{progress:8,power:7,dragon:3},{},"所有人都理解。毕竟项目很急。世界上很多龙都是从‘先这样吧’开始的。","appease","dragon_delay"],
+          ["「后续项目直接向我汇报。」",{power:12,dragon:10,morale:-7},{mingye:-5},"房间安静下来。钟时没有说话。你终于赢了——至少这一刻是。","power","dragon_take"]
+        ]);
+      if(flags.shadow_to_system||flags.coalition_floor)return branchChapter("v12_18_network","终局","没有王座的多数派","二老板","你没有让大家喜欢彼此，但现在他们知道怎么一起干活。",
+        "复盘会上，MK主任还在争学术边界，N院长还在追机制，肖恩仍然不肯放过记录，黑娜仍然会保护CRO，苏苏仍然问成本。\n\n奇怪的是，项目已经不再需要所有人先互相喜欢。\n\n二老板问：「下一项还按这套跑？」",[
+          ["保留这套治理，让分歧继续存在但能被收敛。",{progress:10,morale:7,power:5},{cso:5,xiaoen:4,zihan:4},"没有人鼓掌。大家只是开始讨论下一个项目。","govern","network_repeat"],
+          ["庆功以后各回各部门。",{progress:8,career:2},{},"项目成功了。组织没有因此自动学会任何东西。","appease","network_dissolve"],
+          ["把这套机制变成自己主持的常设委员会。",{power:9,morale:-2},{cso:2},"制度留下了，你也被牢牢放在制度正中央。","power","network_chair"]
+        ]);
+      return null;
+    }
+  };
+
+  var _renderChapterV12=renderChapter;
+  renderChapter=function(){
+    if(runChapters&&runChapters.length&&V12_BRANCH_VARIANTS[chapterIdx]){
+      var v=V12_BRANCH_VARIANTS[chapterIdx]();
+      if(v){
+        /* achievement IDs are still slot-based: one of three mutually-exclusive outcomes for this chapter */
+        (v.choices||[]).forEach(function(opt,oi){opt.achievement="a"+(chapterIdx*3+oi+1);});
+        runChapters[chapterIdx]=v;
+      }
+    }
+    return _renderChapterV12();
+  };
+
+  /* ---------- C. 15 random events: every choice owns one of the remaining 45 achievements ---------- */
+  var moreEvents=[
+    {id:"v12e_minutes",title:"两份会议纪要",npcEv:true,text:"同一场会出现两份纪要。\n\n杨杨版写：「一致同意按B推进。」\n\n则韩版写：「B待进一步评估，未形成decision。」\n\n钟时看完说：「意思差不多吧？」",choices:[
+      {t:"回到录音和会中明确的decision句，只保留一版。",e:{progress:4,power:2},npc:{zihan:5,yangyang:-2},r:"最后纪要只有一个版本，且第一次有人把‘讨论过’和‘决定了’分开。"},
+      {t:"两版都留，免得得罪人。",e:{trust:3,progress:-2},r:"一个月后，两边都拿自己的版本证明自己是对的。"},
+      {t:"让钟时选哪版。",e:{trust:5},r:"她选了杨杨版。第二天又问：「我们当时真的定B了吗？」"}]},
+    {id:"v12e_wuzong",title:"武总来推动一下",npcEv:true,text:"老板说了一句：「这个上市后研究一直没动，武总你来推动一下。」\n\n第二天武总拉群：「Medical今天给方案，统计明天给样本量，周五我们定。」\n\nClinical Medical说：「研究问题都还没定义。」",choices:[
+      {t:"先让武总说清业务问题，再由Medical定义科学问题。",e:{progress:4,power:2},npc:{wuzong:3,caolan:4},r:"群里第一次出现了两个不同的问题：为什么业务想做，以及医学到底要回答什么。"},
+      {t:"按武总排期先出一版。",e:{progress:5,stamina:-5},npc:{wuzong:5},r:"周五真的有一版方案。只是没人能说清做完以后会改变什么。"},
+      {t:"告诉他上市后医学不是他能拍板的。",e:{power:4,trust:-3},npc:{wuzong:-6},r:"边界很清楚。老板下午问：「为什么又卡住了？」"}]},
+    {id:"v12e_xianren",title:"产品数据谁记得",npcEv:true,text:"专家会前，贤人在群里问：「我们那个功能性治愈数据是30还是70来着？」\n\n曹兰两分钟后回了人群、时间点、分母和竞品对照。\n\n贤人发了一个：「对对，谢谢。」",choices:[
+      {t:"让贤人只负责专家反馈，产品数据和证据由曹兰/Medical准备。",e:{progress:3},npc:{xianren:2,caolan:5},r:"专家会很顺。贤人负责听，曹兰负责记住为什么。"},
+      {t:"让贤人自己补课，下次必须能讲。",e:{progress:1},npc:{xianren:-2},r:"他很认真做了笔记。两周后记住了大部分，最关键的分母还是需要确认。"},
+      {t:"直接让曹兰代替贤人参加。",e:{progress:4},npc:{caolan:6,xianren:-7},r:"会开得专业得多。MA的title还在，实际接口开始漂移。"}]},
+    {id:"v12e_bd",title:"尽调前夜",npcEv:true,text:"谷雨说买方明天会问三件事：长期疗效、安全性信号、为什么这个人群能赢竞品。\n\n钟时说：「把所有数据都准备完整，最好做个backup deck。」\n\n谷雨看着你：「他们不会给我们三小时。」",choices:[
+      {t:"每个问题只准备一句结论、三条证据、一个风险。",e:{progress:4,career:2},npc:{guyu:6},r:"尽调时对方真的只问了三件事。第一次，资料少反而显得更有准备。"},
+      {t:"把完整数据都放进主Deck。",e:{trust:4,stamina:-5},npc:{guyu:-2},r:"第17页买方打断：「你们的核心结论是什么？」钟时看向你。"},
+      {t:"让谷雨自己决定讲什么。",e:{progress:3},npc:{guyu:4},r:"故事很漂亮。则韩会后说：「下次有两句话别说得这么满。」"}]},
+    {id:"v12e_susu",title:"苏苏突然要求多人参会",npcEv:true,text:"杨杨最近和老板直接对了几次项目。苏苏忽然说：「以后这种会把财务和PMO都拉上，信息透明一点。」\n\n杨杨有点莫名其妙：「这个和财务有什么关系？」\n\n苏苏只说：「流程更规范。」",choices:[
+      {t:"按正式治理需求定义哪些会议需要哪些角色，不讨论个人动机。",e:{progress:3},npc:{weilai:3,yangyang:2},r:"会议人数没有无限增加，也没人需要公开解释为什么突然要‘透明’。"},
+      {t:"全部照苏苏要求拉人。",e:{trust:3,stamina:-4},npc:{weilai:5,yangyang:-3},r:"之后每个会多了两个人。没人知道这是不是永久规则。"},
+      {t:"私下告诉杨杨这可能不是流程问题。",e:{power:2},npc:{yangyang:5,weilai:-4},r:"杨杨沉默了一会。之后她和老板的沟通明显更正式了。"}]},
+    {id:"v12e_ceo",title:"年轻人要多承担",npcEv:true,text:"老板看见瑞冬凌晨还在线，在群里说：「年轻人就是要多承担，很多能力都是扛出来的。」\n\n第二天又把一个新项目塞给她。\n\nK总低声说：「她现在连原来那块都还要别人复核。」",choices:[
+      {t:"把她当前错误率和工作量一起给老板看，建议减少scope。",e:{power:3,progress:2},npc:{ceo:-2,ruidong:2,kzong:4},r:"老板没完全同意，但把新项目的关键判断留给了别人。"},
+      {t:"支持老板，多给机会才会成长。",e:{trust:5},npc:{ceo:5,ruidong:-2},r:"瑞冬说谢谢。晚上又开始查一份她第一次见的毒理包。"},
+      {t:"直接说她培养不出来。",e:{power:4,trust:-6},npc:{ceo:-8,ruidong:-5},r:"老板第一反应不是讨论她的能力，而是问：「你是不是对年轻人要求太高？」"}]},
+    {id:"v12e_mkn",title:"同一个大会席位",npcEv:true,text:"大会只给一个口头报告名额。\n\nMK主任认为主研究应该由Leading PI报告。\n\nN院长认为这次最有价值的新信息来自机制子研究。\n\n两个人都没有直接找对方。都找了你。",choices:[
+      {t:"按本次报告内容决定讲者，另一个方向单独安排后续舞台。",e:{piRep:5,power:3},npc:{houpi:2,niupi:3},r:"没人觉得自己赢了全部，但两边都有下一步。"},
+      {t:"给MK主任，Leading PI优先。",e:{piRep:2},npc:{houpi:6,niupi:-5},r:"决定很容易解释。N院长也很容易记住。"},
+      {t:"给N院长，谁有最新科学内容谁讲。",e:{piRep:2},npc:{niupi:6,houpi:-5},r:"科学理由很充分。学术位置也因此变得更清楚。"}]}
+  ];
+  V11_EVENTS=V11_EVENTS.concat(moreEvents);
+  window.V11_EVENTS=V11_EVENTS;
+
+  /* mark branch effects on the original eight random events */
+  V11_EVENTS.forEach(function(ev){
+    (ev.choices||[]).forEach(function(ch){ch.route=ch.route||(["govern","appease","power"][(ev.choices||[]).indexOf(ch)]||"govern");});
+  });
+  var eCro=V11_EVENTS.find(function(x){return x.id==="v11e_cro";});
+  if(eCro&&eCro.choices[1])eCro.choices[1].branchFlag="v11_cro_sponsor_mail";
+
+  /* ---------- D. 99 achievements = 33 events × 3 mutually exclusive outcomes ---------- */
+  var ACH_TRIADS=[
+    ["选择题管理学","刚来就拍板","Comment全都要"],["优先级终于存在","三个项目三条命","试用期管理层"],
+    ["一页就是一页","第九页找到结论","Appendix吞噬正文"],["给记忆留台阶","当众校正历史","新的旧决定"],
+    ["PVP本人发言","统一出口","有医学岗位就行"],["三句话毒理","培养自己的第二份工作","老板年轻时的影子"],
+    ["先问为什么我们发","Sponsor确认过","边界不是靠凶"],["关系好不等于聊明白","关系确实很好","现场考试Parker"],
+    ["学术领地划界","都Leading","机制自己争"],["研究不是一篇摘要","一锅学术粥","机制优先"],
+    ["贡献有账","老师最近比较忙","未来机会抵今天KPI"],["Visible也要收尾","后台不是我的","花蝴蝶失去一条情报线"],
+    ["三个人的会","22人的30分钟问题","明天再过"],["Comment Triage","D级加班VP级签名","回复文件也需要Review"],
+    ["五分钟两个决定","38页背景","请领导给指导"],["贡献写在人名旁","团队共同努力","你也学会抢镜"],
+    ["制度不是一个人","成功以后什么都没学","委员会主席"],["老板问得很直接","把问题还给汇报线","越级也是一条线"],
+    ["分开医学和出口","影子医师","PVP上台前先三审"],["CRO邮件考古","责任认领成功","邮件对邮件"],
+    ["PI开始绕过运营","窗口比科学重要","真正的私聊"],["两个PI一张地图","双重承诺","科学领地硬切"],
+    ["承诺总账","以后再说","规则覆盖记忆"],["取消会议也是管理","九会连珠","被移出邀请"],
+    ["抄送范围","999+未读","不抄也是表态"],["汇报线第一次分叉","把答案还给VP","老板私人频道"],
+    ["权力写进规则","一切恢复原样","公开夺权"],["没有王座的多数派","继续向上拍板","Functional Cooperation"],
+    ["职责先于继位","没有权力诉求","HR问题本身就是信息"],["潜规则变制度","你必须永远在线","系统中央"],
+    ["屠龙后先造制度","先这样以后再改","龙椅终于空了"],["下一项继续吵","项目成功组织归零","制度也可以围着人转"],
+    ["62条只改3条","Comment清零主义","解释为什么不解释"]
+  ];
+  /* the 15 random events need 15 triads total; append names for the other 14 random-event groups */
+  ACH_TRIADS=ACH_TRIADS.slice(0,18).concat([
+    ["62条只改3条","Comment清零主义","解释为什么不解释"],
+    ["真的删一块","四个项目一双手","Visible资源配置"],
+    ["回到原始报告","AI三个字改变议题","你的第二份毒理工作"],
+    ["Visible和Invisible同名","老板记得谁","为什么今天突然积极"],
+    ["先问为什么我们发","Sponsor邮箱接锅","边界不是靠凶"],
+    ["医学判断和团队口径","统一出口成功","PVP本人请发言"],
+    ["关系很好但不熟","关系继续很好","科学会议终于有科学"],
+    ["Action关了风险没关","Tracker绿了","现场解释为什么Close"],
+    ["唯一纪要","双版本真相","请VP选择历史"],
+    ["业务问题不是科学问题","周五真的有方案","边界清楚项目没动"],
+    ["Friendly Courier","背产品数据","MA接口漂移"],
+    ["尽调三句话","买方看到第17页","BD故事跑太快"],
+    ["治理不要猜动机","透明会议扩容","边界提醒"],
+    ["工作量也是证据","机会越多越成长","培养失败不能说"],
+    ["大会席位按内容","Leading优先","机制抢麦"]
+  ]);
+  /* defensive count: exactly 33×3 */
+  var names=[];ACH_TRIADS.forEach(function(g){g.forEach(function(n){names.push(n);});});
+  window.ACHIEVEMENTS=names.slice(0,99).map(function(n,i){return{id:"a"+(i+1),name:n,point:((i+1)%6===0||[1,7,13,19,25,31,37,43,49,55,61,67,73,79,85,91,97].indexOf(i+1)>=0)?1:0,group:Math.floor(i/3)+1};});
+  function unlocked12(){try{return JSON.parse(localStorage.getItem("dragon_achievements")||"[]");}catch(e){return[];}}
+  unlockAchievement=function(id){
+    if(window._v12Ending)return;
+    var a=window.ACHIEVEMENTS.find(function(x){return x.id===id;}),u=unlocked12();if(!a||u.indexOf(id)>=0)return;
+    /* mutually exclusive per event group inside one run; other outcomes remain available in future runs */
+    if(!S.achievementGroups)S.achievementGroups={};
+    if(S.achievementGroups[a.group])return;
+    S.achievementGroups[a.group]=id;
+    u.push(id);localStorage.setItem("dragon_achievements",JSON.stringify(u));
+    if(a.point)localStorage.setItem("dragon_ng_points",String((parseInt(localStorage.getItem("dragon_ng_points")||"0",10)||0)+a.point));
+    toast("🏆 "+a.name+(a.point?" · 轮回点 +1":""),"up");
+    refreshAchPanel12();
+  };
+  checkAchievements=function(ch){if(ch&&ch.achievement)unlockAchievement(ch.achievement);};
+  /* main 54 = groups 1-18; random 45 = groups 19-33 */
+  V11_CHAPTERS.forEach(function(ch,ci){(ch.choices||[]).forEach(function(x,oi){x.achievement="a"+(ci*3+oi+1);});});
+  V11_EVENTS.forEach(function(ev,ei){(ev.choices||[]).forEach(function(x,oi){x.achievement="a"+(54+ei*3+oi+1);});});
+
+  function refreshAchPanel12(){
+    var d=document.getElementById("achievement-panel");if(!d)return;
+    var u=unlocked12();
+    d.innerHTML='<b>🏆 成就系统 · 99</b><div class="creator-note">33组事件，每组3个互斥结果。单周目只能拿其中一个；想补另外两个，只能下周目走不同选择。当前 '+u.length+' / 99。</div><div class="gallery-grid" style="margin-top:10px">'+window.ACHIEVEMENTS.map(function(a){return '<span class="g '+(u.indexOf(a.id)>=0?'got ge':'')+'">'+(u.indexOf(a.id)>=0?a.name:'？？？')+'</span>';}).join('')+'</div>';
+  }
+  refreshAchPanel12();
+
+  /* branch variants also use the chapter-slot achievement IDs */
+  var _renderChapterAchV12=renderChapter;
+  renderChapter=function(){
+    var out=_renderChapterAchV12();
+    var ch=runChapters&&runChapters[chapterIdx];
+    if(ch)(ch.choices||[]).forEach(function(x,oi){x.achievement="a"+(chapterIdx*3+oi+1);});
+    return out;
+  };
+
+  /* random event selection now weights unresolved consequences, not pure uniform noise */
+  function eventWeight(ev){
+    var w=1;
+    if(ev.id==="v11e_cro"&&(flags.main_7_2||S.blame>8))w+=3;
+    if(ev.id==="v11e_pvp"&&(flags.main_5_2||S.npc.pvp<24))w+=3;
+    if(ev.id==="v11e_visible"&&routeWinner()==="appease")w+=2;
+    if(ev.id==="v11e_resource"&&S.stamina<45)w+=2;
+    if(ev.id==="v12e_ceo"&&S.npc.ruidong>26)w+=2;
+    if(ev.id==="v12e_mkn"&&(S.npc.houpi>35&&S.npc.niupi>35))w+=3;
+    if(ev.id==="v12e_susu"&&S.npc.weilai>28)w+=1;
+    return w;
+  }
+  maybeEvent=function(chapterId,next){
+    var base=difficulty().id==="hard"?.72:difficulty().id==="story"?.34:.53;
+    if(Math.random()>base){next();return;}
+    var pool=V11_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0;});
+    if(!pool.length){next();return;}
+    var weighted=[];pool.forEach(function(e){for(var i=0;i<eventWeight(e);i++)weighted.push(e);});
+    var ev=weighted[Math.floor(Math.random()*weighted.length)];
+    usedEvents.push(ev.id);renderHUD();window._evObj={ev:ev,next:next,cro:false};renderEventFromObj();
+  };
+
+  /* make event choice route/branch consequences persistent */
+  var _pickEventV12=pickEvent;
+  pickEvent=function(i){
+    var bundle=window._evObj,ev=bundle&&bundle.ev,ch=ev&&presentedChoice(ev.choices,i);
+    if(ch&&ch.route){var rr=routeState();rr[ch.route]=(rr[ch.route]||0)+1;}
+    if(ch&&ch.branchFlag)flags[ch.branchFlag]=true;
+    return _pickEventV12(i);
+  };
+
+  /* stop v11 ending wrapper from giving event achievements for free */
+  var _showEndingV12=showEnding;
+  showEnding=function(k){window._v12Ending=true;try{return _showEndingV12(k);}finally{window._v12Ending=false;}};
+
+  var sub=document.querySelector("#title-screen .subtitle");
+  if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · 18章分支网 · 99互斥成就 · 多周目 · Demo v12.0";
+})();
+
 buildCast();
 renderVP();
 renderGallery();
