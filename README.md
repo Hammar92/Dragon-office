@@ -1,34 +1,38 @@
 # 药厂生存记 · 临床开发部
 
-## Demo v9.9 · Character-driven Interactionnical Realism & Offline Romanceng Battlesng Pressure & Heart Callsn Relationship Intelligencen & Sanitynization Consequencesnces, Rivalries & Gossipnces & Rivalries
+## Demo v10.0 · Character Creation & Coalition Governance
 
-纯 HTML/CSS/JavaScript 的临床开发职场剧情小游戏。
+纯 HTML/CSS/JavaScript 的临床开发职场 Galgame / 生存叙事。
 
 ### 本版重点
 
-- 18 章：Phase I → Phase II → EOP2 → Phase III → Pre-NDA / NDA
-- 28 位关键人物
-- 动态内部阵营：由共同站队、关系、人情、敬畏和冲突记录形成
-- NPC 内部维度：Relation / Respect / Favor / Fear / Alignment
-- 新增 5 位 PM：极靠谱、马虎、强推进、流程型、领导导向型
-- PM / PV / QA / Clinical / Operations 内部冲突事件
-- 关系传播、办公室流言和联盟变化
-- 高权力可压服部分下属，但可能损失专业尊重和主动支援
-- 保留 v8 的组织记忆、研究者会控场、二周目和语言 QTE 决斗
+- 18 章主线：Phase I → Phase II → EOP2 → Phase III → Pre-NDA / NDA
+- 开局新增“捏人”：性别、学业背景、工作年限、专业能力、社交底色、个人魅力
+- 新增玩家能力：专业、社交、魅力、项目管理、洞察
+- 事件选项支持能力门槛；能力不足时可以看到但不能选择高阶选项
+- 社交能力影响说服型互动，魅力影响 NPC 态度与关系收益倍率
+- 关键项目经历 / 职业层级提升可获得成长点
+- 新增“成长商店”：用成长点继续提升能力
+- 当前所有初始点数、门槛、成长点产出与倍率均为占位值，完整事件设计完成后再统一模拟校准
+- NPC 关系继续使用 Relation / Respect / Favor / Fear / Alignment
+- 新增 Functional Cooperation：私人关系差，不代表项目必须合作失败
+- 新增 Organizational Cohesion：衡量组织“能不能吵着把事做完”
+- 新增 Political Debt：频繁依赖某一阵营会留下组织政治成本
+- 新增组织治理工具：RACI、关键路径板、Decision Log、Pre-read + 决策会、Access Matrix
+- 结构性阵营可重叠：创始核心圈、专业主义、执行推进、位置型权力、外部资源
+- 苏苏会根据玩家性别与老板互动方式采用不同的隐藏判断策略
+- 删除童欣；卫来改为苏苏；加入则韩（统计D）与杨杨（PMD）
 
-## 试玩
+### 当前人物机制原则
+
+游戏不要求所有 NPC 彼此喜欢。高水平玩法是让互相有旧怨、专业冲突或私人矛盾的人，在清晰治理机制下继续推进项目。
+
+例如：
+- 肖恩 × 朱粽：私人低信任，但可通过 RACI 和留痕保持功能性合作
+- 苏苏 × 杨杨：管理理念和私人警惕并存，但关键路径治理可以保持项目推进
+- 二老板 × 肖恩：Micromanagement 与运营/质量边界冲突，可通过 Pre-read 降低摩擦
+- 明夜 × 则韩：速度与经验错位，可形成“快速洞察 + 注册落地”的组合
+
+### 试玩
 
 直接打开 `index.html`，或通过 GitHub Pages 试玩。
-\n- Office Gossip System：流言沿内部关系网传播，统计是高权重传播节点，支持提前预警与版本偏差\n
-- Favor 调用：人情可被消耗以换取临时分析、加急执行、监管预审或 PI 背书
-- 晋升背书：关键人物分别形成支持 / 中立 / 反对意见
-- 1:1 私聊：大型事件后的人际解释会改变 Respect / Favor / Fear
-- 组织重组：Phase III 前后汇报线和信息流会根据玩家长期站队重排
-- 秘密/筹码：内部消息可选择用于准备或主动放出
-- 动态口碑：靠谱、救火队长、老板的人、统计那边的人、高压主管等标签会影响他人判断
-- 资源争夺：统计分析与中心启动等任务会争抢同一资源，必须明确舍弃一边
-
-- Emotion / Sanity System：理智降低会污染选项措辞与后果；低理智时没有无代价最佳选项
-- 情绪状态：稳定 / 绷紧 / 易怒 / 失控边缘
-- 事实—情绪分离小游戏：每章一次，用证据化思考恢复理智
-- 午休长度现在也会少量恢复理智
