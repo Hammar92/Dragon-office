@@ -57,6 +57,10 @@ run('S.prestige={boss:0,team:0,chain:0,last:null,history:[]}; const _p=prestigeS
 assert.strictEqual(run('S.prestige.boss'),3,'boss prestige');
 assert.strictEqual(run('S.prestige.team'),4,'team prestige');
 assert.ok(html.includes('Demo v14.5'),'visible release label is current');
+assert.ok(html.includes('RC_CANONICAL_ENDING_RESOLVER_BEGIN'),'canonical ending resolver embedded in single-file build');
+assert.ok(html.includes('RC_ENDING_RUNTIME_BRIDGE_BEGIN'),'canonical runtime bridge embedded in single-file build');
+assert.strictEqual(run('typeof rcEndingAudit'),'function','runtime ending audit installed');
+assert.ok(run('String(finalizeEvaluation).includes("canonicalFinalize")'),'canonical finalizer is the last production wrapper');
 assert.ok(!html.includes('钟时（Dragon）'),'Zhong Shi label has no Dragon suffix');
 assert.ok(html.includes('pm-left-panel'),'life-sim ability panel is installed');
 assert.ok(html.includes('能力数值'),'ability values are visibly labeled');
@@ -144,7 +148,7 @@ assert.strictEqual(run('flags.v14FinalRoute'),'govern','presented final choice r
 for(let ev=0;ev<9;ev++)for(let choice=0;choice<3;choice++){
   const key=`v14_${ev}_${choice}`;
   const route=['govern','appease','power'][choice];
-  run(`flags={v14Candidate:'${key}',v14FinalRoute:'${route}'}; S.progress=80; S.heart=70; S.trust=55; S.morale=60; S.dragon=0; S.power=50; S.merit=30; window.testEnding=''; finalizeEvaluation()`);
+  run(`flags={v14Candidate:'${key}',v14FinalRoute:'${route}'}; S.progress=65; S.heart=70; S.trust=55; S.morale=60; S.dragon=0; S.power=50; S.merit=30; window.testEnding=''; finalizeEvaluation()`);
   assert.strictEqual(run('window.testEnding'),key,`event ending ${key}`);
 }
 for(const [key,need,route] of [
@@ -161,6 +165,8 @@ run("flags={}; chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x
 assert.strictEqual(run('window.testEnding'),'true_dragon','real final choice can reach dragon ending');
 run("flags={metaRoute:'echo',meta_echo_refuse:true,v14Candidate:'v14_0_0',v14FinalRoute:'govern'}; S.dragon=0; S.progress=80; S.morale=65; window.testEnding=''; finalizeEvaluation()");
 assert.strictEqual(run('window.testEnding'),'true_afterdragon','second-life refusal outranks event ending');
+run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'govern'}; S.progress=75; S.power=50; S.trust=45; S.morale=65; S.dragon=0; S.merit=20; S.career=35; window.testEnding=''; finalizeEvaluation()");
+assert.strictEqual(run('window.testEnding'),'ge_system','whole-run organization ending outranks one-event echo');
 run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'power'}; window.testEnding=''; finalizeEvaluation()");
 assert.notStrictEqual(run('window.testEnding'),'v14_0_0','mismatched final decision falls through');
 console.log('64 endings and dragon route priority OK');
