@@ -935,7 +935,7 @@ function showReputationTags(){
 /* Favor 变成可花的政治资源。 */
 const FAVOR_ACTIONS={
   mingye:{label:'请明夜今晚重跑一版关键分析',need:'统计人情',run:function(){S.progress=clamp(S.progress+3);S.merit=clamp(S.merit+2);addOfficeMemory('analysisRescue','明夜临时重跑分析');}},
-  kzong:{label:'请安瑜帮你加急清一轮三期风险',need:'PM人情',run:function(){S.progress=clamp(S.progress+4);S.blame=clamp(S.blame-2);}},
+  kzong:{label:'请K总帮你加急清一轮三期风险',need:'PM人情',run:function(){S.progress=clamp(S.progress+4);S.blame=clamp(S.blame-2);}},
   yijian:{label:'请一建提前预审监管材料',need:'注册人情',run:function(){S.blame=clamp(S.blame-4);S.bossTrust=clamp((S.bossTrust||0)+2);addOfficeMemory('regPreview','注册提前预审');}},
   houpi:{label:'请MK主任在关键会上公开背书',need:'PI人情',run:function(){S.piRep=clamp((S.piRep||0)+5);S.bossTrust=clamp((S.bossTrust||0)+2);S.reputation=clamp((S.reputation||0)+2);}}
 };
@@ -1061,9 +1061,9 @@ function maybeRestructure(nextId){
 
 /* 资源争夺：不能同时满足所有人。 */
 const RESOURCE_CHOICES=[
- {t:'把唯一的 programmer 给统计，先完成关键敏感性分析',e:{progress:4,merit:3},npc:{mingye:7,miaomiao:-5},social:{respect:{mingye:7,miaomiao:-3}},topic:'SCIENCE',visibility:'TEAM',r:'分析按时出来了；两个中心启动包晚了三天。乔乔没有吵，只把 timeline 截图发在群里。'},
- {t:'把资源给中心启动，统计分析排到下周',e:{progress:4,blame:2},npc:{miaomiao:7,miaomiao:4,mingye:-6},social:{respect:{miaomiao:5,mingye:-5}},topic:'EXECUTION',visibility:'TEAM',r:'本周入组数字很好看。老板会上没人问那版敏感性分析——暂时。'},
- {t:'一人半天，两个任务都做一半',e:{progress:1,morale:3},npc:{kzong:3},social:{respect:{kzong:3}},topic:'RELATION',r:'谁都没彻底满意，但谁也没彻底被放弃。安瑜说：“至少这次你承认资源真的不够。”'}
+ {t:'把唯一的 programmer 给统计，先完成关键敏感性分析',e:{progress:4,merit:3},npc:{mingye:7,miaomiao:-5},social:{respect:{mingye:7,miaomiao:-3}},topic:'SCIENCE',visibility:'TEAM',r:'分析按时出来了；两个中心启动包晚了三天。琳琳没有吵，只把 timeline 截图发在群里。'},
+ {t:'把资源给中心启动，统计分析排到下周',e:{progress:4,blame:2},npc:{miaomiao:9,kzong:3,mingye:-6},social:{respect:{miaomiao:5,mingye:-5}},topic:'EXECUTION',visibility:'TEAM',r:'本周入组数字很好看。老板会上没人问那版敏感性分析——暂时。'},
+ {t:'一人半天，两个任务都做一半',e:{progress:1,morale:3},npc:{kzong:3},social:{respect:{kzong:3}},topic:'RELATION',r:'谁都没彻底满意，但谁也没彻底被放弃。K总说：“至少这次你承认资源真的不够。”'}
 ];
 function maybeResourceConflict(next){
   ensureOrgSystems();
@@ -1317,14 +1317,14 @@ const MILESTONE_CHAPTERS = {
 const REALISTIC_EXTRA_CHOICES={
  c1:[
   {t:'引用上次会议纪要：配色尚未最终决定；今天先锁医学内容，封面由模板 owner 会后确认',e:{progress:5,trust:1,sanity:2},npc:{xiaoen:2},record:'writtenWarning',r:'会议纪要成为共同事实。医学内容按议程完成，封面被放进 parking lot。'},
-  {t:'转向安瑜：“把今天必须拍板的三件事、owner 和截止时间投出来；封面放 parking lot。”',interact:{with:'kzong',mode:'owner',favor:true},e:{progress:7,power:3,trust:-2},npc:{kzong:5},social:{respect:{kzong:4}},r:'安瑜没有替你争辩，只把 owner、截止时间和未决事项重新投到屏幕上。会议回到了项目。'}
+  {t:'转向K总：“把今天必须拍板的三件事、owner 和截止时间投出来；封面放 parking lot。”',interact:{with:'kzong',mode:'owner',favor:true},e:{progress:7,power:3,trust:-2},npc:{kzong:5},social:{respect:{kzong:4}},r:'K总没有替你争辩，只把 owner、截止时间和未决事项重新投到屏幕上。会议回到了项目。'}
  ],
  c2:[
   {t:'对加琳说：“报告链你按时走，我来签医学评估；明夜今天把两例时序和中心趋势拉出来，我们今晚一起关掉第一版判断。”',interact:[{with:'jialin',mode:'shared_signature',favor:true},{with:'mingye',mode:'analysis'}],e:{progress:1,trust:-5,sanity:4},npc:{jialin:9,mingye:5,xiaoen:3},record:'safetyTrail',hidden:{merit:8,blame:-4},r:'加琳负责报告链，明夜核趋势，你负责医学判断。上报和因果结论被拆成了两件事。'},
   {t:'和MK主任直接确认：“报告不延迟；这个中心下一例先不进，24 小时内我和加琳给您完整医学复核，再决定恢复。”',interact:[{with:'houpi',mode:'evidence'},{with:'jialin',mode:'safety'}],e:{progress:-2,trust:-4,power:3},npc:{jialin:7,miaomiao:4,houpi:4},record:'safetyTrail',hidden:{merit:7,piRep:3},r:'你没有停整个项目，只把控制措施限定在信息最不完整的中心。MK主任接受了这个边界。'}
  ],
  c3:[
-  {t:'对安瑜说：“字号放 parking lot。你帮我把中心延期、SAP 锁版和讲者材料三个 decision point 重新投出来。”',interact:[{with:'kzong',mode:'owner'},{with:'mingye',mode:'version'}],e:{progress:9,trust:-1,power:3,sanity:1},npc:{kzong:4,mingye:4},r:'安瑜立刻重排议程，明夜终于有时间讲 SAP。字号在最后五分钟按模板处理。'},
+  {t:'对K总说：“字号放 parking lot。你帮我把中心延期、SAP 锁版和讲者材料三个 decision point 重新投出来。”',interact:[{with:'kzong',mode:'owner'},{with:'mingye',mode:'version'}],e:{progress:9,trust:-1,power:3,sanity:1},npc:{kzong:4,mingye:4},r:'K总立刻重排议程，明夜终于有时间讲 SAP。字号在最后五分钟按模板处理。'},
   {t:'问肖恩：“能不能把模板规范固化成受控模板？以后医学会只讨论内容，不再逐页拍格式。”',interact:{with:'xiaoen',mode:'documentation',favor:true},e:{progress:4,power:5,trust:-2},npc:{xiaoen:3,kzong:3},record:'approvalChain',r:'肖恩支持把模板管理制度化。你没有解决一页 PPT，而是关掉了以后几十场同类争论。'}
  ],
  c4:[
@@ -1332,8 +1332,8 @@ const REALISTIC_EXTRA_CHOICES={
   {t:'和肖恩确认：“我会后发 corrected minutes，原审批不动，只补预算边界、owner 和以后什么情况需要重批。你帮我看记录是否够核查。”',interact:{with:'xiaoen',mode:'audit_trail'},e:{progress:3,trust:2,power:2},npc:{weilai:4,xiaoen:3},record:'approvalChain',r:'你没有重走一个不存在的问题，只把正式记录修正到可执行。'}
  ],
  c6:[
-  {t:'请安瑜把 RCA 页面改成 timeline；让一建补监管节点、肖恩补证据来源，你负责医学审阅日期，不接受一句“医学问题”结案',interact:[{with:'kzong',mode:'owner'},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'audit_trail'}],e:{power:8,trust:-3,sanity:3},npc:{yijian:6,xiaoen:5,kzong:4},record:'writtenWarning',hidden:{merit:8,blame:-5},r:'一建关心截止点，肖恩关心证据链，安瑜关心 owner。三个人从不同角度把一句“医学问题”拆成了真实延误链。'},
-  {t:'对安瑜说：“今晚你起 RCA 骨架；一建和肖恩各确认自己那一栏，我明天中午前把医学时间线补齐，我们四方签完再替换这页。”',interact:[{with:'kzong',mode:'decision_log',favor:true},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'documentation'}],e:{progress:2,power:5,trust:1},npc:{kzong:5,yijian:5,xiaoen:4},hidden:{merit:6,blame:-3},r:'你没有在高层会上争输赢，也没有接受错误归因。第二天联合版本替换了原页。'}
+  {t:'请K总把 RCA 页面改成 timeline；让一建补监管节点、肖恩补证据来源，你负责医学审阅日期，不接受一句“医学问题”结案',interact:[{with:'kzong',mode:'owner'},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'audit_trail'}],e:{power:8,trust:-3,sanity:3},npc:{yijian:6,xiaoen:5,kzong:4},record:'writtenWarning',hidden:{merit:8,blame:-5},r:'一建关心截止点，肖恩关心证据链，K总关心 owner。三个人从不同角度把一句“医学问题”拆成了真实延误链。'},
+  {t:'对K总说：“今晚你起 RCA 骨架；一建和肖恩各确认自己那一栏，我明天中午前把医学时间线补齐，我们四方签完再替换这页。”',interact:[{with:'kzong',mode:'decision_log',favor:true},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'documentation'}],e:{progress:2,power:5,trust:1},npc:{kzong:5,yijian:5,xiaoen:4},hidden:{merit:6,blame:-3},r:'你没有在高层会上争输赢，也没有接受错误归因。第二天联合版本替换了原页。'}
  ],
  c13:[
   {t:'先看向明夜和加琳：“样本量你答，安全你答；我只整合医学证据。钟总的管理决策请她自己说明。”',interact:[{with:'mingye',mode:'evidence'},{with:'jialin',mode:'shared_signature'}],e:{progress:5,power:8,trust:-3,sanity:4},npc:{ceo:7,cso:5,mingye:4,jialin:4},hidden:{merit:10,reputation:8,blame:-4},r:'你把责任边界说清楚：统计讲数字，PV讲安全，医学整合证据；你不替任何人重写管理历史。'},
@@ -2069,14 +2069,14 @@ const MEETING_ROUNDS=[
    {id:'vp',text:'让钟时回答，看她怎么接',kind:'politics',base:-1},
    {id:'memory',text:'直接打开既有剂量/终点决策记录，把依据投到屏幕上',kind:'memory',memory:'doseMatrix',base:4}
   ]},
- {who:'N院长',q:'“这个访视频率中心根本做不下来。”',side:'安瑜发来 Teams：“可以拆成 mandatory / optional，但别现场承诺删访视。”',
+ {who:'N院长',q:'“这个访视频率中心根本做不下来。”',side:'K总发来 Teams：“可以拆成 mandatory / optional，但别现场承诺删访视。”',
   opts:[
    {id:'owner',text:'把可优化访视单列，现场指定 owner 和截止时间',kind:'execution',base:4},
    {id:'locked',text:'强调方案已经定稿，请中心按方案执行',kind:'rigid',base:-2},
    {id:'pm',text:'让 PM 会后处理，不占用主席时间',kind:'delay',base:0},
-   {id:'ally',text:'请安瑜现场把执行方案拆成 mandatory / optional',kind:'ally',ally:'kzong',base:3}
+   {id:'ally',text:'请K总现场把执行方案拆成 mandatory / optional',kind:'ally',ally:'kzong',base:3}
   ]},
- {who:'林主任',q:'“新增采血谁承担成本？”',side:'财务没有参会。乔乔私聊：“别当场答 sponsor 全包。”',
+ {who:'林主任',q:'“新增采血谁承担成本？”',side:'财务没有参会。琳琳私聊：“别当场答 sponsor 全包。”',
   opts:[
    {id:'owner',text:'现场指定运营/财务 owner，48 小时给书面答复',kind:'execution',base:4},
    {id:'sponsor',text:'“这个费用申办方承担。”先把场面稳住',kind:'promise',base:-3},
