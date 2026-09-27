@@ -2199,6 +2199,11 @@ function skillRequirementText(c){
   if(!c||!c.lock||!c.lock.skill) return "";
   return Object.keys(c.lock.skill).map(function(k){return skillName(k)+" "+c.lock.skill[k];}).join(" / ");
 }
+function choiceHTML(list,handler){
+  return (list||[]).map(function(c,i){
+    return '<button class="choice" onclick="'+handler+'('+i+')"><span class="idx">'+('ABCDE'[i]||'')+'</span>'+((c&&c.t)||'')+'</button>';
+  }).join('');
+}
 var _choiceHTMLV99=choiceHTML;
 choiceHTML=function(list,handler){
   var affordable=0;
