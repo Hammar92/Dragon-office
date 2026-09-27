@@ -4623,7 +4623,7 @@ function lifeBuilderHTML(){
     +["professional","social","charm","management","insight","fitness"].map(function(k){return '<span>'+skillName(k)+' <b>'+x.skills[k]+'</b></span>';}).join("")
     +'<span>⚡体力上限 <b>'+x.body.maxStamina+'</b></span><span>❤️心力韧性 <b>'+x.heart.resilience+'</b></span><span>🧘情绪控制 <b>'+emotionalControlFrom(x)+'</b></span></div>'
     +'<div class="sec-title">拼出的词条</div><div class="trait-row">'+tr+'</div>'
-    +'<div class="creator-note">性格底层轴（情绪稳定 / 边界 / 冲突 / 控制 / 成就驱动 / 人际信任）不直接作为“最优值”展示；它们会改变你在高压下看到的选项和心力消耗。当前时间点和阈值均待最终数值测试。</div>'
+    +'<div class="creator-note">性格底层轴（情绪稳定 / 边界 / 冲突 / 控制 / 成就驱动 / 人际信任）不直接作为“最优值”展示；它们会改变你在高压下看到的选项和心力消耗。这些性格轴没有统一最优解；它们会改变高压下可见的选项、心力消耗与关系处理方式。</div>'
     +'<button class="btn" type="button" onclick="resetLifeDraft()" style="margin-top:10px">重置人生履历</button>';
 }
 function renderLifeBuilder(){
