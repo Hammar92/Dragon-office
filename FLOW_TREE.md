@@ -491,38 +491,100 @@
 - “你最近是不是总在公司？”（ph_home）
 ---
 
-## 5. 最终结局判定优先级（核心树）
+## 5. 最终结局判定优先级（canonical RC）
+
+> 生产代码由 `DragonEndingResolver` 单点判定；旧版多层 `finalizeEvaluation()` wrapper 不再拥有最终优先级。
 
 ```text
-终章结束
-├─ shouldDuel(): Trust≤30 且 Merit≥55
-│  └─ 5轮事实QTE → duelWin / duelLose
-├─ 跨周目优先：曾成为龙 + 本周目拒绝接管 + Progress≥72 + Morale≥58 + Dragon<20
-│  └─ true_afterdragon
-├─ Progress≥60 & Merit≥70 & Reputation≥45 & BossTrust≥45 & 足够晋升背书
-│  └─ ge_promotion
-├─ Progress≥60 & Merit≥75 & Reputation<35
-│  └─ ge_unsung
-├─ NPC特化结局（按关系阈值顺序）
-├─ 所有NPC关系≤45
-│  └─ be_island
-├─ 项目未做成 + 隐藏爱情成立 + Heart≥50 + Dragon≤6
-│  └─ nc_love（公开结局名不暴露具体婚恋初始状态；结尾追加动态私人生活尾声）
-├─ Progress≥60
-│  ├─ confront + Dragon≥7 + Power≥65 + 高层关系≥50 + Career<50 → true_dragon
-│  ├─ confront + Power≥65 + ≥3名高关系 + Dragon<7 → ge_slayer
-│  ├─ Career≥62 + 至少1名高关系 → ge_next
-│  └─ ge_firstline
-├─ Progress≥35
-│  ├─ Alive3 + Trust≥45 + Morale≥45 → mid_halfbridge
-│  ├─ Alive3 → ge_survive
-│  └─ be_trust
-└─ be_progress
+任何选择结算
+├─ 即时终局层（不进入 final resolver）
+│  ├─ Heart≤0 → be_heart
+│  ├─ Sanity≤0 → be_sanity
+│  ├─ Trust≤0 → be_trust
+│  ├─ Morale≤0 → be_morale
+│  ├─ Progress≤0 → be_progress
+│  ├─ fraud → be_fraud
+│  ├─ 试用期低信任 → be_probation
+│  ├─ 极低Stamina+Heart → be_burnout
+│  └─ vendorCaptured + 高Blame → be_vendor
+│
+└─ 第18章结束 → shouldDuel()
+   ├─ Trust≤30 且 Merit≥55 → 5轮事实QTE
+   │  └─ duelWin / duelLose 只改变最终状态，不占64公开结局ID
+   └─ canonical final resolver
+      P1 隐藏/跨周目
+      ├─ echo周目拒绝龙椅 + Progress≥72 + Morale≥58 + Dragon<20 → true_afterdragon
+      ├─ 主动接管 + Progress≥60 + Dragon≥10 + Power≥65 + Merit≥45 → true_dragon
+      └─ 终章权力路线 + Dragon<10 + Power≥65 + ≥3支持者 → ge_slayer
 
-随后 v14 事件结局/组合结局与跨周目包装层按其优先级进一步覆盖；
-“屠龙/拒绝龙椅”等隐藏主路线优先于普通事件结局。
-所有非私人崩溃结局最后追加 relationshipEpilogue()，按初始婚恋状态交代私人生活。
+      P2 整局职业轨迹
+      ├─ ge_promotion
+      ├─ ge_unsung
+      ├─ ge_next
+      └─ ge_firstline
+
+      P2.5 整局组织运行模式（Progress≥72）
+      ├─ ge_succession
+      ├─ ge_puppetmaster
+      ├─ ge_regent
+      ├─ ge_coalition
+      ├─ ge_court
+      ├─ ge_system
+      └─ ge_project
+
+      P3 v14组合后果
+      ├─ v14_joint_capacity
+      ├─ v14_joint_paper
+      ├─ v14_joint_site
+      ├─ v14_joint_story
+      └─ v14_joint_dragon
+
+      P4 v14单事件回响
+      └─ v14_0_0 … v14_8_2
+         条件：最后一次v14 candidate存在，且第18章最终route与该选择route一致
+
+      P5 NPC / 关系特化
+      ├─ nc_xiaoyuan
+      ├─ nc_caolan
+      ├─ nc_ruidong
+      ├─ nc_heina
+      ├─ nc_weilai
+      └─ nc_love（仅35≤Progress<60；项目做成后爱情只作为隐藏私人尾声）
+
+      P6 普通生存/失败
+      ├─ be_island
+      ├─ mid_halfbridge
+      ├─ ge_survive
+      ├─ be_trust
+      └─ be_progress
 ```
+
+### v14组合结局真条件
+
+| Ending | 历史选择 | 第18章 route |
+|---|---|---|
+| `v14_joint_capacity` | `v14_0_0 + v14_6_0` | govern |
+| `v14_joint_paper` | `v14_1_0 + v14_2_0` | govern |
+| `v14_joint_site` | `v14_3_0 + v14_6_0` | govern |
+| `v14_joint_story` | `v14_4_1 + v14_7_1` | appease |
+| `v14_joint_dragon` | `v14_5_2 + v14_8_2` | power |
+
+### 婚恋与公开结局的关系
+
+64个公开结局只描述职业/组织/项目主结果。婚恋初始状态与最终状态由 `relationshipEpilogue()` 追加，因此：
+
+- 已婚/稳定伴侣不会被新爱情线覆盖；
+- 离婚重建、自在单身、受背叛后谨慎、开放状态都有独立私人尾声；
+- `nc_love` 只用于项目未完全成功但建立新关系的特化结果；
+- 项目成功时，爱情不覆盖职业结局。
+
+### RC可达性状态
+
+- final resolver witness：57/57
+- terminal-only witness：7/7
+- 公开结局目录：64/64
+- priority contract：36/36
+- 当前结论：`64/64 RULE-WITNESSED`
 
 ## 6. 开发用检查点
 - 主线章节：18
