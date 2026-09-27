@@ -146,3 +146,38 @@ assert.strictEqual(run('window.testEnding'),'true_afterdragon','second-life refu
 run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'power'}; window.testEnding=''; finalizeEvaluation()");
 assert.notStrictEqual(run('window.testEnding'),'v14_0_0','mismatched final decision falls through');
 console.log('64 endings and dragon route priority OK');
+
+
+/* v14.5 regression: hidden relationship state + contextual choices + achievement commentary */
+assert.strictEqual(run('typeof v145Audit'), 'function', 'v14.5 audit installed');
+assert.strictEqual(run('v145Audit().formulaicEmotion'), false, 'low-sanity dialogue no longer uses canned prefixes');
+assert.strictEqual(run('v145Audit().achievementCommentsMissing.length'), 0, 'all 108 achievements have commentary');
+assert.strictEqual(run('new Set(ACHIEVEMENTS.map(a=>a.comment)).size'), 108, 'achievement commentary is unique');
+assert.strictEqual(run("deriveCareer({e:{},npc:{kzong:1}}).why.includes('合规背书')"), true, 'K总 counts as compliance/professional backer');
+
+run("chapterIdx=0; S.heart=20; S.sanity=80");
+assert.ok(run('contextualChoiceList(V11_CHAPTERS[0].choices).length') >= 4, 'low heart adds contextual choice');
+run("S.heart=70; S.sanity=30");
+assert.ok(run('contextualChoiceList(V11_CHAPTERS[0].choices).length') >= 4, 'low sanity adds contextual choice');
+
+run("flags={newGamePlus:false}; S.heart=30; chapterIdx=4; S.relationshipArc={origin:'open',current:'open',homeBond:0,source:'',seen:[]}; S.romance={bond:9,seen:[]}; window._romEv={ev:{id:'audit_rom',choices:[{t:'坐一会儿',e:{},npc:{},bond:3,r:'ok'}]},next:function(){}}");
+assert.strictEqual(run('loveStage()'),'a','hidden love route is still available before random romance');
+run('pickRomanceEncounter(0)');
+assert.strictEqual(run('flags.love'),undefined,'random romance bond does not prematurely complete hidden love route');
+assert.strictEqual(run('flags.romanceSecure'),true,'random romance can establish secure bond');
+assert.strictEqual(run('loveStage()'),'a','random romance does not kill acts B/C');
+
+run("LIFE_DRAFT.selected.school=[];LIFE_DRAFT.selected.college=[];LIFE_DRAFT.selected.graduate=[];LIFE_DRAFT.selected.early=[];LIFE_DRAFT.selected.middle=['mid_marriage'];LIFE_DRAFT.selected.senior=[];startGame();renderHUD()");
+assert.strictEqual(run('S.relationshipArc.origin'),'partnered_family','married/family build enters existing-partner arc');
+assert.strictEqual(run('!!flags.love'),false,'existing partner does not expose/complete hidden love route');
+assert.strictEqual(run("document.getElementById('npcs').innerHTML.includes('有人等你')"),false,'hidden relationship is not exposed in HUD');
+
+run("LIFE_DRAFT.selected.middle=['mid_marriage','mid_divorce'];startGame()");
+assert.strictEqual(run("LIFE_DRAFT.selected.middle.join(',')"),'mid_divorce','old contradictory relationship selection migrates to latest state');
+assert.strictEqual(run('S.relationshipArc.origin'),'divorced_rebuilt','relationship migration yields correct origin');
+
+run("flags.love=true;S.relationshipArc={origin:'open',current:'new_partner',homeBond:0,source:'',seen:[]};S.romance={bond:12,seen:[]};showEnding('ge_firstline')");
+assert.strictEqual(run("(document.getElementById('ending-story').textContent.match(/💗 尾声 · 有人记得你几点下班/g)||[]).length"),0,'legacy fixed love epilogue removed');
+assert.strictEqual(run("(document.getElementById('ending-story').textContent.match(/【私人生活 · 没有写进组织架构图】/g)||[]).length"),1,'relationship-specific epilogue appears once');
+
+console.log('v14.5 relationship/contextual-choice regressions OK');
