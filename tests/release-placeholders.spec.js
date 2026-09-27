@@ -11,7 +11,8 @@ if(placeholderCount) blockers.push(`PLACEHOLDER markers: ${placeholderCount}`);
 [
   '最终门槛后续统一重算',
   '最终增幅与成本待数值测试',
-  '当前数值仅用于机制验证'
+  '当前数值仅用于机制验证',
+  '待最终数值测试'
 ].forEach(text=>{if(html.includes(text))blockers.push(`unfinished user/dev copy: ${text}`);});
 
 if(blockers.length){
