@@ -11,8 +11,13 @@
 ## 2. Priority Resolver
 
 ```text
+Terminal  即时终局（不进入 final resolver）
+    ├─ be_heart / be_sanity / be_trust / be_morale / be_progress
+    ├─ be_fraud
+    └─ be_probation / be_burnout / be_vendor
+
 P0  特殊终局机制
-    └─ shouldDuel() → 事实QTE → duelWin / duelLose
+    └─ shouldDuel() → 事实QTE → duelWin / duelLose（只改变最终状态，不占64公开ID）
 
 P1  跨周目 / 隐藏核心路线
     ├─ true_afterdragon
@@ -24,6 +29,15 @@ P2  整局职业轨迹
     ├─ ge_unsung
     ├─ ge_next
     └─ ge_firstline
+
+P2.5  整局组织运行模式（Progress≥72）
+    ├─ ge_succession
+    ├─ ge_puppetmaster
+    ├─ ge_regent
+    ├─ ge_coalition
+    ├─ ge_court
+    ├─ ge_system
+    └─ ge_project
 
 P3  v14组合后果结局
     ├─ v14_joint_capacity
@@ -68,15 +82,19 @@ P7  legacy / oldFinalize 兜底
 
 最终必须是 `ge_promotion`。事件内容可以作为结局页的附加“后果回声”，但不能替换主结局 ID。
 
-### 3.3 组合事件优先于单事件
+### 3.3 整局组织运行模式优先于事件回响
+
+Progress≥72 且满足 succession / puppetmaster / regent / coalition / court / system / project 等整局组织条件时，优先于最后一次 v14 事件。理由与职业轨迹相同：整局运行模式比一次随机事件更能概括玩家最终位置。
+
+### 3.4 组合事件优先于单事件
 
 若 joint 条件成立，同时 `v14Candidate` 也指向单事件，则 joint ending 优先。
 
-### 3.4 NPC结局不覆盖明确职业终局
+### 3.5 NPC结局不覆盖明确职业/组织终局
 
 高NPC关系用于描述人物关系与尾声，但不能把已经形成的晋升、无名功臣、屠龙或接班路线替换掉。
 
-### 3.5 婚恋状态不占64公开结局
+### 3.6 婚恋状态不占64公开结局
 
 `relationshipEpilogue()` 是正交包装层：
 
@@ -106,6 +124,9 @@ P7  legacy / oldFinalize 兜底
 - true route × career；
 - true route × joint；
 - true route × single-event；
+- career × organization；
+- organization × joint；
+- organization × single-event；
 - career × joint；
 - career × single-event；
 - joint × single-event；
@@ -122,6 +143,6 @@ P7  legacy / oldFinalize 兜底
 1. `ENDINGS` 数量不是64；
 2. 任一 ending 没有 resolver reachability case；
 3. 任一公开 ending 永远被更早条件遮挡；
-4. v14 单事件覆盖 P0–P2 结局；
+4. v14 单事件覆盖 P0–P2.5 结局；
 5. 婚恋尾声改变公开 ending ID；
 6. `FLOW_TREE.md` 与实际 resolver 顺序不一致。
