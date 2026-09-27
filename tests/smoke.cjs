@@ -56,22 +56,23 @@ assert.strictEqual(run('PI_CHAIN_EVENTS.length'),2,'PI chain events installed');
 run('S.prestige={boss:0,team:0,chain:0,last:null,history:[]}; const _p=prestigeState(); addPrestige(3,4,"test")');
 assert.strictEqual(run('S.prestige.boss'),3,'boss prestige');
 assert.strictEqual(run('S.prestige.team'),4,'team prestige');
-assert.ok(html.includes('Demo v14.4'),'visible release label is current');
+assert.ok(html.includes('Demo v14.5'),'visible release label is current');
 assert.ok(!html.includes('钟时（Dragon）'),'Zhong Shi label has no Dragon suffix');
 assert.ok(html.includes('pm-left-panel'),'life-sim ability panel is installed');
 assert.ok(html.includes('能力数值'),'ability values are visibly labeled');
 assert.ok(html.includes('组织威信'),'boss/team prestige is visibly labeled');
 assert.ok(!html.includes('💗 有人等你'),'love line stays hidden from HUD');
 assert.strictEqual(run('ACHIEVEMENTS.filter(a=>a.comment).length'),108,'all achievements have commentary');
-assert.strictEqual(run('v144Audit().badRefs.length'),0,'v14.4 has no bad NPC refs');
-assert.strictEqual(run('Object.values(v144Audit().lifeDup).every(x=>x.length===0)'),true,'life event ids remain unique');
-assert.strictEqual(run('Object.values(v144Audit().counts).join(",")'),'26,18,34,108,64,2','v14.4 catalog counts');
+assert.strictEqual(run('v145Audit().badRefs.length'),0,'v14.5 has no bad NPC refs');
+assert.strictEqual(run('Object.values(v145Audit().lifeDup).every(x=>x.length===0)'),true,'life event ids remain unique');
+assert.strictEqual(run('Object.values(v145Audit().counts).join(",")'),'26,18,34,108,64,2','v14.5 catalog counts');
 assert.strictEqual((html.match(/你其实也想过走。后来算了/g)||[]).length,1,'true dragon duplicated paragraph removed');
 
 // Initial private-life states remain hidden but produce distinct final epilogues.
 run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[]); LIFE_DRAFT.selected.middle=['mid_marriage']; S=null; flags={}; usedEvents=[]; usedHeina=[]; chapterIdx=0; runChapters=[]; startGame()");
 assert.strictEqual(run('ensureRelationshipArc().origin'),'partnered_family','marriage initializes family relationship');
-assert.strictEqual(run('flags.love'),true,'stable family supplies hidden heart support');
+assert.strictEqual(run('flags.love'),false,'existing partner does not expose new-love flag');
+assert.strictEqual(run('flags.existingPartner'),true,'existing partner tracked separately');
 run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[]); LIFE_DRAFT.selected.middle=['mid_divorce']; S=null; flags={}; usedEvents=[]; usedHeina=[]; chapterIdx=0; runChapters=[]; startGame()");
 assert.strictEqual(run('ensureRelationshipArc().origin'),'divorced_rebuilt','divorce history preserved');
 assert.ok(run('relationshipEpilogue()').includes('经历过一次长期关系结束'),'divorce epilogue distinct');
@@ -80,6 +81,23 @@ assert.strictEqual(run('ensureRelationshipArc().origin'),'single_content','conte
 assert.ok(run('relationshipEpilogue()').includes('单身'),'single epilogue distinct');
 run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[]); LIFE_DRAFT.selected.middle=['mid_betrayal']; S=null; flags={}; usedEvents=[]; usedHeina=[]; chapterIdx=0; runChapters=[]; startGame()");
 assert.strictEqual(run('ensureRelationshipArc().origin'),'guarded','betrayal creates guarded relationship state');
+assert.strictEqual(run('v145Audit().formulaicEmotion'),false,'old canned emotion prefixes removed');
+assert.deepStrictEqual(run('v145Audit().achievementCommentsMissing'),[],'all achievement comments present');
+assert.strictEqual(run('v145Audit().hiddenLoveHud'),false,'hidden relationship stays off HUD');
+
+// Stateful choices: low heart/sanity can add choices, but the finale stays route-safe.
+run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[]); S=null; flags={}; usedEvents=[]; usedHeina=[]; chapterIdx=0; runChapters=[]; startGame(); S.heart=20");
+assert.ok(run('contextualChoiceList(runChapters[0].choices).length')>3,'low heart adds contextual option');
+run("S.heart=80; S.sanity=35");
+assert.ok(run('contextualChoiceList(runChapters[0].choices).length')>3,'low sanity adds contextual option');
+run("S.sanity=80; S.power=70");
+assert.ok(run('contextualChoiceList(runChapters[0].choices).some(c=>c.contextExtra&&c.route==="power")'),'high power unlocks authority option');
+run("chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); S.heart=20; S.sanity=30; S.power=80");
+assert.strictEqual(run('contextualChoiceList(runChapters[17].choices).length'),3,'final chapter preserves only route-bearing choices');
+
+// Old creator saves with contradictory same-stage romance selections normalize to one relationship event.
+run("LIFE_DRAFT.selected.middle=['mid_marriage','mid_divorce','mid_single']; normalizeRelationshipSelections()");
+assert.strictEqual(run('LIFE_DRAFT.selected.middle.filter(id=>(LIFE_EVENTS.middle.find(e=>e.id===id)||{}).exclusive==="middle_romance").length'),1,'old contradictory romance selections normalized');
 assert.ok(html.includes('64 个结局，本机存档。'),'intro ending count is current');
 assert.ok(!html.includes('建议时长：一局 30–45 分钟。22 个结局，本机存档。'),'stale ending copy removed');
 assert.strictEqual(run('V11_EVENTS.every((ev,i)=>ev.choices.some(c=>c.achievement) && RANDOM_ACHIEVEMENT_IDS[i].length>0)'),true,'every random event has an achievement');
