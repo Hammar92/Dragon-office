@@ -186,7 +186,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.1</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.2</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -406,9 +406,8 @@ const NPCs = {
   mingye:  {name:"明夜",   role:"统计",        init:30, faction:"pro", quote:"你别说是我说的——但我听说昨天十一点 endpoint 又改回去了。"},
   xiaoen:  {name:"肖恩",   role:"QA",          init:36, faction:"pro", quote:"我不跟朱粽说话，我说的是制度。"},
   yijian:  {name:"一建",   role:"REG",         init:22, faction:"pro", quote:"各位，今晚把章节写完，我明早一起递交。"},
-  weilai:  {name:"卫来",   role:"财务",        init:26, faction:"pro", quote:"我不懂你说的那个科学。我只知道这个月还剩九万，下个月更少。"},
-  tongxin: {name:"童欣",   role:"法务",        init:24, faction:"pro", quote:"别跟我讲道理。跟我说这一条，写不写进合同附件。"},
-  miaomiao:{name:"苗苗",   role:"CRA 主管",    init:30, faction:"pro", quote:"我的人这个月跑了十四家中心。你要的源文件，明天让人拍给你。"},
+  weilai:  {name:"苏苏",   role:"财务",        init:26, faction:"pro", quote:"我不懂你说的那个科学。我只知道这个月还剩九万，下个月更少。"},
+  miaomiao:{name:"琳琳",   role:"CRA 主管",    init:30, faction:"pro", quote:"我的人这个月跑了十四家中心。你要的源文件，明天让人拍给你。"},
   // —— 商业化与市场：决定你的数据出门之后，在别人嘴里变成什么东西 ——
   wuzong:  {name:"武总",   role:"商业化负责人", init:34, faction:"biz", allyAt:75, drift:true, quote:"你这个思路我完全认同，回头我们再单独对齐一下，好不好？"},
   xianren: {name:"贤人",   role:"上市后医学",   init:32, faction:"biz", quote:"对对对——钟时老师刚才那句我要记下来，太精辟了。"},
@@ -464,10 +463,6 @@ const NPC_BIOS = {
     want:"下一次董事会上的那张表不要太难看",
     fear:"现金流断在他这一任手里",
     bio:"他不懂科学，也不需要懂。他只盯着一张表：本月还剩九万，下个月更少。他不是反对花钱，他反对的是钱花出去了而没人知道。在满屋子讲理想的人里，他是唯一一个能精确说出这个项目还剩几个月的人。"},
-  tongxin: {
-    want:"所有东西都写进附件",
-    fear:"有一天要向监管解释「我们的理解是……」",
-    bio:"她不评判专业对错，她只判定表述是否清晰。在她的世界里，「我觉得应该是」不是一句话，是一份责任。她的口头禅是：别跟我讲道理，跟我说这一条，写不写进合同附件。她改变不了谁做错了，她只能决定下一次由谁承担责任——而这往往比判断谁错了更好用。"},
   miaomiao: {
     want:"她的人不要再被随便使唤",
     fear:"手底下年轻人一个个走掉，以及自己被当成工具",
@@ -559,54 +554,39 @@ const INTEL = [
 // =====================  v7 · 研究者网络  =====================
 // 研究者不是普通“好感度卡片”：他们同时控制中心执行、学术话语权和作者排序。
 Object.assign(NPCs, {
-  houpi:{name:"侯教授", role:"Leading PI · 学术权威", init:28, faction:"pi", quote:"你们可以有商业目标，但方案必须先在科学上站得住。"},
-  niupi:{name:"牛教授", role:"Leading PI · 临床执行", init:30, faction:"pi", quote:"方案写得再漂亮，中心做不下来就是零。"},
-  zhangpi:{name:"张教授", role:"核心中心 PI", init:26, faction:"pi", quote:"我可以配合，但别最后才告诉我规则又改了。"},
-  linpi:{name:"林医生", role:"青年 PI", init:24, faction:"pi", quote:"论文和数据都可以以后谈，但作者顺序最好现在谈清楚。"}
+  houpi:{name:"MK主任", role:"Leading PI · 学术权威", init:28, faction:"pi", quote:"你们可以有商业目标，但方案必须先在科学上站得住。"},
+  niupi:{name:"N院长", role:"Leading PI · 临床执行", init:30, faction:"pi", quote:"方案写得再漂亮，中心做不下来就是零。"},
+  zhangpi:{name:"林主任", role:"核心中心 PI", init:26, faction:"pi", quote:"我可以配合，但别最后才告诉我规则又改了。"},
+  zhangpi:{name:"林主任", role:"青年 PI", init:24, faction:"pi", quote:"论文和数据都可以以后谈，但作者顺序最好现在谈清楚。"}
 });
 Object.assign(NPC_BIOS, {
   houpi:{want:"一套经得起同行追问的开发逻辑",fear:"被申办方拿学术声望给不成熟的方案背书",bio:"全国性学术带头人。愿意替真正有科学依据的决定站台，也会在全场最安静的时候问出最难回答的问题。"},
   niupi:{want:"一个中心真的执行得下来的方案",fear:"总部在 PPT 里做决定，最后让研究护士和患者买单",bio:"带过大量注册研究。对花哨机制没兴趣，只看访视、样本、药物和患者能不能按计划落地。"},
   zhangpi:{want:"中心被尊重、工作量被提前说清",fear:"做了最多的活，最后既没有资源也没有署名",bio:"不是最大的专家，却掌握着非常稳定的入组能力。谁忽略中心现实，谁就会在入组曲线上看到他的态度。"},
-  linpi:{want:"真正进入核心作者与学术网络",fear:"永远只做病例、永远排在 et al. 里",bio:"年轻、反应快、会看数据。对署名和学术机会非常敏感，但也因此愿意在项目最累的时候多做一步。"}
+  zhangpi:{want:"真正进入核心作者与学术网络",fear:"永远只做病例、永远排在 et al. 里",bio:"年轻、反应快、会看数据。对署名和学术机会非常敏感，但也因此愿意在项目最累的时候多做一步。"}
 });
 
 
 
-/* =====================  v9 · 内部 PM 生态  =====================
-   PM 不再是一个岗位模板，而是一组不同可靠性 / 权力偏好 / 工作风格的人。
-   他们不是固定派系；谁和谁成为一伙，由实际互动长出来。 */
-Object.assign(NPCs, {
-  anyu:    {name:"安瑜", role:"Senior PM · 极靠谱", init:34, faction:"internal", quote:"我把风险、owner 和截止时间都列好了。你只需要告诉我医学上哪一条不能退。"},
-  linan:   {name:"林安", role:"PM · 马虎型", init:40, faction:"internal", quote:"我记得发了呀……等一下，我可能发到另一个群了。"},
-  qiaoqiao:{name:"乔乔", role:"PM · 强推进型", init:30, faction:"internal", quote:"先把中心开起来，问题可以边跑边修。"},
-  wenjing: {name:"文静", role:"PM · 流程型", init:28, faction:"internal", quote:"没有签字我不会让中心启动。晚一周总比以后解释一年好。"},
-  xiaoke:  {name:"小柯", role:"PM · 领导导向型", init:36, faction:"internal", quote:"钟总怎么定我就怎么推进。老板要是有新方向，我们也可以马上切。"}
-});
-Object.assign(NPC_BIOS, {
-  anyu:{want:"一个风险透明、人人知道自己该做什么的项目",fear:"团队靠英雄主义救火，最后谁都说不清决策怎么来的",bio:"做过多个注册项目。她不热情，也很少在会上抢话，但会在会前把所有真正可能爆炸的地方标红。她不会因为喜欢你而帮你；她只在确认你说话算数之后，开始提前替你挡问题。"},
-  linan:{want:"大家觉得她好相处、别因为小错误否定她",fear:"被公开证明自己漏了关键步骤",bio:"人缘很好，响应很快，也是真的马虎。她能在十分钟内拉齐二十个人，却可能忘记把最终版发给其中最重要的那一个。长期替她补锅，她会非常忠诚；但忠诚不能自动变成能力。"},
-  qiaoqiao:{want:"timeline 永远是绿色",fear:"被说成项目推进不力",bio:"她对甘特图有近乎宗教式的信仰。她能把任何问题翻译成‘会不会影响首例入组’，所以和 VP 很容易同频，也因此经常和 PV、Medical、QA 正面冲突。"},
-  wenjing:{want:"每一步都有 owner、记录和批准",fear:"检查时有人说‘我们当时口头同意了’",bio:"流程派 PM。团队嫌她慢，但她做过的项目很少在核查时找不到文件。她不容易被权力压服，却会对真正专业、提前给边界的人产生很高尊重。"},
-  xiaoke:{want:"站在不会输的一边",fear:"权力中心换了而自己还没来得及换位置",bio:"执行能力中等，政治嗅觉极强。谁刚从老板办公室出来，她就会先问那个人‘有没有新方向’。她不是坏，她只是把组织权力当成天气预报。"}
-});
+/* =====================  v14.2 · legacy PM definitions removed  =====================
+   Current NPC definitions come from the Canon block below. */
 
 const SOCIAL_PROFILES = {
   ceo:{interests:['CREDIT','TIMELINE'],style:'power'}, cso:{interests:['SCIENCE','CREDIT'],style:'science'},
   jialin:{interests:['SAFETY','COMPLIANCE'],style:'compliance'}, mingye:{interests:['SCIENCE','DATA','CREDIT','BLAME'],style:'science',gossip:0.95,accuracy:0.88,spin:'science'},
   xiaoen:{interests:['COMPLIANCE','DOCUMENTATION'],style:'compliance'}, yijian:{interests:['REGULATORY','TIMELINE'],style:'compliance'},
   miaomiao:{interests:['EXECUTION','CENTER'],style:'execution'}, zhuzong:{interests:['EXECUTION','RELATION'],style:'execution'},
-  anyu:{interests:['EXECUTION','COMPLIANCE','DOCUMENTATION'],style:'execution'}, linan:{interests:['RELATION','EXECUTION'],style:'social'},
-  qiaoqiao:{interests:['TIMELINE','EXECUTION'],style:'execution'}, wenjing:{interests:['COMPLIANCE','DOCUMENTATION'],style:'compliance'},
-  xiaoke:{interests:['POWER','TIMELINE'],style:'politics'}, heina:{interests:['CONTRACT','BLAME'],style:'politics'},
+  kzong:{interests:['EXECUTION','COMPLIANCE','DOCUMENTATION'],style:'execution'}, linan:{interests:['RELATION','EXECUTION'],style:'social'},
+  miaomiao:{interests:['TIMELINE','EXECUTION'],style:'execution'}, xiaoen:{interests:['COMPLIANCE','DOCUMENTATION'],style:'compliance'},
+  linan:{interests:['POWER','TIMELINE'],style:'politics'}, heina:{interests:['CONTRACT','BLAME'],style:'politics'},
   houpi:{interests:['SCIENCE','AUTHORSHIP'],style:'science'}, niupi:{interests:['EXECUTION','CENTER'],style:'execution'},
-  zhangpi:{interests:['CENTER','AUTHORSHIP'],style:'social'}, linpi:{interests:['AUTHORSHIP','SCIENCE'],style:'science'}
+  zhangpi:{interests:['CENTER','AUTHORSHIP'],style:'social'}, zhangpi:{interests:['AUTHORSHIP','SCIENCE'],style:'science'}
 };
 const BASE_INTERNAL_LINKS = [
-  ['jialin','xiaoen',68],['jialin','wenjing',62],['xiaoen','wenjing',72],['yijian','wenjing',58],
-  ['anyu','miaomiao',66],['anyu','jialin',58],['anyu','wenjing',61],['qiaoqiao','zhuzong',64],['qiaoqiao','xiaoke',55],
-  ['linan','zhuzong',60],['linan','xiaoke',57],['mingye','cso',62],['mingye','jialin',52],['xiaoke','ceo',42],
-  ['houpi','mingye',58],['houpi','niupi',56],['houpi','zhangpi',36],['linpi','houpi',51],['heina','zhuzong',48]
+  ['jialin','xiaoen',68],['jialin','xiaoen',62],['xiaoen','xiaoen',72],['yijian','xiaoen',58],
+  ['kzong','miaomiao',66],['kzong','jialin',58],['kzong','xiaoen',61],['miaomiao','zhuzong',64],['miaomiao','linan',55],
+  ['linan','zhuzong',60],['linan','linan',57],['mingye','cso',62],['mingye','jialin',52],['linan','ceo',42],
+  ['houpi','mingye',58],['houpi','niupi',56],['houpi','zhangpi',36],['zhangpi','houpi',51],['heina','zhuzong',48]
 ];
 function pairKey(a,b){ return [a,b].sort().join('::'); }
 function initSocial(){
@@ -641,10 +621,10 @@ const GOSSIP_PROFILES = {
   mingye:{spread:.95,accuracy:.88,upward:.45,commentary:'science'},
   zouting:{spread:.82,accuracy:.72,upward:.70,commentary:'people'},
   linan:{spread:.76,accuracy:.68,upward:.42,commentary:'people'},
-  xiaoke:{spread:.70,accuracy:.62,upward:.88,commentary:'politics'},
-  qiaoqiao:{spread:.58,accuracy:.74,upward:.66,commentary:'execution'},
-  anyu:{spread:.22,accuracy:.92,upward:.45,commentary:'execution'},
-  wenjing:{spread:.16,accuracy:.96,upward:.38,commentary:'compliance'},
+  linan:{spread:.70,accuracy:.62,upward:.88,commentary:'politics'},
+  miaomiao:{spread:.58,accuracy:.74,upward:.66,commentary:'execution'},
+  kzong:{spread:.22,accuracy:.92,upward:.45,commentary:'execution'},
+  xiaoen:{spread:.16,accuracy:.96,upward:.38,commentary:'compliance'},
   xiaoen:{spread:.12,accuracy:.97,upward:.55,commentary:'compliance'},
   jialin:{spread:.20,accuracy:.94,upward:.40,commentary:'compliance'}
 };
@@ -939,11 +919,11 @@ function reputationTags(){
 }
 function tagEffectFor(k){
   const tags=reputationTags(); let s=0;
-  if(tags.includes('靠谱') && ['anyu','wenjing','xiaoen','jialin','yijian'].includes(k)) s+=6;
-  if(tags.includes('老板的人') && ['xiaoke','qiaoqiao'].includes(k)) s+=5;
+  if(tags.includes('靠谱') && ['kzong','xiaoen','xiaoen','jialin','yijian'].includes(k)) s+=6;
+  if(tags.includes('老板的人') && ['linan','miaomiao'].includes(k)) s+=5;
   if(tags.includes('统计那边的人') && ['mingye','cso'].includes(k)) s+=6;
-  if(tags.includes('高压主管') && ['linan','xiaoke','qiaoqiao'].includes(k)) s+=2;
-  if(tags.includes('会甩锅') && ['xiaoen','jialin','wenjing','yijian'].includes(k)) s-=8;
+  if(tags.includes('高压主管') && ['linan','linan','miaomiao'].includes(k)) s+=2;
+  if(tags.includes('会甩锅') && ['xiaoen','jialin','xiaoen','yijian'].includes(k)) s-=8;
   return s;
 }
 function showReputationTags(){
@@ -955,9 +935,9 @@ function showReputationTags(){
 /* Favor 变成可花的政治资源。 */
 const FAVOR_ACTIONS={
   mingye:{label:'请明夜今晚重跑一版关键分析',need:'统计人情',run:function(){S.progress=clamp(S.progress+3);S.merit=clamp(S.merit+2);addOfficeMemory('analysisRescue','明夜临时重跑分析');}},
-  anyu:{label:'请安瑜帮你加急清一轮三期风险',need:'PM人情',run:function(){S.progress=clamp(S.progress+4);S.blame=clamp(S.blame-2);}},
+  kzong:{label:'请安瑜帮你加急清一轮三期风险',need:'PM人情',run:function(){S.progress=clamp(S.progress+4);S.blame=clamp(S.blame-2);}},
   yijian:{label:'请一建提前预审监管材料',need:'注册人情',run:function(){S.blame=clamp(S.blame-4);S.bossTrust=clamp((S.bossTrust||0)+2);addOfficeMemory('regPreview','注册提前预审');}},
-  houpi:{label:'请侯教授在关键会上公开背书',need:'PI人情',run:function(){S.piRep=clamp((S.piRep||0)+5);S.bossTrust=clamp((S.bossTrust||0)+2);S.reputation=clamp((S.reputation||0)+2);}}
+  houpi:{label:'请MK主任在关键会上公开背书',need:'PI人情',run:function(){S.piRep=clamp((S.piRep||0)+5);S.bossTrust=clamp((S.bossTrust||0)+2);S.reputation=clamp((S.reputation||0)+2);}}
 };
 function useFavorAction(k){
   ensureOrgSystems();
@@ -1005,7 +985,7 @@ function showLeverage(){
 
 /* 关键人物分别决定是否替你升职背书。 */
 function promotionEndorsements(){
-  const keys=['cso','xiaoyuan','jialin','mingye','yijian','xiaoen','anyu','houpi'];
+  const keys=['cso','xiaoyuan','jialin','mingye','yijian','xiaoen','kzong','houpi'];
   const support=[],neutral=[],oppose=[];
   keys.forEach(function(k){
     const p=socialPerson(k);
@@ -1027,7 +1007,7 @@ function showEndorsements(){
 /* 1:1：不是大事件，而是大事件之后别人来重新解释自己刚才的行为。 */
 const PRIVATE_CHAT_SCRIPTS={
   mingye:{line:'「刚才会上那句话我没接，是因为钟时昨天已经私下让我重跑第三版。我不是不同意你，我是不想当场炸。」',a:'我知道。下次提前告诉我。',b:'那你刚才就应该说。'},
-  anyu:{line:'「我不需要你每次都站我这边。我只需要风险提出来的时候，不要假装没看见。」',a:'以后风险先给我，我们一起定 owner。',b:'但项目不能什么都按最保守的做。'},
+  kzong:{line:'「我不需要你每次都站我这边。我只需要风险提出来的时候，不要假装没看见。」',a:'以后风险先给我，我们一起定 owner。',b:'但项目不能什么都按最保守的做。'},
   jialin:{line:'「安全问题我会坚持到底。你要是觉得我太慢，可以直接说，但别让我最后才知道医学已经做了决定。」',a:'你应该在决定前就进来。',b:'我只看最终医学判断。'},
   yijian:{line:'「监管不是替你擦措辞。你们在会上答应的东西，最后都得有人写进文件。」',a:'下一次把你拉进决策前半段。',b:'先把 submission 过了再说。'},
   linan:{line:'「我知道我有时候会漏。但你每次直接帮我补，我也不知道到底哪里最严重。」',a:'以后我补现场，你补记录。',b:'别想太多，先把活干完。'}
@@ -1081,9 +1061,9 @@ function maybeRestructure(nextId){
 
 /* 资源争夺：不能同时满足所有人。 */
 const RESOURCE_CHOICES=[
- {t:'把唯一的 programmer 给统计，先完成关键敏感性分析',e:{progress:4,merit:3},npc:{mingye:7,qiaoqiao:-5},social:{respect:{mingye:7,qiaoqiao:-3}},topic:'SCIENCE',visibility:'TEAM',r:'分析按时出来了；两个中心启动包晚了三天。乔乔没有吵，只把 timeline 截图发在群里。'},
- {t:'把资源给中心启动，统计分析排到下周',e:{progress:4,blame:2},npc:{qiaoqiao:7,miaomiao:4,mingye:-6},social:{respect:{qiaoqiao:5,mingye:-5}},topic:'EXECUTION',visibility:'TEAM',r:'本周入组数字很好看。老板会上没人问那版敏感性分析——暂时。'},
- {t:'一人半天，两个任务都做一半',e:{progress:1,morale:3},npc:{anyu:3},social:{respect:{anyu:3}},topic:'RELATION',r:'谁都没彻底满意，但谁也没彻底被放弃。安瑜说：“至少这次你承认资源真的不够。”'}
+ {t:'把唯一的 programmer 给统计，先完成关键敏感性分析',e:{progress:4,merit:3},npc:{mingye:7,miaomiao:-5},social:{respect:{mingye:7,miaomiao:-3}},topic:'SCIENCE',visibility:'TEAM',r:'分析按时出来了；两个中心启动包晚了三天。乔乔没有吵，只把 timeline 截图发在群里。'},
+ {t:'把资源给中心启动，统计分析排到下周',e:{progress:4,blame:2},npc:{miaomiao:7,miaomiao:4,mingye:-6},social:{respect:{miaomiao:5,mingye:-5}},topic:'EXECUTION',visibility:'TEAM',r:'本周入组数字很好看。老板会上没人问那版敏感性分析——暂时。'},
+ {t:'一人半天，两个任务都做一半',e:{progress:1,morale:3},npc:{kzong:3},social:{respect:{kzong:3}},topic:'RELATION',r:'谁都没彻底满意，但谁也没彻底被放弃。安瑜说：“至少这次你承认资源真的不够。”'}
 ];
 function maybeResourceConflict(next){
   ensureOrgSystems();
@@ -1232,9 +1212,7 @@ const CHAPTERS = [
       r:"你做了一份二十四页的 CAPA，把责任平摊给了「历史文档管理体系」。\n\n钟时满意地在自查会上讲了一遍这套逻辑。检查官点头记录，没有追问个人。\n\n加琳会后看了你一眼，没说话。那一眼比拍桌子还难受：她没有失望，她只是确认了。" },
     { t:"请小圆出面认「流程管理疏失」，用她的创业元老资历换所有人的安全", e:{trust:4, power:8, morale:5, progress:3}, npc:{xiaoyuan:12, jialin:4, mingye:3, ceo:3},
       lock:{npc:"xiaoyuan", min:50}, lockHint:"现在还无法自然展开这条路",
-      r:"小圆在自查会上站起来：「那批文件当年是我管的，我认。整改我来做。」\n\n她是跟着老板从三个人做到今天的那批人。你看着她，忽然明白什么叫「把资历折成一堵墙」——这几年她没怎么看错人，包括你。\n\n散会后她拍拍你：「大主任，别学我，我这辈子就是太会认错。」" },
-    { t:"让法务童欣出一份《文件缺失的法律陈述口径》，把「补不回来」写成结论而不是过错", e:{trust:-2, progress:3, power:6, sanity:2}, npc:{tongxin:14, xiaoen:5, xiaoyuan:3},
-      r:"童欣只改了两个词：把「缺失」改成「已归档不可追溯」，并在附件里加了一页法律依据。\n\n核查组接受了这份陈述。你第一次意识到：有些话由法务说出来是专业，由医学说出来是心虚。\n\n（合规不是只有一种口音。）" },
+      r:"小圆在自查会上站起来：「那批文件当年是我管的，我认。整改我来做。」\n\n她是跟着老板从三个人做到今天的那批人。你看着她，忽然明白什么叫「把资历折成一堵墙」——这几年她没怎么看错人，包括你。\n\n散会后她拍拍你：「大主任，别学我，我这辈子就是太会认错。」" }
   ]
 },
 {
@@ -1290,13 +1268,13 @@ const CHAPTERS = [
 /* =====================  v7 · 开发里程碑章节  ===================== */
 const MILESTONE_CHAPTERS = {
   x1:{id:"x1",act:"Phase I · FIH / SAD",title:"首例给药后的第七分钟",
-    aside:{from:"苗苗（CRA 主管）",text:"首例给药。中心主任、护士长、老板和钟时都在。今天不是最难的一天，但今天所有人都会记住谁先开口。"},
-    text:"FIH 首例给药后第七分钟，受试者血压短暂下降。数值还没到暂停标准，但研究者侯教授抬头问：\n\n「下一剂量组还升吗？」\n\n钟时先说：「这种波动很常见，按计划升。」随后又压低声音问你：「你觉得呢？老板也在。」\n\n这是你第一次发现：专业判断、上司信任和被老板看见，并不是同一件事。",
+    aside:{from:"琳琳（CRA 主管）",text:"首例给药。中心主任、护士长、老板和钟时都在。今天不是最难的一天，但今天所有人都会记住谁先开口。"},
+    text:"FIH 首例给药后第七分钟，受试者血压短暂下降。数值还没到暂停标准，但研究者MK主任抬头问：\n\n「下一剂量组还升吗？」\n\n钟时先说：「这种波动很常见，按计划升。」随后又压低声音问你：「你觉得呢？老板也在。」\n\n这是你第一次发现：专业判断、上司信任和被老板看见，并不是同一件事。",
     choices:[
-      {t:"先确认预设暂停规则和完整生命体征趋势，再建议按方案观察后决定",e:{trust:4,progress:5,power:2},npc:{houpi:8,miaomiao:4,ceo:3},hidden:{merit:8,reputation:5,piRep:5},witnesses:["ceo","houpi"],record:"safetyTrail",recordSource:"FIH 安全评审",r:"你没有抢结论。十五分钟后血压自行恢复，第二天安全评审同意继续。侯教授只说了一句：『你们医学至少是按规则做判断的。』老板记住了你的名字。"},
-      {t:"顺着钟时：『没到暂停标准，直接升。』",e:{trust:9,progress:5,sanity:-3},npc:{houpi:-5,jialin:-3},hidden:{merit:-2,blame:5},r:"进度很快，钟时很满意。但侯教授在病历讨论会上把‘为什么没有完整复盘’写进了自己的笔记。现在没人追究——记录会等。"},
+      {t:"先确认预设暂停规则和完整生命体征趋势，再建议按方案观察后决定",e:{trust:4,progress:5,power:2},npc:{houpi:8,miaomiao:4,ceo:3},hidden:{merit:8,reputation:5,piRep:5},witnesses:["ceo","houpi"],record:"safetyTrail",recordSource:"FIH 安全评审",r:"你没有抢结论。十五分钟后血压自行恢复，第二天安全评审同意继续。MK主任只说了一句：『你们医学至少是按规则做判断的。』老板记住了你的名字。"},
+      {t:"顺着钟时：『没到暂停标准，直接升。』",e:{trust:9,progress:5,sanity:-3},npc:{houpi:-5,jialin:-3},hidden:{merit:-2,blame:5},r:"进度很快，钟时很满意。但MK主任在病历讨论会上把‘为什么没有完整复盘’写进了自己的笔记。现在没人追究——记录会等。"},
       {t:"当着老板说：『医学建议暂停升级 24 小时，先把这一个信号讲清楚。』",e:{trust:-5,progress:-3,power:5,sanity:3},npc:{houpi:10,jialin:5,ceo:5},hidden:{merit:10,reputation:8,piRep:7},witnesses:["ceo","cso","houpi"],r:"项目停了一天，没有停一个月。老板当天没夸你；一个季度后，他在另一个会上说：『一期那个医学判断，最后是谁做的？』这就是声望开始复利的方式。"},
-      {t:"【二周目】你记得这种短暂低血压后来会恢复：先让研究者把趋势说完，再主动提出 24 小时书面复盘",lock:{ngp:true},lockHint:"二周目知识",e:{trust:2,progress:3,power:4,sanity:2},npc:{houpi:9,ceo:4,jialin:4},hidden:{merit:11,reputation:6,piRep:6},witnesses:["ceo","houpi"],record:"safetyTrail",recordSource:"二周目 · FIH 复盘",r:"你没有预言未来，只是比第一次更早知道什么值得留下证据。血压恢复以后，侯教授主动要求把这套复盘模板用于后续所有剂量组。"}
+      {t:"【二周目】你记得这种短暂低血压后来会恢复：先让研究者把趋势说完，再主动提出 24 小时书面复盘",lock:{ngp:true},lockHint:"二周目知识",e:{trust:2,progress:3,power:4,sanity:2},npc:{houpi:9,ceo:4,jialin:4},hidden:{merit:11,reputation:6,piRep:6},witnesses:["ceo","houpi"],record:"safetyTrail",recordSource:"二周目 · FIH 复盘",r:"你没有预言未来，只是比第一次更早知道什么值得留下证据。血压恢复以后，MK主任主动要求把这套复盘模板用于后续所有剂量组。"}
     ]},
   x2:{id:"x2",act:"Phase I · 数据读出 / RP2D",title:"两个剂量，只能留一个",
     aside:{from:"明夜（统计）",text:"300 mg 的 PD 更漂亮，但 225 mg 的安全窗更宽。钟时刚刚在两个会里给了两个相反答案。"},
@@ -1306,12 +1284,12 @@ const MILESTONE_CHAPTERS = {
       {t:"先问钟时现在倾向哪个，再把数据解释成那个答案",e:{trust:10,progress:4,sanity:-5,dragon:1},npc:{mingye:-6},hidden:{merit:1,reputation:-2,blame:3},r:"答案定得很快。明夜把模型文件另存了一份，文件名是 final_independent。你不知道他为什么这么命名，但你大概知道。"},
       {t:"把两个剂量都带进二期，避免现在得罪任何人",e:{trust:4,progress:-8,morale:-4},npc:{weilai:-10,mingye:-3},hidden:{merit:-5,blame:6},r:"所有人都暂时满意，除了财务和未来的你。二期样本量立刻膨胀，半年后大家会重新回来问：当时为什么不做决定。"}
     ]},
-  x3:{id:"x3",act:"Phase II · Investigator Meeting",title:"研究者会：第一排的四个人",
-    aside:{from:"林医生（青年 PI）",text:"侯教授和牛教授对停药标准意见相反。张教授关心中心工作量。钟时刚答应了三个人三套不同的版本。"},
-    text:"二期研究者会。第一排坐着四个会决定这项研究能不能入完组的人。\n\n侯教授要求把科学终点做得更严格；牛教授说现场根本执行不了；张教授追问额外采血谁付钱；林医生在问未来论文作者。\n\n钟时分别点头：『都可以考虑。』\n\n十分钟后，四个人同时看向你，问：『所以最终方案到底是什么？』",
+  x3:{id:"x3",act:"Phase II · Investigator Meeting",title:"研究者会：第一排的三个人",
+    aside:{from:"林主任（核心PI）",text:"MK主任和N院长对停药标准意见相反。林主任关心中心工作量。钟时刚答应了三个人三套不同的版本。"},
+    text:"二期研究者会。第一排坐着三个会决定这项研究能不能入完组的人。\n\nMK主任要求把科学终点做得更严格；N院长说现场根本执行不了；林主任追问额外采血谁付钱；林主任在问未来论文作者。\n\n钟时分别点头：『都可以考虑。』\n\n十分钟后，三个人同时看向你，问：『所以最终方案到底是什么？』",
     choices:[
-      {t:"当场把“不可变部分 / 可优化部分 / 会后决策时限”三栏写出来，逐项确认",e:{progress:6,power:7,trust:-3,morale:3},npc:{houpi:7,niupi:7,zhangpi:7,linpi:5},hidden:{merit:12,reputation:7,piRep:12},witnesses:["houpi","niupi","zhangpi","linpi","ceo"],record:"imActions",recordSource:"Investigator Meeting",r:"四个人没有都满意，但都知道下一步是什么。研究者会结束后，牛教授主动把三个高入组中心介绍给了苗苗。"},
-      {t:"替钟时圆场：『钟总的意思是都可以，会后医学统一版本。』",e:{trust:8,progress:-4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-3,linpi:-2},hidden:{merit:-3,blame:5},r:"会开得很顺。接下来两周你分别收到四封追问邮件，每封都引用钟时不同的一句话。所谓‘都可以’，最终变成四份待办。"},
+      {t:"当场把“不可变部分 / 可优化部分 / 会后决策时限”三栏写出来，逐项确认",e:{progress:6,power:7,trust:-3,morale:3},npc:{houpi:7,niupi:7,zhangpi:7,zhangpi:5},hidden:{merit:12,reputation:7,piRep:12},witnesses:["houpi","niupi","zhangpi","zhangpi","ceo"],record:"imActions",recordSource:"Investigator Meeting",r:"三个人没有都满意，但都知道下一步是什么。研究者会结束后，N院长主动把三个高入组中心介绍给了琳琳。"},
+      {t:"替钟时圆场：『钟总的意思是都可以，会后医学统一版本。』",e:{trust:8,progress:-4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-3,zhangpi:-2},hidden:{merit:-3,blame:5},r:"会开得很顺。接下来两周你分别收到四封追问邮件，每封都引用钟时不同的一句话。所谓‘都可以’，最终变成四份待办。"},
       {t:"让钟时逐项拍板，并把她每个答案同步投到屏幕上的决策表里",e:{trust:-7,power:6,progress:3,dragon:2},npc:{houpi:3,niupi:3,zhangpi:3},hidden:{merit:5,reputation:3,blame:-3},r:"她第一次发现自己刚刚答应过互相冲突的东西。她改了两次口。你没有纠正，只负责按下回车。研究者们看懂了，比你说任何一句坏话都快。"}
     ]},
   x4:{id:"x4",act:"Phase II → Phase III · EOP2",title:"EOP2：十五分钟决定三年",
@@ -1320,7 +1298,7 @@ const MILESTONE_CHAPTERS = {
     choices:[
       {t:"按 briefing book 的 question-by-question 结构接管回答，只说已有证据和明确 proposal",e:{progress:12,power:8,trust:-5},npc:{yijian:12,ceo:8,cso:6,mingye:5},hidden:{merit:18,reputation:15,blame:-5},witnesses:["ceo","cso","yijian"],record:"eop2Minutes",recordSource:"EOP2 会议纪要",r:"会议纪要最终写的是：总体同意进入确证性研究，三处细节补充书面说明。老板没有在会上说什么。会后他只发了一句：『今天医学准备得很好。』"},
       {t:"继续让钟时答，只在她明显说错时补一句",e:{trust:7,progress:2,sanity:-4},npc:{yijian:-4,cso:-2},hidden:{merit:3,reputation:-2,blame:4},r:"会议没有炸，但留下了六条 follow-up question。钟时总结：『总体还是比较顺利。』你看着一建重新排出的六周时间线，没有接话。"},
-      {t:"把富集问题主动抛给明夜、执行问题抛给牛教授，自己只守医学结论",e:{progress:9,power:9,trust:-3,morale:5},npc:{mingye:8,niupi:8,yijian:7},hidden:{merit:14,reputation:9,piRep:7},r:"你没有成为唯一的英雄。你让每个问题由最适合的人回答。监管会议比预定提前五分钟结束——这是药厂里少数真正值得庆祝的提前。"}
+      {t:"把富集问题主动抛给明夜、执行问题抛给N院长，自己只守医学结论",e:{progress:9,power:9,trust:-3,morale:5},npc:{mingye:8,niupi:8,yijian:7},hidden:{merit:14,reputation:9,piRep:7},r:"你没有成为唯一的英雄。你让每个问题由最适合的人回答。监管会议比预定提前五分钟结束——这是药厂里少数真正值得庆祝的提前。"}
     ]},
   x5:{id:"x5",act:"Phase III · Pre-NDA",title:"Pre-NDA 前夜：功劳属于谁",
     aside:{from:"邹婷（HR）",text:"老板让我准备明年的组织调整。你不用问我名单，我也不会告诉你。但你今晚怎么讲这个项目，他会记。"},
@@ -1328,7 +1306,7 @@ const MILESTONE_CHAPTERS = {
     choices:[
       {t:"按里程碑列贡献人：谁做了什么、产生什么结果；把自己的贡献也写进去",e:{power:8,trust:-5,morale:6},npc:{ceo:8,cso:4,jialin:4,mingye:4,yijian:4},hidden:{merit:10,reputation:15,blame:-4},witnesses:["ceo","cso"],record:"authorshipTrail",recordSource:"Pre-NDA 贡献表",r:"老板看完只改了一个地方：把你的名字从第三行挪到了第一行。没有人公开讨论这件事，但第二天 HR 发来了新的岗位职责草案。"},
       {t:"完全按钟时模板，让她拿走全部叙事权",e:{trust:12,sanity:-8},npc:{ceo:-4,cso:-2},hidden:{merit:0,reputation:-10,blame:2},r:"材料很漂亮。老板在会上表扬了钟时‘三年持续领导’。你坐在第二排，知道每一个数字为什么在这里，却没有一个数字知道你的名字。"},
-      {t:"只写事实，不写名字；把证据链和版本记录附在后面",e:{power:5,trust:-2,sanity:3},npc:{xiaoen:6,tongxin:5},hidden:{merit:6,reputation:5,blame:-8},r:"第一页没有英雄，只有节点。真正看得懂的人会翻到附件。老板翻了。钟时没翻。两个人因此看到的是两份完全不同的材料。"}
+      {t:"只写事实，不写名字；把证据链和版本记录附在后面",e:{power:5,trust:-2,sanity:3},npc:{xiaoen:6,xiaoen:5},hidden:{merit:6,reputation:5,blame:-8},r:"第一页没有英雄，只有节点。真正看得懂的人会翻到附件。老板翻了。钟时没翻。两个人因此看到的是两份完全不同的材料。"}
     ]}
 };
 
@@ -1339,23 +1317,23 @@ const MILESTONE_CHAPTERS = {
 const REALISTIC_EXTRA_CHOICES={
  c1:[
   {t:'引用上次会议纪要：配色尚未最终决定；今天先锁医学内容，封面由模板 owner 会后确认',e:{progress:5,trust:1,sanity:2},npc:{xiaoen:2},record:'writtenWarning',r:'会议纪要成为共同事实。医学内容按议程完成，封面被放进 parking lot。'},
-  {t:'转向安瑜：“把今天必须拍板的三件事、owner 和截止时间投出来；封面放 parking lot。”',interact:{with:'anyu',mode:'owner',favor:true},e:{progress:7,power:3,trust:-2},npc:{anyu:5},social:{respect:{anyu:4}},r:'安瑜没有替你争辩，只把 owner、截止时间和未决事项重新投到屏幕上。会议回到了项目。'}
+  {t:'转向安瑜：“把今天必须拍板的三件事、owner 和截止时间投出来；封面放 parking lot。”',interact:{with:'kzong',mode:'owner',favor:true},e:{progress:7,power:3,trust:-2},npc:{kzong:5},social:{respect:{kzong:4}},r:'安瑜没有替你争辩，只把 owner、截止时间和未决事项重新投到屏幕上。会议回到了项目。'}
  ],
  c2:[
   {t:'对加琳说：“报告链你按时走，我来签医学评估；明夜今天把两例时序和中心趋势拉出来，我们今晚一起关掉第一版判断。”',interact:[{with:'jialin',mode:'shared_signature',favor:true},{with:'mingye',mode:'analysis'}],e:{progress:1,trust:-5,sanity:4},npc:{jialin:9,mingye:5,xiaoen:3},record:'safetyTrail',hidden:{merit:8,blame:-4},r:'加琳负责报告链，明夜核趋势，你负责医学判断。上报和因果结论被拆成了两件事。'},
-  {t:'和侯教授直接确认：“报告不延迟；这个中心下一例先不进，24 小时内我和加琳给您完整医学复核，再决定恢复。”',interact:[{with:'houpi',mode:'evidence'},{with:'jialin',mode:'safety'}],e:{progress:-2,trust:-4,power:3},npc:{jialin:7,miaomiao:4,houpi:4},record:'safetyTrail',hidden:{merit:7,piRep:3},r:'你没有停整个项目，只把控制措施限定在信息最不完整的中心。侯教授接受了这个边界。'}
+  {t:'和MK主任直接确认：“报告不延迟；这个中心下一例先不进，24 小时内我和加琳给您完整医学复核，再决定恢复。”',interact:[{with:'houpi',mode:'evidence'},{with:'jialin',mode:'safety'}],e:{progress:-2,trust:-4,power:3},npc:{jialin:7,miaomiao:4,houpi:4},record:'safetyTrail',hidden:{merit:7,piRep:3},r:'你没有停整个项目，只把控制措施限定在信息最不完整的中心。MK主任接受了这个边界。'}
  ],
  c3:[
-  {t:'对安瑜说：“字号放 parking lot。你帮我把中心延期、SAP 锁版和讲者材料三个 decision point 重新投出来。”',interact:[{with:'anyu',mode:'owner'},{with:'mingye',mode:'version'}],e:{progress:9,trust:-1,power:3,sanity:1},npc:{anyu:4,mingye:4},r:'安瑜立刻重排议程，明夜终于有时间讲 SAP。字号在最后五分钟按模板处理。'},
-  {t:'问肖恩：“能不能把模板规范固化成受控模板？以后医学会只讨论内容，不再逐页拍格式。”',interact:{with:'xiaoen',mode:'documentation',favor:true},e:{progress:4,power:5,trust:-2},npc:{xiaoen:3,anyu:3},record:'approvalChain',r:'肖恩支持把模板管理制度化。你没有解决一页 PPT，而是关掉了以后几十场同类争论。'}
+  {t:'对安瑜说：“字号放 parking lot。你帮我把中心延期、SAP 锁版和讲者材料三个 decision point 重新投出来。”',interact:[{with:'kzong',mode:'owner'},{with:'mingye',mode:'version'}],e:{progress:9,trust:-1,power:3,sanity:1},npc:{kzong:4,mingye:4},r:'安瑜立刻重排议程，明夜终于有时间讲 SAP。字号在最后五分钟按模板处理。'},
+  {t:'问肖恩：“能不能把模板规范固化成受控模板？以后医学会只讨论内容，不再逐页拍格式。”',interact:{with:'xiaoen',mode:'documentation',favor:true},e:{progress:4,power:5,trust:-2},npc:{xiaoen:3,kzong:3},record:'approvalChain',r:'肖恩支持把模板管理制度化。你没有解决一页 PPT，而是关掉了以后几十场同类争论。'}
  ],
  c4:[
-  {t:'转向卫来：“先别重走流程。请你把 OA、PO 和预算版本投出来，我们先确认现在到底缺不缺审批。”',interact:{with:'weilai',mode:'cost_visibility'},e:{trust:-1,power:3,sanity:2},npc:{weilai:7,yijian:3},record:'approvalChain',hidden:{merit:5,blame:-4},r:'卫来只用了不到一分钟确认审批有效。会议没有继续讨论谁记得什么。'},
+  {t:'转向苏苏：“先别重走流程。请你把 OA、PO 和预算版本投出来，我们先确认现在到底缺不缺审批。”',interact:{with:'weilai',mode:'cost_visibility'},e:{trust:-1,power:3,sanity:2},npc:{weilai:7,yijian:3},record:'approvalChain',hidden:{merit:5,blame:-4},r:'苏苏只用了不到一分钟确认审批有效。会议没有继续讨论谁记得什么。'},
   {t:'和肖恩确认：“我会后发 corrected minutes，原审批不动，只补预算边界、owner 和以后什么情况需要重批。你帮我看记录是否够核查。”',interact:{with:'xiaoen',mode:'audit_trail'},e:{progress:3,trust:2,power:2},npc:{weilai:4,xiaoen:3},record:'approvalChain',r:'你没有重走一个不存在的问题，只把正式记录修正到可执行。'}
  ],
  c6:[
-  {t:'请安瑜把 RCA 页面改成 timeline；让一建补监管节点、肖恩补证据来源，你负责医学审阅日期，不接受一句“医学问题”结案',interact:[{with:'anyu',mode:'owner'},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'audit_trail'}],e:{power:8,trust:-3,sanity:3},npc:{yijian:6,xiaoen:5,anyu:4},record:'writtenWarning',hidden:{merit:8,blame:-5},r:'一建关心截止点，肖恩关心证据链，安瑜关心 owner。三个人从不同角度把一句“医学问题”拆成了真实延误链。'},
-  {t:'对安瑜说：“今晚你起 RCA 骨架；一建和肖恩各确认自己那一栏，我明天中午前把医学时间线补齐，我们四方签完再替换这页。”',interact:[{with:'anyu',mode:'decision_log',favor:true},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'documentation'}],e:{progress:2,power:5,trust:1},npc:{anyu:5,yijian:5,xiaoen:4},hidden:{merit:6,blame:-3},r:'你没有在高层会上争输赢，也没有接受错误归因。第二天联合版本替换了原页。'}
+  {t:'请安瑜把 RCA 页面改成 timeline；让一建补监管节点、肖恩补证据来源，你负责医学审阅日期，不接受一句“医学问题”结案',interact:[{with:'kzong',mode:'owner'},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'audit_trail'}],e:{power:8,trust:-3,sanity:3},npc:{yijian:6,xiaoen:5,kzong:4},record:'writtenWarning',hidden:{merit:8,blame:-5},r:'一建关心截止点，肖恩关心证据链，安瑜关心 owner。三个人从不同角度把一句“医学问题”拆成了真实延误链。'},
+  {t:'对安瑜说：“今晚你起 RCA 骨架；一建和肖恩各确认自己那一栏，我明天中午前把医学时间线补齐，我们四方签完再替换这页。”',interact:[{with:'kzong',mode:'decision_log',favor:true},{with:'yijian',mode:'deadline'},{with:'xiaoen',mode:'documentation'}],e:{progress:2,power:5,trust:1},npc:{kzong:5,yijian:5,xiaoen:4},hidden:{merit:6,blame:-3},r:'你没有在高层会上争输赢，也没有接受错误归因。第二天联合版本替换了原页。'}
  ],
  c13:[
   {t:'先看向明夜和加琳：“样本量你答，安全你答；我只整合医学证据。钟总的管理决策请她自己说明。”',interact:[{with:'mingye',mode:'evidence'},{with:'jialin',mode:'shared_signature'}],e:{progress:5,power:8,trust:-3,sanity:4},npc:{ceo:7,cso:5,mingye:4,jialin:4},hidden:{merit:10,reputation:8,blame:-4},r:'你把责任边界说清楚：统计讲数字，PV讲安全，医学整合证据；你不替任何人重写管理历史。'},
@@ -1366,11 +1344,11 @@ const REALISTIC_EXTRA_CHOICES={
   {t:'若证据仍不足，进入二期时预设 dose-confirmation 目标和决策门槛，而不是无限保留两个剂量',e:{progress:2,power:4,trust:1},npc:{mingye:4,weilai:2},hidden:{merit:6,blame:-2},r:'你没有假装一期已经回答所有问题，也没有让财务承担一个没有终点的双剂量方案。'}
  ],
  x3:[
-  {t:'逐一回应四位 PI：“侯教授的科学问题、牛教授的执行问题、张教授的资源问题、林医生的作者问题都会进入 response matrix；今天的讨论不等于已经改方案。”',interact:[{with:'houpi',mode:'peer_defensible'},{with:'niupi',mode:'site_feasible'},{with:'zhangpi',mode:'respect_center'},{with:'linpi',mode:'authorship_rule'}],e:{progress:4,power:5,trust:-2},npc:{houpi:4,niupi:4,zhangpi:4,linpi:3,yijian:3},record:'imActions',hidden:{merit:8,piRep:7,blame:-3},r:'侯教授的科学问题、牛教授的执行问题、张教授的资源问题、林医生的学术诉求被分栏记录，没有任何一个“点头”自动变成方案承诺。'}
+  {t:'逐一回应四位 PI：“MK主任的科学问题、N院长的执行问题、林主任的资源问题、林主任的作者问题都会进入 response matrix；今天的讨论不等于已经改方案。”',interact:[{with:'houpi',mode:'peer_defensible'},{with:'niupi',mode:'site_feasible'},{with:'zhangpi',mode:'respect_center'},{with:'zhangpi',mode:'authorship_rule'}],e:{progress:4,power:5,trust:-2},npc:{houpi:4,niupi:4,zhangpi:4,zhangpi:3,yijian:3},record:'imActions',hidden:{merit:8,piRep:7,blame:-3},r:'MK主任的科学问题、N院长的执行问题、林主任的资源问题、林主任的学术诉求被分栏记录，没有任何一个“点头”自动变成方案承诺。'}
  ],
  x4:[
   {t:'对证据不足的问题明确说“现有数据不足以现场承诺”，给出当前 proposal，并承诺书面 follow-up',e:{progress:7,power:6,trust:-2},npc:{yijian:10,ceo:4,cso:4},record:'eop2Minutes',hidden:{merit:12,reputation:8,blame:-5},r:'一建接受这种回答，因为它有明确 follow-up 和截止点。监管没有要求你现场发明确定性。'},
-  {t:'把主持权交给一建：“每题先复述 agency concern、记 owner 和 follow-up；明夜只答统计，牛教授只答执行，我来整合医学结论。”',interact:[{with:'yijian',mode:'question_log',favor:true},{with:'mingye',mode:'analysis'},{with:'niupi',mode:'site_feasible'}],e:{progress:10,power:7,trust:-3,morale:4},npc:{yijian:12,mingye:6,niupi:4},record:'eop2Minutes',hidden:{merit:14,reputation:9},r:'一建最怕错过承诺和窗口，这次每个问题、owner、书面补充项都在现场被锁定。'}
+  {t:'把主持权交给一建：“每题先复述 agency concern、记 owner 和 follow-up；明夜只答统计，N院长只答执行，我来整合医学结论。”',interact:[{with:'yijian',mode:'question_log',favor:true},{with:'mingye',mode:'analysis'},{with:'niupi',mode:'site_feasible'}],e:{progress:10,power:7,trust:-3,morale:4},npc:{yijian:12,mingye:6,niupi:4},record:'eop2Minutes',hidden:{merit:14,reputation:9},r:'一建最怕错过承诺和窗口，这次每个问题、owner、书面补充项都在现场被锁定。'}
  ],
  x5:[
   {t:'找邹婷和一建一起过贡献矩阵：“你看组织事实，他看交付节点；我只把每个 decision owner 和证据填完整，不写谁最重要。”',interact:[{with:'zouting',mode:'power_signal'},{with:'yijian',mode:'written_followup'}],e:{power:7,trust:-3,morale:5},npc:{ceo:7,cso:4,zouting:5,yijian:4},record:'authorshipTrail',hidden:{merit:9,reputation:12,blame:-5},r:'邹婷关心组织事实，一建在意交付贡献，老板看到的是可核对的工作，而不是形容词。'},
@@ -1380,9 +1358,9 @@ const REALISTIC_EXTRA_CHOICES={
 
 const REALISTIC_REPLACEMENTS={
  c1:{0:{t:'引用上次会议纪要：当时只确认“稳重风格”，没有最终锁色；今天先锁医学内容',e:{trust:2,progress:4,sanity:2},npc:{xiaoen:2},r:'你没有替 VP 发明记忆。会议纪要成为共同事实，封面会后由模板 owner 处理。'}},
- c3:{0:{t:'先确认这是否需要项目组决策；若只是模板规范，交给会议秘书按标准模板执行',e:{progress:5,trust:2,sanity:1},npc:{anyu:3,xiaoen:2},r:'项目组不再把专业时间用在模板规范上。'}},
+ c3:{0:{t:'先确认这是否需要项目组决策；若只是模板规范，交给会议秘书按标准模板执行',e:{progress:5,trust:2,sanity:1},npc:{kzong:3,xiaoen:2},r:'项目组不再把专业时间用在模板规范上。'}},
  c4:{2:{t:'暂停“补审批”，先核对现有 OA、PO 和预算版本；只有确实缺失时才启动补充流程',e:{trust:2,progress:1,sanity:2},npc:{weilai:5,xiaoen:4},record:'approvalChain',r:'原审批有效。你没有为了配合领导的记忆而制造第二套记录。'}},
- c6:{1:{t:'不接受“医学问题”的单部门归因；会后 24 小时提供基于时间线的 RCA 修订稿供跨部门确认',e:{trust:-1,power:4,sanity:1},npc:{yijian:4,anyu:4},record:'writtenWarning',r:'你没有公开认锅，也没有把会议变成人身争论。'}}
+ c6:{1:{t:'不接受“医学问题”的单部门归因；会后 24 小时提供基于时间线的 RCA 修订稿供跨部门确认',e:{trust:-1,power:4,sanity:1},npc:{yijian:4,kzong:4},record:'writtenWarning',r:'你没有公开认锅，也没有把会议变成人身争论。'}}
 };
 function applyClinicalRealism(ch){
   if(!ch) return ch;
@@ -1678,23 +1656,23 @@ const EVENTS = [
       r:"你讲了四十分钟，被问了七个问题，答上来七个。有一个答不上来，你说：「这个我没有数据，回去补给您。」\n\n刘主任点点头：「总算有个敢说实话的。」\n\n钟时事后知道你抢了那个位置，整整一周没在群里回过你的消息。\n\n（信任掉四点，换来一句「敢说实话」。这笔账你自己算。）" },
   ]},
 { id:"ex3", title:"预算的真相", npcEv:true,
-  text:"财务卫来把你的专家咨询会预算砍了六成。\n\n理由写得非常客气：「基于本季度现金流预测与费用结构调整。」\n\n你翻了一遍调整明细：被砍的不止你一家，但商业化的市场活动费用一分没少，还多了十四个点。",
+  text:"财务苏苏把你的专家咨询会预算砍了六成。\n\n理由写得非常客气：「基于本季度现金流预测与费用结构调整。」\n\n你翻了一遍调整明细：被砍的不止你一家，但商业化的市场活动费用一分没少，还多了十四个点。",
   choices:[
     { t:"按六成做：砍掉两场会，把专家范围缩到本地", e:{progress:-4, trust:3, sanity:-3}, npc:{weilai:11},
       r:"你把两场会改成了线上随访咨询。专家名单少了三个人——其中一位是这次研究报告里你最想署名的那个名字。\n\n（预算是一把钝刀。它不砍人，它砍掉人的出场机会。）" },
     { t:"找武总谈：市场活动费用匀一小段过来，条件是讲稿由市场部一起过", e:{power:6, progress:3, dragon:2, trust:-2}, npc:{wuzong:9, caolan:5, weilai:8, jialin:-3},
       r:"武总很爽快：「这个可以，大家一起把事情做好嘛。」\n\n条件是：主讲人换成市场部熟悉的一位，专家名单里有一位是他推荐的。\n\n会上一切顺利，只是问题清单里多了三道关于市场定位的提问。\n\n（你没有被收买，你只是把一部分解释权标价卖了出去。）" },
     { t:"把调整明细做成一页纸发给老板，抄送财务", e:{power:10, trust:-9, sanity:2}, npc:{weilai:-10, ceo:8, xiaoyuan:4, cso:3},
-      r:"那页纸上一句评论都没有，只有两列数字和一条对比线。\n\n三天后预算恢复了一半——从商业化那边划过来的。卫来此后所有给你的邮件，都多抄送一个人：他的上级。\n\n（这一招有效，但它属于那种用过一次就要换城市生活的招。）" },
+      r:"那页纸上一句评论都没有，只有两列数字和一条对比线。\n\n三天后预算恢复了一半——从商业化那边划过来的。苏苏此后所有给你的邮件，都多抄送一个人：他的上级。\n\n（这一招有效，但它属于那种用过一次就要换城市生活的招。）" },
   ]},
 { id:"ex4", title:"那一条写不写进附件", npcEv:true,
   text:"法务童欣在审 CRO 服务合同时问了一句：「你们医学平时最常被坑的是哪一类？」\n\n你说了三条：源文件交付、口径责任、终稿确认权。\n\n她抬头：「这三条现在合同里一条都没有。要不要我加？」\n\n「加的话，采购那边要重走一轮，大概三周。」——窗外是全组人在赶进度。",
   choices:[
-    { t:"加。三周之后，这三条不再靠人情，靠条款", e:{progress:-5, power:9, sanity:2}, npc:{tongxin:15, xiaoen:5, heina:-5, weilai:-3},
+    { t:"加。三周之后，这三条不再靠人情，靠条款", e:{progress:-5, power:9, sanity:2}, npc:{xiaoen:15, xiaoen:5, heina:-5, weilai:-3},
       r:"合同在下一个季度生效。第一条之后，黑娜的源文件交付率从六成变成十成。\n\n童欣在邮件备注里写：「前置永远比事后便宜，只是前置的账单没人愿意看。」\n\n（这个选项掉五格进度、涨九格权力。它问的是你愿不愿意替未来的自己付钱。）" },
-    { t:"先不加，我要进度。这次我用邮件扛", e:{progress:5, sanity:-5}, npc:{tongxin:-6, heina:3},
+    { t:"先不加，我要进度。这次我用邮件扛", e:{progress:5, sanity:-5}, npc:{xiaoen:-6, heina:3},
       r:"你写了十一封催办邮件，赢了这三个月。\n\n童欣回了一句：「收到。」——她的意思是：下次你自己扛。\n\n（所有不走条款的胜利，都需要你本人重复支付。）" },
-    { t:"加两条，并把「终稿确认权」改写成「医学负责人享有专业判断终审权，且不因审阅时限而免除」", e:{power:12, progress:-3, trust:-3, sanity:-4}, npc:{tongxin:12, xiaoen:3, heina:-4, ceo:3},
+    { t:"加两条，并把「终稿确认权」改写成「医学负责人享有专业判断终审权，且不因审阅时限而免除」", e:{power:12, progress:-3, trust:-3, sanity:-4}, npc:{xiaoen:12, xiaoen:3, heina:-4, ceo:3},
       r:"童欣看完你的措辞，抬了下眉毛：「这一条你推敲了三遍吧？」\n\n她把它放进附件，位置在第十七页。\n\n很久以后有人问起你凭什么拍板，你指的就是这一页。\n\n（把未来可能发生的问题，写成今天没人注意的一句话——这是这个职位最安静的权力。）" },
   ]},
 { id:"ex5", title:"加班的人", npcEv:true,
@@ -1708,14 +1686,14 @@ const EVENTS = [
       r:"你花了一个晚上，把「剂量依据」拆成六个他明天就能交的东西：文献、动物数据、同类品种、暴露倍数、安全窗、结论页模板。\n\n他第二天交了五份，勉强及格。加琳收下了。\n\n此后他会在老板问起临床的事之前，先发消息问你：「老师，这个是不是应该这样说？」\n\n（带一个人很贵。但带出来之后，你在老板耳朵边上多了一张嘴。）" },
   ]},
 { id:"ex6", title:"楼梯间的三条", npcEv:true,
-  text:"CRA 主管苗苗在楼梯间叫住你，低声说了三件事。\n\n一号中心的日记卡实际回收率只有一半；三号中心那个被记成「不依从」的受试者，其实是供药断了十天；还有一份源文件，中心签的日期比系统里的晚两天。\n\n这些都不在 CRO 的月度报告里。",
+  text:"CRA 主管琳琳在楼梯间叫住你，低声说了三件事。\n\n一号中心的日记卡实际回收率只有一半；三号中心那个被记成「不依从」的受试者，其实是供药断了十天；还有一份源文件，中心签的日期比系统里的晚两天。\n\n这些都不在 CRO 的月度报告里。",
   choices:[
     { t:"用这三条去质问黑娜，逼她修订月度报告", e:{power:9, trust:-4, progress:2}, npc:{miaomiao:8, heina:-9, xiaoen:5, jialin:4},
-      r:"你把三条都对上了证据。黑娜最后修订了报告，并在附言里加了一句「经现场核实」。\n\n苗苗的名字出现在报告的三处——从此她在业务上的评价，写进了这个项目。\n\n（有人替你看见了现场，你就不再是唯一对着报表猜的人。）" },
+      r:"你把三条都对上了证据。黑娜最后修订了报告，并在附言里加了一句「经现场核实」。\n\n琳琳的名字出现在报告的三处——从此她在业务上的评价，写进了这个项目。\n\n（有人替你看见了现场，你就不再是唯一对着报表猜的人。）" },
     { t:"保护她：不提她的名字，只用这三条去推流程整改", e:{morale:8, progress:3, power:4, sanity:-3}, npc:{miaomiao:14, xiaoen:4, zhuzong:3},
-      r:"你把它写成了「供应与随访管理改进项」，没有提到任何人的名字。\n\n苗苗后来知道了，在茶水间站了很久才说：「谢谢你没说是我。」\n\n三个月后，她的两个监查员开始主动替你核对那类日期。\n\n（士气从来不是动员出来的，是护出来的。）" },
+      r:"你把它写成了「供应与随访管理改进项」，没有提到任何人的名字。\n\n琳琳后来知道了，在茶水间站了很久才说：「谢谢你没说是我。」\n\n三个月后，她的两个监查员开始主动替你核对那类日期。\n\n（士气从来不是动员出来的，是护出来的。）" },
     { t:"留作己用：记进你的个人档案，暂时不声张", e:{power:6, trust:2, dragon:2, sanity:-4}, npc:{miaomiao:-6, heina:2},
-      r:"你把它锁进了自己的文件夹。\n\n三个月后的供应协调会上，你只摊开了一条——就那一条，足以让讨论改了方向。\n\n苗苗后来不再在楼梯间叫住你了。\n\n（信息是权力。但独占信息的人，最后会发现自己的信息越来越少。）" },
+      r:"你把它锁进了自己的文件夹。\n\n三个月后的供应协调会上，你只摊开了一条——就那一条，足以让讨论改了方向。\n\n琳琳后来不再在楼梯间叫住你了。\n\n（信息是权力。但独占信息的人，最后会发现自己的信息越来越少。）" },
   ]},
 { id:"ex7", title:"那份数据", npcEv:true,
   text:"BD 的谷雨来敲你的桌子：「对方尽调要看中期数据，这周能不能给我一版？」\n\n他从口袋里抽出一张便签，上面手写了一行字：有效率六成以上，安全性良好。\n\n「就照这个口径，多一点缓冲词都不要。这一份讲好了，年底那个合作能多两个点。」\n\n而真实的数字是：有效率 52.4%，四十二例，其中两例未确认。",
@@ -1754,7 +1732,7 @@ const HEINA_EVENTS = [
       r:"你交了十二份。其中三份的既往史写的是「未见异常」，依据是记忆和老的习惯用法。\n\n肖恩在月度质量抽查里抽到了其中一份，圈了四个字：「未见依据。」\n\n（进度确实前进了五格。账记在 QA 那里，不写在进度条上。）" },
     { t:"甩锅给钟时：「数据需求要钟时层面推动 CRO，我马上报给她」", e:{trust:-6, power:6, dragon:2, progress:2, morale:-4}, npc:{heina:6, zhuzong:4, jialin:-3},
       r:"你把责任推到了钟时的管理界面上。她在会上当着所有人的面给 CRO 管理层打了二十分钟电话。\n\n挂电话后她对你说：「你早说啊。」——语气居然带着点感激。\n\n（黑娜很满意：终于有人替她把事办了。你也很满意：没有人记得这是她的锅。）" },
-    { t:"请法务童欣补一份《源文件交付清单与时限》附件，把这次请求本身改成 CRO 的履约事项", e:{progress:-3, power:7, sanity:-1}, npc:{tongxin:13, xiaoen:4, jialin:3, heina:-4},
+    { t:"请法务童欣补一份《源文件交付清单与时限》附件，把这次请求本身改成 CRO 的履约事项", e:{progress:-3, power:7, sanity:-1}, npc:{xiaoen:13, xiaoen:4, jialin:3, heina:-4},
       r:"童欣两小时内改好了模板，第一条是：「未在四十八小时内提供完整源文件，视为该次交付未完成。」\n\n黑娜回邮件时第一次用了句号，而不是波浪号。\n\n（这是坑的第四条路：不专业地忍，也不脏地推——让合同替你开口。慢一天，管用一年。）" },
   ]},
 { id:"h2", cro:true, title:"Narrative 口径之战",
@@ -1766,7 +1744,7 @@ const HEINA_EVENTS = [
       r:" narrative 如期归档。\n\n半年后核查官抽到其中一份，问：「这里写的『无关』，依据是什么？」——那份源文件里，并没有支持这个结论的记录。\n\n（每条捷径的终点，都是同一个房间。）" },
     { t:"甩锅给钟时：「CSR 口径当时是钟时拍的，要不要維持原来的说法，我请她定」", e:{trust:-7, power:7, dragon:2, morale:-3}, npc:{heina:6, mingye:-4, yijian:3},
       r:"你把口径不一致包装成了一次「管理层确认」需求。钟时看了十分钟，说：「按 CSR 来。」\n\n于是别人的错，变成了你的管理水平。\n\n（这类操作最妙的地方在于：它同时是正确的事，和一次推卸。）" },
-    { t:"请法务在合同里补一句：口径不一致一律返工，且不计入我方审阅工时", e:{power:8, progress:-2, trust:-2}, npc:{tongxin:11, xiaoen:5, mingye:4, weilai:6, heina:-5},
+    { t:"请法务在合同里补一句：口径不一致一律返工，且不计入我方审阅工时", e:{power:8, progress:-2, trust:-2}, npc:{xiaoen:11, xiaoen:5, mingye:4, weilai:6, heina:-5},
       r:"童欣把这条写进了服务范围附件，编号 7.3。黑娜看完只说了一句：「你们这边的法务挺狠。」\n\n从此口径不一致不再是你加班的理由——它是对方的返工项。\n\n（把每一次人的失误，改写成一次条款。这是四轨里唯一干净的一轨。）" },
   ]},
 { id:"h3", cro:true, title:"倒填的日期",
@@ -1798,7 +1776,7 @@ const HEINA_EVENTS = [
       r:"你在说明里写了「我方审阅流程亦有优化空间」。\n\n这句话从此成了模板句式。三个月后另一次延期，钟时直接引用了它——这次连问都没问你。\n\n（替别人认下的每一个错，都会变成别人手里的通行證。）" },
     { t:"甩锅给钟时：「按钟时审批的月度排期，我提前预警过资源冲突」", e:{trust:-8, power:9, dragon:3, morale:-4}, npc:{heina:4, xiaoyuan:3, cso:3},
       r:"你把排期审批记录和预警邮件一并发了出去。\n\n管理层最后的结论是「排期与资源不匹配」——指向的不是你，也不是 CRO。\n\n黑娜感激你没咬她，钟时第一次发现自己的排期也是可以被引用的证据。" },
-    { t:"请法务出一份《数据交付时限条款》，附上这次的时间戳，把延迟写进 CRO 季度考评", e:{power:7, trust:-2, progress:2}, npc:{tongxin:11, weilai:9, heina:-6, ceo:3},
+    { t:"请法务出一份《数据交付时限条款》，附上这次的时间戳，把延迟写进 CRO 季度考评", e:{power:7, trust:-2, progress:2}, npc:{xiaoen:11, weilai:9, heina:-6, ceo:3},
       r:"童欣把「数据交付日」四个字写进了合同状语。下一次延期，考评表上会自己跳出一行红。\n\n黑娜在电话里笑：「你们这是上纲上线。」你说：「不是我，是合同。」\n\n（对付熟练的对手，最有效的是让规则变成不需要你出面的东西。）" },
   ]},
 { id:"h6", cro:true, title:"顺手的人情",
@@ -1820,38 +1798,38 @@ const HEINA_EVENTS = [
       r:"饭吃得挺愉快。她发了个朋友圈配图，配文「合作愉快」。\n\n但项目群组里的攻击停了，质疑你专业性的人却多了——因为她的邮件从来没有被撤回。" },
     { t:"甩锅给钟时：「排期是钟时压缩的三周，我已提前预警」", e:{trust:-8, power:8, dragon:2, morale:-4}, npc:{heina:5, zhuzong:4, xiaoyuan:2},
       r:"你把责任从自己身上挪到了整个压缩排期的决策链上。管理层开始讨论排期，而不是讨论你。\n\n黑娜松了口气——她的交付问题被默认为「客观困难」。钟时再一次被放在了聚光灯下，而你在阴影里。" },
-    { t:"请法务回一封《事实性陈述函》，用中立措辞把时间线写进双方正式记录", e:{power:7, sanity:2, trust:-2}, npc:{tongxin:12, xiaoen:4, heina:-6, ceo:2},
+    { t:"请法务回一封《事实性陈述函》，用中立措辞把时间线写进双方正式记录", e:{power:7, sanity:2, trust:-2}, npc:{xiaoen:12, xiaoen:4, heina:-6, ceo:2},
       r:"童欣写的那封信里没有一句指责，只有六个时间点和一个结论：「交付延迟先于审阅延迟。」\n\n她告诉你：「对外摩擦最好的处理方式，是不带情绪地把它变成档案。」\n\n黑娜后来只问了一句：「你们法务多少钱一个月？」" },
   ]},
 ];
 
 /* =====================  v7 · 研究者随机事件  ===================== */
 EVENTS.push(
- {id:"pi1",npcEv:true,title:"侯教授要改方案",
-  text:"侯教授临时提出把关键入组阈值放宽，理由是‘真实世界患者就是这样’。钟时先答应了，十分钟后才问你监管上能不能过。",
+ {id:"pi1",npcEv:true,title:"MK主任要改方案",
+  text:"MK主任临时提出把关键入组阈值放宽，理由是‘真实世界患者就是这样’。钟时先答应了，十分钟后才问你监管上能不能过。",
   choices:[
-   {t:"先做影响评估：科学合理性、样本量、监管一致性，48 小时后给明确答复",e:{progress:2,power:3},npc:{houpi:7,yijian:5,mingye:3},hidden:{merit:7,piRep:6},r:"侯教授没有立刻得到 yes，但拿到了一个能相信的时限。两天后你们只改了真正需要改的部分。"},
+   {t:"先做影响评估：科学合理性、样本量、监管一致性，48 小时后给明确答复",e:{progress:2,power:3},npc:{houpi:7,yijian:5,mingye:3},hidden:{merit:7,piRep:6},r:"MK主任没有立刻得到 yes，但拿到了一个能相信的时限。两天后你们只改了真正需要改的部分。"},
    {t:"钟总已经答应了，先改再说",e:{trust:5,progress:-5},npc:{houpi:4,yijian:-6},hidden:{blame:6,merit:-3},r:"方案改了。监管追问来了。钟时说：『这个具体是医学和研究者讨论的。』你第一次体会到承诺也有半衰期。"},
-   {t:"让钟时给侯教授发正式确认邮件，你负责把她的决定转成 amendment",e:{trust:-4,dragon:2,power:4},npc:{houpi:2},hidden:{blame:-5,merit:3},r:"她在邮件里重新读了一遍自己刚答应的东西，最后改成『请团队先评估』。你什么都没反对，但决定自己退回去了。"}
+   {t:"让钟时给MK主任发正式确认邮件，你负责把她的决定转成 amendment",e:{trust:-4,dragon:2,power:4},npc:{houpi:2},hidden:{blame:-5,merit:3},r:"她在邮件里重新读了一遍自己刚答应的东西，最后改成『请团队先评估』。你什么都没反对，但决定自己退回去了。"}
   ]},
  {id:"pi2",npcEv:true,title:"作者排序：四把椅子",
-  text:"二期论文准备投稿。侯教授、牛教授都认为自己应该第一作者；张教授认为自己的中心入组最多；林医生做了最多病例清理。钟时分别跟三个人说过‘我支持你’。",
+  text:"二期论文准备投稿。MK主任、N院长都认为自己应该第一作者；林主任认为自己的中心入组最多；林主任做了最多病例清理。钟时分别跟三个人说过‘我支持你’。",
   choices:[
-   {t:"建立透明贡献表：方案、入组、数据解释、写作，按事先规则讨论排序",e:{power:5,morale:4},npc:{houpi:3,niupi:3,zhangpi:3,linpi:7},hidden:{merit:6,piRep:10,reputation:4},r:"没有人百分之百满意，但没有人能说规则是临时为别人发明的。林医生第一次被写进核心作者。"},
-   {t:"谁电话打得最凶就先安抚谁，排序以后再说",e:{trust:4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-4,linpi:-6},hidden:{piRep:-8,blame:6},r:"你花了一周灭火。每灭一处，另一处冒烟。钟时评价：『研究者关系就是要灵活。』"},
+   {t:"建立透明贡献表：方案、入组、数据解释、写作，按事先规则讨论排序",e:{power:5,morale:4},npc:{houpi:3,niupi:3,zhangpi:3,zhangpi:7},hidden:{merit:6,piRep:10,reputation:4},r:"没有人百分之百满意，但没有人能说规则是临时为别人发明的。林主任第一次被写进核心作者。"},
+   {t:"谁电话打得最凶就先安抚谁，排序以后再说",e:{trust:4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-4,zhangpi:-6},hidden:{piRep:-8,blame:6},r:"你花了一周灭火。每灭一处，另一处冒烟。钟时评价：『研究者关系就是要灵活。』"},
    {t:"把钟时此前分别承诺的邮件做成一页时间线，请她主持最终协调",e:{trust:-6,power:5,dragon:2},npc:{houpi:2,niupi:2,zhangpi:2},hidden:{blame:-6,reputation:3},r:"她第一次需要同时面对自己给出的三个承诺。会议很难看，但之后没有任何 PI 再说是你私下改了排序。"}
   ]},
  {id:"pi3",npcEv:true,title:"中心入组停摆",
-  text:"张教授中心两个月零入组。他说是方案太复杂；运营说是中心没动力；钟时建议‘换掉这个中心’。但它去年贡献了全项目 18% 的患者。",
+  text:"林主任中心两个月零入组。他说是方案太复杂；运营说是中心没动力；钟时建议‘换掉这个中心’。但它去年贡献了全项目 18% 的患者。",
   choices:[
    {t:"亲自和研究护士、CRC、PI拆一遍筛选漏斗，找出真正卡点",e:{progress:6,power:2},npc:{zhangpi:8,miaomiao:6},hidden:{merit:8,piRep:5},r:"真正问题是一个不必要的检查必须在 48 小时内完成。你协调窗口后，中心当月入组四例。"},
-   {t:"按钟时意见发中心整改警告",e:{trust:5,progress:-2},npc:{zhangpi:-10,miaomiao:-4},hidden:{blame:3},r:"警告发得很快。张教授把后面两个候选患者转给了另一个研究。流程是赢了，项目没赢。"},
-   {t:"【权力】直接要求运营一周内驻点，把所有筛选病例逐例复盘",lock:{power:48},lockHint:"需要足够的话语权",e:{progress:8,power:2,morale:-5},npc:{miaomiao:-7,zhangpi:4},hidden:{merit:6,reputation:2},r:"驻点有效，入组恢复。苗苗也记住了：你一声令下，她的人就得改行程。权力从来不会只留下结果。"}
+   {t:"按钟时意见发中心整改警告",e:{trust:5,progress:-2},npc:{zhangpi:-10,miaomiao:-4},hidden:{blame:3},r:"警告发得很快。林主任把后面两个候选患者转给了另一个研究。流程是赢了，项目没赢。"},
+   {t:"【权力】直接要求运营一周内驻点，把所有筛选病例逐例复盘",lock:{power:48},lockHint:"需要足够的话语权",e:{progress:8,power:2,morale:-5},npc:{miaomiao:-7,zhangpi:4},hidden:{merit:6,reputation:2},r:"驻点有效，入组恢复。琳琳也记住了：你一声令下，她的人就得改行程。权力从来不会只留下结果。"}
   ]},
  {id:"pi4",npcEv:true,title:"研究者会上的公开追问",
-  text:"牛教授在全体研究者会上突然问：『为什么你们三期还沿用这个停药标准？二期明明出现过边界病例。』钟时拿起话筒开始讲机制，台下已经有人皱眉。",
+  text:"N院长在全体研究者会上突然问：『为什么你们三期还沿用这个停药标准？二期明明出现过边界病例。』钟时拿起话筒开始讲机制，台下已经有人皱眉。",
   choices:[
-   {t:"接过话筒，用二期边界病例和敏感性分析直接回答",e:{power:4,progress:3,trust:-3},npc:{niupi:8,houpi:4},hidden:{merit:7,piRep:8,reputation:5},witnesses:["houpi","niupi"],r:"牛教授点头：『这就清楚了。』会后两位 PI 都来要那张图。你没有赢过上司，你只是回答了问题。"},
+   {t:"接过话筒，用二期边界病例和敏感性分析直接回答",e:{power:4,progress:3,trust:-3},npc:{niupi:8,houpi:4},hidden:{merit:7,piRep:8,reputation:5},witnesses:["houpi","niupi"],r:"N院长点头：『这就清楚了。』会后两位 PI 都来要那张图。你没有赢过上司，你只是回答了问题。"},
    {t:"等钟时讲完再补充，避免当众让她难看",e:{trust:6},npc:{niupi:-3},hidden:{merit:2,piRep:-2},r:"她讲了八分钟，问题依然没有答案。你最后补充时，台下已经开始看手机。"},
    {t:"把话筒递回钟时：『这个标准是钟总最终批准的，请钟总解释决策依据。』",e:{trust:-8,dragon:3,power:5},npc:{niupi:2},hidden:{blame:-4,reputation:2},r:"空气安静了两秒。她最终让明夜回答。你没有说错一句话，但所有人都知道你刚刚做了什么。"}
   ]}
@@ -1883,11 +1861,11 @@ const ENDINGS = {
     story:"一年后。\n\n新来的医学经理站在会议室里，看着你敲着投影笔说：「这个封面不够大气。字号，再大一点。」\n\n他说：「可是我们 Q4 的里程碑……」你摆摆手：「年轻人要有全局观嘛。」\n\n这句话出口的瞬间，你耳边响起一声极轻的、熟悉的龙吟。你摸了摸下巴，忽然觉得深蓝，确实不如紫色稳重。\n\n当年那群人陆续离开了：加琳去了监管机构做技术审评，明夜回了海外读书，一建跳去了更大的平台，Parker 拿到 offer 那天没跟任何人告别。不是他们输了——是你赢的方式，让他们在这里没有位置。\n\n你和黑娜签了新的战略合作协议。她在合同签字页微笑着对你说：「X 总，您这套打法，比那位强多了。」\n\n你其实也想过走。后来算了：这两年里，见过你在这间屋子里做过什么的人太多了。没有一家公司会为一个善于甩锅的人，开出比这里更高的价钱。\n\n你忽然懂了她为什么从来没走。\n\n你其实也想过走。后来算了：这两年里，见过你在这间屋子里做过什么的人太多了。没有一家公司会为一个善于甩锅的人，开出比这里更高的价钱。\n\n你忽然懂了她为什么从来没走。\n\n当年你坐在台下，恨透了这一切。现在你终于明白：龙从来不是一个人，龙是这间屋子里所有不愿说「不」的声音的总和。\n\n——你屠了那条龙，然后毫不费力地，长成了它。恭喜你。或者说，节哀。" },
   // —— 主线新结局：把药做出来 ——
   ge_firstline: { type:"GE · 项目做成", cls:"ge", name:"GE · 交付者",
-    story:"递交那天是周三下午三点四十。\n\n一建在受理大厅门口打电话过来，说「进去了」，声音是哑的。挂掉之后你坐在会议室里，忽然不知道该干什么——这两年你全部的力气都花在阻止这件事被搞砸上，从没想过它真的会发生。\n\n当晚庆功宴，她举杯说「团队合作的力量」。你把杯沿压低半寸——这不是谦虚，这是精度。\n\n一周后老板把你叫进去，问明年还想做什么。你说：把二期做完。他愣了一下，他以为你会要一个头衔。\n\n加琳在楼梯上拦住你，问三期的安全性数据库还想不想让她管；明夜把新的统计计划第一页发给你审阅，附言只有一句「这次请你先读」；苗苗说她手下那个跑遍了十四家中心的小孩想转做医学，问你收不收。\n\n——药做成了，没有人需要离开。这是这一行里最不常见的一种胜利，因为它既不产生新闻，也不产生英雄。" },
+    story:"递交那天是周三下午三点四十。\n\n一建在受理大厅门口打电话过来，说「进去了」，声音是哑的。挂掉之后你坐在会议室里，忽然不知道该干什么——这两年你全部的力气都花在阻止这件事被搞砸上，从没想过它真的会发生。\n\n当晚庆功宴，她举杯说「团队合作的力量」。你把杯沿压低半寸——这不是谦虚，这是精度。\n\n一周后老板把你叫进去，问明年还想做什么。你说：把二期做完。他愣了一下，他以为你会要一个头衔。\n\n加琳在楼梯上拦住你，问三期的安全性数据库还想不想让她管；明夜把新的统计计划第一页发给你审阅，附言只有一句「这次请你先读」；琳琳说她手下那个跑遍了十四家中心的小孩想转做医学，问你收不收。\n\n——药做成了，没有人需要离开。这是这一行里最不常见的一种胜利，因为它既不产生新闻，也不产生英雄。" },
   ge_next: { type:"GE · 项目做成", cls:"ge", name:"GE · 更好的地方",
-    story:"项目做成之后的第四个月，你提了离职。\n\n递信那天你以为会被挽留。她没有。她说的是：「外面也不好做，你自己想清楚。」——这是她这两年里说过的最诚实的一句话。\n\n真正让你走成的是三个人：一建在行业群里把你的名字递了出去；谷雨把你做的那条安全性证据链讲成了估值；而面试前一天晚上，加琳打来电话说：我跟他们的药物警戒负责人提过你，说你这个人守得住。\n\n一周后 offer 落地，头衔上多了两个字，薪资涨了四成。这些都不重要。重要的是对方问的第一个问题是「这个项目从头到尾是你做的吗」，你可以诚实地说：是。\n\n出发那天苗苗在楼下塞给你一袋从研究中心带回来的橘子，说：以后别忘了我们。你走出大楼回头看了一眼——她还在这栋楼里，还在改字号。\n\n——屠龙当然很爽。但带着一份做完的东西体面地走掉，是这个行业里唯一一种不需要任何人受伤的胜利。" },
+    story:"项目做成之后的第四个月，你提了离职。\n\n递信那天你以为会被挽留。她没有。她说的是：「外面也不好做，你自己想清楚。」——这是她这两年里说过的最诚实的一句话。\n\n真正让你走成的是三个人：一建在行业群里把你的名字递了出去；谷雨把你做的那条安全性证据链讲成了估值；而面试前一天晚上，加琳打来电话说：我跟他们的药物警戒负责人提过你，说你这个人守得住。\n\n一周后 offer 落地，头衔上多了两个字，薪资涨了四成。这些都不重要。重要的是对方问的第一个问题是「这个项目从头到尾是你做的吗」，你可以诚实地说：是。\n\n出发那天琳琳在楼下塞给你一袋从研究中心带回来的橘子，说：以后别忘了我们。你走出大楼回头看了一眼——她还在这栋楼里，还在改字号。\n\n——屠龙当然很爽。但带着一份做完的东西体面地走掉，是这个行业里唯一一种不需要任何人受伤的胜利。" },
   mid_halfbridge: { type:"中结局 · 项目打折", cls:"mid", name:"中结局 · 半座桥",
-    story:"二期缩到了两个剂量组，主要终点换成了一年内读得出的替代指标，样本量从四百砍到两百三十。\n\n它是所有人各退一步的产物。但它是一个还能往前走的方案。\n\n签字那天，加琳说她会跟满全部安全性数据，条件是报告模板由她定；明夜做了三条备选统计计划，只交了最保守的那条；苗苗说只要还剩两家中心，她的人就跑得动。\n\n项目没有赢，你也没有。但一座只有一半的桥，仍然比没有桥要好。\n\n——所谓推进，大多数时候不是把事情做对，而是让它在最糟的版本里仍然活着。" },
+    story:"二期缩到了两个剂量组，主要终点换成了一年内读得出的替代指标，样本量从四百砍到两百三十。\n\n它是所有人各退一步的产物。但它是一个还能往前走的方案。\n\n签字那天，加琳说她会跟满全部安全性数据，条件是报告模板由她定；明夜做了三条备选统计计划，只交了最保守的那条；琳琳说只要还剩两家中心，她的人就跑得动。\n\n项目没有赢，你也没有。但一座只有一半的桥，仍然比没有桥要好。\n\n——所谓推进，大多数时候不是把事情做对，而是让它在最糟的版本里仍然活着。" },
 
   // —— NPC 特化结局：关系 ≥85 —— 你和他之间真的发生过一件事
   nc_xiaoyuan: { type:"NPC 结局 · 元老", cls:"npc", name:"NPC · 元老的船",
@@ -1901,7 +1879,7 @@ const ENDINGS = {
   nc_ruidong: { type:"NPC 结局 · 非临床", cls:"npc", name:"NPC · 毒理的答案",
     story:"项目做成之后，你以为他是第一个会走的人。结果他留了下来。\n\n三年后他念完了在职博士，带着那份做了两年的毒理数据去了海外，在一个小型学术会议上讲了十五分钟。回来那天他发给你一张照片：会场最后一排，坐着三家跨国企业的早期研发负责人。\n\n「当年那版数据挂在我名下，我才有资格站上去。」他在消息里写。\n\n你在深夜想起来这件事：那一次你把自己的东西让给他，只损失了两个点的权力。而这世上有些账，要很久以后才结账。\n\n第五年，公司要上一个全新的靶点，所有人都说非临床证据不足。评审会前一晚，瑞冬把三年的数据汇总和一份专家联络清单发给了你。附言只有一行：\n\n「这次不用挂我的名字。给需要的人。」" },
   nc_weilai: { type:"NPC 结局 · 财务", cls:"npc", name:"NPC · 财务的计算器",
-    story:"项目终止之后的第一场会，议题是省下来的钱怎么算。\n\n你以为清算意味着所有人各奔东西。卫来在会上做了另一件事：他把这份没有做完的数据重新估了一次价，然后写下一个很小的数字——小到不好意思看，大到足够说服董事会，在它彻底烂掉之前把它卖出去。\n\n三个月后，项目被一家更大的公司收购，条件是接收一部分团队。名单是卫来拟的，上面有你的名字。\n\n出发之前你去问他为什么。他说：「这不是同情。这个项目里，知道每一分钱花在哪儿的人一共两个。你不能走。」\n\n新公司的流程很慢：财务一个月才批一次预算，科学委员会每季度开一次例会，所有人说话都很慢。你会偶尔怀念那种上午拍板、下午推翻的速度。\n\n但你得到了一个从未有过的东西：一套在你到来之前就已经存在的规则。\n\n——清算一个项目的人不一定是敌人。有人负责关灯，有人负责记住路。" },
+    story:"项目终止之后的第一场会，议题是省下来的钱怎么算。\n\n你以为清算意味着所有人各奔东西。苏苏在会上做了另一件事：他把这份没有做完的数据重新估了一次价，然后写下一个很小的数字——小到不好意思看，大到足够说服董事会，在它彻底烂掉之前把它卖出去。\n\n三个月后，项目被一家更大的公司收购，条件是接收一部分团队。名单是苏苏拟的，上面有你的名字。\n\n出发之前你去问他为什么。他说：「这不是同情。这个项目里，知道每一分钱花在哪儿的人一共两个。你不能走。」\n\n新公司的流程很慢：财务一个月才批一次预算，科学委员会每季度开一次例会，所有人说话都很慢。你会偶尔怀念那种上午拍板、下午推翻的速度。\n\n但你得到了一个从未有过的东西：一套在你到来之前就已经存在的规则。\n\n——清算一个项目的人不一定是敌人。有人负责关灯，有人负责记住路。" },
 };
 
 // v7：功勋不是 HUD 数值，但会在组织调整时兑现。
@@ -2095,7 +2073,7 @@ function applyAllyAssist(nextId){
   if(nextId==='v11_15' && S.npc.mingye>=60){ flags[aid]=true; S.merit=clamp(S.merit+4); S.reputation=clamp(S.reputation+2); addLog({act:'高层决策前',from:'mingye',to:['me'],cc:[],subj:'关键分析的三张图',attach:'Decision_sensitivity.xlsx',body:'明夜把最容易被问到的三张图重跑了一遍。'}); toast('👥 明夜主动支援：功勋 +4','up'); }
   else if(nextId==='v11_13' && S.npc.jialin>=60){ flags[aid]=true; S.blame=clamp(S.blame-5); addLog({act:'三期风险前',from:'jialin',to:['me'],cc:[],subj:'PV 先把时间线给你',attach:'Safety_timeline.pdf',body:'加琳提前发来需要关注的安全时间线。'}); toast('👥 加琳提前预警：背锅风险 -5','up'); }
   else if(nextId==='v11_16' && S.npc.yijian>=60){ flags[aid]=true; S.reputation=clamp(S.reputation+4); toast('👥 一建把你的贡献写进了 NDA 分工表','up'); addOfficeMemory('publicCredit','注册分工表'); }
-  else if(nextId==='v11_9' && S.npc.houpi>=60){ flags[aid]=true; S.piRep=clamp(S.piRep+5); S.progress=clamp(S.progress+2); toast('👥 侯教授主动替研究设计背书：研究者声望 +5','up'); }
+  else if(nextId==='v11_9' && S.npc.houpi>=60){ flags[aid]=true; S.piRep=clamp(S.piRep+5); S.progress=clamp(S.progress+2); toast('👥 MK主任主动替研究设计背书：研究者声望 +5','up'); }
 }
 
 /* =====================  v9.6 · Meeting Pressure QTE  =====================
@@ -2103,28 +2081,28 @@ function applyAllyAssist(nextId){
    玩家必须在限时内决定先处理谁；难度、理智、关系、Favor、Office Memory 都会改变结果。 */
 let meetingState=null, meetingTimer=null;
 const MEETING_ROUNDS=[
- {who:'侯教授',q:'“主要终点为什么不能再严格一点？”',side:'明夜在你右侧小声说：“如果现场改，power 会直接掉。”',
+ {who:'MK主任',q:'“主要终点为什么不能再严格一点？”',side:'明夜在你右侧小声说：“如果现场改，power 会直接掉。”',
   opts:[
    {id:'stats',text:'先让明夜报把握度，再说明哪些部分已经不能改',kind:'science',base:3},
    {id:'promise',text:'先答应“可以优化”，回去再想办法',kind:'appease',base:-2},
    {id:'vp',text:'让钟时回答，看她怎么接',kind:'politics',base:-1},
    {id:'memory',text:'直接打开既有剂量/终点决策记录，把依据投到屏幕上',kind:'memory',memory:'doseMatrix',base:4}
   ]},
- {who:'牛教授',q:'“这个访视频率中心根本做不下来。”',side:'安瑜发来 Teams：“可以拆成 mandatory / optional，但别现场承诺删访视。”',
+ {who:'N院长',q:'“这个访视频率中心根本做不下来。”',side:'安瑜发来 Teams：“可以拆成 mandatory / optional，但别现场承诺删访视。”',
   opts:[
    {id:'owner',text:'把可优化访视单列，现场指定 owner 和截止时间',kind:'execution',base:4},
    {id:'locked',text:'强调方案已经定稿，请中心按方案执行',kind:'rigid',base:-2},
    {id:'pm',text:'让 PM 会后处理，不占用主席时间',kind:'delay',base:0},
-   {id:'ally',text:'请安瑜现场把执行方案拆成 mandatory / optional',kind:'ally',ally:'anyu',base:3}
+   {id:'ally',text:'请安瑜现场把执行方案拆成 mandatory / optional',kind:'ally',ally:'kzong',base:3}
   ]},
- {who:'张教授',q:'“新增采血谁承担成本？”',side:'财务没有参会。乔乔私聊：“别当场答 sponsor 全包。”',
+ {who:'林主任',q:'“新增采血谁承担成本？”',side:'财务没有参会。乔乔私聊：“别当场答 sponsor 全包。”',
   opts:[
    {id:'owner',text:'现场指定运营/财务 owner，48 小时给书面答复',kind:'execution',base:4},
    {id:'sponsor',text:'“这个费用申办方承担。”先把场面稳住',kind:'promise',base:-3},
    {id:'cro',text:'把问题转给 CRO，说合同上他们最清楚',kind:'blame',base:-1},
    {id:'record',text:'把问题写进 Action Item，并明确未经批准前不新增操作',kind:'memory',memory:'approvalChain',base:4}
   ]},
- {who:'林医生',q:'“论文作者顺序什么时候定？”',side:'侯教授没有说话，但抬头看了你一眼。钟时已经准备开口。',
+ {who:'林主任',q:'“论文作者顺序什么时候定？”',side:'MK主任没有说话，但抬头看了你一眼。钟时已经准备开口。',
   opts:[
    {id:'criteria',text:'先定贡献规则和时间点，不现场许具体名次',kind:'science',base:4},
    {id:'second',text:'先答应第二作者，避免年轻 PI 当场不满',kind:'appease',base:-3},
@@ -3235,7 +3213,7 @@ function deriveCareer(c){
   if(pd > 0){ const v = pd * 0.3; d += v; why.push('可见产出 +' + v.toFixed(1).replace(/\.0$/, '')); }
   if(wd > 0){ const v = wd * 0.1; d += v; why.push('话语权 +' + v.toFixed(1).replace(/\.0$/, '')); }
   if(dd > 0){ const v = dd * 3; d -= v; why.push('龙折旧 -' + v.toFixed(1).replace(/\.0$/, '')); }
-  const pro = ['jialin', 'xiaoen', 'tongxin'].reduce(function(s, k){ return s + Math.max(0, npc[k] || 0); }, 0);
+  const pro = ['jialin', 'xiaoen', 'xiaoen'].reduce(function(s, k){ return s + Math.max(0, npc[k] || 0); }, 0);
   if(pro > 0){ d += 2; why.push('合规背书 +2'); }
   if(c && (c.setFlag === 'fraud' || c.setFlag === 'reckless')){ d -= 20; why.push('签字污点 -20'); }
   d = Math.round(d);
@@ -3259,11 +3237,11 @@ function deriveHiddenImpact(c){
    匹配人物小传中的 want/fear 会提高 Respect / Favor；踩中恐惧会降低 Respect，
    即使对方因为权力而配合，也不等于真的认可你。 */
 const CHARACTER_INTERACTION_RULES={
-  anyu:{likes:['owner','risk','early_warning','decision_log'],dislikes:['hide_risk','heroic_rescue','vague'],voice:'她更在意问题有没有 owner，而不是你说得好不好听。'},
+  kzong:{likes:['owner','risk','early_warning','decision_log'],dislikes:['hide_risk','heroic_rescue','vague'],voice:'她更在意问题有没有 owner，而不是你说得好不好听。'},
   linan:{likes:['private_support','repair','teach'],dislikes:['public_shame','cover_up','dump'],voice:'她最怕公开证明自己漏了关键步骤。'},
-  qiaoqiao:{likes:['timeline','execute','clear_boundary'],dislikes:['delay_without_plan','open_ended'],voice:'她会先问：这件事影响不影响首例入组。'},
-  wenjing:{likes:['approval','documentation','boundary','decision_log'],dislikes:['bypass','backfill','oral_only'],voice:'她不怕慢，她怕以后有人说“当时口头同意了”。'},
-  xiaoke:{likes:['power_signal','clear_boss','visibility'],dislikes:['isolated','losing_side'],voice:'她首先判断谁现在拥有真正的决策权。'},
+  miaomiao:{likes:['timeline','execute','clear_boundary'],dislikes:['delay_without_plan','open_ended'],voice:'她会先问：这件事影响不影响首例入组。'},
+  xiaoen:{likes:['approval','documentation','boundary','decision_log'],dislikes:['bypass','backfill','oral_only'],voice:'她不怕慢，她怕以后有人说“当时口头同意了”。'},
+  linan:{likes:['power_signal','clear_boss','visibility'],dislikes:['isolated','losing_side'],voice:'她首先判断谁现在拥有真正的决策权。'},
   mingye:{likes:['evidence','analysis','version','predefined_rule'],dislikes:['blame_stats','use_as_tool','rewrite_result'],voice:'他要的是有人真正读懂分析，而不是只让他跑数。'},
   jialin:{likes:['safety','shared_signature','completeness','report_on_time'],dislikes:['suppress','delay_reporting','leave_alone'],voice:'她不需要你永远同意她，只需要别让她一个人签。'},
   xiaoen:{likes:['documentation','approval','capa','audit_trail'],dislikes:['bypass','backfill','exception_without_record'],voice:'他相信当时签下来的那张纸，不相信半年后的解释。'},
@@ -3273,7 +3251,7 @@ const CHARACTER_INTERACTION_RULES={
   houpi:{likes:['science','evidence','peer_defensible'],dislikes:['premature_promise','use_reputation'],voice:'他愿意替科学站台，不愿替不成熟方案背书。'},
   niupi:{likes:['site_feasible','execution','patient_burden'],dislikes:['ppt_only','unworkable_visit'],voice:'他只看这套方案在真实中心能不能跑。'},
   zhangpi:{likes:['site_resource','workload','respect_center'],dislikes:['extra_work_no_resource','ignore_center'],voice:'他会把被忽略的态度直接写进入组曲线。'},
-  linpi:{likes:['authorship_rule','academic_opportunity','data_role'],dislikes:['empty_promise','et_al_only'],voice:'他愿意多做一步，但要知道学术贡献如何被承认。'}
+  zhangpi:{likes:['authorship_rule','academic_opportunity','data_role'],dislikes:['empty_promise','et_al_only'],voice:'他愿意多做一步，但要知道学术贡献如何被承认。'}
 };
 function characterInteractionImpact(c){
   if(!c.interact) return;
@@ -3368,35 +3346,7 @@ function pickChapter(i){
 }
 
 
-/* =====================  v9 · 内部人员冲突事件  ===================== */
-const INTERNAL_EVENTS = [
- {id:'v9_pm_linan_letter',npcEv:true,title:'林安忘了发中心信',text:'周一早上中心问为什么还没收到上周已经定稿的 site letter。林安在群里发了三个问号，随后私聊你：\n\n「我记得发了呀……可能是没点出去。要不我们就说邮箱退信？」',choices:[
-   {t:'你先补发，同时让她自己发 deviation explanation',topic:'DOCUMENTATION',visibility:'PUBLIC',stance:'compliance',e:{progress:1,power:2},npc:{linan:-3,xiaoen:3},social:{respect:{linan:6,xiaoen:3},favor:{linan:1},links:[['linan','xiaoen',-3]],coalition:['xiaoen','wenjing']},record:'writtenWarning',r:'你救了现场，但没有替她抹掉事实。林安很尴尬，也第一次认真记住：你会补锅，但不会替她藏锅。'},
-   {t:'悄悄替她补发，群里说“系统延迟”',topic:'RELATION',stance:'people',e:{progress:3},npc:{linan:10},social:{favor:{linan:2},respect:{linan:-3}},r:'林安从此把你当自己人。问题是，她对“自己人”的定义包括：出了事可以先找你。'},
-   {t:'当众问：最终发送记录在哪里？',topic:'POWER',visibility:'PUBLIC',stance:'politics',e:{power:5,morale:-3},npc:{linan:-10,xiaoke:2},social:{fear:{linan:12},respect:{linan:-2}},r:'群里安静了。林安以后确实不太敢漏你的东西——也不再愿意第一时间告诉你她可能漏了什么。'}]},
- {id:'v9_pm_anyu_risk',npcEv:true,title:'安瑜提前一周把雷放到桌上',text:'安瑜发来一页风险表：两个中心可能卡合同，一个供应商样本物流没有 backup，另有一项 SAE follow-up owner 还没定。\n\n她说：「现在处理会显得我们多事。下周处理会显得我们失职。」',choices:[
-   {t:'把风险表直接拉进核心周会，逐项定 owner',topic:'EXECUTION',visibility:'PUBLIC',stance:'execution',e:{progress:5,power:2},npc:{anyu:8,jialin:3,miaomiao:3},social:{respect:{anyu:8,jialin:3},favor:{anyu:1},coalition:['anyu','jialin','miaomiao','wenjing']},record:'approvalChain',r:'问题没有消失，但从今天开始每个问题都有名字。安瑜没有夸你，只在会后把下一版风险表的编辑权限给了你。'},
-   {t:'先别上会，等问题真的发生再处理',topic:'TIMELINE',stance:'politics',e:{trust:3,progress:-3},npc:{anyu:-8,qiaoqiao:4},social:{respect:{anyu:-10,qiaoqiao:2}},r:'钟时觉得你很稳，不制造焦虑。安瑜把风险表存回了自己的文件夹。三周后其中两条真的发生。'},
-   {t:'让她只把会影响 timeline 的三条留下',topic:'TIMELINE',stance:'execution',e:{progress:3},npc:{anyu:2,qiaoqiao:5},social:{links:[['anyu','qiaoqiao',2]],respect:{anyu:2}},r:'表变短了，也更容易被看完。代价是那条“不影响 timeline、但影响以后解释”的记录被划掉了。'}]},
- {id:'v9_pm_push',npcEv:true,title:'乔乔要先开中心',text:'中心药物已经到库，但培训签字缺两页。乔乔说：\n\n「不影响实际操作，今天不开中心本月 KPI 就红了。先开，明天补签。」\n文静在群里只回了四个字：不建议启动。',choices:[
-   {t:'对文静说：“你把缺的两页和批准责任人列清楚；签字没齐之前不开。”',interact:{with:'wenjing',mode:'approval',favor:true},topic:'COMPLIANCE',visibility:'PUBLIC',stance:'compliance',e:{progress:-3,blame:-2},npc:{wenjing:9,jialin:4,qiaoqiao:-8},social:{respect:{wenjing:8,jialin:4,qiaoqiao:-2},links:[['wenjing','jialin',4],['wenjing','qiaoqiao',-5]],coalition:['wenjing','jialin','xiaoen']},r:'KPI 红了一格。三个月后 QA 抽到这个中心时，没有任何人需要解释“当时为什么觉得可以”。'},
-   {t:'支持乔乔：先开，培训今晚补',topic:'TIMELINE',visibility:'PUBLIC',stance:'execution',e:{progress:6,blame:6},npc:{qiaoqiao:9,wenjing:-10,xiaoen:-5},social:{favor:{qiaoqiao:1},respect:{qiaoqiao:4,wenjing:-6},links:[['qiaoqiao','zhuzong',3],['qiaoqiao','wenjing',-6]],coalition:['qiaoqiao','zhuzong']},r:'中心今天开了。晚上十一点半，两张签字页终于补齐。没人受伤，所有人都记住了你愿意怎么换时间。'},
-   {t:'⚔️ “我承担医学决定，按这个折中方案执行。”',topic:'POWER',visibility:'PUBLIC',stance:'politics',lock:{power:55},lockHint:'需要足够权力',e:{progress:2,power:2,morale:-2},npc:{qiaoqiao:1,wenjing:1},social:{fear:{qiaoqiao:5,wenjing:3},respect:{anyu:3}},record:'approvalChain',r:'你要求当日完成关键培训，次日早上再开中心。两边都不满意，但都执行了。权力的价值通常不是让别人同意你，而是让争论有结束时间。'}]},
- {id:'v9_pm_xiaoke',npcEv:true,title:'小柯的立场更新得比会议纪要快',text:'上午小柯支持你把数据库锁定推迟三天。下午她从钟时办公室出来，在群里写：\n\n「综合管理层意见，建议仍按原计划锁库。」\n\n她随后私聊你：「方向变了，我也没办法。」',choices:[
-   {t:'把上午的决定和下午的新意见并排写进 decision log',topic:'DOCUMENTATION',visibility:'PUBLIC',stance:'compliance',e:{power:3},npc:{xiaoke:-4,xiaoen:4},social:{fear:{xiaoke:5},respect:{xiaoke:2,xiaoen:3},links:[['xiaoke','xiaoen',-4]]},record:'approvalChain',r:'你没有指责她。你只是把两个版本放在了一页纸上。第二天钟时说“我没说一定要原计划”，小柯第一次没接话。'},
-   {t:'顺着新方向走，别让 PM 难做',topic:'POWER',stance:'people',e:{trust:5,progress:2},npc:{xiaoke:8},social:{favor:{xiaoke:1},respect:{xiaoke:-2}},r:'小柯很感激。她以后会更快告诉你风向——但不会替你挡风。'},
-   {t:'在老板会上问“这个改变是谁批准的？”',topic:'POWER',visibility:'PUBLIC',stance:'politics',e:{power:6,trust:-5},npc:{ceo:3,xiaoke:-8},social:{fear:{xiaoke:10},respect:{ceo:2}},r:'没人喜欢这个问题。但从那天开始，小柯每次说“管理层意见”时都会附上名字。'}]},
- {id:'v9_internal_safety',npcEv:true,title:'PV 和 PM 同时找你',text:'同一天下午，加琳要求暂停一个中心等待 SAE follow-up；乔乔坚持暂停会影响入组里程碑。两个人都把你抄送在邮件第一行。',choices:[
-   {t:'支持 PV，先 hold',topic:'SAFETY',visibility:'PUBLIC',stance:'compliance',e:{progress:-3,blame:-4},npc:{jialin:8,qiaoqiao:-6},social:{respect:{jialin:7,qiaoqiao:-2},links:[['jialin','qiaoqiao',-5]],coalition:['jialin','xiaoen','wenjing']},record:'safetyTrail',r:'中心停了两天。入组数字难看了一点，但安全时间线变得非常干净。'},
-   {t:'支持 PM，继续入组，同时加急 follow-up',topic:'TIMELINE',visibility:'PUBLIC',stance:'execution',e:{progress:5,blame:5},npc:{qiaoqiao:7,jialin:-7},social:{favor:{qiaoqiao:1},respect:{jialin:-5},links:[['jialin','qiaoqiao',-4]]},r:'项目没停。加琳在邮件里第一次写了“医学团队决定继续”。这句话以后还会回来。'},
-   {t:'要求钟时书面确认风险接受',topic:'POWER',visibility:'PUBLIC',stance:'politics',e:{trust:-3,power:4,blame:-3},npc:{jialin:3,wenjing:3},social:{respect:{jialin:3,wenjing:4},fear:{xiaoke:2}},record:'writtenWarning',r:'钟时最后回了一个“同意按医学建议处理”。你没有赢得任何人的喜欢，但这条责任链从此有了起点。'}]},
- {id:'v9_pm_favor',npcEv:true,title:'靠谱的人也会来讨人情',text:'安瑜告诉你，她今晚能替你把三个中心的 action item 全部追完，但她下周需要你在资源会上替项目组争一个额外 CRA 名额。\n\n「不是交换。」她停了一下，「但确实是互相帮忙。」',choices:[
-   {t:'答应，并明确下周替她争资源',topic:'RELATION',stance:'people',e:{progress:3},npc:{anyu:6,miaomiao:2},social:{favor:{anyu:-1,miaomiao:1},respect:{anyu:3},links:[['anyu','miaomiao',3]],coalition:['anyu','miaomiao']},r:'她今晚把事情追完了。你也多了一笔未来必须兑现的承诺。可靠的人不是没有诉求，只是他们把诉求说得更清楚。'},
-   {t:'不做交换，按职责各自完成',topic:'COMPLIANCE',stance:'compliance',e:{progress:1},npc:{anyu:-2},social:{respect:{anyu:4}},r:'她点头，没有不高兴。你们之间少了一笔人情，多了一点职业尊重。'},
-   {t:'用权力直接要求她今晚完成',topic:'POWER',stance:'politics',lock:{power:60},lockHint:'需要足够权力',e:{progress:4,morale:-3},npc:{anyu:-7},social:{fear:{anyu:8},respect:{anyu:-8}},r:'她完成了。质量也很好。第二天她把所有事情都改成通过正式工单找你。你获得了服从，失去了提前预警。'}]}
-];
-
-
+/* v14.2: deleted-PM internal events removed. */
 
 /* =====================  v9.8 · Offline Romance Encounters  ===================== */
 const ROMANCE_ENCOUNTERS=[
@@ -3449,15 +3399,15 @@ const PHONE_EVENTS=[
    {t:'说“下次吧”，继续改 deck',e:{heart:-5,progress:4,trust:1},r:'deck 按时发出。朋友回了一个“好”。你盯着那个字看了一会儿。'},
    {t:'开着电话，一边改一边聊',e:{heart:4,stamina:-4},r:'你们聊了四十分钟。你记不清自己改了什么，也记不清朋友说了什么，但至少电话没有挂。'}
   ]},
- {id:'ph_pi_thanks',phone:true,title:'侯教授的电话',from:'侯教授',
-  text:'周六下午，侯教授突然打来电话。你以为又是方案问题。他开口却说：“上次会上你处理得不错。年轻人能把话说清楚，不容易。”',
+ {id:'ph_pi_thanks',phone:true,title:'MK主任的电话',from:'MK主任',
+  text:'周六下午，MK主任突然打来电话。你以为又是方案问题。他开口却说：“上次会上你处理得不错。年轻人能把话说清楚，不容易。”',
   choices:[
    {t:'认真说谢谢，然后把电话停在这里',e:{heart:10,sanity:3},npc:{houpi:2},r:'电话只有两分钟。你发现专业认可也能让人喘一口气。'},
    {t:'顺势聊十分钟项目下一步',e:{heart:4,progress:2},npc:{houpi:3},r:'你还是把它聊回了工作。不过这次你并不觉得被占用。'},
    {t:'客气几句，马上挂掉去继续工作',e:{heart:1,progress:2},r:'你处理得很专业。专业到连一句好话都没来得及真正听进去。'}
   ]},
- {id:'ph_pm_breakdown',phone:true,title:'林安在楼梯间哭',from:'林安',
-  text:'晚上九点，林安打来电话。背景里是楼梯间的回声。\n\n“我是不是特别不适合做 PM？我今天又漏了一个 follow-up。”',
+ {id:'ph_pm_breakdown',phone:true,title:'林丹在楼梯间哭',from:'林丹',
+  text:'晚上九点，林丹打来电话。背景里是楼梯间的回声。\n\n“我是不是特别不适合做 PM？我今天又漏了一个 follow-up。”',
   choices:[
    {t:'先听她说完，再一起列明天第一件要补的事',e:{heart:3,sanity:-1,morale:3},npc:{linan:6},social:{favor:{linan:1},respect:{linan:3}},r:'你没有替她说“没事”。你只是陪她把一团糟拆成了明天早上的第一步。'},
    {t:'告诉她：“现在别哭，先把遗漏清单发我。”',e:{heart:-2,progress:2},npc:{linan:-3},social:{fear:{linan:4}},r:'她十分钟后发来了清单。事情推进了，人没有。'},
@@ -3541,10 +3491,10 @@ const PROJECT_BATTLES={
 };
 const BATTLE_RELEVANT={
   c5:['mingye','heina'],
-  c7:['jialin','qiaoqiao','zhuzong','heina'],
+  c7:['jialin','miaomiao','zhuzong','heina'],
   x4:['yijian','mingye'],
-  c10:['qiaoqiao','wenjing','zhuzong','heina','xiaoen'],
-  c12:['mingye','qiaoqiao','zhuzong'],
+  c10:['miaomiao','xiaoen','zhuzong','heina','xiaoen'],
+  c12:['mingye','miaomiao','zhuzong'],
   x5:['yijian','xiaoen','zouting','mingye']
 };
 let projectBattleState=null, projectBattleTimer=null;
@@ -3578,7 +3528,7 @@ function battleResponses(theme){
 function battleAllyFor(theme){
   if(theme==='safety') return 'jialin';
   if(theme==='regulatory') return 'yijian';
-  if(theme==='execution') return 'anyu';
+  if(theme==='execution') return 'kzong';
   if(theme==='credit') return 'zouting';
   return 'mingye';
 }
@@ -3827,7 +3777,7 @@ function showResult(text, deltas, next){
 const DUEL_ROUNDS = [
  {vp:"这个项目延期，根因还是医学前期判断不够成熟。",opts:["至少最后做成了。","3 月 12 日 Steering Committee 纪要第 4 条：是你要求等待 biomarker 数据后再启动。","大家都知道你总改主意。"],correct:1},
  {vp:"EOP2 当天总体很顺，我当时其实已经把框架都讲清楚了。",opts:["会议纪要里 3 个关键问题的回答人都是我、一建和明夜，录音也在。","对，主要还是您领导得好。","你当时根本答不上来。"],correct:0},
- {vp:"研究者关系一直是我在维护，你只是做执行。",opts:["侯教授、牛教授的方案分歧有完整决策表，四位 PI 的确认邮件收件人都是我。","研究者都不喜欢你。","那作者排序怎么解释？"],correct:0},
+ {vp:"研究者关系一直是我在维护，你只是做执行。",opts:["MK主任、N院长的方案分歧有完整决策表，四位 PI 的确认邮件收件人都是我。","研究者都不喜欢你。","那作者排序怎么解释？"],correct:0},
  {vp:"你现在这么强势，团队其实对你意见也很大。",opts:["管理就是要有人怕。","如果是团队问题，请看匿名离职访谈和项目协作评分；如果是我的问题，我接受具体证据。","他们至少比喜欢你多。"],correct:1},
  {vp:"最后这是我负责的项目，成果当然首先属于负责人。",opts:["头衔可以属于负责人，决策记录属于做决定的人。我们把里程碑逐条打开。","我不同意。","老板会判断的。"],correct:0}
 ];
@@ -3894,7 +3844,7 @@ function finalizeEvaluation(){
        黑娜    58 / 64 / 72               56 (65.3%)      →  56  兼有 dragon≥6 前置
        瑞冬    54 / 70 / 86               66 (12.3%)      →  66
        童欣    62 / 75 / 100              78 ( 4.0%)      →  74  见下方记录
-       卫来    37 / 46 / 62               50 ( 3.3%)      →  46
+       苏苏    37 / 46 / 62               50 ( 3.3%)      →  46
        曹兰    41 / 44 / 55               55 ( 3.3%)      →  45
      童欣这条线踩过一次坑，记在这里：
        ① 曾试图改用「你多少次把事交给法务走」的行为计数代替关系值来判定合伙人。
@@ -3905,13 +3855,12 @@ function finalizeEvaluation(){
           78 会让两边一起塌到 4% —— 那时候这条结局等于不存在。
           另外，把阈值从 78 调到 72 会让触发率从 2.8% 跳到 15.3%：
           6 点换 12pp，说明这一段正是人流密度最高的地方，阈值不要放在这儿。
-     两条硬规则：专注策略触达率 <5% 的结局等于不存在（童欣/卫来/曹兰旧值都是 3~4%）；
+     两条硬规则：专注策略触达率 <5% 的结局等于不存在（童欣/苏苏/曹兰旧值都是 3~4%）；
      触达率 >80% 的结局必须给出保留理由（小圆：这是全作最容易被第一次玩的人撞上的隐藏结局，
      留它当入口；她同时也是"选择了体面"这条线的代表人物）。
-     注意：提升阈值之前先看该角色有没有足够的 source —— 卫来曾经只有 3 个正面触点
+     注意：提升阈值之前先看该角色有没有足够的 source —— 苏苏曾经只有 3 个正面触点
      （上限 46，max 46），那时候改阈值毫无意义，是先把他的 source 补到 6 处之后才有这张表。 */
   if(rel('xiaoyuan') >= 85)                          key = 'nc_xiaoyuan';
-  else if(rel('tongxin') >= 74 && flags.clean)        key = 'nc_tongxin';
   else if(rel('weilai') >= 46 && S.progress < 60)    key = 'nc_weilai';
   else if(rel('ruidong') >= 66 && S.progress >= 35)  key = 'nc_ruidong';
   else if(rel('caolan') >= 45 && S.career >= 50)     key = 'nc_caolan';
@@ -4049,9 +3998,8 @@ function renderVP(){
    这版先把机制接进主循环，不做最终数值平衡。
    所有初始点数、门槛、成长点产出与倍率均标记为 PLACEHOLDER，待完整事件设计完成后统一模拟校准。 */
 
-/* ---------- A. 当前人物表修订：删除童欣；卫来改为苏苏；加入则韩、杨杨 ---------- */
-delete NPCs.tongxin;
-delete NPC_BIOS.tongxin;
+/* ---------- A. 当前人物表修订：旧法务NPC已删除；苏苏改为苏苏；加入则韩、杨杨 ---------- */
+
 NPCs.weilai.name="苏苏";
 NPCs.weilai.role="财务";
 NPCs.weilai.quote="先别讲故事。这个判断的依据是什么，错了以后代价是什么？";
@@ -4080,7 +4028,6 @@ if(typeof SOCIAL_PROFILES!=="undefined"){
 if(typeof BASE_INTERNAL_LINKS!=="undefined"){
   BASE_INTERNAL_LINKS.push(["weilai","yangyang",22],["ceo","yangyang",62],["ceo","weilai",72],["mingye","weilai",58],["zihan","mingye",58],["xiaoen","zhuzong",16],["cso","xiaoen",34]);
 }
-if(typeof ENDINGS!=="undefined" && ENDINGS.nc_tongxin) delete ENDINGS.nc_tongxin;
 
 /* ---------- B. 捏人：背景词条 + 能力 ---------- */
 var PLAYER_DRAFT={
@@ -4282,9 +4229,9 @@ function applySusuGenderStrategy(originalChoice){
 var V10_FACTIONS={
   founder:{name:"创始核心圈",members:["ceo","cso","xiaoyuan","weilai"]},
   professional:{name:"专业主义",members:["xiaoen","zihan","mingye","jialin"]},
-  execution:{name:"执行推进",members:["xiaoyuan","yangyang","anyu","qiaoqiao","miaomiao","zhuzong"]},
-  positional:{name:"位置型权力",members:["yijian","jialin","xiaoke"]},
-  external:{name:"外部资源",members:["heina","houpi","niupi","zhangpi","linpi"]}
+  execution:{name:"执行推进",members:["xiaoyuan","yangyang","kzong","miaomiao","miaomiao","zhuzong"]},
+  positional:{name:"位置型权力",members:["yijian","jialin","linan"]},
+  external:{name:"外部资源",members:["heina","houpi","niupi","zhangpi","zhangpi"]}
 };
 function v10EnsureOrg(){
   ensureOrgSystems();
@@ -5286,7 +5233,7 @@ renderLifeBuilder();
   function installAchievementPanel(){let title=document.getElementById("title-screen");if(!title||document.getElementById("achievement-panel"))return;let d=document.createElement("div");d.id="achievement-panel";d.className="intro-box";d.style.marginTop="18px";let u=achUnlocked();d.innerHTML='<b>🏆 成就系统 · 99</b><div class="creator-note">黑色幽默会在你真的经历以后才解锁。当前 '+u.length+' / 99；部分成就奖励轮回点。</div><div class="gallery-grid" style="margin-top:10px">'+ACHIEVEMENTS.map(function(a){return '<span class="g '+(u.includes(a.id)?'got ge':'')+'">'+(u.includes(a.id)?a.name:'？？？')+'</span>';}).join('')+'</div>';title.appendChild(d);}
   installAchievementPanel();
   let sub=document.querySelector("#title-screen .subtitle");if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 多周目 · 99成就 · Demo v11.0";
-  try{["anyu","qiaoqiao","wenjing","xiaoke"].forEach(k=>delete CHARACTER_INTERACTION_RULES[k]);}catch(e){}
+  try{["kzong","miaomiao","xiaoen","linan"].forEach(k=>delete CHARACTER_INTERACTION_RULES[k]);}catch(e){}
   let savedAge=localStorage.getItem("dragon_age");if(savedAge&&AGE_OPTIONS[savedAge])PLAYER_AGE=savedAge;trimUnavailableLifeStages();
 })();
 
@@ -6390,7 +6337,7 @@ renderLifeBuilder();
       {t:'找回医学Owner，保留版本差异并重新确认提交包。',e:{progress:2,power:2},npc:{xiaoen:5,yijian:3},r:'递交晚了半小时。半年后稽查员只问了一个简单的问题。'},
       {t:'先提交，回头补签。',e:{progress:6,trust:4,blame:5},npc:{xiaoen:-6,yijian:2},r:'系统显示准时。审批记录显示另一种时间。'},
       {t:'你替所有人签，并要求他们以后向你报告。',e:{power:7,dragon:4,blame:4},npc:{xiaoen:-5,zihan:-3},r:'大家说你有担当。附件里也只有你的名字。'}]},
-    {id:'v14_site_time',title:'中心多出来的一百个小时',text:'杨杨建议给一百名受试者各加一次非计划访视。琳琳问CRC从哪里来，牛教授问患者的交通费谁付。钟时说：「为了稳妥，这点工作量应该可以克服。」',choices:[
+    {id:'v14_site_time',title:'中心多出来的一百个小时',text:'杨杨建议给一百名受试者各加一次非计划访视。琳琳问CRC从哪里来，N院长问患者的交通费谁付。钟时说：「为了稳妥，这点工作量应该可以克服。」',choices:[
       {t:'量化患者负担，先试既有访视合并检查。',e:{progress:4,morale:3},npc:{miaomiao:5,niupi:4,yangyang:1},r:'项目少了一百次出行，也没有少一条真正需要的数据。'},
       {t:'照建议加访视，中心自行协调。',e:{trust:4,progress:2},npc:{miaomiao:-6,niupi:-3},r:'总部的风险表变绿。中心的预约表变红。'},
       {t:'直接否决，谁再提就自己去中心执行。',e:{power:5,trust:-3},npc:{miaomiao:3,yangyang:-6},r:'决定是对的。杨杨从此不再提前告诉你她担心什么。'}]},
@@ -6402,7 +6349,7 @@ renderLifeBuilder();
       {t:'业务目标与医学问题分开，约定证据门槛和各自Owner。',e:{progress:3,power:2},npc:{caolan:5,weilai:4,wuzong:2},r:'会没取消，但每个人终于知道自己负责回答哪个问题。'},
       {t:'先让市场定方向，医学随后补材料。',e:{trust:4,progress:3},npc:{wuzong:5,caolan:-4},r:'宣传稿写好以后，医学发现自己只能修改标点。'},
       {t:'Clinical接管研究，MA只负责传话。',e:{power:6,dragon:2},npc:{wuzong:-7,xianren:-4},r:'边界清楚得像一堵墙。专家的问题还在墙外。'}]},
-    {id:'v14_budget',title:'预算会里的沉默项目',text:'卫来要求删掉一项没有清晰决策用途的分析，二老板想留着探索，老板又提出一项新实验。没人主动说钱从哪里来。',choices:[
+    {id:'v14_budget',title:'预算会里的沉默项目',text:'苏苏要求删掉一项没有清晰决策用途的分析，二老板想留着探索，老板又提出一项新实验。没人主动说钱从哪里来。',choices:[
       {t:'逐项说清决策价值与成本，请老板选择取舍。',e:{power:3,progress:2},npc:{weilai:5,cso:3,ceo:1},r:'预算没有神奇地增加，第一次有人为新增实验明确放弃了另一件事。'},
       {t:'全留着，下一季度再申请预算。',e:{trust:4,progress:-2},npc:{weilai:-5,cso:2},r:'会议纪要写了「原则同意」。财务系统没有这个科目。'},
       {t:'直接砍掉二老板的探索项，保留老板的新想法。',e:{power:5,trust:2},npc:{ceo:5,cso:-7,weilai:1},r:'你展示了优先级。二老板记住的是谁没有机会解释。'}]},
@@ -6430,10 +6377,10 @@ renderLifeBuilder();
     ['下一项研究启动时，资源表第一次允许写「做不了」。老板仍不喜欢减号，但团队终于不再用身体填空。','递交按时，琳琳离职。复盘会上钟时表扬大家超额承担，空缺岗位继续写着TBD。','你能回答每个问题。你请假的第一天，会议取消了三场，大家都称赞你不可替代。'],
     ['谷雨带买方看完整时间线，PVP回答医学判断。没人说风险不存在，交易也没有因此失去可信度。','对外写了「未见风险」，后来用十七页解释它的限定条件。法务问这十七页为什么没有跟第一页一起发。','事实最后查清了，但PV和Clinical不再愿意同桌。你赢了争吵，失去了下一次提前知道问题的机会。'],
     ['递交晚了半小时，审计时每个签字都有对应版本。肖恩说这是他见过最无聊的检查，听起来像赞美。','递交时间是对的，补签时间也是对的。两者被放到同一页时，没人再问项目是否按时。','你替团队签完所有文件。问责信也很尊重你的领导力，收件人只有你。'],
-    ['牛教授说患者没有多跑一趟。总部风险表少了一行，中心第一次相信总部看见了他们的时间。','方案新增一百次访视，执行率却越来越低。总部继续讨论为什么中心不够积极。','你替中心省下工作，却把杨杨的担忧一起否掉。下一次真正需要提醒你的事，她选择发给别人。'],
+    ['N院长说患者没有多跑一趟。总部风险表少了一行，中心第一次相信总部看见了他们的时间。','方案新增一百次访视，执行率却越来越低。总部继续讨论为什么中心不够积极。','你替中心省下工作，却把杨杨的担忧一起否掉。下一次真正需要提醒你的事，她选择发给别人。'],
     ['明夜在结题会重新打开那张十二人的图，限制和结果都仍然完整。没人需要替漂亮曲线补造一个分母。','投资人记住了曲线。数据锁定后，他们问起分母，整场会突然变得非常重视附录。','图撤了，老板也不再让明夜直接上会。统计判断被当成了你和老板的私人胜负。'],
     ['上市后研究有清楚的医学问题和预算边界。贤人仍负责专家关系，曹兰终于不必在最后一刻替别人核对数字。','市场写完第一版，医学只能改标点。后来每个人都说自己参与过科学决策。','Clinical赢得了控制权，也接手了专家关系、预算和所有答不完的问题。武总学会了说「你们自己定的」。'],
-    ['老板的新实验留下了，另一项低价值分析明确停止。卫来第一次能把预算与决策写在同一张纸上。','所有人都得到口头批准。下季度卫来拿着空科目问谁来付款，会议纪要没有回答。','预算过了，二老板的项目没过。他之后不再在会上反对你，只在会前把问题交给别人。'],
+    ['老板的新实验留下了，另一项低价值分析明确停止。苏苏第一次能把预算与决策写在同一张纸上。','所有人都得到口头批准。下季度苏苏拿着空科目问谁来付款，会议纪要没有回答。','预算过了，二老板的项目没过。他之后不再在会上反对你，只在会前把问题交给别人。'],
     ['NDA包里原终点和探索结果各有位置。监管追问时，则韩不必解释为何问题在锁库前换了名字。','摘要比方案走得快。审评者并排打开两份文件，问哪一个才是预设的主要终点。','钟时当场退让。之后每一次合理的统计提醒，她都先问你是不是又要拿旧纪要压她。'],
     ['你休假时团队仍然拍了板。邹婷把这件事写进继任计划，没有把它写成你不重要。','你一直是最可靠的人，可靠到所有人觉得不用培养第二个。下一年你仍在回答同一个问题。','每个审批都经过你，连你的休假都没人敢批。组织很稳定，你也终于明白钟时为什么不肯放手。']
   ];
@@ -6506,7 +6453,7 @@ renderLifeBuilder();
   window.refreshAchievements();
   renderGallery();
   const sub=document.querySelector('#title-screen .subtitle');
-  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.1';
+  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.2';
 })();
 
 buildCast();
