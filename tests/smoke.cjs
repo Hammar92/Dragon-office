@@ -53,6 +53,16 @@ run("LIFE_DRAFT.selected.school=[]; toggleLifeEvent('school','school_study'); to
 assert.strictEqual(run("stageSpent('school')"),6,'life-stage spending uses rebalanced costs');
 run("toggleLifeEvent('school','school_sport')");
 assert.strictEqual(run("stageSpent('school')"),6,'life-stage budget blocks overspend beyond eight');
+
+// High-tier life-build routes must remain mutually exclusive where they compete for the same stage budget.
+run("LIFE_DRAFT.selected.senior=[]; toggleLifeEvent('senior','senior_nda'); toggleLifeEvent('senior','senior_phase3')");
+assert.deepStrictEqual(run("LIFE_DRAFT.selected.senior.slice()"),['senior_nda'],'FIH-to-NDA blocks phase3 in the same eight-point senior budget');
+run("LIFE_DRAFT.selected.senior=[]; toggleLifeEvent('senior','senior_portfolio'); toggleLifeEvent('senior','senior_nda')");
+assert.deepStrictEqual(run("LIFE_DRAFT.selected.senior.slice()"),['senior_portfolio'],'portfolio blocks FIH-to-NDA in the same eight-point senior budget');
+run("LIFE_DRAFT.selected.middle=[]; toggleLifeEvent('middle','mid_team'); toggleLifeEvent('middle','mid_conflict')");
+assert.strictEqual(run("stageSpent('middle')"),6,'organization-leader middle prerequisites fit but do not consume the whole stage');
+run("LIFE_DRAFT.selected.senior=[]; toggleLifeEvent('senior','senior_portfolio'); toggleLifeEvent('senior','senior_boundary')");
+assert.strictEqual(run("stageSpent('senior')"),6,'portfolio plus boundary remains a deliberate alternative build');
 run("window.NG_STAGE_ALLOC={school:2,college:0,graduate:0,early:0,middle:0,senior:0}");
 assert.ok(run("lifeBuilderHTML().includes('时间 0 / 10（多周目 +2）')"),'NG+ adds on top of the 8-point stage baseline');
 run("window.NG_STAGE_ALLOC={school:0,college:0,graduate:0,early:0,middle:0,senior:0}");
