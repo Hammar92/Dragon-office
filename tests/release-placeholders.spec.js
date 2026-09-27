@@ -1,5 +1,5 @@
 /* Dragon Office RC release gate: development placeholders must not ship.
- * This test is intentionally red until RC-06 is frozen.
+ * RC-06 freeze gate: this must stay green after numeric lock.
  */
 'use strict';
 const fs=require('fs'),path=require('path'),assert=require('assert');
