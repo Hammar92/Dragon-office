@@ -3100,23 +3100,8 @@ function mergeObj(a,b){
   const o=Object.assign({},a||{}); Object.keys(b||{}).forEach(function(k){o[k]=(o[k]||0)+b[k];}); return o;
 }
 function emotionalText(t,band,i){
-  if(band==='tense'){
-    const pre=['「我先说结论：','「这件事已经反复三次了。','「可以，但请现在定下来：'][i%3];
-    return pre+t.replace(/^「|」$/g,'')+'」';
-  }
-  if(band==='irritable'){
-    const pre=['「到底还要改几次？','「如果大家只是想找个人背锅，那直接说。','「行。那这次出了问题别再说没人提醒。'][i%3];
-    return pre+' '+t.replace(/^「|」$/g,'')+'」';
-  }
-  if(band==='frayed'){
-    const variants=[
-      '「够了。这个问题我已经解释过三遍，不想再陪着绕。」',
-      '「随便。你们定，我照做。以后别问我为什么。」',
-      '「那就按你说的。出了事请把今天这句话也一起记住。」',
-      '「我现在不适合继续开这个会。谁愿意接谁接。」'
-    ];
-    return variants[i%variants.length];
-  }
+  /* Legacy fallback only. v14.5 installs the stateful delivery layer later.
+     Keep this neutral so old canned dialogue can never reappear if wrapper order changes. */
   return t;
 }
 function emotionalizeChoice(c,i){
@@ -7382,7 +7367,7 @@ renderLifeBuilder();
 
   /* F. Exported audit covers the bugs that repeatedly returned across v7-v14. */
   window.v145Audit=function(){
-    var base=(typeof v144Audit==='function'?v144Audit():{}),badFormula=/我先说结论|这件事已经反复三次了|可以，但请现在定下来/.test(emotionalText('测试','tense',0)+emotionalText('测试','tense',1)+emotionalText('测试','tense',2));
+    var base=(typeof v144Audit==='function'?v144Audit():{}),samples=[0,1,2].map(function(i){return emotionalText('测试'+i,'tense',i);}),badFormula=samples.some(function(x){return /^「/.test(x);});
     var ctx=contextualChoiceList(V11_CHAPTERS[0].choices);
     return Object.assign({},base,{
       formulaicEmotion:badFormula,
