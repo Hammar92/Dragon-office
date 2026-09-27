@@ -164,6 +164,16 @@ relationshipEpilogue()
 
 这套设计的意图是：8分提供真正的构筑空间，但仍迫使玩家在“专业 / 社交 / 体能 / 管理 / 私生活与边界”之间取舍。后续概率平衡可以调整事件收益和结局分布，但不再改回阶段预算结构。
 
+## 高阶构筑互斥门禁
+
+已增加 smoke 规则：
+
+- `senior_nda(5)` 与 `senior_phase3(4)` 无法在同一8分 senior 阶段同时购买。
+- `senior_portfolio(4)` 与 `senior_nda(5)` 无法同时购买。
+- `mid_team(3)+mid_conflict(3)` 可作为组织领导路线核心组合，但仍只消耗6/8。
+- `senior_portfolio(4)+senior_boundary(2)` 保留为“组织领导/边界治理”替代路线。
+- Release placeholder gate新增通配检查“待最终数值测试”，避免类似文案以不同措辞回流。
+
 ## 当前RC结论
 
 `64/64 ENDINGS RULE-WITNESSED · 108/108 ACHIEVEMENTS SOURCED · PRODUCTION SINGLE-FILE BRIDGE INSTALLED`
