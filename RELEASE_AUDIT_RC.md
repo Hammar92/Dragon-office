@@ -128,6 +128,14 @@ relationshipEpilogue()
 6. 更新 `FLOW_TREE.md` 与最终实现一致。
 7. 全部通过后再合并 PR #4。
 
+## RC-06 数值冻结进展
+
+- 人生构筑六个阶段的基础预算已统一从 **4 分调整为 8 分/阶段**。
+- 预算源只保留在 `LIFE_STAGE_META[].time`，选择上限与UI“已用 / 总分”均直接读取该值。
+- Smoke新增硬门禁：必须保持6个阶段且 `every(stage.time===8)`。
+- 由于预算翻倍，后续平衡必须重新检查：初始六能力分布、传奇词条密度、Heart/Stamina上限、能力门槛命中率，以及高阶经历（如FIH→NDA）是否过于容易与其他高价值经历共存。
+- 在上述数值重新校准前，RC-06仍保持 OPEN。
+
 ## 当前RC结论
 
 `64/64 ENDINGS RULE-WITNESSED · 108/108 ACHIEVEMENTS SOURCED · PRODUCTION SINGLE-FILE BRIDGE INSTALLED`
