@@ -79,7 +79,7 @@ assert.strictEqual(run('flags.love'),false,'existing partner does not expose new
 assert.strictEqual(run('flags.existingPartner'),true,'existing partner tracked separately');
 run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[]); LIFE_DRAFT.selected.middle=['mid_divorce']; S=null; flags={}; usedEvents=[]; usedHeina=[]; chapterIdx=0; runChapters=[]; startGame()");
 assert.strictEqual(run('ensureRelationshipArc().origin'),'divorced_rebuilt','divorce history preserved');
-assert.ok(run('relationshipEpilogue()').includes('经历过一次长期关系结束'),'divorce epilogue distinct');
+assert.ok(run('relationshipEpilogue()').includes('重新搭起来'),'divorce epilogue distinct');
 run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[]); LIFE_DRAFT.selected.middle=['mid_single']; S=null; flags={}; usedEvents=[]; usedHeina=[]; chapterIdx=0; runChapters=[]; startGame()");
 assert.strictEqual(run('ensureRelationshipArc().origin'),'single_content','content single status preserved');
 assert.ok(run('relationshipEpilogue()').includes('单身'),'single epilogue distinct');
