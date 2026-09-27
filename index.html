@@ -7352,6 +7352,21 @@ renderLifeBuilder();
     return '【'+title+'】\n'+body;
   };
 
+  /* E2. Remove the obsolete one-size-fits-all love epilogue added by legacy showEnding.
+     Keep only the relationship-state-specific private-life ending. */
+  const oldShowEndingV145=showEnding;
+  showEnding=function(key){
+    const out=oldShowEndingV145(key);
+    const el=document.getElementById('ending-story');
+    if(el){
+      el.textContent=(el.textContent||'').replace(
+        /\n\n──────────\n💗 尾声 · 有人记得你几点下班[\s\S]*?(?=\n\n【职业画像】)/,
+        ''
+      );
+    }
+    return out;
+  };
+
   /* F. Exported audit covers the bugs that repeatedly returned across v7-v14. */
   window.v145Audit=function(){
     var base=(typeof v144Audit==='function'?v144Audit():{}),badFormula=/我先说结论|这件事已经反复三次了|可以，但请现在定下来/.test(emotionalText('测试','tense',0)+emotionalText('测试','tense',1)+emotionalText('测试','tense',2));
