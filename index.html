@@ -2177,6 +2177,15 @@ document.head.appendChild(creatorStyle);
 mountCharacterCreator();
 
 /* ---------- C. 能力门槛 ---------- */
+function unlocked(c){
+  if(!c||!c.lock) return true;
+  if(c.lock.npc) return !!(S&&S.npc) && (S.npc[c.lock.npc]||0) >= c.lock.min;
+  if(c.lock.support) return typeof supportCount==='function' && supportCount(c.lock.support) >= c.lock.n;
+  if(c.lock.power) return !!S && (S.power||0) >= c.lock.power;
+  if(c.lock.merit) return !!S && (S.merit||0) >= c.lock.merit;
+  if(c.lock.ngp) return !!flags.newGamePlus;
+  return true;
+}
 var _unlockedV99=unlocked;
 unlocked=function(c){
   if(c&&c.lock&&c.lock.skill){
