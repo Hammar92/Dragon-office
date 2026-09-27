@@ -199,9 +199,21 @@
     border:1px solid var(--pm-line);border-radius:12px;padding:9px 14px;margin:0 0 2px;
     box-shadow:0 4px 12px var(--pm-shadow);backdrop-filter:blur(7px);
   }
-  #hud .bars{display:none}
-  #hud .npcs{margin-top:5px}
-  #hud .npc-chip{background:#fffaf2;border-color:#d9c1a8;color:#6d594d}
+  #hud .bars,#hud .npcs{display:none!important}
+  #hud{min-height:44px}
+  #hud .hud-row{margin-bottom:0}
+  #hud .npc-chip{display:none!important}
+  .pm-char-tabs{display:flex;gap:5px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+  .pm-char-tab{flex:0 0 auto;border:1px solid #dec2a7;background:#fffaf3;color:#715d51;border-radius:16px;padding:4px 9px;font:inherit;font-size:11px;cursor:pointer}
+  .pm-char-tab.active{background:#d98b91;border-color:#c96f79;color:white;font-weight:800}
+  .pm-char-card{border:1px solid #ead8c5;background:#fffdf8;border-radius:8px;padding:9px;margin-top:3px}
+  .pm-char-head{display:flex;justify-content:space-between;gap:8px;align-items:baseline;margin-bottom:5px}
+  .pm-char-name{font-weight:900;color:#55433b}
+  .pm-char-role{font-size:10px;color:#9b8273}
+  .pm-char-rel{display:flex;align-items:center;gap:8px}
+  .pm-char-rel b{font-family:Georgia,serif;font-size:21px;color:#9b665a}
+  .pm-char-rel span{font-size:10.5px;color:#8a7364}
+  .pm-empty{font-size:11.5px;color:#9a8475;line-height:1.6;padding:2px 0 5px}
   #hud .chapter-label{color:var(--pm-accent);font-weight:800}
   #hud .turn-label{color:var(--pm-dim)}
   #scene-area{grid-area:main;min-width:0;}
@@ -302,15 +314,7 @@
       <br><br><b>事情做对还不够。关键的人必须看见是你做对的。</b>
       游戏新增隐藏的<b>功勋、公司声望、研究者声望与背锅值</b>。它们不会出现在 HUD，但会决定谁在关键会上替你说话、老板认为功劳属于谁，以及你最后有没有资格坐上更高的位置。
       <br><br>你的上司钟时依然会摇摆、忘记、抓住所有人都能评论的自行车棚问题；而你需要在不把项目做死的前提下，建立信任、结盟、留痕、露脸，并学会在必要时让权力替你说话。
-      <div class="legend-row">
-        <span>🤝 信任：钟时对你的容忍度</span><span>📊 进度：药物开发主线</span><span>🫂 士气：团队是否还愿意跟你做</span>
-        <span>⚔️ 权力：足够高时可强推下属执行</span><span>🧠 理智：长期污染度</span>
-        <span style="color:var(--accent)">💼 履历：离开这家公司后你还值多少</span>
-        <span style="color:var(--green)">⚡ 体力：今晚还能改到第几版</span>
-        <span style="color:var(--red)">❤️ 心力：今天还能忍她几次</span>
-        <span style="color:var(--purple)">🐉 龙性：你在变成什么</span><span style="color:var(--accent2)">👥 关系：同事 + 研究者</span>
-        <span style="color:var(--accent2)">📁 观察笔记：自己拼出来的真相</span>
-      </div>
+
     </div>
     <div class="intro-hint">提示：早期信任是资源；真正决定后期位置的，是你做成过什么、谁亲眼看见过，以及关键时刻谁愿意替事实作证。<br><br>建议时长：一局 30–45 分钟。64 个结局，本机存档。</div>
 
@@ -6658,6 +6662,35 @@ renderLifeBuilder();
     v=Math.max(0,Math.min(100,Number(v)||0));
     return '<div class="pm-status-row"><div class="pm-status-head"><span>'+label+'</span><b>'+Math.round(v)+'</b></div><div class="pm-meter '+(cls||'')+'"><i style="width:'+v+'%"></i></div></div>';
   }
+  function interactedNpcKeys(){
+    var seen=(flags&&flags.uiInteractedNPC)||{};
+    return Object.keys(seen).filter(function(k){return NPCs&&NPCs[k]&&S&&S.npc&&S.npc[k]!=null;});
+  }
+  function relationBand(v){
+    v=Number(v)||0;
+    return v>=75?'高度信任':v>=60?'愿意合作':v>=45?'保持工作关系':v>=30?'明显保留':'关系紧张';
+  }
+  function renderCharacterTabs(){
+    var keys=interactedNpcKeys();
+    if(!keys.length)return '<div class="pm-empty">还没有形成需要单独追踪的同事关系。真正发生过互动的人会出现在这里。</div>';
+    var active=(flags&&flags.uiNpcTab&&keys.indexOf(flags.uiNpcTab)>=0)?flags.uiNpcTab:keys[keys.length-1];
+    if(flags)flags.uiNpcTab=active;
+    var tabs='<div class="pm-char-tabs">'+keys.map(function(k){
+      return '<button class="pm-char-tab '+(k===active?'active':'')+'" onclick="selectUiNpcTab(\''+k+'\')">'+esc(NPCs[k].name)+'</button>';
+    }).join('')+'</div>';
+    var n=NPCs[active],v=(S.npc&&S.npc[active])||0,p=(typeof socialPerson==='function'?socialPerson(active):null);
+    var meta=[];
+    if(p&&p.respect!=null)meta.push('专业认可 '+Math.round(p.respect));
+    if(p&&p.favor>0)meta.push('人情 '+Math.round(p.favor));
+    if(p&&p.fear>=55)meta.push('对你有戒心');
+    return tabs+'<div class="pm-char-card"><div class="pm-char-head"><span class="pm-char-name">'+esc(n.name)+'</span><span class="pm-char-role">'+esc(n.role||'')+'</span></div>'
+      +'<div class="pm-char-rel"><b>'+Math.round(v)+'</b><span>'+relationBand(v)+(meta.length?'<br>'+meta.join(' · '):'')+'</span></div></div>';
+  }
+  window.selectUiNpcTab=function(k){
+    if(!NPCs[k])return;
+    flags.uiNpcTab=k;
+    renderLifeSimPanels();
+  };
   function renderLifeSimPanels(){
     if(!S)return;ensureLifeSimPanels();
     var left=document.getElementById('pm-left-panel'),right=document.getElementById('pm-right-panel');
@@ -6667,21 +6700,38 @@ renderLifeBuilder();
       ['魅力',playerAbility('charm')],['管理',playerAbility('management')],
       ['洞察',playerAbility('insight')],['体能',playerAbility('fitness')]
     ];
-    left.innerHTML='<div class="pm-panel-title">人物档案</div>'
-      +'<div class="pm-profile"><div class="pm-avatar"></div><div><div class="pm-profile-name">医学经理</div><div class="pm-profile-sub">'+ageText()+' · '+genderText()+'<br>Clinical Development</div></div></div>'
-      +'<div class="pm-section"><h4>能力数值</h4><div class="pm-stat-grid">'
-      +skills.map(function(x){return '<div class="pm-ability"><span class="k">'+x[0]+'</span><span class="v">'+Math.round(x[1])+'</span></div>';}).join('')
-      +'</div></div>'
-      +'<div class="pm-section"><h4>成长</h4><div class="pm-prestige"><div><span>成长点</span><b>'+((S.player&&S.player.skillPoints)||0)+'</b></div><div><span>轮回点</span><b>'+(typeof ngPoints==='function'?ngPoints():0)+'</b></div></div></div>';
-
     var p=(typeof prestigeState==='function'?prestigeState():{boss:0,team:0});
-    right.innerHTML='<div class="pm-panel-title">本周状态</div><div class="pm-section"><h4>工作</h4>'
-      +meter('项目进度',S.progress,'green')+meter('钟时信任',S.trust)+meter('团队士气',S.morale,'blue')+meter('话语权',S.power)
-      +'</div><div class="pm-section"><h4>个人</h4>'
+    left.innerHTML='<div class="pm-panel-title">个人状态</div>'
+      +'<div class="pm-profile" style="text-align:left"><div><div class="pm-profile-name">医学经理</div><div class="pm-profile-sub">'+ageText()+' · '+genderText()+' · Clinical Development</div></div></div>'
+      +'<div class="pm-section"><h4>身心</h4>'
       +meter('体力',S.stamina,'green')+meter('心力',S.heart)+meter('理智',S.sanity,'blue')+meter('履历',S.career)
-      +'</div><div class="pm-section"><h4>组织威信</h4><div class="pm-prestige"><div><span>老板侧</span><b>'+Math.round(p.boss||0)+'</b></div><div><span>团队侧</span><b>'+Math.round(p.team||0)+'</b></div></div></div>';
+      +'</div><div class="pm-section"><h4>能力</h4><div class="pm-stat-grid">'
+      +skills.map(function(x){return '<div class="pm-ability"><span class="k">'+x[0]+'</span><span class="v">'+Math.round(x[1])+'</span></div>';}).join('')
+      +'</div></div><div class="pm-section"><h4>成长资源</h4><div class="pm-prestige"><div><span>成长点</span><b>'+((S.player&&S.player.skillPoints)||0)+'</b></div><div><span>轮回点</span><b>'+(typeof ngPoints==='function'?ngPoints():0)+'</b></div></div></div>';
+
+    right.innerHTML='<div class="pm-panel-title">项目状态</div><div class="pm-section"><h4>主线</h4>'
+      +meter('项目进度',S.progress,'green')+meter('钟时信任',S.trust)+meter('团队士气',S.morale,'blue')+meter('话语权',S.power)
+      +'</div><div class="pm-section"><h4>组织威信</h4><div class="pm-prestige"><div><span>老板侧</span><b>'+Math.round(p.boss||0)+'</b></div><div><span>团队侧</span><b>'+Math.round(p.team||0)+'</b></div></div></div>'
+      +'<div class="pm-section"><h4>互动人物</h4>'+renderCharacterTabs()+'</div>';
   }
   window.renderLifeSimPanels=renderLifeSimPanels;
+
+  function markUiNpcInteraction(c){
+    if(!flags||!c)return;
+    if(!flags.uiInteractedNPC)flags.uiInteractedNPC={};
+    var keys=[];
+    Object.keys(c.npc||{}).forEach(function(k){if(NPCs[k])keys.push(k);});
+    (c.witnesses||[]).forEach(function(k){if(NPCs[k])keys.push(k);});
+    var sm=c.social||{};
+    ['respect','favor','fear'].forEach(function(dim){Object.keys(sm[dim]||{}).forEach(function(k){if(NPCs[k])keys.push(k);});});
+    (sm.coalition||[]).forEach(function(k){if(NPCs[k])keys.push(k);});
+    keys.forEach(function(k){flags.uiInteractedNPC[k]=true;flags.uiNpcTab=k;});
+  }
+  var _applyChoiceUiV143=applyChoice;
+  applyChoice=function(c){
+    markUiNpcInteraction(c);
+    return _applyChoiceUiV143(c);
+  };
 
   var speakerAliases={
     '老板':'老板','二老板':'二老板','小圆':'小圆','邹婷':'邹婷','加琳':'加琳','PVP':'PVP',
