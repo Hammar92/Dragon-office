@@ -6,10 +6,11 @@
 
 - [x] 结局优先级已锁定。
 - [x] 已建立独立 canonical resolver：`ending-resolver.js`。
-- [x] `tests/ending-priority.spec.js` 已改为直接 import canonical resolver，不再复制一份测试专用判定逻辑。
-- [x] 跨层冲突 contract 增至 15 个，新增 v14 route mismatch 防护。
+- [x] 已建立纯函数 `buildFinalEndingState(raw)`，把生产数值/NPC/flags 映射成 canonical predicates。
+- [x] `tests/ending-priority.spec.js` 直接 import canonical resolver，不复制判定顺序。
+- [x] contract 已覆盖 15 个 predicate 冲突 + 16 个 raw production-state case，共 31 个 case。
 - [ ] `index.html` 的生产 `finalizeEvaluation()` 尚未委托给 canonical resolver。
-- [ ] 64 个公开结局尚未逐个建立正式 resolver witness state。
+- [ ] 64 个公开结局尚未逐个建立正式 witness state。
 - [ ] `FLOW_TREE.md` 尚未与最终 resolver 顺序重新核对。
 - [ ] RC PASS 尚未允许。
 
@@ -31,11 +32,39 @@
 
 ### R4. Duel 目前是机制，不是公开 ending ID
 
-当前 `finishDuel()` 写 `flags.duelWin` 后仍回到 `finalizeEvaluation()`；`ENDINGS` 的64公开结局并不以 `duelWin/duelLose` 作为普通 gallery ending。canonical resolver 因此只在 caller 明确传入 `duelWinEnding/duelLoseEnding` 时返回它们，避免测试规范反过来创造不存在的公开结局。后续生产接线时应继续把 duel 视为 P0 机制状态，除非正式决定将其加入公开64结局。
+当前 `finishDuel()` 写 `flags.duelWin` 后仍回到 `finalizeEvaluation()`；64公开结局并不以 `duelWin/duelLose` 作为普通 gallery ending。canonical resolver 只在 caller 明确传入 `duelWinEnding/duelLoseEnding` 时返回它们，避免测试反过来创造不存在的公开结局。
 
-### R5. 婚恋正交逻辑目前方向正确
+### R5. 发现另一类终局入口：即时死亡结局
+
+`checkDeath()` 可以直接进入 `be_heart / be_sanity / be_trust / be_morale / be_progress`；`pickEvent()` 还可因 `flags.fraud` 直接进入 `be_fraud`。这些结局不经过 `finalizeEvaluation()`。
+
+因此 **64/64 reachability 不能错误地要求所有 ending 都由 final resolver 命中**。正式 witness audit 必须区分：
+
+1. `FINAL_RESOLVER`：18章完成后的结局；
+2. `TERMINAL_DEATH`：资源归零触发；
+3. `TERMINAL_FLAG`：例如 fraud 这种不可逆 flag；
+4. 其他明确的特殊终局入口（若后续发现）。
+
+要求仍然是每个公开 ending 必须存在一个真实游戏入口；禁止直接 `showEnding(id)` 作为可达性证明。
+
+### R6. 婚恋正交逻辑目前方向正确
 
 v14.5 已移除旧统一 LOVE_EPILOGUE，并由 `relationshipEpilogue()` 根据初始/当前婚恋状态追加私人尾声；`nc_love` 仍只应在项目未完全成功时作为公开关系特化结局。
+
+## `buildFinalEndingState(raw)` 当前映射
+
+已固定但尚未改平衡阈值：
+
+- `true_afterdragon`：echo 周目 + refuse + Progress≥72 + Morale≥58 + Dragon<20；
+- `true_dragon`：Progress≥60 + Dragon≥10 + Power≥65 + Merit≥45 + 主动接管/终章权力选择；
+- `ge_slayer`：Progress≥60 + 终章权力选择 + Dragon<10 + Power≥65 + ≥3 张中层支持票；
+- `ge_promotion`：沿用 Merit/Reputation/BossTrust/endorsement/difficulty 阈值；
+- `ge_unsung`：Progress≥60 + Merit≥75 + Reputation<35；
+- `ge_next / ge_firstline`：要求终章 main_18_1，并按 Career 75/55 分层；
+- v14 event：candidate 必须匹配 `v14_[0-8]_[0-2]` 且最终 route 与 choice route 一致；
+- NPC：沿用当前 v14 wrapper 的较高阈值（小圆85、曹兰65、瑞冬70、黑娜70、苏苏60），避免重新引入旧 resolver 的双阈值；
+- `nc_love`：仅 35≤Progress<60；完整项目成功时婚恋只进入私人尾声；
+- generic：island / halfbridge / survive / be_trust / be_progress。
 
 ## Canonical resolver 接线目标
 
@@ -43,14 +72,26 @@ v14.5 已移除旧统一 LOVE_EPILOGUE，并由 `relationshipEpilogue()` 根据�
 
 ```js
 function finalizeEvaluation(){
-  const state = buildFinalEndingState();
+  const promo = promotionEndorsements();
+  const raw = {
+    ...S,
+    flags,
+    difficultyId:difficulty().id,
+    promotionSupport:promo.support.length,
+    promotionOppose:promo.oppose.length,
+    allyAt:Object.fromEntries(Object.keys(NPCs).map(k=>[k,NPCs[k].allyAt||0])),
+    joints:buildV14JointFlags(),
+    v14Candidate:flags.v14Candidate,
+    v14FinalRoute:flags.v14FinalRoute
+  };
+  const state = DragonEndingResolver.buildFinalEndingState(raw);
   const id = DragonEndingResolver.resolveFinalEnding(state);
   if(!id || !ENDINGS[id]) throw new Error('Unresolved ending: '+id);
   showEnding(id);
 }
 ```
 
-`buildFinalEndingState()` 负责把当前 `S / flags / NPC / promotionEndorsements / v14FinalRoute` 转成 predicate booleans；任何 v14/NPC/婚恋 wrapper 不再直接 `showEnding()`。
+注意：`buildV14JointFlags()` 只是示意名称；生产接线时应复用 v14 当前 `joint` 条件，不另造一套条件。
 
 ## Resolver 验收矩阵
 
@@ -77,6 +118,7 @@ function finalizeEvaluation(){
 
 ```text
 ending_id:
+entry: FINAL_RESOLVER / TERMINAL_DEATH / TERMINAL_FLAG / SPECIAL
 expected_priority:
 state:
   progress:
@@ -102,10 +144,9 @@ status: PASS / SHADOWED / UNREACHABLE
 
 ## 下一次代码修改顺序
 
-1. 建立 `buildFinalEndingState()`，逐条映射当前生产阈值，不先改平衡数值。
-2. 让唯一的 `finalizeEvaluation()` 委托 `DragonEndingResolver.resolveFinalEnding()`。
-3. 删除/失效化 v14.0 对 `finalizeEvaluation()` 的 wrapper，v14 只负责写 candidate/joint flags。
-4. Duel 保持机制层；胜负只影响 resolver state，不新增公开 ending，除非64结局目录正式调整。
-5. 建立64条 witness states，并报告所有 shadowed endings。
-6. 对照 `FLOW_TREE.md`；不一致时以 canonical resolver 为准修订文档。
-7. 仅在 `64/64 reachable + 0 shadowed + priority contract PASS` 后标记 RC PASS。
+1. 把 v14 `joint` 的5条真实条件抽成纯函数，供 production state builder 和 witness tests 共用。
+2. 让唯一生产 `finalizeEvaluation()` 委托 `DragonEndingResolver`；删除/失效化旧 wrapper 的 ending early-return。
+3. 保留 `checkDeath()` / fraud 等即时终局，但纳入统一 reachability audit。
+4. 建立64条 witness states，并报告所有 shadowed/unreachable endings。
+5. 对照 `FLOW_TREE.md`；不一致时以真实入口 + canonical resolver 为准修订文档。
+6. 仅在 `64/64 reachable + 0 shadowed + priority contract PASS` 后标记 RC PASS。
