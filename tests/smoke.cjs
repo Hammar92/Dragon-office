@@ -4,10 +4,22 @@ const html=fs.readFileSync(gamePath,'utf8');
 const code=html.match(/<script\b[^>]*>([\s\S]*?)<\/script>/i)[1];
 new vm.Script(code,{filename:'index.html'});
 const nodes=new Map();
-function el(id){if(!nodes.has(id))nodes.set(id,{id,innerHTML:'',textContent:'',value:'',style:{},classList:{add(){},remove(){}},querySelector(){return null},insertAdjacentHTML(){},addEventListener(){},appendChild(){},remove(){},scrollIntoView(){}});return nodes.get(id)}
-const document={head:{appendChild(){}},getElementById:el,querySelector(){return null},querySelectorAll(){return []},createElement(){return el('created')}};
+function makeEl(id){
+  const n={id,innerHTML:'',textContent:'',value:'',style:{},dataset:{},children:[],parentNode:null,
+    classList:{add(){},remove(){},contains(){return false}},
+    querySelector(){return null},querySelectorAll(){return []},insertAdjacentHTML(){},addEventListener(){},remove(){},scrollIntoView(){},setAttribute(){},getAttribute(){return null},
+    appendChild(c){if(c){c.parentNode=this;this.children.push(c)}return c},
+    insertBefore(c,ref){if(!c)return c;c.parentNode=this;const i=this.children.indexOf(ref);if(i<0)this.children.push(c);else this.children.splice(i,0,c);return c}
+  };
+  Object.defineProperty(n,'nextSibling',{get(){if(!this.parentNode)return null;const a=this.parentNode.children,i=a.indexOf(this);return i>=0?(a[i+1]||null):null}});
+  return n;
+}
+function el(id){if(!nodes.has(id))nodes.set(id,makeEl(id));return nodes.get(id)}
+const app=el('app'),game=el('game-screen'),hud=el('hud'),scene=el('scene-area');
+app.appendChild(game);game.appendChild(hud);game.appendChild(scene);
+const document={head:makeEl('head'),body:makeEl('body'),getElementById:el,querySelector(){return null},querySelectorAll(){return []},createElement(){return makeEl('created')}};
 const storage=new Map();const localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,String(v))};
-const context={document,localStorage,sessionStorage:localStorage,console,setTimeout:()=>1,clearTimeout(){},setInterval:()=>1,clearInterval(){},Math:Object.assign(Object.create(Math),{random:()=>0.1})};context.window=context;context.scrollTo=()=>{};context.window.scrollTo=()=>{};context.window.innerWidth=900;context.document.body={scrollHeight:1000};
+const context={document,localStorage,sessionStorage:localStorage,console,setTimeout:()=>1,clearTimeout(){},setInterval:()=>1,clearInterval(){},Math:Object.assign(Object.create(Math),{random:()=>0.1})};context.window=context;context.scrollTo=()=>{};context.window.scrollTo=()=>{};context.window.innerWidth=900;context.document.body.scrollHeight=1000;
 vm.createContext(context);vm.runInContext(code,context,{timeout:5000});
 function run(s){return vm.runInContext(s,context,{timeout:5000})}
 run('startGame()');
