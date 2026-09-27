@@ -36,7 +36,15 @@ assert.strictEqual(run('V11_EVENTS.length'),34,'all random events loaded');
 assert.strictEqual(run('ACHIEVEMENTS.length'),108,'achievement count');
 assert.strictEqual(run('new Set(ACHIEVEMENTS.map(a=>a.id)).size'),108,'unique achievement IDs');
 assert.strictEqual(run('Object.keys(ENDINGS).length'),64,'ending count');
-assert.ok(html.includes('Demo v14.1'),'visible release label is current');
+for(const k of ['anyu','qiaoqiao','wenjing','xiaoke','linpi','tongxin']){
+  assert.strictEqual(run(`Object.prototype.hasOwnProperty.call(NPCs,'${k}')`),false,`deleted NPC ${k} absent`);
+  assert.strictEqual(run(`Object.prototype.hasOwnProperty.call(NPC_BIOS,'${k}')`),false,`deleted NPC bio ${k} absent`);
+}
+assert.strictEqual(run('PI_CHAIN_EVENTS.length'),2,'PI chain events installed');
+run('S.prestige={boss:0,team:0,chain:0,last:null,history:[]}; const _p=prestigeState(); addPrestige(3,4,"test")');
+assert.strictEqual(run('S.prestige.boss'),3,'boss prestige');
+assert.strictEqual(run('S.prestige.team'),4,'team prestige');
+assert.ok(html.includes('Demo v14.2'),'visible release label is current');
 assert.ok(html.includes('64 个结局，本机存档。'),'intro ending count is current');
 assert.ok(!html.includes('建议时长：一局 30–45 分钟。22 个结局，本机存档。'),'stale ending copy removed');
 assert.strictEqual(run('V11_EVENTS.every((ev,i)=>ev.choices.some(c=>c.achievement) && RANDOM_ACHIEVEMENT_IDS[i].length>0)'),true,'every random event has an achievement');
