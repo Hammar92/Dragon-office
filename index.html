@@ -6423,6 +6423,111 @@ renderLifeBuilder();
   if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.2';
 })();
 
+/* =====================  v14.2 · PI WHACK-A-MOLE / PRESTIGE  =====================
+   VP安抚一个PI时，另一个PI的未满足诉求会上浮。
+   玩家若把反复安抚转成明确规则，可获得老板侧威信与团队侧威信。 */
+(function(){
+  const PI_KEYS=['houpi','niupi','zhangpi'];
+  const PI_TENSIONS={
+    houpi:{against:['niupi','zhangpi'],issue:'学术领导权 / 最终科学叙事'},
+    niupi:{against:['houpi'],issue:'机制研究 / 科学领地'},
+    zhangpi:{against:['houpi'],issue:'中心贡献 / 资源与署名'}
+  };
+
+  function prestigeState(){
+    if(!S) return {boss:0,team:0,chain:0,last:null,history:[]};
+    if(!S.prestige) S.prestige={boss:0,team:0,chain:0,last:null,history:[]};
+    return S.prestige;
+  }
+  window.prestigeState=prestigeState;
+
+  function addPrestige(boss,team,reason){
+    const p=prestigeState();
+    boss=Number(boss)||0; team=Number(team)||0;
+    p.boss=clamp((p.boss||0)+boss);
+    p.team=clamp((p.team||0)+team);
+    S.bossTrust=clamp((S.bossTrust||0)+Math.round(boss*0.6));
+    S.reputation=clamp((S.reputation||0)+Math.round(boss*0.4+team*0.2));
+    S.power=clamp((S.power||0)+Math.round(team*0.25));
+    p.history.push({ch:chapterIdx,boss,team,reason:reason||''});
+    if(p.history.length>20)p.history.shift();
+  }
+  window.addPrestige=addPrestige;
+
+  function piConflictFromChoice(c){
+    const d=(c&&c.npc)||{};
+    const helped=PI_KEYS.filter(k=>(d[k]||0)>=4).sort((a,b)=>(d[b]||0)-(d[a]||0));
+    if(!helped.length) return null;
+    const primary=helped[0], tension=PI_TENSIONS[primary];
+    if(!tension) return null;
+    const rival=tension.against.find(k=>S&&S.npc&&S.npc[k]!=null);
+    return rival?{primary,rival,issue:tension.issue}:null;
+  }
+
+  const oldApplyChoiceV142=applyChoice;
+  applyChoice=function(c){
+    const conflict=piConflictFromChoice(c);
+    const deltas=oldApplyChoiceV142(c);
+    if(!conflict||!S) return deltas;
+
+    const p=prestigeState();
+    const rivalLoss=(c.visibility==='PUBLIC'||(c.witnesses||[]).includes('ceo'))?7:5;
+    S.npc[conflict.rival]=clamp((S.npc[conflict.rival]||0)-rivalLoss);
+    const rp=socialPerson(conflict.rival);
+    rp.respect=clamp((rp.respect||0)-3);
+    bumpLink(conflict.primary,conflict.rival,-4);
+
+    p.chain=(p.last&&p.last!==conflict.primary)?Math.min(4,(p.chain||0)+1):Math.max(1,p.chain||0);
+    p.last=conflict.primary;
+
+    const visible=c.visibility==='PUBLIC'||(c.witnesses||[]).includes('ceo')||(c.witnesses||[]).includes('cso');
+    const structured=!!c.record||/规则|边界|标准|owner|署名|资源|decision|证据|分工/.test((c.t||'')+(c.r||''));
+
+    if(visible&&structured){
+      const bossGain=2+Math.min(3,p.chain);
+      const teamGain=3+Math.min(4,p.chain);
+      addPrestige(bossGain,teamGain,'PI冲突中建立可复用规则');
+      deltas.push({label:'🏛 老板侧威信 +'+bossGain,kind:'up'});
+      deltas.push({label:'👥 团队侧威信 +'+teamGain,kind:'up'});
+      toast('你没有继续替VP逐个安抚，而是把冲突变成了规则。老板和团队都记住了谁真正收了残局。','up');
+    }else{
+      toast((NPCs[conflict.primary]?.name||'一个PI')+'被安抚后，'+(NPCs[conflict.rival]?.name||'另一个PI')+'开始追问自己的'+conflict.issue+'。按下去一个，另一个浮上来。','down');
+    }
+    return deltas;
+  };
+
+  const PI_CHAIN_EVENTS=[
+    {id:'pi_chain_lead',title:'两个Leading，只有一个封面',text:'钟时刚答应MK主任“总论文当然由您统筹”，转头又对N院长说“机制文章您可以完全主导”。两句话单独听都没问题，放在一起就是下一场会。',choices:[
+      {t:'替VP分别安抚两边，暂时不谈边界。',e:{trust:4},npc:{houpi:6,niupi:-6},r:'MK主任满意了半天。N院长随后发来一页机制研究框架，第一行问：谁有最终决定权？'},
+      {t:'把主论文、机制论文、样本使用和decision right写成一页学术治理规则，在老板和两位PI面前确认。',visibility:'PUBLIC',record:'piGovernance',witnesses:['ceo'],e:{power:5,progress:3},npc:{houpi:5,niupi:5},hidden:{merit:7,piRep:6},r:'两位PI都没拿到全部，但第一次知道彼此拿到什么。老板问了一句：“以后这种会是不是都可以按这张表开？”'},
+      {t:'让钟时继续逐个承诺，你只把每句话同步进会议纪要。',visibility:'PUBLIC',record:'piPromiseLog',e:{power:3,trust:-5},npc:{houpi:4,niupi:-4},r:'第二份纪要发出去后，团队第一次能准确预测下一场火会从哪里烧起来。'}
+    ]},
+    {id:'pi_chain_site',title:'中心贡献账不会自动归零',text:'钟时为了稳住MK主任，临时把大会报告机会给了他。林主任的中心承担了最高入组和最多额外样本，却在同一封邮件里只得到一句“感谢支持”。',choices:[
+      {t:'先去安抚林主任，说后面还有机会。',e:{trust:3},npc:{zhangpi:5,houpi:-4},r:'林主任没有争。他只是把下一项额外采样的可执行性从“可以”改成了“需评估”。'},
+      {t:'把中心贡献、额外工作量和学术回报做成公开台账，后续机会按贡献触发。',visibility:'PUBLIC',record:'piContributionLedger',witnesses:['ceo'],e:{power:4,morale:4},npc:{zhangpi:6,houpi:3},hidden:{merit:6,piRep:5},r:'林主任看到的是规则，不是安慰；MK主任看到的是自己仍然领先，但不能无限透支别人。团队看到的是终于有人敢把“贡献”写成可核对的东西。'},
+      {t:'维持原安排，让钟时自己解释。',e:{trust:5,progress:-2},npc:{zhangpi:-7,houpi:5},r:'钟时解释了二十分钟。所有人都更清楚谁被安抚了，也更清楚谁的账还没结。'}
+    ]}
+  ];
+  window.PI_CHAIN_EVENTS=PI_CHAIN_EVENTS;
+
+  const oldMaybeEventV142=maybeEvent;
+  maybeEvent=function(chapterId,next){
+    if(S&&chapterIdx>=8&&!flags.piChainEvent1&&(S.npc.houpi||0)>=38&&(S.npc.niupi||0)>=38){
+      flags.piChainEvent1=true;
+      window._evObj={ev:PI_CHAIN_EVENTS[0],next:next,cro:false};
+      renderEventFromObj();
+      return;
+    }
+    if(S&&chapterIdx>=11&&!flags.piChainEvent2&&(S.npc.zhangpi||0)>=35){
+      flags.piChainEvent2=true;
+      window._evObj={ev:PI_CHAIN_EVENTS[1],next:next,cro:false};
+      renderEventFromObj();
+      return;
+    }
+    return oldMaybeEventV142(chapterId,next);
+  };
+})();
+
 buildCast();
 renderVP();
 renderGallery();
