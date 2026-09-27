@@ -12,10 +12,10 @@
 - [x] `tests/ending-witness.spec.js` 已为 **57 个 final-resolver ending** 建立 primary witness。
 - [x] `tests/terminal-ending-witness.spec.js` 已为 **7 个 terminal-only ending** 建立真实入口 witness。
 - [x] `tests/all-ending-witness.spec.js` 增加 **57 + 7 = 64、无重复 primary witness** 的 catalogue gate。
-- [ ] `index.html` 的生产 `finalizeEvaluation()` 尚未委托给 canonical resolver。
+- [x] `index.html` 已在 RC 分支内嵌 canonical resolver + runtime bridge，最终 `finalizeEvaluation()` 单点委托。
 - [ ] witness 目前证明“规则层可达”，尚未完成浏览器逐步选择的 end-to-end path replay。
 - [ ] `FLOW_TREE.md` 尚未与最终 resolver 顺序重新核对。
-- [ ] RC PASS 尚未允许。
+- [ ] RC PASS 尚未允许：需完成 108 成就 source/orphan 审计与最终 `main` 回归后再标记。
 
 ## 64结局入口分类
 
@@ -103,3 +103,22 @@ P7 Legacy fallback
 4. 修订 `FLOW_TREE.md` 的最终判定树。
 5. 然后进入108成就 source-map / orphan audit。
 6. 只有在 production resolver 接线、64 catalogue、QTE回归、成就审计均通过后才允许 RC PASS。
+
+## RC production integration（2026-09-27）
+
+- `index.html` 继续保持**单文件可运行**：`ending-resolver.js` 与 `ending-runtime-bridge.js` 的 canonical source 被内嵌到末尾、旧 wrapper 之后。
+- runtime bridge 通过直接词法标识符读取 `S / flags / NPCs`；已修复早期草案使用 `window.S` 导致浏览器拿不到状态的问题。
+- 内联 JavaScript syntax check：PASS。
+- ending priority contract：36/36 PASS。
+- final resolver witnesses：57/57 PASS。
+- terminal witnesses：7/7 PASS。
+- all-ending catalogue gate：64/64 PASS。
+- production replay（真实 `index.html` 环境）已验证：True / Career / Organization / v14 Event / Love / Failure 代表状态全部命中；canonical finalizer 确认为最后一层。
+- 8 个会议 QTE 入口在固定 RNG 下全部可触发；婚恋初始状态仍保持隐藏且与主结局正交。
+- 修复一项 stale smoke assertion：离婚重建尾声文案已经更新，旧测试仍断言过期句子。
+
+### 当前剩余 Release Blocker
+
+1. 108 个成就必须逐个建立 source map，并确认没有 orphan / 重复覆盖 / 动态选项继承造成的永久不可达。
+2. 需要把最终 resolver 顺序同步回 `FLOW_TREE.md`。
+3. 合并回 `main` 后再跑一次 catalog / QTE / relationship / ending regression，才允许标记 RC PASS。
