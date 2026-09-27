@@ -1288,8 +1288,8 @@ const MILESTONE_CHAPTERS = {
     aside:{from:"林主任（核心PI）",text:"MK主任和N院长对停药标准意见相反。林主任关心中心工作量。钟时刚答应了三个人三套不同的版本。"},
     text:"二期研究者会。第一排坐着三个会决定这项研究能不能入完组的人。\n\nMK主任要求把科学终点做得更严格；N院长说现场根本执行不了；林主任追问额外采血谁付钱；林主任在问未来论文作者。\n\n钟时分别点头：『都可以考虑。』\n\n十分钟后，三个人同时看向你，问：『所以最终方案到底是什么？』",
     choices:[
-      {t:"当场把“不可变部分 / 可优化部分 / 会后决策时限”三栏写出来，逐项确认",e:{progress:6,power:7,trust:-3,morale:3},npc:{houpi:7,niupi:7,zhangpi:7,zhangpi:5},hidden:{merit:12,reputation:7,piRep:12},witnesses:["houpi","niupi","zhangpi","zhangpi","ceo"],record:"imActions",recordSource:"Investigator Meeting",r:"三个人没有都满意，但都知道下一步是什么。研究者会结束后，N院长主动把三个高入组中心介绍给了琳琳。"},
-      {t:"替钟时圆场：『钟总的意思是都可以，会后医学统一版本。』",e:{trust:8,progress:-4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-3,zhangpi:-2},hidden:{merit:-3,blame:5},r:"会开得很顺。接下来两周你分别收到四封追问邮件，每封都引用钟时不同的一句话。所谓‘都可以’，最终变成四份待办。"},
+      {t:"当场把“不可变部分 / 可优化部分 / 会后决策时限”三栏写出来，逐项确认",e:{progress:6,power:7,trust:-3,morale:3},npc:{houpi:7,niupi:7,zhangpi:7},hidden:{merit:12,reputation:7,piRep:12},witnesses:["houpi","niupi","zhangpi","ceo"],record:"imActions",recordSource:"Investigator Meeting",r:"三个人没有都满意，但都知道下一步是什么。研究者会结束后，N院长主动把三个高入组中心介绍给了琳琳。"},
+      {t:"替钟时圆场：『钟总的意思是都可以，会后医学统一版本。』",e:{trust:8,progress:-4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-3},hidden:{merit:-3,blame:5},r:"会开得很顺。接下来两周你分别收到四封追问邮件，每封都引用钟时不同的一句话。所谓‘都可以’，最终变成四份待办。"},
       {t:"让钟时逐项拍板，并把她每个答案同步投到屏幕上的决策表里",e:{trust:-7,power:6,progress:3,dragon:2},npc:{houpi:3,niupi:3,zhangpi:3},hidden:{merit:5,reputation:3,blame:-3},r:"她第一次发现自己刚刚答应过互相冲突的东西。她改了两次口。你没有纠正，只负责按下回车。研究者们看懂了，比你说任何一句坏话都快。"}
     ]},
   x4:{id:"x4",act:"Phase II → Phase III · EOP2",title:"EOP2：十五分钟决定三年",
@@ -1306,7 +1306,7 @@ const MILESTONE_CHAPTERS = {
     choices:[
       {t:"按里程碑列贡献人：谁做了什么、产生什么结果；把自己的贡献也写进去",e:{power:8,trust:-5,morale:6},npc:{ceo:8,cso:4,jialin:4,mingye:4,yijian:4},hidden:{merit:10,reputation:15,blame:-4},witnesses:["ceo","cso"],record:"authorshipTrail",recordSource:"Pre-NDA 贡献表",r:"老板看完只改了一个地方：把你的名字从第三行挪到了第一行。没有人公开讨论这件事，但第二天 HR 发来了新的岗位职责草案。"},
       {t:"完全按钟时模板，让她拿走全部叙事权",e:{trust:12,sanity:-8},npc:{ceo:-4,cso:-2},hidden:{merit:0,reputation:-10,blame:2},r:"材料很漂亮。老板在会上表扬了钟时‘三年持续领导’。你坐在第二排，知道每一个数字为什么在这里，却没有一个数字知道你的名字。"},
-      {t:"只写事实，不写名字；把证据链和版本记录附在后面",e:{power:5,trust:-2,sanity:3},npc:{xiaoen:6,xiaoen:5},hidden:{merit:6,reputation:5,blame:-8},r:"第一页没有英雄，只有节点。真正看得懂的人会翻到附件。老板翻了。钟时没翻。两个人因此看到的是两份完全不同的材料。"}
+      {t:"只写事实，不写名字；把证据链和版本记录附在后面",e:{power:5,trust:-2,sanity:3},npc:{xiaoen:6},hidden:{merit:6,reputation:5,blame:-8},r:"第一页没有英雄，只有节点。真正看得懂的人会翻到附件。老板翻了。钟时没翻。两个人因此看到的是两份完全不同的材料。"}
     ]}
 };
 
@@ -1344,7 +1344,7 @@ const REALISTIC_EXTRA_CHOICES={
   {t:'若证据仍不足，进入二期时预设 dose-confirmation 目标和决策门槛，而不是无限保留两个剂量',e:{progress:2,power:4,trust:1},npc:{mingye:4,weilai:2},hidden:{merit:6,blame:-2},r:'你没有假装一期已经回答所有问题，也没有让财务承担一个没有终点的双剂量方案。'}
  ],
  x3:[
-  {t:'逐一回应四位 PI：“MK主任的科学问题、N院长的执行问题、林主任的资源问题、林主任的作者问题都会进入 response matrix；今天的讨论不等于已经改方案。”',interact:[{with:'houpi',mode:'peer_defensible'},{with:'niupi',mode:'site_feasible'},{with:'zhangpi',mode:'respect_center'},{with:'zhangpi',mode:'authorship_rule'}],e:{progress:4,power:5,trust:-2},npc:{houpi:4,niupi:4,zhangpi:4,zhangpi:3,yijian:3},record:'imActions',hidden:{merit:8,piRep:7,blame:-3},r:'MK主任的科学问题、N院长的执行问题、林主任的资源问题、林主任的学术诉求被分栏记录，没有任何一个“点头”自动变成方案承诺。'}
+  {t:'逐一回应四位 PI：“MK主任的科学问题、N院长的执行问题、林主任的资源问题、林主任的作者问题都会进入 response matrix；今天的讨论不等于已经改方案。”',interact:[{with:'houpi',mode:'peer_defensible'},{with:'niupi',mode:'site_feasible'},{with:'zhangpi',mode:'respect_center'}],e:{progress:4,power:5,trust:-2},npc:{houpi:4,niupi:4,zhangpi:4,yijian:3},record:'imActions',hidden:{merit:8,piRep:7,blame:-3},r:'MK主任的科学问题、N院长的执行问题、林主任的资源与贡献问题被分栏记录，没有任何一个“点头”自动变成方案承诺。'}
  ],
  x4:[
   {t:'对证据不足的问题明确说“现有数据不足以现场承诺”，给出当前 proposal，并承诺书面 follow-up',e:{progress:7,power:6,trust:-2},npc:{yijian:10,ceo:4,cso:4},record:'eop2Minutes',hidden:{merit:12,reputation:8,blame:-5},r:'一建接受这种回答，因为它有明确 follow-up 和截止点。监管没有要求你现场发明确定性。'},
@@ -1795,10 +1795,10 @@ EVENTS.push(
    {t:"让钟时给MK主任发正式确认邮件，你负责把她的决定转成 amendment",e:{trust:-4,dragon:2,power:4},npc:{houpi:2},hidden:{blame:-5,merit:3},r:"她在邮件里重新读了一遍自己刚答应的东西，最后改成『请团队先评估』。你什么都没反对，但决定自己退回去了。"}
   ]},
  {id:"pi2",npcEv:true,title:"作者排序：四把椅子",
-  text:"二期论文准备投稿。MK主任、N院长都认为自己应该第一作者；林主任认为自己的中心入组最多；林主任做了最多病例清理。钟时分别跟三个人说过‘我支持你’。",
+  text:"二期论文准备投稿。MK主任、N院长都认为自己应该第一作者；林主任强调自己的中心承担了最多入组和病例清理。钟时分别跟三个人说过‘我支持你’。",
   choices:[
-   {t:"建立透明贡献表：方案、入组、数据解释、写作，按事先规则讨论排序",e:{power:5,morale:4},npc:{houpi:3,niupi:3,zhangpi:3,zhangpi:7},hidden:{merit:6,piRep:10,reputation:4},r:"没有人百分之百满意，但没有人能说规则是临时为别人发明的。林主任第一次被写进核心作者。"},
-   {t:"谁电话打得最凶就先安抚谁，排序以后再说",e:{trust:4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-4,zhangpi:-6},hidden:{piRep:-8,blame:6},r:"你花了一周灭火。每灭一处，另一处冒烟。钟时评价：『研究者关系就是要灵活。』"},
+   {t:"建立透明贡献表：方案、入组、数据解释、写作，按事先规则讨论排序",e:{power:5,morale:4},npc:{houpi:3,niupi:3,zhangpi:7},hidden:{merit:6,piRep:10,reputation:4},r:"没有人百分之百满意，但没有人能说规则是临时为别人发明的。林主任的中心贡献第一次被明确写进核心作者讨论。"},
+   {t:"谁电话打得最凶就先安抚谁，排序以后再说",e:{trust:4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-6},hidden:{piRep:-8,blame:6},r:"你花了一周灭火。每灭一处，另一处冒烟。钟时评价：『研究者关系就是要灵活。』"},
    {t:"把钟时此前分别承诺的邮件做成一页时间线，请她主持最终协调",e:{trust:-6,power:5,dragon:2},npc:{houpi:2,niupi:2,zhangpi:2},hidden:{blame:-6,reputation:3},r:"她第一次需要同时面对自己给出的三个承诺。会议很难看，但之后没有任何 PI 再说是你私下改了排序。"}
   ]},
  {id:"pi3",npcEv:true,title:"中心入组停摆",
