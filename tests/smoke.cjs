@@ -47,6 +47,8 @@ assert.strictEqual(run('V11_CHAPTERS.length'),18,'all chapters reachable');
 assert.strictEqual(run('V11_EVENTS.length'),34,'all random events loaded');
 assert.strictEqual(run('ACHIEVEMENTS.length'),108,'achievement count');
 assert.strictEqual(run('new Set(ACHIEVEMENTS.map(a=>a.id)).size'),108,'unique achievement IDs');
+assert.strictEqual(run(`(()=>{const s=new Set();V11_CHAPTERS.forEach(ch=>(ch.choices||[]).forEach(c=>c.achievement&&s.add(c.achievement)));V11_EVENTS.forEach(ev=>(ev.choices||[]).forEach(c=>c.achievement&&s.add(c.achievement)));return ACHIEVEMENTS.every(a=>s.has(a.id));})()`),true,'all 108 achievements have a real chapter/event source');
+assert.strictEqual(html.includes('unlockAchievement("a')||html.includes("unlockAchievement('a"),false,'no stale hard-coded achievement ID auto-unlocks');
 assert.strictEqual(run('Object.keys(ENDINGS).length'),64,'ending count');
 for(const k of ['anyu','qiaoqiao','wenjing','xiaoke','linpi','tongxin']){
   assert.strictEqual(run(`Object.prototype.hasOwnProperty.call(NPCs,'${k}')`),false,`deleted NPC ${k} absent`);
