@@ -6833,7 +6833,13 @@ renderLifeBuilder();
   window.enrichShortDialogue=enrichShortDialogue;
 
   var oldHUDV143=renderHUD;
-  renderHUD=function(){oldHUDV143();renderLifeSimPanels();};
+  renderHUD=function(){
+    oldHUDV143();
+    var oldBars=document.getElementById('bars'),oldPeople=document.getElementById('npcs');
+    if(oldBars)oldBars.innerHTML='';
+    if(oldPeople)oldPeople.innerHTML='';
+    renderLifeSimPanels();
+  };
 
   var oldRenderChapterV143=renderChapter;
   renderChapter=function(){
