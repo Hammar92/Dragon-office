@@ -5,94 +5,101 @@
 ## 当前状态
 
 - [x] 结局优先级已锁定。
-- [x] 已建立独立 canonical resolver：`ending-resolver.js`。
+- [x] 已建立 canonical resolver：`ending-resolver.js`。
 - [x] 已建立纯函数 `buildFinalEndingState(raw)`。
-- [x] v14 五个 joint ending 的生产条件已核对并移入 `JOINT_RULES`，builder 直接从真实 branch flags 推导，不再要求 caller 另造一份 joint 布尔值。
-- [x] `tests/ending-priority.spec.js` 直接 import canonical resolver。
-- [x] contract 当前覆盖 15 个 predicate 冲突 + 21 个 raw production-state case，共 36 个 case；五个 joint ending 均有 production-flag witness，并有 wrong-route negative case。
+- [x] v14 五个 joint ending 使用真实 branch flags + final route 单点推导。
+- [x] 发现并恢复 v11 遗留但仍在64图鉴中的7个组织结局：`ge_succession / ge_puppetmaster / ge_regent / ge_coalition / ge_court / ge_system / ge_project`。
+- [x] `tests/ending-witness.spec.js` 已为 **57 个 final-resolver ending** 建立 primary witness。
+- [x] `tests/terminal-ending-witness.spec.js` 已为 **7 个 terminal-only ending** 建立真实入口 witness。
+- [x] `tests/all-ending-witness.spec.js` 增加 **57 + 7 = 64、无重复 primary witness** 的 catalogue gate。
 - [ ] `index.html` 的生产 `finalizeEvaluation()` 尚未委托给 canonical resolver。
-- [ ] 64 个公开结局尚未逐个建立正式 witness state。
+- [ ] witness 目前证明“规则层可达”，尚未完成浏览器逐步选择的 end-to-end path replay。
 - [ ] `FLOW_TREE.md` 尚未与最终 resolver 顺序重新核对。
 - [ ] RC PASS 尚未允许。
 
-## 已确认的生产问题
+## 64结局入口分类
 
-### R1. 双层 `finalizeEvaluation()`
-基础版本与 v14 wrapper 各自拥有 ending early-return，实际行为依赖脚本声明顺序。
+### A. FINAL_RESOLVER：57
+包括：
 
-### R2. v14 wrapper 与 RC priority spec 不一致
-v14 当前在 Progress≥60 时先检查 joint/event，再检查 promotion/unsung/slayer/NPC/career；canonical priority 要求 Career 高于 Joint/Event。
+- 3：`true_afterdragon / true_dragon / ge_slayer`
+- 4：`ge_promotion / ge_unsung / ge_next / ge_firstline`
+- 7：v11组织结局 `ge_succession / ge_puppetmaster / ge_regent / ge_coalition / ge_court / ge_system / ge_project`
+- 5：v14 joint
+- 27：v14单事件回响
+- 6：NPC/爱情特化
+- 5：generic/failure final outcomes
 
-### R3. 基础 resolver 也有覆盖风险
-基础 `finalizeEvaluation()` 中 NPC 特化可以覆盖已经形成的 career ending；canonical priority 要求 Career > NPC。
+### B. TERMINAL_ONLY：7
 
-### R4. Duel 是机制，不是64公开 ending
-`finishDuel()` 写 `flags.duelWin` 后仍进入最终判定。除非以后正式扩展 gallery，resolver 不应凭空创造 duelWin/duelLose 公开结局。
+| Ending | 真实入口 |
+|---|---|
+| `be_heart` | `checkDeath()`：Heart≤0，死亡顺序第一 |
+| `be_sanity` | `checkDeath()`：Heart>0 且 Sanity≤0 |
+| `be_morale` | `checkDeath()`：前置资源仍存活且 Morale≤0 |
+| `be_fraud` | 选择写入 `flags.fraud` 后，在章节/事件 next callback 直接 `showEnding` |
+| `be_probation` | v11 `checkDeath` wrapper：chapterIdx≤2 且 Trust≤24 |
+| `be_burnout` | v11 `checkDeath` wrapper：Stamina≤3 且 Heart≤15 |
+| `be_vendor` | v11 `checkDeath` wrapper：vendorCaptured + chapterIdx≥8 + Blame≥18 |
 
-### R5. 即时终局不经过 final resolver
-`checkDeath()` 可直接进入 `be_heart / be_sanity / be_trust / be_morale / be_progress`；fraud 也有直接终局。因此64/64 witness audit 必须区分 `FINAL_RESOLVER / TERMINAL_DEATH / TERMINAL_FLAG / SPECIAL`。
+`be_trust` 与 `be_progress` 虽然也能由 `checkDeath()` 即时进入，但它们同时承担终局 generic failure，因此 primary witness 保留在 FINAL_RESOLVER，避免64分类重复计数。
 
-### R6. 婚恋保持正交
-`relationshipEpilogue()` 根据初始/当前婚恋状态追加私人尾声；`nc_love` 只在项目未完全成功时作为公开关系特化结局。
+## 新发现：此前的“50 + 14”分类不准确
 
-## 已核对的 v14 joint 真条件
+前一轮把剩余14个都当成非-final ending。实际核查 v11 代码后发现，其中 **7个是仍然有效的整局组织结局**，只是 canonical resolver 第一版漏掉了它们；另7个才是真正 terminal-only。
 
-| Ending | 必需历史选择 | 终章 route |
-|---|---|---|
-| `v14_joint_capacity` | `v14_0_0` + `v14_6_0` | govern |
-| `v14_joint_paper` | `v14_1_0` + `v14_2_0` | govern |
-| `v14_joint_site` | `v14_3_0` + `v14_6_0` | govern |
-| `v14_joint_story` | `v14_4_1` + `v14_7_1` | appease |
-| `v14_joint_dragon` | `v14_5_2` + `v14_8_2` | power |
+这也是为什么不能只看 v14 wrapper：64图鉴是多版本叠加形成的，旧版公开结局仍可能是现行产品的一部分。
 
-这些条件现在由 `ending-resolver.js::deriveJoints(flags, finalRoute)` 单点维护。`raw.joints` 只保留为测试/兼容 override，不再是生产接线要求。
+## Canonical priority（当前）
 
-## `buildFinalEndingState(raw)` 当前映射
-
-- `true_afterdragon`：echo 周目 + refuse + Progress≥72 + Morale≥58 + Dragon<20；
-- `true_dragon`：Progress≥60 + Dragon≥10 + Power≥65 + Merit≥45 + 主动接管/终章权力选择；
-- `ge_slayer`：Progress≥60 + 终章权力选择 + Dragon<10 + Power≥65 + ≥3 张关系支持；
-- `ge_promotion`：Merit/Reputation/BossTrust/endorsement/difficulty 阈值；
-- `ge_unsung`：Progress≥60 + Merit≥75 + Reputation<35；
-- `ge_next / ge_firstline`：终章 main_18_1 + Career 75/55；
-- v14 joint：由 `JOINT_RULES` 从真实历史 flags + final route 推导；
-- v14 event：candidate 必须匹配 `v14_[0-8]_[0-2]` 且 route 匹配；
-- NPC：小圆85、曹兰65、瑞冬70、黑娜70、苏苏60；
-- `nc_love`：仅 35≤Progress<60；
-- generic：island / halfbridge / survive / be_trust / be_progress。
-
-## 下一步生产接线
-
-目标不再需要 `buildV14JointFlags()`：
-
-```js
-function finalizeEvaluation(){
-  const promo = promotionEndorsements();
-  const raw = {
-    ...S,
-    flags,
-    difficultyId:difficulty().id,
-    promotionSupport:promo.support.length,
-    promotionOppose:promo.oppose.length,
-    allyAt:Object.fromEntries(Object.keys(NPCs).map(k=>[k,NPCs[k].allyAt||0])),
-    v14Candidate:flags.v14Candidate,
-    v14FinalRoute:flags.v14FinalRoute
-  };
-  const state=DragonEndingResolver.buildFinalEndingState(raw);
-  const id=DragonEndingResolver.resolveFinalEnding(state);
-  if(!id||!ENDINGS[id])throw new Error('Unresolved ending: '+id);
-  showEnding(id);
-}
+```text
+P0 Duel mechanism（不进入64图鉴）
+P1 True / 跨周目 / 屠龙
+P2 明确职业轨迹
+P2.5 整局组织治理结局（v11 7项）
+P3 v14 Joint
+P4 v14 Event
+P5 NPC / relationship specialization
+P6 Generic final outcomes
+P7 Legacy fallback
 ```
 
-## 64/64 witness 要求
+组织结局放在 Event 之前：一次随机事件不能覆盖整局形成的组织运行模式；但明确的晋升、跳槽、屠龙等个人职业终局仍优先于组织画像。
 
-每个公开 ending 必须记录真实入口、最小 witness state、expected/actual、blocker 和 `PASS / SHADOWED / UNREACHABLE`。禁止直接调用 `showEnding(id)` 作为可达性证明。
+## 已确认的生产问题
 
-## 下一次代码修改顺序
+### R1. 双层/多层 `finalizeEvaluation()`
+基础版本、v11、v13、v14 均通过重定义或 wrapper 改写最终判定，实际行为依赖脚本声明顺序。
 
-1. 在 `index.html` 加载 canonical resolver，并把最终 `finalizeEvaluation()` 真正接到它。
-2. 失效化 v14/旧版对 final ending 的重复 early-return；即时 death/fraud 保持原入口。
-3. 从 `Object.keys(ENDINGS)` 自动生成64结局清单，逐个建立 witness；先找出无法由 final resolver 覆盖的特殊入口。
-4. 对照 `FLOW_TREE.md` 修订树状图。
-5. 仅在 `64/64 reachable + 0 shadowed + priority contract PASS` 后标记 RC PASS。
+### R2. v14生产顺序仍与RC规范不一致
+当前生产 v14 是 Joint/Event 先于 Promotion/Career；canonical 要求 Career/Org 高于 Joint/Event。
+
+### R3. 基础 resolver 有 NPC 覆盖 Career 风险
+旧逻辑先写 career key，随后 NPC 可以重写 key。
+
+### R4. 单文件部署约束
+当前 `index.html` 没有加载外部 `ending-resolver.js`。因此不能直接把生产 `finalizeEvaluation()` 改成依赖 `window.DragonEndingResolver`，否则现有单文件打开方式会报错。
+
+生产接线必须二选一：
+
+1. **推荐：** 把 canonical resolver 的浏览器部分内嵌进 `index.html`，`ending-resolver.js` 保持测试镜像，并增加一致性测试；
+2. 或正式改成多文件部署，在 HTML 中显式 `<script src="ending-resolver.js"></script>`，同时确认 GitHub Pages/本地打开方式都能加载。
+
+在没有完成浏览器加载验证前，不做破坏单文件兼容性的接线。
+
+## 64/64 当前结论
+
+**规则层 witness catalogue 已达到 64/64，未发现缺失 primary ending ID。**
+
+但这还不是“64/64 production PASS”：生产页面仍使用历史 wrapper，且尚未从第1章开始逐步 replay 到每个 witness。因此当前状态应写为：
+
+`64/64 RULE-WITNESSED · PRODUCTION INTEGRATION PENDING`
+
+## 下一步
+
+1. 采用单文件安全方案，把 canonical resolver 接入 `index.html`，彻底结束多 wrapper early-return。
+2. 接线后重跑 priority contract + 64 witness catalogue。
+3. 建立 browser/path replay：从开局选择、事件 flags、终章 route 实际推进，验证至少所有高优先级/隐藏/联合结局。
+4. 修订 `FLOW_TREE.md` 的最终判定树。
+5. 然后进入108成就 source-map / orphan audit。
+6. 只有在 production resolver 接线、64 catalogue、QTE回归、成就审计均通过后才允许 RC PASS。
