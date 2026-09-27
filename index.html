@@ -407,7 +407,6 @@ const NPCs = {
   xiaoen:  {name:"肖恩",   role:"QA",          init:36, faction:"pro", quote:"我不跟朱粽说话，我说的是制度。"},
   yijian:  {name:"一建",   role:"REG",         init:22, faction:"pro", quote:"各位，今晚把章节写完，我明早一起递交。"},
   weilai:  {name:"苏苏",   role:"财务",        init:26, faction:"pro", quote:"我不懂你说的那个科学。我只知道这个月还剩九万，下个月更少。"},
-  tongxin: {name:"童欣",   role:"法务",        init:24, faction:"pro", quote:"别跟我讲道理。跟我说这一条，写不写进合同附件。"},
   miaomiao:{name:"琳琳",   role:"CRA 主管",    init:30, faction:"pro", quote:"我的人这个月跑了十四家中心。你要的源文件，明天让人拍给你。"},
   // —— 商业化与市场：决定你的数据出门之后，在别人嘴里变成什么东西 ——
   wuzong:  {name:"武总",   role:"商业化负责人", init:34, faction:"biz", allyAt:75, drift:true, quote:"你这个思路我完全认同，回头我们再单独对齐一下，好不好？"},
@@ -613,10 +612,7 @@ const GOSSIP_PROFILES = {
   mingye:{spread:.95,accuracy:.88,upward:.45,commentary:'science'},
   zouting:{spread:.82,accuracy:.72,upward:.70,commentary:'people'},
   linan:{spread:.76,accuracy:.68,upward:.42,commentary:'people'},
-  xiaoke:{spread:.70,accuracy:.62,upward:.88,commentary:'politics'},
-  qiaoqiao:{spread:.58,accuracy:.74,upward:.66,commentary:'execution'},
-  anyu:{spread:.22,accuracy:.92,upward:.45,commentary:'execution'},
-  wenjing:{spread:.16,accuracy:.96,upward:.38,commentary:'compliance'},
+  kzong:{spread:.24,accuracy:.94,upward:.50,commentary:'execution'},
   xiaoen:{spread:.12,accuracy:.97,upward:.55,commentary:'compliance'},
   jialin:{spread:.20,accuracy:.94,upward:.40,commentary:'compliance'}
 };
@@ -976,7 +972,7 @@ function showLeverage(){
 
 /* 关键人物分别决定是否替你升职背书。 */
 function promotionEndorsements(){
-  const keys=['cso','xiaoyuan','jialin','mingye','yijian','xiaoen','anyu','houpi'];
+  const keys=['cso','xiaoyuan','jialin','mingye','yijian','xiaoen','kzong','houpi'];
   const support=[],neutral=[],oppose=[];
   keys.forEach(function(k){
     const p=socialPerson(k);
@@ -998,7 +994,6 @@ function showEndorsements(){
 /* 1:1：不是大事件，而是大事件之后别人来重新解释自己刚才的行为。 */
 const PRIVATE_CHAT_SCRIPTS={
   mingye:{line:'「刚才会上那句话我没接，是因为钟时昨天已经私下让我重跑第三版。我不是不同意你，我是不想当场炸。」',a:'我知道。下次提前告诉我。',b:'那你刚才就应该说。'},
-  anyu:{line:'「我不需要你每次都站我这边。我只需要风险提出来的时候，不要假装没看见。」',a:'以后风险先给我，我们一起定 owner。',b:'但项目不能什么都按最保守的做。'},
   jialin:{line:'「安全问题我会坚持到底。你要是觉得我太慢，可以直接说，但别让我最后才知道医学已经做了决定。」',a:'你应该在决定前就进来。',b:'我只看最终医学判断。'},
   yijian:{line:'「监管不是替你擦措辞。你们在会上答应的东西，最后都得有人写进文件。」',a:'下一次把你拉进决策前半段。',b:'先把 submission 过了再说。'},
   linan:{line:'「我知道我有时候会漏。但你每次直接帮我补，我也不知道到底哪里最严重。」',a:'以后我补现场，你补记录。',b:'别想太多，先把活干完。'}
@@ -1279,10 +1274,10 @@ const MILESTONE_CHAPTERS = {
     ]},
   x3:{id:"x3",act:"Phase II · Investigator Meeting",title:"研究者会：第一排的四个人",
     aside:{from:"林医生（青年 PI）",text:"MK主任和N院长对停药标准意见相反。林主任关心中心工作量。钟时刚答应了三个人三套不同的版本。"},
-    text:"二期研究者会。第一排坐着四个会决定这项研究能不能入完组的人。\n\nMK主任要求把科学终点做得更严格；N院长说现场根本执行不了；林主任追问额外采血谁付钱；林医生在问未来论文作者。\n\n钟时分别点头：『都可以考虑。』\n\n十分钟后，四个人同时看向你，问：『所以最终方案到底是什么？』",
+    text:"二期研究者会。第一排坐着四个会决定这项研究能不能入完组的人。\n\nMK主任要求把科学终点做得更严格；N院长说现场根本执行不了；林主任追问额外采血谁付钱\n\n钟时分别点头：『都可以考虑。』\n\n十分钟后，三个人同时看向你，问：『所以最终方案到底是什么？』",
     choices:[
-      {t:"当场把“不可变部分 / 可优化部分 / 会后决策时限”三栏写出来，逐项确认",e:{progress:6,power:7,trust:-3,morale:3},npc:{houpi:7,niupi:7,zhangpi:7,linpi:5},hidden:{merit:12,reputation:7,piRep:12},witnesses:["houpi","niupi","zhangpi","linpi","ceo"],record:"imActions",recordSource:"Investigator Meeting",r:"四个人没有都满意，但都知道下一步是什么。研究者会结束后，N院长主动把三个高入组中心介绍给了琳琳。"},
-      {t:"替钟时圆场：『钟总的意思是都可以，会后医学统一版本。』",e:{trust:8,progress:-4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-3,linpi:-2},hidden:{merit:-3,blame:5},r:"会开得很顺。接下来两周你分别收到四封追问邮件，每封都引用钟时不同的一句话。所谓‘都可以’，最终变成四份待办。"},
+      {t:"当场把“不可变部分 / 可优化部分 / 会后决策时限”三栏写出来，逐项确认",e:{progress:6,power:7,trust:-3,morale:3},npc:{houpi:7,niupi:7,zhangpi:7},hidden:{merit:12,reputation:7,piRep:12},witnesses:["houpi","niupi","zhangpi","ceo"],record:"imActions",recordSource:"Investigator Meeting",r:"三个人没有都满意，但都知道下一步是什么。研究者会结束后，N院长主动把三个高入组中心介绍给了琳琳。"},
+      {t:"替钟时圆场：『钟总的意思是都可以，会后医学统一版本。』",e:{trust:8,progress:-4,sanity:-4},npc:{houpi:-4,niupi:-4,zhangpi:-3},hidden:{merit:-3,blame:5},r:"会开得很顺。接下来两周你分别收到四封追问邮件，每封都引用钟时不同的一句话。所谓‘都可以’，最终变成四份待办。"},
       {t:"让钟时逐项拍板，并把她每个答案同步投到屏幕上的决策表里",e:{trust:-7,power:6,progress:3,dragon:2},npc:{houpi:3,niupi:3,zhangpi:3},hidden:{merit:5,reputation:3,blame:-3},r:"她第一次发现自己刚刚答应过互相冲突的东西。她改了两次口。你没有纠正，只负责按下回车。研究者们看懂了，比你说任何一句坏话都快。"}
     ]},
   x4:{id:"x4",act:"Phase II → Phase III · EOP2",title:"EOP2：十五分钟决定三年",
@@ -1566,10 +1561,10 @@ const PROJECT_BATTLES={
 };
 const BATTLE_RELEVANT={
   c5:['mingye','heina'],
-  c7:['jialin','qiaoqiao','zhuzong','heina'],
+  c7:['jialin','miaomiao','zhuzong','heina'],
   x4:['yijian','mingye'],
-  c10:['qiaoqiao','wenjing','zhuzong','heina','xiaoen'],
-  c12:['mingye','qiaoqiao','zhuzong'],
+  c10:['kzong','miaomiao','zhuzong','heina','xiaoen'],
+  c12:['mingye','miaomiao','zhuzong'],
   x5:['yijian','xiaoen','zouting','mingye']
 };
 let projectBattleState=null, projectBattleTimer=null;
@@ -1603,7 +1598,7 @@ function battleResponses(theme){
 function battleAllyFor(theme){
   if(theme==='safety') return 'jialin';
   if(theme==='regulatory') return 'yijian';
-  if(theme==='execution') return 'anyu';
+  if(theme==='execution') return 'kzong';
   if(theme==='credit') return 'zouting';
   return 'mingye';
 }
@@ -1936,7 +1931,6 @@ function finalizeEvaluation(){
      注意：提升阈值之前先看该角色有没有足够的 source —— 苏苏曾经只有 3 个正面触点
      （上限 46，max 46），那时候改阈值毫无意义，是先把他的 source 补到 6 处之后才有这张表。 */
   if(rel('xiaoyuan') >= 85)                          key = 'nc_xiaoyuan';
-  else if(rel('tongxin') >= 74 && flags.clean)        key = 'nc_tongxin';
   else if(rel('weilai') >= 46 && S.progress < 60)    key = 'nc_weilai';
   else if(rel('ruidong') >= 66 && S.progress >= 35)  key = 'nc_ruidong';
   else if(rel('caolan') >= 45 && S.career >= 50)     key = 'nc_caolan';
@@ -2074,9 +2068,8 @@ function renderVP(){
    这版先把机制接进主循环，不做最终数值平衡。
    所有初始点数、门槛、成长点产出与倍率均标记为 PLACEHOLDER，待完整事件设计完成后统一模拟校准。 */
 
-/* ---------- A. 当前人物表修订：删除童欣；苏苏改为苏苏；加入则韩、杨杨 ---------- */
-delete NPCs.tongxin;
-delete NPC_BIOS.tongxin;
+/* ---------- A. 当前人物表修订：已删除旧法务NPC；苏苏改为苏苏；加入则韩、杨杨 ---------- */
+
 NPCs.weilai.name="苏苏";
 NPCs.weilai.role="财务";
 NPCs.weilai.quote="先别讲故事。这个判断的依据是什么，错了以后代价是什么？";
@@ -2105,7 +2098,6 @@ if(typeof SOCIAL_PROFILES!=="undefined"){
 if(typeof BASE_INTERNAL_LINKS!=="undefined"){
   BASE_INTERNAL_LINKS.push(["weilai","yangyang",22],["ceo","yangyang",62],["ceo","weilai",72],["mingye","weilai",58],["zihan","mingye",58],["xiaoen","zhuzong",16],["cso","xiaoen",34]);
 }
-if(typeof ENDINGS!=="undefined" && ENDINGS.nc_tongxin) delete ENDINGS.nc_tongxin;
 
 /* ---------- B. 捏人：背景词条 + 能力 ---------- */
 var PLAYER_DRAFT={
@@ -2306,10 +2298,10 @@ function applySusuGenderStrategy(originalChoice){
 /* ---------- F. 阵营 / Functional Cooperation / Cohesion / Political Debt ---------- */
 var V10_FACTIONS={
   founder:{name:"创始核心圈",members:["ceo","cso","xiaoyuan","weilai"]},
-  professional:{name:"专业主义",members:["xiaoen","zihan","mingye","jialin"]},
-  execution:{name:"执行推进",members:["xiaoyuan","yangyang","anyu","qiaoqiao","miaomiao","zhuzong"]},
-  positional:{name:"位置型权力",members:["yijian","jialin","xiaoke"]},
-  external:{name:"外部资源",members:["heina","houpi","niupi","zhangpi","linpi"]}
+  professional:{name:"专业主义",members:["xiaoen","zihan","mingye","jialin","pvp"]},
+  execution:{name:"执行推进",members:["xiaoyuan","yangyang","kzong","miaomiao","zhuzong","parker"]},
+  positional:{name:"位置型权力",members:["yijian","jialin","linan"]},
+  external:{name:"外部资源",members:["heina","houpi","niupi","zhangpi"]}
 };
 function v10EnsureOrg(){
   ensureOrgSystems();
@@ -3311,7 +3303,6 @@ renderLifeBuilder();
   function installAchievementPanel(){let title=document.getElementById("title-screen");if(!title||document.getElementById("achievement-panel"))return;let d=document.createElement("div");d.id="achievement-panel";d.className="intro-box";d.style.marginTop="18px";let u=achUnlocked();d.innerHTML='<b>🏆 成就系统 · 99</b><div class="creator-note">黑色幽默会在你真的经历以后才解锁。当前 '+u.length+' / 99；部分成就奖励轮回点。</div><div class="gallery-grid" style="margin-top:10px">'+ACHIEVEMENTS.map(function(a){return '<span class="g '+(u.includes(a.id)?'got ge':'')+'">'+(u.includes(a.id)?a.name:'？？？')+'</span>';}).join('')+'</div>';title.appendChild(d);}
   installAchievementPanel();
   let sub=document.querySelector("#title-screen .subtitle");if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 多周目 · 99成就 · Demo v11.0";
-  try{["anyu","qiaoqiao","wenjing","xiaoke"].forEach(k=>delete CHARACTER_INTERACTION_RULES[k]);}catch(e){}
   let savedAge=localStorage.getItem("dragon_age");if(savedAge&&AGE_OPTIONS[savedAge])PLAYER_AGE=savedAge;trimUnavailableLifeStages();
 })();
 
