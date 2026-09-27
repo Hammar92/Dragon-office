@@ -1,7 +1,6 @@
 /* Dragon Office · canonical final-ending resolver
  * RC contract: one ordered resolver, no wrapper-specific early returns.
- * Browser-safe and Node-testable. Production index.html can delegate finalizeEvaluation()
- * to DragonEndingResolver.resolveFinalEnding(buildFinalEndingState()).
+ * Browser-safe and Node-testable.
  */
 (function(root,factory){
   const api=factory();
@@ -13,9 +12,60 @@
   const PRIORITY=Object.freeze({DUEL:0,TRUE:1,CAREER:2,JOINT:3,EVENT:4,NPC:5,GENERIC:6,LEGACY:7});
   const V14_EVENT=/^v14_[0-8]_[0-2]$/;
   const JOINT=['v14_joint_capacity','v14_joint_paper','v14_joint_site','v14_joint_story','v14_joint_dragon'];
+  const V14_ROUTE=['govern','appease','power'];
 
   function yes(v){return !!v;}
+  function num(v,d){v=Number(v);return Number.isFinite(v)?v:(d||0);}
   function first(items){for(const x of items)if(x&&x.when)return x.id;return null;}
+  function rel(s,k){return num(s&&s.npc&&s.npc[k],0);}
+  function maxRel(s){const n=s&&s.npc||{};const a=Object.keys(n).map(function(k){return num(n[k],0);});return a.length?Math.max.apply(null,a):0;}
+  function supportCount(s,min){const n=s&&s.npc||{},ally=s&&s.allyAt||{};return Object.keys(n).filter(function(k){return num(n[k],0)>=Math.max(min,num(ally[k],0));}).length;}
+  function highTicket(s){return Math.max(rel(s,'ceo'),rel(s,'cso'));}
+  function finalMainFlag(s,n){return yes(s&&s.flags&&s.flags['main_18_'+n]);}
+  function eventRouteMatches(candidate,finalRoute){const m=/^v14_([0-8])_([0-2])$/.exec(candidate||'');return !!(m&&finalRoute===V14_ROUTE[Number(m[2])]);}
+
+  /* Convert raw production game state into resolver predicates. This is deliberately pure:
+     no DOM, localStorage, random calls, or mutation. The browser owns how promotion support,
+     joint flags and legacy fallback are calculated and passes those values in. */
+  function buildFinalEndingState(raw){
+    raw=raw||{};
+    const f=raw.flags||{};
+    const progress=num(raw.progress),trust=num(raw.trust),morale=num(raw.morale),sanity=num(raw.sanity),heart=num(raw.heart);
+    const power=num(raw.power),dragon=num(raw.dragon),merit=num(raw.merit),reputation=num(raw.reputation),bossTrust=num(raw.bossTrust),career=num(raw.career);
+    const promoSupport=num(raw.promotionSupport),promoOppose=num(raw.promotionOppose),hard=raw.difficultyId==='hard';
+    const mid60=supportCount(raw,60),ticket=highTicket(raw),alive3=trust>=35&&morale>=35&&sanity>=35;
+    const projectFull=progress>=60;
+    const joints={};JOINT.forEach(function(id){joints[id]=yes(raw.joints&&raw.joints[id]);});
+    const candidate=raw.v14Candidate||f.v14Candidate||null,finalRoute=raw.v14FinalRoute||f.v14FinalRoute||null;
+
+    return {
+      duelWinEnding:yes(raw.duelWinEnding),duelLoseEnding:yes(raw.duelLoseEnding),
+      trueAfterdragon:f.metaRoute==='echo'&&yes(f.meta_echo_refuse)&&progress>=72&&morale>=58&&dragon<20,
+      trueDragon:projectFull&&dragon>=10&&power>=65&&merit>=45&&(yes(f.dragon_take)||finalMainFlag(raw,3)),
+      slayer:projectFull&&finalMainFlag(raw,3)&&dragon<10&&power>=65&&mid60>=3,
+      promotion:projectFull&&merit>=70&&reputation>=45&&bossTrust>=45&&promoSupport>=(hard?4:3)&&promoOppose<=(hard?2:3)&&(yes(f.duelWin)||trust>=30),
+      unsung:projectFull&&merit>=75&&reputation<35,
+      next:projectFull&&finalMainFlag(raw,1)&&career>=75&&dragon<10,
+      firstline:projectFull&&finalMainFlag(raw,1)&&career>=55&&dragon<10,
+      joints:joints,
+      v14Candidate:candidate,
+      v14RouteMatched:eventRouteMatches(candidate,finalRoute),
+      ncXiaoyuan:projectFull&&rel(raw,'xiaoyuan')>=85&&finalMainFlag(raw,1),
+      ncCaolan:projectFull&&rel(raw,'caolan')>=65&&finalMainFlag(raw,1),
+      ncRuidong:projectFull&&rel(raw,'ruidong')>=70&&finalMainFlag(raw,1),
+      ncHeina:projectFull&&rel(raw,'heina')>=70&&dragon>=6&&finalMainFlag(raw,3),
+      ncWeilai:progress>=35&&!projectFull&&rel(raw,'weilai')>=60,
+      ncLove:progress>=35&&!projectFull&&yes(f.love)&&heart>=50&&dragon<=6,
+      projectFullySuccessful:projectFull,
+      island:maxRel(raw)<=30,
+      halfbridge:progress>=35&&!projectFull&&alive3&&trust>=45&&morale>=45,
+      survive:progress>=35&&!projectFull&&alive3,
+      beTrust:progress>=35&&!projectFull&&!alive3,
+      beProgress:progress<35,
+      legacy:raw.legacy||null,
+      _audit:{mid60:mid60,highTicket:ticket,maxRel:maxRel(raw),finalRoute:finalRoute}
+    };
+  }
 
   function resolveFinalEnding(s){
     s=s||{};
@@ -33,8 +83,7 @@
     ]);
     if(hit)return hit;
 
-    // P2: whole-run career trajectory. Promotion/credit outcomes describe the complete run,
-    // so they beat a single late random-event echo.
+    // P2: whole-run career trajectory.
     hit=first([
       {id:'ge_promotion',when:yes(s.promotion)},
       {id:'ge_unsung',when:yes(s.unsung)},
@@ -47,11 +96,10 @@
     hit=first(JOINT.map(function(id){return{id:id,when:yes(s.joints&&s.joints[id])};}));
     if(hit)return hit;
 
-    // P4: one-event echo; whitelist the id shape so arbitrary flags cannot hijack final resolution.
+    // P4: one-event echo; whitelist id and require matching final route.
     if(V14_EVENT.test(s.v14Candidate||'')&&s.v14RouteMatched!==false)return s.v14Candidate;
 
-    // P5: relationship/NPC specialization. Love is a public ending only for an incomplete project;
-    // otherwise it stays in the private-life epilogue.
+    // P5: relationship/NPC specialization. Love is public only for an incomplete project.
     hit=first([
       {id:'nc_xiaoyuan',when:yes(s.ncXiaoyuan)},
       {id:'nc_caolan',when:yes(s.ncCaolan)},
@@ -75,5 +123,5 @@
     return s.legacy||null;
   }
 
-  return {PRIORITY:PRIORITY,V14_EVENT:V14_EVENT,JOINT:JOINT,resolveFinalEnding:resolveFinalEnding};
+  return {PRIORITY:PRIORITY,V14_EVENT:V14_EVENT,JOINT:JOINT,V14_ROUTE:V14_ROUTE,buildFinalEndingState:buildFinalEndingState,resolveFinalEnding:resolveFinalEnding};
 });
