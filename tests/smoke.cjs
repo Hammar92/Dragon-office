@@ -104,6 +104,11 @@ assert.ok(el('pm-right-panel').innerHTML.includes('还没有形成需要单独�
 run("applyChoice({e:{},npc:{mingye:3}}); renderLifeSimPanels()");
 assert.strictEqual(run('!!flags.uiInteractedNPC.mingye'),true,'NPC appears only after actual interaction');
 assert.ok(el('pm-right-panel').innerHTML.includes('明夜'),'interacted NPC appears as a sidebar tab');
+renderHUD();
+assert.strictEqual(el('bars').innerHTML,'','legacy status bars are removed after render');
+assert.strictEqual(el('npcs').innerHTML,'','legacy people/status chips are removed after render');
+assert.ok(el('pm-left-panel').innerHTML.includes('个人状态'),'left sidebar owns personal state');
+assert.ok(el('pm-right-panel').innerHTML.includes('项目状态'),'right sidebar owns project state');
 assert.ok(html.includes('能力数值'),'ability values are visibly labeled');
 assert.ok(html.includes('组织威信'),'boss/team prestige is visibly labeled');
 assert.ok(!html.includes('💗 有人等你'),'love line stays hidden from HUD');
