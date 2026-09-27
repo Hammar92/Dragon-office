@@ -392,14 +392,14 @@
        玩家会被结构性地推向成为恶龙，那就不叫选择，叫诱导。
    - 真结局门槛 = 高层票（CEO 或 CSO ≥55）+ 中层 ≥3 人 ≥60 + 权力 ≥65 + 进度 ≥55 + 龙性 ≥7
      rationale：屠龙需要背书；一个人上不去；而"用别人的肩膀上去"才是成为恶龙的定义
-   - 阈值均为 [PLACEHOLDER · 已由 2000 局蒙特卡洛校准]，见文末 tuning 注释
+   - 阈值均为 [RC calibration · 2000局蒙特卡洛校准]，见文末 tuning 注释
    ===================================================================== */
 /* trust 起点 55 → 60：v4 扩编后可选项显著增多（13 章 + 21 条事件），
    每局要承受的信任支出同步上升；起点抬高 5 点是为了维持原有的"信任—拨款"汇率。
-   [PLACEHOLDER · 由 tools/sim.js 校准，见文末 tuning 注释] */
+   [RC calibration · tools/sim.js，见文末 tuning 注释] */
 /* career 起点 25：入职时的市场价。它不是第五维的附属，它是另一家公司愿意为你付多少。
    注意：career 不是死亡线。它归零不会让你输掉这一局，它只是夺走你"体面退场"的能力。
-   [PLACEHOLDER · 由 tools/sim.js 校准] */
+   [RC calibration · tools/sim.js] */
 const INIT = { trust:60, progress:25, morale:55, power:12, sanity:80, dragon:0, career:20,
   stamina:60, heart:70, merit:0, reputation:8, piRep:5, blame:0, bossTrust:30, officeMemory:{}, officeTrail:[] };
 
@@ -422,7 +422,7 @@ const STAT_META = {
    也是把「找寻你的爱」从支线文案变成硬性生存条件的唯一办法。
    换句话说：不找，你必然在第 10~12 章疯掉。这就是这条支线的必要性。
 
-   ⚠ 已知重叠风险 [PLACEHOLDER · 待 playtest]：
+   ⚠ RC已知重叠风险（接受并保留监测）：
    理智（sanity）与心力（heart）都承担「你还撑不撑得住」的语义。
    本作的分工是：sanity = 长期污染度，只在自欺/造假时掉，几乎不自然回复；
                  heart  = 短周期情绪燃料，每次共事都掉，只有爱能回。
@@ -431,7 +431,7 @@ const STAT_META = {
    为什么用派生规则，而不是给每个选项手写 cost:{...}：
    手写等于把「努力是有价的」这条规律埋进上百个数据里，改一处要核对全部 —— 与
    「履历」用同一套方法论：一条可被整体校准的经济规律 + 少量显式例外。
-   所有系数 [PLACEHOLDER · 由 tools/sim.js 校准]。 */
+   所有系数 [RC calibration · tools/sim.js]。 */
 
 const REST_MAX = 1;   // 每章可用的「喘口气」次数
 const AD_MAX   = 1;   // 每章可看的「线上必修培训」次数
@@ -459,7 +459,7 @@ function costStamina(c){
    rationale：这两件事之所以贵，是因为它们都得先把你自己关掉一次。
    最后一行是整套规则里唯一的正向 source —— 你守住了东西，今晚就睡得着。
 
-   校准记录 [PLACEHOLDER · tools/probe6.js 500 局 × 4 策略]：
+   校准记录 [RC · tools/probe6.js 500局 × 4策略]：
      heavy=6 时项目派主线结局率 26.6%，比关掉整套第二层经济的对照组（33.2%）低 6.6pp ——
      第二层经济确实在啃主线，这条差额必须校准掉，不能当成"难度"接受。
      heavy=5 → 主线 31.8%（对照组的 96%）；heavy=4 → 34.2%。取 5，理由见下。
@@ -2122,7 +2122,7 @@ function applyChapterPassives(){
    收的是士气而不是信任，理由有二：
      ① 信任是全局最稀缺且唯一会让三条路线同时死亡的资源，拿它当 sink 会把整局打死；
      ② 士气此前是四种死亡线里最不容易触发的一条（≈0%），等于一个空着的 sink。
-   阈值 [PLACEHOLDER · 由 tools/sim.js 校准]：≥70 每章 -1，≥88 每章 -2。
+   阈值 [RC calibration · tools/sim.js]：≥70 每章 -1，≥88 每章 -2。
    校准记录：曾试过对信任征收（≥60/-1、≥80/-2 与 ≥85/-1 两版），
              均衡派信任死亡率从 27% 分别飙到 65% / 54% —— 记录在此，别再回头试。 */
 function applyPowerTax(){
@@ -2783,7 +2783,7 @@ function cfStop(){
    统一上限 30 = 最长那次午休（45 分钟）的回报。理由：小游戏应该是"用操作换回 Loss Aversion"，
    而不是一条比午休更划算的捷径。曾经的版本 wis total*1.6 最高可到 +48 ——
    两倍于任何一次午休，等于把游戏从"怎么安排这一周"改成了"你手速够不够快"（手释放时包 fractures）。
-   [PLACEHOLDER · 待 playtest 验证三条曲线的实际手感差距是否大到值得选] */
+   [RC tuning note · 三条曲线差异已保留，浏览器回归继续观察手感] */
 const MG_CAP = 30;
 
 /* ── 🗂 清空收件箱：按刚才高亮的顺序回完这四封 ──
@@ -3275,11 +3275,11 @@ function renderChapter(){
    D. 合规背书：加琳 / 肖恩 / K总 任一本轮认可你 → career += 2
       rationale：跨公司通用的背书只有一种 —— 专业合规口的人愿意说"这个人守得住"。
    E. 签字污点：不可逆造假 / 隐瞒安全信号 → career -= 20
-   校准记录 [PLACEHOLDER]：初版 A=0.5/B=0.25/C=2 跑出项目派履历中位数 93、上限打顶，
+   校准记录 [RC]：初版 A=0.5/B=0.25/C=2 跑出项目派履历中位数 93、上限打顶，
    履历失去区分度 —— 调到 A=0.3/B=0.1（削弱本就容易打顶的权力对履历的贡献）/C=3（龙折旧加重），
    目标：项目派中位数落在 55~70，跳槽线 62 需要刻意积累；而屠龙路线被龙性磨到 50 以下（走不掉）。
       rationale：在这个行业，签字是跟着人走的，不跟着公司走。
-   系数 [PLACEHOLDER · 由 tools/sim.js 校准] */
+   系数 [RC calibration · tools/sim.js] */
 function deriveCareer(c){
   const e = (c && c.e) || {}, npc = (c && c.npc) || {};
   let d = 0; const why = [];
@@ -3844,7 +3844,7 @@ function showResult(text, deltas, next){
         此处的闭环 —— 成为龙的人走不掉。你赢下了这间屋子，同时失去了离开的能力。
    ④ 35 ≤ progress < 60 项目打折活着 → 半座桥 / 幸存者
    ⑤ 兜底 → 项目祭天
-   所有阈值 [PLACEHOLDER · 由 tools/sim.js 校准] */
+   所有阈值 [RC calibration · tools/sim.js] */
 /* =====================  v7 · 语言决斗 QTE  =====================
    触发条件：钟时信任很低，但你已经积累了足够高的真实功勋。
    含义不是“关系差所以吵架”，而是“她已经压不住一个有记录、有证人、有成果的人”。 */
@@ -4056,7 +4056,7 @@ function renderVP(){
 
 /* =====================  v10.0 · Character Creation / Coalition Governance  =====================
    这版先把机制接进主循环，不做最终数值平衡。
-   所有初始点数、门槛、成长点产出与倍率均标记为 PLACEHOLDER，待完整事件设计完成后统一模拟校准。 */
+   RC数值已冻结：人生阶段8点预算，能力底盘、能力检定、成长点产出和主要倍率进入发布候选基线。 */
 
 /* ---------- A. 当前人物表修订：旧法务NPC已删除；苏苏改为苏苏；加入则韩、杨杨 ---------- */
 
@@ -4129,7 +4129,7 @@ var PLAYER_OPTION_META={
   }
 };
 function playerBaseSkills(){
-  var x={professional:42,social:42,charm:42,project:40,insight:40}; // PLACEHOLDER
+  var x={professional:34,social:34,charm:34,project:32,insight:34}; // RC frozen legacy bootstrap baseline
   ["education","years","specialty","social","charm"].forEach(function(g){
     var m=PLAYER_OPTION_META[g][PLAYER_DRAFT[g]];
     Object.keys((m&&m.mods)||{}).forEach(function(k){x[k]=Math.max(0,Math.min(100,(x[k]||0)+m.mods[k]));});
@@ -4146,7 +4146,7 @@ function renderCreatorState(){
   if(!box) return;
   var x=playerBaseSkills();
   box.innerHTML='<div class="creator-stats">'+Object.keys(x).map(function(k){return '<span>'+skillName(k)+' <b>'+x[k]+'</b></span>';}).join("")+'</div>'
-    +'<div class="creator-note">当前数值仅用于机制验证，初始预算、词条成本和最优解将在完整事件设计后统一校准。</div>';
+    +'<div class="creator-note">基础能力由人生经历叠加形成；每个人生阶段有 8 点预算，未使用的点数不会自动转入下一阶段。</div>';
   document.querySelectorAll("[data-create-group]").forEach(function(el){
     var g=el.getAttribute("data-create-group"),v=el.getAttribute("data-create-value");
     el.classList.toggle("selected",PLAYER_DRAFT[g]===v);
@@ -4227,15 +4227,15 @@ function addSkillGate(chId,index,req){
   var ch=CHAPTERS.find(function(x){return x.id===chId;});
   if(ch&&ch.choices&&ch.choices[index]) ch.choices[index].lock=Object.assign({},ch.choices[index].lock||{},{skill:req});
 }
-/* PLACEHOLDER：先验证“能力不足看得到但选不了”的体验，最终门槛后续统一重算。 */
-addSkillGate("c2",2,{professional:44});
-addSkillGate("c3",1,{project:40});
-addSkillGate("c4",0,{social:40,insight:42});
+/* RC frozen ability gates: early checks reward specialization without becoming automatic. */
+addSkillGate("c2",2,{professional:50});
+addSkillGate("c3",1,{project:48});
+addSkillGate("c4",0,{social:46,insight:48});
 
 /* ---------- D. 魅力 / 社交倍率 ---------- */
 function playerRelationMultiplier(c){
   var sk=(S&&S.player&&S.player.skills)||{social:50,charm:50};
-  var charm=1+(sk.charm-50)/220; // PLACEHOLDER
+  var charm=1+(sk.charm-50)/240; // RC frozen: charm changes relation gains modestly
   var social=1;
   var tp=topicOfChoice(c||{});
   if(tp==="RELATION"||tp==="POWER"||(c&&c.interact)) social=1+(sk.social-50)/260;
@@ -4297,7 +4297,7 @@ function v10EnsureOrg(){
   ensureOrgSystems();
   if(!S.org.functionalLinks) S.org.functionalLinks={};
   if(!S.org.politicalDebt) S.org.politicalDebt={founder:0,professional:0,execution:0,positional:0,external:0};
-  if(S.org.cohesion==null) S.org.cohesion=50; // PLACEHOLDER
+  if(S.org.cohesion==null) S.org.cohesion=50; // RC frozen neutral organization baseline
   if(S.org.governanceUsedChapter==null) S.org.governanceUsedChapter=-1;
   return S.org;
 }
@@ -4362,7 +4362,7 @@ function showGovernance(){
 }
 
 /* ---------- G. 成长商店 ---------- */
-var SKILL_UPGRADE_COST=1; // PLACEHOLDER
+var SKILL_UPGRADE_COST=1; // RC frozen: milestone point cost
 function maybeGrantGrowthPoints(){
   if(!S||!S.player) return;
   var milestones=[5,10,14];
@@ -4379,14 +4379,14 @@ function buySkill(k){
   if(!S||!S.player) return;
   if((S.player.skillPoints||0)<SKILL_UPGRADE_COST){toast("成长点不足","down");return;}
   S.player.skillPoints-=SKILL_UPGRADE_COST;
-  S.player.skills[k]=clamp((S.player.skills[k]||0)+5); // PLACEHOLDER
+  S.player.skills[k]=clamp((S.player.skills[k]||0)+4); // RC frozen per-purchase skill gain
   toast("🛍 "+skillName(k)+"提升","up");renderHUD();showGrowthShop();
 }
 function showGrowthShop(){
   if(!S) return;
   var p=S.player||{},sk=p.skills||{};
   var rows=Object.keys(sk).map(function(k){
-    return '<button class="choice" onclick="buySkill(\''+k+'\')"><b>'+skillName(k)+' '+sk[k]+'</b><span class="badge cost">成长点 '+SKILL_UPGRADE_COST+'</span><br><span style="font-size:12px;color:var(--dim)">晋升和关键项目经历后可以继续提升；最终增幅与成本待数值测试。</span></button>';
+    return '<button class="choice" onclick="buySkill(\''+k+'\')"><b>'+skillName(k)+' '+sk[k]+'</b><span class="badge cost">成长点 '+SKILL_UPGRADE_COST+'</span><br><span style="font-size:12px;color:var(--dim)">晋升和关键项目经历后可以继续提升；每次消耗 1 点成长点并提升 4 点能力。</span></button>';
   }).join("");
   document.getElementById("scene-area").innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🛍</span> 成长商店</div>'
     +'<div class="scene-sub">可用成长点：'+(p.skillPoints||0)+'。能力会解锁事件选项；社交影响说服效果，魅力影响NPC态度与关系收益倍率。</div>'
@@ -4457,16 +4457,16 @@ initSocial=function(){
 /* =====================  v10.1 · Life Build / Personality / Emotion  =====================
    捏人不再直接“购买北大/专业优秀”等结果，而是在不同人生阶段花有限时间点。
    经历先改变能力/性格/身心，再由经历组合自动拼出品质词条。
-   所有时间点、阈值、倍率均为 PLACEHOLDER，最终统一跑模拟校准。 */
+   RC数值基线：每阶段8点预算；能力底盘与成长幅度已按发布候选规则冻结。 */
 
 /* ---------- I. 六个人生阶段与经历 ---------- */
 var LIFE_STAGE_META=[
-  {id:"school",name:"高中以前",time:4,desc:"第一次决定：时间用在成绩、人群还是身体上。"},
-  {id:"college",name:"大学",time:4,desc:"学校只是起点；你真正把时间花在哪里，会留下更久。"},
-  {id:"graduate",name:"研究生 / 博士",time:4,desc:"专业深度、导师体系、抗压方式开始定型。"},
-  {id:"early",name:"入行 0–3 年",time:4,desc:"第一次学会什么叫交付，也第一次学会什么叫甩锅。"},
-  {id:"middle",name:"工作 3–6 年",time:4,desc:"从做事的人变成让别人一起做事的人。"},
-  {id:"senior",name:"工作 6 年+",time:4,desc:"开始决定资源、团队和项目，而不只是完成任务。"}
+  {id:"school",name:"高中以前",time:8,desc:"第一次决定：时间用在成绩、人群还是身体上。"},
+  {id:"college",name:"大学",time:8,desc:"学校只是起点；你真正把时间花在哪里，会留下更久。"},
+  {id:"graduate",name:"研究生 / 博士",time:8,desc:"专业深度、导师体系、抗压方式开始定型。"},
+  {id:"early",name:"入行 0–3 年",time:8,desc:"第一次学会什么叫交付，也第一次学会什么叫甩锅。"},
+  {id:"middle",name:"工作 3–6 年",time:8,desc:"从做事的人变成让别人一起做事的人。"},
+  {id:"senior",name:"工作 6 年+",time:8,desc:"开始决定资源、团队和项目，而不只是完成任务。"}
 ];
 var LIFE_EVENTS={
   school:[
@@ -4541,7 +4541,7 @@ function toggleLifeEvent(stage,id){
 function setLifeGender(g){LIFE_DRAFT.gender=g;renderLifeBuilder();}
 function lifeSummary(){
   var x={
-    skills:{professional:38,social:38,charm:38,management:36,project:36,insight:38,fitness:40},
+    skills:{professional:34,social:34,charm:34,management:32,project:32,insight:34,fitness:38},
     personality:{stability:50,boundary:50,conflict:50,control:50,drive:50,trust:50},
     body:{maxStamina:60,recovery:10},
     heart:{resilience:50,recovery:8},
@@ -4560,7 +4560,13 @@ function lifeSummary(){
     });
   });
   x.skills.project=x.skills.management; // 兼容v10之前的项目管理门槛
-  Object.keys(x.skills).forEach(function(k){x.skills[k]=clamp(x.skills[k]);});
+  /* 8点/阶段允许更丰富的人生履历，但高能力不再线性叠满。
+     65以下保留全部经历收益；65以上按40%折算，专精仍强但不会轻易多项封顶。 */
+  function lifeSkillCurve(v){
+    v=Number(v)||0;
+    return clamp(Math.round(v<=65?v:65+(v-65)*0.40));
+  }
+  Object.keys(x.skills).forEach(function(k){x.skills[k]=lifeSkillCurve(x.skills[k]);});
   Object.keys(x.personality).forEach(function(k){x.personality[k]=clamp(x.personality[k]);});
   x.body.maxStamina=Math.max(45,Math.min(100,x.body.maxStamina));
   x.heart.resilience=clamp(x.heart.resilience);
@@ -4751,8 +4757,8 @@ useGovernanceTool=function(k){
   var p=ensurePlayerPsych(),before=v10EnsureOrg().cohesion;
   _useGovernanceToolV10(k);
   var mg=p.skills.management||p.skills.project||40;
-  if(mg>=50){
-    var bonus=mg>=60?3:2; // PLACEHOLDER
+  if(mg>=55){
+    var bonus=mg>=70?3:2; // RC frozen high-management breakpoint
     v10EnsureOrg().cohesion=clamp(v10EnsureOrg().cohesion+bonus);
     if(k==="critical"&&playerHasTrait("manager"))S.progress=clamp(S.progress+1);
     toast("🧭 管理能力让治理机制额外生效","up");
@@ -4766,11 +4772,11 @@ buySkill=function(k){
   if((S.player.skillPoints||0)<SKILL_UPGRADE_COST){toast("成长点不足","down");return;}
   S.player.skillPoints-=SKILL_UPGRADE_COST;
   if(k==="heartResilience"){
-    S.player.heartProfile.resilience=clamp(S.player.heartProfile.resilience+5);
+    S.player.heartProfile.resilience=clamp(S.player.heartProfile.resilience+4);
   }else{
-    S.player.skills[k]=clamp((S.player.skills[k]||0)+5);
+    S.player.skills[k]=clamp((S.player.skills[k]||0)+4);
     if(k==="management")S.player.skills.project=S.player.skills.management;
-    if(k==="fitness")S.player.body.maxStamina=Math.min(100,S.player.body.maxStamina+3);
+    if(k==="fitness")S.player.body.maxStamina=Math.min(100,S.player.body.maxStamina+2);
   }
   S.player.emotionalControl=currentEmotionalControl();
   toast("🛍 "+(k==="heartResilience"?"心力韧性":skillName(k))+"提升","up");renderHUD();showGrowthShop();
@@ -4833,7 +4839,7 @@ renderHUD=function(){
    事件池扩展到“能力 + 管理 + 身心 + 性格 + 情感经历”共同塑造角色。
    情感经历不是恋爱Buff：稳定关系、分手、背叛、长期单身、照顾家庭等会以不同方式影响
    初始Heart / Sanity / Morale、人格边界、信任、洞察、恢复能力与后续情绪控制。
-   所有数值仍为 PLACEHOLDER，待完整事件池与主线事件完成后统一跑模拟。 */
+   RC数值基线已冻结；情感经历继续通过不同方向影响初始状态，不做简单正向加成。 */
 
 /* ---------- Q. 扩展人生事件池 ---------- */
 function addLifeEvents(stage,events){

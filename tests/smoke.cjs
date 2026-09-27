@@ -38,7 +38,6 @@ for(const id of ['v11_4','v11_5','v11_7','v11_9','v11_13','v11_14','v11_15','v11
 }
 console.log('Smoke OK: rest, numeric progress, eight QTEs, three-round completion');
 
-// Verify that chapter completion reaches the QTE entry, not only direct invocations.
 run("chapterIdx=3; flags.battle_v11_4=false; maybeEvent=function(id,next){next()}; S.trust=60; S.stamina=80; S.heart=80; pickChapter(0); continueResult()");
 assert.strictEqual(run('projectBattleState.chId'),'v11_4','chapter choice reaches meeting QTE');
 console.log('Chapter integration OK');
@@ -46,6 +45,22 @@ console.log('Chapter integration OK');
 assert.strictEqual(run('V11_CHAPTERS.length'),18,'all chapters reachable');
 assert.strictEqual(run('V11_EVENTS.length'),34,'all random events loaded');
 assert.strictEqual(run('ACHIEVEMENTS.length'),108,'achievement count');
+assert.strictEqual(run('LIFE_STAGE_META.length'),6,'six life-build stages');
+assert.strictEqual(run('LIFE_STAGE_META.every(s=>s.time===8)'),true,'every life-build stage starts with 8 points');
+run("window.NG_STAGE_ALLOC={school:2,college:0,graduate:0,early:0,middle:0,senior:0}");
+assert.ok(run("lifeBuilderHTML().includes('时间 0 / 10（多周目 +2）')"),'NG+ adds on top of the 8-point stage baseline');
+run("window.NG_STAGE_ALLOC={school:0,college:0,graduate:0,early:0,middle:0,senior:0}");
+run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[])");
+assert.deepStrictEqual(run('(()=>{const x=lifeSummary();return [x.skills.professional,x.skills.social,x.skills.charm,x.skills.management,x.skills.insight,x.skills.fitness]})()'),[34,34,34,32,34,38],'RC life-build baseline skills');
+run("LIFE_DRAFT.selected={school:['school_care'],college:['college_org','college_intern','college_parttime','college_sidejob'],graduate:['grad_teach','grad_collab'],early:['early_biotech','early_owner','early_goodboss','early_cra'],middle:['mid_cross','mid_team','mid_fire','mid_vendor'],senior:['senior_boundary','senior_mentor','senior_crisis','senior_hire']}");
+assert.strictEqual(run('lifeSummary().skills.management'),91,'8-point extreme management build is softened instead of hard-capping');
+assert.strictEqual(run('LIFE_STAGE_META.every(s=>stageSpent(s.id)<=s.time)'),true,'extreme management witness respects every 8-point stage budget');
+run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[])");
+assert.strictEqual(run('SKILL_UPGRADE_COST'),1,'RC growth point cost');
+run("S.player=Object.assign({},S.player,{skills:{professional:40,social:40,charm:40,management:40,project:40,insight:40,fitness:40},skillPoints:1,heartProfile:{resilience:50},body:{maxStamina:60},personality:{stability:50,boundary:50,conflict:50,control:50,drive:50,trust:50}})");
+run("buySkill('professional')");
+assert.strictEqual(run('S.player.skills.professional'),44,'RC skill upgrade adds four');
+
 assert.strictEqual(run('new Set(ACHIEVEMENTS.map(a=>a.id)).size'),108,'unique achievement IDs');
 assert.strictEqual(run(`(()=>{const s=new Set();V11_CHAPTERS.forEach(ch=>(ch.choices||[]).forEach(c=>c.achievement&&s.add(c.achievement)));V11_EVENTS.forEach(ev=>(ev.choices||[]).forEach(c=>c.achievement&&s.add(c.achievement)));return ACHIEVEMENTS.every(a=>s.has(a.id));})()`),true,'all 108 achievements have a real chapter/event source');
 assert.strictEqual(html.includes('unlockAchievement("a')||html.includes("unlockAchievement('a"),false,'no stale hard-coded achievement ID auto-unlocks');
@@ -74,7 +89,6 @@ assert.strictEqual(run('Object.values(v145Audit().lifeDup).every(x=>x.length===0
 assert.strictEqual(run('Object.values(v145Audit().counts).join(",")'),'26,18,34,108,64,2','v14.5 catalog counts');
 assert.strictEqual((html.match(/你其实也想过走。后来算了/g)||[]).length,1,'true dragon duplicated paragraph removed');
 
-// Initial private-life states remain hidden but produce distinct final epilogues.
 run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[]); LIFE_DRAFT.selected.middle=['mid_marriage']; S=null; flags={}; usedEvents=[]; usedHeina=[]; chapterIdx=0; runChapters=[]; startGame()");
 assert.strictEqual(run('ensureRelationshipArc().origin'),'partnered_family','marriage initializes family relationship');
 assert.strictEqual(run('flags.love'),false,'existing partner does not expose new-love flag');
@@ -91,7 +105,6 @@ assert.strictEqual(run('v145Audit().formulaicEmotion'),false,'old canned emotion
 assert.deepStrictEqual(run('v145Audit().achievementCommentsMissing'),[],'all achievement comments present');
 assert.strictEqual(run('v145Audit().hiddenLoveHud'),false,'hidden relationship stays off HUD');
 
-// Stateful choices: low heart/sanity can add choices, but the finale stays route-safe.
 run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[]); S=null; flags={}; usedEvents=[]; usedHeina=[]; chapterIdx=0; runChapters=[]; startGame(); S.heart=20");
 assert.ok(run('contextualChoiceList(runChapters[0].choices).length')>3,'low heart adds contextual option');
 run("S.heart=80; S.sanity=35");
@@ -101,7 +114,6 @@ assert.ok(run('contextualChoiceList(runChapters[0].choices).some(c=>c.contextExt
 run("chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); S.heart=20; S.sanity=30; S.power=80");
 assert.strictEqual(run('contextualChoiceList(runChapters[17].choices).length'),3,'final chapter preserves only route-bearing choices');
 
-// Old creator saves with contradictory same-stage romance selections normalize to one relationship event.
 run("LIFE_DRAFT.selected.middle=['mid_marriage','mid_divorce','mid_single']; normalizeRelationshipSelections()");
 assert.strictEqual(run('LIFE_DRAFT.selected.middle.filter(id=>(LIFE_EVENTS.middle.find(e=>e.id===id)||{}).exclusive==="middle_romance").length'),1,'old contradictory romance selections normalized');
 assert.ok(html.includes('64 个结局，本机存档。'),'intro ending count is current');
@@ -132,7 +144,6 @@ assert.strictEqual(run('projectBattleState.round'),1,'stale QTE click ignored');
 run('projectBattleState=null; showAlliances()');
 assert.ok(el('scene-area').innerHTML.includes('内部关系网'),'current PM panel renders');
 
-// Existing v12 saves map old random IDs to their surviving outcomes and archive retired ones.
 const legacyStorage=new Map([['dragon_achievements','["a55","a70","a72","a99"]'],['dragon_ng_points','7']]);
 const migrated=Object.assign({},context,{localStorage:{getItem:k=>legacyStorage.get(k)||null,setItem:(k,v)=>legacyStorage.set(k,String(v))}});
 migrated.window=migrated;
@@ -142,7 +153,6 @@ assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_achievements'
 assert.strictEqual(legacyStorage.get('dragon_ng_points'),'7','earned points preserved');
 console.log('Story, random achievements, migration, and QTE guards OK');
 
-// Every new outcome has a real event choice and a matching final route.
 run('showEnding=function(k){window.testEnding=k}; projectBattleState=null');
 run("flags={}; chapterIdx=4; S.sanity=80; applyChoice(presentedChoice(V11_EVENTS[25].choices,0)); chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); applyChoice(presentedChoice(runChapters[17].choices,0))");
 assert.strictEqual(run('flags.v14Candidate'),'v14_0_0','event choice records its outcome');
@@ -173,8 +183,6 @@ run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'power'}; window.testEnding='';
 assert.notStrictEqual(run('window.testEnding'),'v14_0_0','mismatched final decision falls through');
 console.log('64 endings and dragon route priority OK');
 
-
-/* v14.5 regression: hidden relationship state + contextual choices + achievement commentary */
 assert.strictEqual(run('typeof v145Audit'), 'function', 'v14.5 audit installed');
 assert.strictEqual(run('v145Audit().formulaicEmotion'), false, 'low-sanity dialogue no longer uses canned prefixes');
 assert.strictEqual(run('v145Audit().achievementCommentsMissing.length'), 0, 'all 108 achievements have commentary');
@@ -207,3 +215,6 @@ assert.strictEqual(run("(document.getElementById('ending-story').textContent.mat
 assert.strictEqual(run("(document.getElementById('ending-story').textContent.match(/【私人生活 · 没有写进组织架构图】/g)||[]).length"),1,'relationship-specific epilogue appears once');
 
 console.log('v14.5 relationship/contextual-choice regressions OK');
+
+// RC-06 is intentionally a separate release gate in release-placeholders.spec.js.
+// Smoke remains green for functional regression while the release gate stays red until tuning is frozen.
