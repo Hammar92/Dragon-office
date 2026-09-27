@@ -4129,7 +4129,7 @@ var PLAYER_OPTION_META={
   }
 };
 function playerBaseSkills(){
-  var x={professional:42,social:42,charm:42,project:40,insight:40}; // PLACEHOLDER
+  var x={professional:34,social:34,charm:34,project:32,insight:34}; // RC frozen legacy bootstrap baseline
   ["education","years","specialty","social","charm"].forEach(function(g){
     var m=PLAYER_OPTION_META[g][PLAYER_DRAFT[g]];
     Object.keys((m&&m.mods)||{}).forEach(function(k){x[k]=Math.max(0,Math.min(100,(x[k]||0)+m.mods[k]));});
@@ -4146,7 +4146,7 @@ function renderCreatorState(){
   if(!box) return;
   var x=playerBaseSkills();
   box.innerHTML='<div class="creator-stats">'+Object.keys(x).map(function(k){return '<span>'+skillName(k)+' <b>'+x[k]+'</b></span>';}).join("")+'</div>'
-    +'<div class="creator-note">当前数值仅用于机制验证，初始预算、词条成本和最优解将在完整事件设计后统一校准。</div>';
+    +'<div class="creator-note">基础能力由人生经历叠加形成；每个人生阶段有 8 点预算，未使用的点数不会自动转入下一阶段。</div>';
   document.querySelectorAll("[data-create-group]").forEach(function(el){
     var g=el.getAttribute("data-create-group"),v=el.getAttribute("data-create-value");
     el.classList.toggle("selected",PLAYER_DRAFT[g]===v);
@@ -4227,15 +4227,15 @@ function addSkillGate(chId,index,req){
   var ch=CHAPTERS.find(function(x){return x.id===chId;});
   if(ch&&ch.choices&&ch.choices[index]) ch.choices[index].lock=Object.assign({},ch.choices[index].lock||{},{skill:req});
 }
-/* PLACEHOLDER：先验证“能力不足看得到但选不了”的体验，最终门槛后续统一重算。 */
-addSkillGate("c2",2,{professional:44});
-addSkillGate("c3",1,{project:40});
-addSkillGate("c4",0,{social:40,insight:42});
+/* RC frozen ability gates: early checks reward specialization without becoming automatic. */
+addSkillGate("c2",2,{professional:50});
+addSkillGate("c3",1,{project:48});
+addSkillGate("c4",0,{social:46,insight:48});
 
 /* ---------- D. 魅力 / 社交倍率 ---------- */
 function playerRelationMultiplier(c){
   var sk=(S&&S.player&&S.player.skills)||{social:50,charm:50};
-  var charm=1+(sk.charm-50)/220; // PLACEHOLDER
+  var charm=1+(sk.charm-50)/240; // RC frozen: charm changes relation gains modestly
   var social=1;
   var tp=topicOfChoice(c||{});
   if(tp==="RELATION"||tp==="POWER"||(c&&c.interact)) social=1+(sk.social-50)/260;
@@ -4297,7 +4297,7 @@ function v10EnsureOrg(){
   ensureOrgSystems();
   if(!S.org.functionalLinks) S.org.functionalLinks={};
   if(!S.org.politicalDebt) S.org.politicalDebt={founder:0,professional:0,execution:0,positional:0,external:0};
-  if(S.org.cohesion==null) S.org.cohesion=50; // PLACEHOLDER
+  if(S.org.cohesion==null) S.org.cohesion=50; // RC frozen neutral organization baseline
   if(S.org.governanceUsedChapter==null) S.org.governanceUsedChapter=-1;
   return S.org;
 }
@@ -4362,7 +4362,7 @@ function showGovernance(){
 }
 
 /* ---------- G. 成长商店 ---------- */
-var SKILL_UPGRADE_COST=1; // PLACEHOLDER
+var SKILL_UPGRADE_COST=1; // RC frozen: milestone point cost
 function maybeGrantGrowthPoints(){
   if(!S||!S.player) return;
   var milestones=[5,10,14];
@@ -4379,14 +4379,14 @@ function buySkill(k){
   if(!S||!S.player) return;
   if((S.player.skillPoints||0)<SKILL_UPGRADE_COST){toast("成长点不足","down");return;}
   S.player.skillPoints-=SKILL_UPGRADE_COST;
-  S.player.skills[k]=clamp((S.player.skills[k]||0)+5); // PLACEHOLDER
+  S.player.skills[k]=clamp((S.player.skills[k]||0)+4); // RC frozen per-purchase skill gain
   toast("🛍 "+skillName(k)+"提升","up");renderHUD();showGrowthShop();
 }
 function showGrowthShop(){
   if(!S) return;
   var p=S.player||{},sk=p.skills||{};
   var rows=Object.keys(sk).map(function(k){
-    return '<button class="choice" onclick="buySkill(\''+k+'\')"><b>'+skillName(k)+' '+sk[k]+'</b><span class="badge cost">成长点 '+SKILL_UPGRADE_COST+'</span><br><span style="font-size:12px;color:var(--dim)">晋升和关键项目经历后可以继续提升；最终增幅与成本待数值测试。</span></button>';
+    return '<button class="choice" onclick="buySkill(\''+k+'\')"><b>'+skillName(k)+' '+sk[k]+'</b><span class="badge cost">成长点 '+SKILL_UPGRADE_COST+'</span><br><span style="font-size:12px;color:var(--dim)">晋升和关键项目经历后可以继续提升；每次消耗 1 点成长点并提升 4 点能力。</span></button>';
   }).join("");
   document.getElementById("scene-area").innerHTML='<div class="scene"><div class="scene-title"><span class="accent">🛍</span> 成长商店</div>'
     +'<div class="scene-sub">可用成长点：'+(p.skillPoints||0)+'。能力会解锁事件选项；社交影响说服效果，魅力影响NPC态度与关系收益倍率。</div>'
@@ -4457,7 +4457,7 @@ initSocial=function(){
 /* =====================  v10.1 · Life Build / Personality / Emotion  =====================
    捏人不再直接“购买北大/专业优秀”等结果，而是在不同人生阶段花有限时间点。
    经历先改变能力/性格/身心，再由经历组合自动拼出品质词条。
-   所有时间点、阈值、倍率均为 PLACEHOLDER，最终统一跑模拟校准。 */
+   RC数值基线：每阶段8点预算；能力底盘与成长幅度已按发布候选规则冻结。 */
 
 /* ---------- I. 六个人生阶段与经历 ---------- */
 var LIFE_STAGE_META=[
@@ -4541,7 +4541,7 @@ function toggleLifeEvent(stage,id){
 function setLifeGender(g){LIFE_DRAFT.gender=g;renderLifeBuilder();}
 function lifeSummary(){
   var x={
-    skills:{professional:38,social:38,charm:38,management:36,project:36,insight:38,fitness:40},
+    skills:{professional:34,social:34,charm:34,management:32,project:32,insight:34,fitness:38},
     personality:{stability:50,boundary:50,conflict:50,control:50,drive:50,trust:50},
     body:{maxStamina:60,recovery:10},
     heart:{resilience:50,recovery:8},
@@ -4751,8 +4751,8 @@ useGovernanceTool=function(k){
   var p=ensurePlayerPsych(),before=v10EnsureOrg().cohesion;
   _useGovernanceToolV10(k);
   var mg=p.skills.management||p.skills.project||40;
-  if(mg>=50){
-    var bonus=mg>=60?3:2; // PLACEHOLDER
+  if(mg>=55){
+    var bonus=mg>=70?3:2; // RC frozen high-management breakpoint
     v10EnsureOrg().cohesion=clamp(v10EnsureOrg().cohesion+bonus);
     if(k==="critical"&&playerHasTrait("manager"))S.progress=clamp(S.progress+1);
     toast("🧭 管理能力让治理机制额外生效","up");
@@ -4766,11 +4766,11 @@ buySkill=function(k){
   if((S.player.skillPoints||0)<SKILL_UPGRADE_COST){toast("成长点不足","down");return;}
   S.player.skillPoints-=SKILL_UPGRADE_COST;
   if(k==="heartResilience"){
-    S.player.heartProfile.resilience=clamp(S.player.heartProfile.resilience+5);
+    S.player.heartProfile.resilience=clamp(S.player.heartProfile.resilience+4);
   }else{
-    S.player.skills[k]=clamp((S.player.skills[k]||0)+5);
+    S.player.skills[k]=clamp((S.player.skills[k]||0)+4);
     if(k==="management")S.player.skills.project=S.player.skills.management;
-    if(k==="fitness")S.player.body.maxStamina=Math.min(100,S.player.body.maxStamina+3);
+    if(k==="fitness")S.player.body.maxStamina=Math.min(100,S.player.body.maxStamina+2);
   }
   S.player.emotionalControl=currentEmotionalControl();
   toast("🛍 "+(k==="heartResilience"?"心力韧性":skillName(k))+"提升","up");renderHUD();showGrowthShop();
@@ -4833,7 +4833,7 @@ renderHUD=function(){
    事件池扩展到“能力 + 管理 + 身心 + 性格 + 情感经历”共同塑造角色。
    情感经历不是恋爱Buff：稳定关系、分手、背叛、长期单身、照顾家庭等会以不同方式影响
    初始Heart / Sanity / Morale、人格边界、信任、洞察、恢复能力与后续情绪控制。
-   所有数值仍为 PLACEHOLDER，待完整事件池与主线事件完成后统一跑模拟。 */
+   RC数值基线已冻结；情感经历继续通过不同方向影响初始状态，不做简单正向加成。 */
 
 /* ---------- Q. 扩展人生事件池 ---------- */
 function addLifeEvents(stage,events){
