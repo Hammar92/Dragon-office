@@ -7236,9 +7236,19 @@ renderLifeBuilder();
         e:{heart:3,progress:2,trust:-1},npc:npcPlus,
         r:'项目没有因为你今晚回家而停摆。真正不习惯这件事的人，反而是你自己。'});
     }
-    /* State-critical choices first, then capability choices; cap at two extras so mobile stays readable. */
+    /* State-critical choices first, then capability choices; cap at two extras so mobile stays readable.
+       Extra choices inherit the nearest authored outcome slot so the 108-achievement catalogue and
+       later branch flags remain complete instead of silently dropping a chapter result. */
     var chosen=[];
-    extras.forEach(function(x){if(chosen.length<2)chosen.push(x);});
+    extras.forEach(function(x){
+      if(chosen.length>=2)return;
+      var slot=x.route==='power'?2:0,base=list[slot]||list[0]||{};
+      if(!x.achievement&&base.achievement)x.achievement=base.achievement;
+      if(!x.achievementName&&base.achievementName)x.achievementName=base.achievementName;
+      if(!x.setFlag&&base.setFlag)x.setFlag=base.setFlag;
+      if(!x.branchFlag&&base.branchFlag)x.branchFlag=base.branchFlag;
+      chosen.push(x);
+    });
     return out.concat(chosen);
   }
   window.contextualChoiceList=contextualChoiceList;
