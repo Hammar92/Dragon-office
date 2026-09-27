@@ -7194,6 +7194,9 @@ renderLifeBuilder();
   function contextualChoiceList(list){
     if(!S||!Array.isArray(list)||list.length!==3)return list;
     if(window._romEv||window._homeEv||window._lovePending||window._inRest||groundingState||projectBattleState)return list;
+    /* Chapter 18 owns the final route/ending flags. Generic state choices here would bypass
+       main_18_* and v14FinalRoute, so contextual extras stop at chapter 17. */
+    if(runChapters&&runChapters.length&&chapterIdx===runChapters.length-1&&runChapters[chapterIdx]&&runChapters[chapterIdx].choices===list)return list;
     var obj=sceneObjectForChoices(list);if(!obj)return list;
     var out=list.slice(),extras=[],npc=sceneNpcKey(obj),npcPlus=npc?{[npc]:2}:{};
     var ctl=(typeof currentEmotionalControl==='function'?currentEmotionalControl():50);
