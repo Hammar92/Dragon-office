@@ -9,7 +9,7 @@
 })(typeof window!=='undefined'?window:globalThis,function(){
   'use strict';
 
-  const PRIORITY=Object.freeze({DUEL:0,TRUE:1,CAREER:2,JOINT:3,EVENT:4,NPC:5,GENERIC:6,LEGACY:7});
+  const PRIORITY=Object.freeze({DUEL:0,TRUE:1,CAREER:2,ORG:2.5,JOINT:3,EVENT:4,NPC:5,GENERIC:6,LEGACY:7});
   const V14_EVENT=/^v14_[0-8]_[0-2]$/;
   const V14_ROUTE=['govern','appease','power'];
   const JOINT_RULES=Object.freeze([
@@ -27,7 +27,7 @@
   function rel(s,k){return num(s&&s.npc&&s.npc[k],0);}
   function maxRel(s){const n=s&&s.npc||{};const a=Object.keys(n).map(function(k){return num(n[k],0);});return a.length?Math.max.apply(null,a):0;}
   function supportCount(s,min){const n=s&&s.npc||{},ally=s&&s.allyAt||{};return Object.keys(n).filter(function(k){return num(n[k],0)>=Math.max(min,num(ally[k],0));}).length;}
-  function highTicket(s){return Math.max(rel(s,'ceo'),rel(s,'cso'));}
+  function avgRel(s,keys){return keys.reduce(function(a,k){return a+rel(s,k);},0)/keys.length;}
   function finalMainFlag(s,n){return yes(s&&s.flags&&s.flags['main_18_'+n]);}
   function eventRouteMatches(candidate,finalRoute){const m=/^v14_([0-8])_([0-2])$/.exec(candidate||'');return !!(m&&finalRoute===V14_ROUTE[Number(m[2])]);}
   function deriveJoints(flags,finalRoute,override){
@@ -45,10 +45,13 @@
     const progress=num(raw.progress),trust=num(raw.trust),morale=num(raw.morale),sanity=num(raw.sanity),heart=num(raw.heart);
     const power=num(raw.power),dragon=num(raw.dragon),merit=num(raw.merit),reputation=num(raw.reputation),bossTrust=num(raw.bossTrust),career=num(raw.career);
     const promoSupport=num(raw.promotionSupport),promoOppose=num(raw.promotionOppose),hard=raw.difficultyId==='hard';
-    const mid60=supportCount(raw,60),ticket=highTicket(raw),alive3=trust>=35&&morale>=35&&sanity>=35;
-    const projectFull=progress>=60;
+    const mid60=supportCount(raw,60),alive3=trust>=35&&morale>=35&&sanity>=35;
+    const projectFull=progress>=60,projectStrong=progress>=72;
     const candidate=raw.v14Candidate||f.v14Candidate||null,finalRoute=raw.v14FinalRoute||f.v14FinalRoute||null;
     const joints=deriveJoints(f,finalRoute,raw.joints);
+    const ally58=supportCount(raw,58);
+    const bossBand=avgRel(raw,['ceo','cso','xiaoyuan']);
+    const proBand=avgRel(raw,['kzong','xiaoen','zihan','mingye']);
 
     return {
       duelWinEnding:yes(raw.duelWinEnding),duelLoseEnding:yes(raw.duelLoseEnding),
@@ -59,6 +62,15 @@
       unsung:projectFull&&merit>=75&&reputation<35,
       next:projectFull&&finalMainFlag(raw,1)&&career>=75&&dragon<10,
       firstline:projectFull&&finalMainFlag(raw,1)&&career>=55&&dragon<10,
+      /* v11 organization endings remain public gallery endings. They sit below explicit
+         career trajectories, but above event echoes: they summarize the whole operating model. */
+      orgSuccession:projectStrong&&power>=68&&bossBand>=58&&trust>=50,
+      orgPuppetmaster:projectStrong&&power>=64&&trust>=58&&bossBand>=55&&morale<62,
+      orgRegent:projectStrong&&power>=60&&proBand>=55&&trust<55,
+      orgCoalition:projectStrong&&ally58>=7&&morale>=58&&power>=48,
+      orgCourt:projectStrong&&power>=52&&trust>=50,
+      orgSystem:projectStrong&&morale>=62&&power>=48,
+      orgProject:projectStrong,
       joints:joints,
       v14Candidate:candidate,
       v14RouteMatched:eventRouteMatches(candidate,finalRoute),
@@ -75,7 +87,7 @@
       beTrust:progress>=35&&!projectFull&&!alive3,
       beProgress:progress<35,
       legacy:raw.legacy||null,
-      _audit:{mid60:mid60,highTicket:ticket,maxRel:maxRel(raw),finalRoute:finalRoute,joints:joints}
+      _audit:{mid60:mid60,ally58:ally58,bossBand:bossBand,proBand:proBand,maxRel:maxRel(raw),finalRoute:finalRoute,joints:joints}
     };
   }
 
@@ -87,6 +99,16 @@
     hit=first([{id:'true_afterdragon',when:yes(s.trueAfterdragon)},{id:'true_dragon',when:yes(s.trueDragon)},{id:'ge_slayer',when:yes(s.slayer)}]);
     if(hit)return hit;
     hit=first([{id:'ge_promotion',when:yes(s.promotion)},{id:'ge_unsung',when:yes(s.unsung)},{id:'ge_next',when:yes(s.next)},{id:'ge_firstline',when:yes(s.firstline)}]);
+    if(hit)return hit;
+    hit=first([
+      {id:'ge_succession',when:yes(s.orgSuccession)},
+      {id:'ge_puppetmaster',when:yes(s.orgPuppetmaster)},
+      {id:'ge_regent',when:yes(s.orgRegent)},
+      {id:'ge_coalition',when:yes(s.orgCoalition)},
+      {id:'ge_court',when:yes(s.orgCourt)},
+      {id:'ge_system',when:yes(s.orgSystem)},
+      {id:'ge_project',when:yes(s.orgProject)}
+    ]);
     if(hit)return hit;
     hit=first(JOINT.map(function(id){return{id:id,when:yes(s.joints&&s.joints[id])};}));
     if(hit)return hit;
