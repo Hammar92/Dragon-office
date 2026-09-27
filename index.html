@@ -179,6 +179,108 @@
   .beat-meter{width:100%;max-width:340px;height:6px;background:#22262f;border-radius:3px;overflow:hidden;}
   .beat-fill{height:100%;width:0;background:var(--accent);transition:width .1s linear;}
   .mg-hint{font-size:12.5px;color:var(--dim);min-height:20px;text-align:center;}
+
+  /* ===================== v14.3 · Life-sim / Princess-Maker-inspired UI ===================== */
+  :root{
+    --pm-bg:#f6efe4; --pm-paper:#fffaf2; --pm-panel:#fff6e8; --pm-line:#c9a987;
+    --pm-deep:#57463d; --pm-dim:#8a7465; --pm-accent:#c96f79; --pm-accent2:#7b8fb2;
+    --pm-green:#6f9a75; --pm-gold:#b88a45; --pm-shadow:rgba(92,69,51,.12);
+  }
+  body{background:linear-gradient(180deg,#e9dccd 0,#f6efe4 170px,#f6efe4 100%);color:var(--pm-deep);}
+  #app{max-width:1180px;padding:18px 18px 60px;}
+  #game-screen.active{
+    display:grid;
+    grid-template-columns:220px minmax(0,1fr) 220px;
+    grid-template-areas:"hud hud hud" "left main right";
+    gap:14px;align-items:start;
+  }
+  #hud{
+    grid-area:hud;position:sticky;top:0;background:rgba(255,250,242,.96);
+    border:1px solid var(--pm-line);border-radius:12px;padding:9px 14px;margin:0 0 2px;
+    box-shadow:0 4px 12px var(--pm-shadow);backdrop-filter:blur(7px);
+  }
+  #hud .bars{display:none}
+  #hud .npcs{margin-top:5px}
+  #hud .npc-chip{background:#fffaf2;border-color:#d9c1a8;color:#6d594d}
+  #hud .chapter-label{color:var(--pm-accent);font-weight:800}
+  #hud .turn-label{color:var(--pm-dim)}
+  #scene-area{grid-area:main;min-width:0;}
+  .pm-side{background:var(--pm-paper);border:1px solid var(--pm-line);border-radius:12px;box-shadow:0 5px 14px var(--pm-shadow);overflow:hidden}
+  #pm-left-panel{grid-area:left;position:sticky;top:98px}
+  #pm-right-panel{grid-area:right;position:sticky;top:98px}
+  .pm-panel-title{padding:8px 12px;background:linear-gradient(180deg,#d98b91,#c96f79);color:white;font-weight:800;letter-spacing:2px;font-size:13px;text-shadow:0 1px rgba(0,0,0,.12)}
+  .pm-profile{padding:14px 14px 10px;text-align:center;border-bottom:1px solid #ead8c5}
+  .pm-avatar{width:92px;height:108px;margin:0 auto 9px;border:2px solid #d8b89a;border-radius:48% 48% 42% 42%;background:
+    radial-gradient(circle at 50% 30%,#f4d2b8 0 18%,transparent 19%),
+    radial-gradient(ellipse at 50% 30%,#5f5148 0 27%,transparent 28%),
+    linear-gradient(150deg,#9fb0cb 0 49%,#7689aa 50% 100%);
+    box-shadow:inset 0 0 0 5px #fff6e8,0 3px 8px rgba(75,53,39,.14)}
+  .pm-profile-name{font-weight:900;font-size:17px;letter-spacing:2px;color:#4f4038}
+  .pm-profile-sub{font-size:11.5px;color:var(--pm-dim);margin-top:3px;line-height:1.55}
+  .pm-section{padding:10px 12px;border-top:1px solid #ead8c5}
+  .pm-section:first-of-type{border-top:0}
+  .pm-section h4{font-size:12px;color:#9a6f64;margin-bottom:8px;letter-spacing:1px}
+  .pm-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .pm-ability{background:#fffdf8;border:1px solid #ead8c5;border-radius:7px;padding:6px 7px}
+  .pm-ability .k{display:block;font-size:10.5px;color:#8b7567}
+  .pm-ability .v{display:block;font-size:18px;line-height:1.15;font-weight:900;color:#55433b;font-family:Georgia,"Times New Roman",serif}
+  .pm-status-row{margin:7px 0}
+  .pm-status-head{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#796457}
+  .pm-status-head b{font-size:12px;color:#4f4038}
+  .pm-meter{height:7px;background:#eee0d1;border:1px solid #dfc7ae;border-radius:5px;overflow:hidden;margin-top:3px}
+  .pm-meter>i{display:block;height:100%;background:linear-gradient(90deg,#d58b91,#c96f79);border-radius:4px}
+  .pm-meter.green>i{background:linear-gradient(90deg,#8bb38f,#6f9a75)}
+  .pm-meter.blue>i{background:linear-gradient(90deg,#9baac5,#7188aa)}
+  .pm-prestige{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+  .pm-prestige>div{text-align:center;border:1px solid #dec2a7;background:#fffaf3;border-radius:8px;padding:7px 3px}
+  .pm-prestige span{display:block;font-size:10px;color:#8a7364}
+  .pm-prestige b{font-size:19px;color:#9b665a;font-family:Georgia,serif}
+  .scene,.result-box{background:var(--pm-paper);border:1px solid var(--pm-line);box-shadow:0 5px 16px var(--pm-shadow);color:var(--pm-deep)}
+  .scene{padding:20px 22px 22px}
+  .scene-title{color:#4d3d35;font-size:20px}
+  .scene-title .accent{color:var(--pm-accent)}
+  .scene-sub{color:var(--pm-dim);border-bottom:1px dashed #ddc5ad;padding-bottom:10px}
+  .aside{background:#f1f4f8;border-color:#c8d0df;color:#56647b}
+  .aside .from{color:#647ba4}
+  .vp-name{color:#9d5e64;font-size:12px}
+  .vp-line{background:#fff8ee;border:1px solid #dfc4aa;border-left:4px solid var(--pm-accent);color:#55443c}
+  .dialogue-stage{display:flex;flex-direction:column;gap:9px;margin:10px 0 17px}
+  .dialogue-narration{font-size:13.5px;line-height:1.85;color:#79685d;padding:3px 4px}
+  .dialogue-row{display:grid;grid-template-columns:70px 1fr;gap:10px;align-items:start}
+  .dialogue-speaker{text-align:center}
+  .dialogue-face{width:52px;height:52px;margin:0 auto 4px;border-radius:50%;border:2px solid #d4b28f;background:#f0d3b8;display:flex;align-items:center;justify-content:center;font-weight:900;color:#765f50;box-shadow:inset 0 0 0 3px #fff7ec}
+  .dialogue-name{font-size:11px;font-weight:800;color:#805b56;line-height:1.25}
+  .dialogue-bubble{position:relative;background:#fffdf8;border:1px solid #d9bea1;border-radius:10px;padding:11px 13px;font-size:14.5px;line-height:1.8;color:#4e4038}
+  .dialogue-bubble:before{content:"";position:absolute;left:-7px;top:16px;width:12px;height:12px;background:#fffdf8;border-left:1px solid #d9bea1;border-bottom:1px solid #d9bea1;transform:rotate(45deg)}
+  .dialogue-action{display:block;font-size:11.5px;color:#9a8475;margin-bottom:4px}
+  .choice{background:#fffaf3;border-color:#dec5aa;color:#514239;border-radius:8px}
+  .choice:hover{background:#fff4e7;border-color:var(--pm-accent);transform:translateX(3px)}
+  .choice .idx{color:var(--pm-accent)}
+  .result-text{color:#5d4c43}
+  .delta{background:#fff9f0;border-color:#dec8b3}
+  #title-screen .intro-box,.vp-card,.difficulty-card{background:var(--pm-paper);border-color:var(--pm-line);color:#654f43}
+  .game-title{color:#4e3d35}.game-title .dragon{color:var(--pm-accent)}
+  .btn{background:#fff9ef;color:#604d42;border-color:#cfae8c}.btn.primary{background:var(--pm-accent);border-color:#b95f6a;color:white}
+  .cast .np{background:#fffaf2;border-color:#d9c0a7;color:#5b493f}
+  @media(max-width:900px){
+    #game-screen.active{grid-template-columns:1fr;grid-template-areas:"hud" "left" "main" "right"}
+    #pm-left-panel,#pm-right-panel{position:static}
+    .pm-profile{display:grid;grid-template-columns:72px 1fr;align-items:center;text-align:left;column-gap:12px}
+    .pm-avatar{width:62px;height:72px;margin:0;grid-row:1/3}
+    .pm-stat-grid{grid-template-columns:repeat(3,1fr)}
+    #pm-right-panel .pm-section{display:grid;grid-template-columns:repeat(2,1fr);gap:0 12px}
+    #pm-right-panel .pm-section h4{grid-column:1/-1}
+  }
+  @media(max-width:560px){
+    #app{padding:8px 8px 44px}
+    #hud{border-radius:8px;padding:8px}
+    .pm-stat-grid{grid-template-columns:repeat(3,1fr)}
+    .scene{padding:15px 13px}
+    .dialogue-row{grid-template-columns:48px 1fr;gap:7px}
+    .dialogue-face{width:40px;height:40px}
+    .choice{font-size:13.5px;padding:11px 12px}
+  }
+
 </style>
 </head>
 <body data-page-node-id="zufCBekY8A4x5CCBsDU0kr">
@@ -186,7 +288,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.2</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.3</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -3156,7 +3258,7 @@ function renderChapter(){
     + '<div class="scene-sub">'+ch.act+' · 第 '+(chapterIdx+1)+' / '+runChapters.length+' 章</div>'
     + aside
     + sanityWarning()
-    + '<div class="vp-name">临床开发钟时（Dragon）说：</div>'
+    + '<div class="vp-name">钟时 · 临床开发 VP</div>'
     + '<div class="vp-line">'+ch.text+'</div>'
     + '<div class="choices">'+choiceHTML(ch.choices,'pickChapter')+'</div>'
     + '</div>';
@@ -6420,7 +6522,7 @@ renderLifeBuilder();
   window.refreshAchievements();
   renderGallery();
   const sub=document.querySelector('#title-screen .subtitle');
-  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.2';
+  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.3';
 })();
 
 /* =====================  v14.2 · PI WHACK-A-MOLE / PRESTIGE  =====================
@@ -6526,6 +6628,160 @@ renderLifeBuilder();
     }
     return oldMaybeEventV142(chapterId,next);
   };
+})();
+
+/* ===================== v14.3 · LIFE-SIM UI / CHARACTER DIALOGUE ===================== */
+(function(){
+  function esc(v){return String(v==null?'':v).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function playerAbility(k){
+    if(!S||!S.player||!S.player.skills)return 0;
+    var sk=S.player.skills;
+    if(k==='management')return sk.management==null?(sk.project||0):sk.management;
+    return sk[k]||0;
+  }
+  function genderText(){
+    var g=S&&S.player&&S.player.gender;
+    return g==='female'?'女':g==='male'?'男':'未公开';
+  }
+  function ageText(){
+    var a=(window.AGE_OPTIONS||{})[(S&&S.player&&S.player.age)||window.PLAYER_AGE];
+    return a?a.label.split(' · ')[0]:'职业早期';
+  }
+  function ensureLifeSimPanels(){
+    var game=document.getElementById('game-screen'),scene=document.getElementById('scene-area');
+    if(!game||!scene)return;
+    if(!document.getElementById('pm-left-panel')){
+      var l=document.createElement('div');l.id='pm-left-panel';l.className='pm-side';scene.parentNode.insertBefore(l,scene);
+    }
+    if(!document.getElementById('pm-right-panel')){
+      var r=document.createElement('div');r.id='pm-right-panel';r.className='pm-side';scene.parentNode.insertBefore(r,scene.nextSibling);
+    }
+  }
+  function meter(label,v,cls){
+    v=Math.max(0,Math.min(100,Number(v)||0));
+    return '<div class="pm-status-row"><div class="pm-status-head"><span>'+label+'</span><b>'+Math.round(v)+'</b></div><div class="pm-meter '+(cls||'')+'"><i style="width:'+v+'%"></i></div></div>';
+  }
+  function renderLifeSimPanels(){
+    if(!S)return;ensureLifeSimPanels();
+    var left=document.getElementById('pm-left-panel'),right=document.getElementById('pm-right-panel');
+    if(!left||!right)return;
+    var skills=[
+      ['专业',playerAbility('professional')],['社交',playerAbility('social')],
+      ['魅力',playerAbility('charm')],['管理',playerAbility('management')],
+      ['洞察',playerAbility('insight')],['体能',playerAbility('fitness')]
+    ];
+    left.innerHTML='<div class="pm-panel-title">人物档案</div>'
+      +'<div class="pm-profile"><div class="pm-avatar"></div><div><div class="pm-profile-name">医学经理</div><div class="pm-profile-sub">'+ageText()+' · '+genderText()+'<br>Clinical Development</div></div></div>'
+      +'<div class="pm-section"><h4>能力数值</h4><div class="pm-stat-grid">'
+      +skills.map(function(x){return '<div class="pm-ability"><span class="k">'+x[0]+'</span><span class="v">'+Math.round(x[1])+'</span></div>';}).join('')
+      +'</div></div>'
+      +'<div class="pm-section"><h4>成长</h4><div class="pm-prestige"><div><span>成长点</span><b>'+((S.player&&S.player.skillPoints)||0)+'</b></div><div><span>轮回点</span><b>'+(typeof ngPoints==='function'?ngPoints():0)+'</b></div></div></div>';
+
+    var p=(typeof prestigeState==='function'?prestigeState():{boss:0,team:0});
+    right.innerHTML='<div class="pm-panel-title">本周状态</div><div class="pm-section"><h4>工作</h4>'
+      +meter('项目进度',S.progress,'green')+meter('钟时信任',S.trust)+meter('团队士气',S.morale,'blue')+meter('话语权',S.power)
+      +'</div><div class="pm-section"><h4>个人</h4>'
+      +meter('体力',S.stamina,'green')+meter('心力',S.heart)+meter('理智',S.sanity,'blue')+meter('履历',S.career)
+      +'</div><div class="pm-section"><h4>组织威信</h4><div class="pm-prestige"><div><span>老板侧</span><b>'+Math.round(p.boss||0)+'</b></div><div><span>团队侧</span><b>'+Math.round(p.team||0)+'</b></div></div></div>';
+  }
+  window.renderLifeSimPanels=renderLifeSimPanels;
+
+  var speakerAliases={
+    '老板':'老板','二老板':'二老板','小圆':'小圆','邹婷':'邹婷','加琳':'加琳','PVP':'PVP',
+    '明夜':'明夜','则韩':'则韩','肖恩':'肖恩','一建':'一建','苏苏':'苏苏','杨杨':'杨杨',
+    '琳琳':'琳琳','武总':'武总','贤人':'贤人','曹兰':'曹兰','谷雨':'谷雨','瑞冬':'瑞冬',
+    'Parker':'Parker','朱粽':'朱粽','黑娜':'黑娜','MK主任':'MK主任','N院长':'N院长',
+    '林主任':'林主任','K总':'K总','林丹':'林丹','钟时':'钟时'
+  };
+  function faceLabel(name){return esc((name||'人').replace(/（.*?）/g,'').slice(0,2));}
+  function speakerRole(name){
+    var key=Object.keys(NPCs||{}).find(function(k){return NPCs[k]&&NPCs[k].name===name;});
+    if(key&&NPCs[key])return NPCs[key].role||'';
+    if(name==='钟时')return 'Clinical Development VP';
+    return '';
+  }
+  function characterBeat(name){
+    var beats={
+      '钟时':'她没有立刻看你，而是先扫了一眼会议室里其他人的反应。',
+      '明夜':'他说完没有继续解释，只把电脑转过来，等你自己看数字。',
+      '加琳':'她把语速放得很慢，像是在确认每一个字以后都能被复述。',
+      '肖恩':'他说话不高，但每一句都像已经准备好写进检查记录。',
+      'K总':'她没有接情绪，只把问题重新拆回 owner、时限和责任层级。',
+      '林丹':'她边说边已经开始拉群，手机上的未读消息还在往上跳。',
+      '杨杨':'她说完又补了一句时间点，像只要日期足够提前，风险就会自己消失。',
+      '琳琳':'她先看了一眼现场工作量，再看你，显然不打算替总部的想当然买单。',
+      'MK主任':'他没有马上表态，只把问题往科学价值和最后能留下什么成果上推了一层。',
+      'N院长':'他盯着数据，不急着争位置，先问这个现象到底还能往机制上走多远。',
+      '林主任':'他语气很客气，但把中心做过的每一件额外工作都记得很清楚。',
+      '苏苏':'她没有评价谁辛苦，只追问假设、成本和最坏情况。',
+      '一建':'她已经把截止时间写在纸上，显然更关心这句话最后要落在哪份文件里。',
+      '二老板':'他听完先沉默了一会儿，像是在判断这到底是普通错误，还是有人真的在挡公司的路。',
+      '老板':'他不想听完整过程，只想知道现在要做什么决定，以及谁能把它做成。'
+    };
+    return beats[name]||'对方停了一下，显然还在判断你会怎么接这句话。';
+  }
+  function parseParagraph(p,defaultSpeaker){
+    var m=p.match(/^([^：「\n]{1,12})[：:]\s*[「“](.+)[」”]([\s\S]*)$/);
+    if(m&&speakerAliases[m[1].trim()]){
+      return {speaker:m[1].trim(),speech:m[2],tail:(m[3]||'').trim()};
+    }
+    if(/^[「“].+[」”]$/.test(p.trim())){
+      return {speaker:defaultSpeaker||'钟时',speech:p.trim().slice(1,-1),tail:''};
+    }
+    return null;
+  }
+  function dialogueHTML(text,defaultSpeaker){
+    var paras=String(text||'').split(/\n\n+/).filter(Boolean);
+    var lastSpeaker='',html='';
+    paras.forEach(function(p){
+      var d=parseParagraph(p,defaultSpeaker);
+      if(d){
+        html+='<div class="dialogue-row"><div class="dialogue-speaker"><div class="dialogue-face">'+faceLabel(d.speaker)+'</div><div class="dialogue-name">'+esc(d.speaker)+'</div></div>'
+          +'<div class="dialogue-bubble">'+(d.speaker!==lastSpeaker?'<span class="dialogue-action">'+esc(speakerRole(d.speaker))+'</span>':'')+esc(d.speech)
+          +(d.tail?'<div class="dialogue-action" style="margin-top:7px">'+esc(d.tail)+'</div>':'')+'</div></div>';
+        lastSpeaker=d.speaker;
+      }else{
+        html+='<div class="dialogue-narration">'+esc(p)+'</div>';
+      }
+    });
+    return '<div class="dialogue-stage">'+html+'</div>';
+  }
+  window.dialogueHTML=dialogueHTML;
+
+  function enrichShortDialogue(){
+    function enrichEvent(ev){
+      if(!ev||ev._v143enriched)return;
+      var t=String(ev.text||'');
+      if(t.length<125){
+        var names=Object.keys(speakerAliases).filter(function(n){return t.indexOf(n)>=0;});
+        var n=names[0];
+        if(n)t+='\n\n'+characterBeat(n);
+      }
+      ev.text=t;ev._v143enriched=true;
+    }
+    try{(window.V11_EVENTS||[]).forEach(enrichEvent);}catch(e){}
+    try{(window.PI_CHAIN_EVENTS||[]).forEach(enrichEvent);}catch(e){}
+  }
+  window.enrichShortDialogue=enrichShortDialogue;
+
+  var oldHUDV143=renderHUD;
+  renderHUD=function(){oldHUDV143();renderLifeSimPanels();};
+
+  var oldRenderChapterV143=renderChapter;
+  renderChapter=function(){
+    oldRenderChapterV143();
+    var ch=runChapters&&runChapters[chapterIdx];
+    var el=document.getElementById('scene-area');
+    if(!ch||!el)return;
+    var box=el.querySelector('.vp-line');
+    var label=el.querySelector('.vp-name');
+    if(label)label.textContent='钟时 · Clinical Development VP';
+    if(box)box.outerHTML=dialogueHTML(ch.text,'钟时');
+    window._sceneHTML=el.innerHTML;
+  };
+
+  var oldStartGameV143=startGame;
+  startGame=function(){enrichShortDialogue();oldStartGameV143();renderLifeSimPanels();};
 })();
 
 buildCast();
