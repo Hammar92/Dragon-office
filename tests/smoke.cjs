@@ -47,6 +47,13 @@ assert.strictEqual(run('V11_EVENTS.length'),34,'all random events loaded');
 assert.strictEqual(run('ACHIEVEMENTS.length'),108,'achievement count');
 assert.strictEqual(run('LIFE_STAGE_META.length'),6,'six life-build stages');
 assert.strictEqual(run('LIFE_STAGE_META.every(s=>s.time===8)'),true,'every life-build stage starts with 8 points');
+run("Object.keys(LIFE_DRAFT.selected).forEach(k=>LIFE_DRAFT.selected[k]=[])");
+assert.deepStrictEqual(run('(()=>{const x=lifeSummary();return [x.skills.professional,x.skills.social,x.skills.charm,x.skills.management,x.skills.insight,x.skills.fitness]})()'),[34,34,34,32,34,38],'RC life-build baseline skills');
+assert.strictEqual(run('SKILL_UPGRADE_COST'),1,'RC growth point cost');
+run("S.player=Object.assign({},S.player,{skills:{professional:40,social:40,charm:40,management:40,project:40,insight:40,fitness:40},skillPoints:1,heartProfile:{resilience:50},body:{maxStamina:60},personality:{stability:50,boundary:50,conflict:50,control:50,drive:50,trust:50}})");
+run("buySkill('professional')");
+assert.strictEqual(run('S.player.skills.professional'),44,'RC skill upgrade adds four');
+
 assert.strictEqual(run('new Set(ACHIEVEMENTS.map(a=>a.id)).size'),108,'unique achievement IDs');
 assert.strictEqual(run(`(()=>{const s=new Set();V11_CHAPTERS.forEach(ch=>(ch.choices||[]).forEach(c=>c.achievement&&s.add(c.achievement)));V11_EVENTS.forEach(ev=>(ev.choices||[]).forEach(c=>c.achievement&&s.add(c.achievement)));return ACHIEVEMENTS.every(a=>s.has(a.id));})()`),true,'all 108 achievements have a real chapter/event source');
 assert.strictEqual(html.includes('unlockAchievement("a')||html.includes("unlockAchievement('a"),false,'no stale hard-coded achievement ID auto-unlocks');
