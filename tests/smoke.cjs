@@ -96,6 +96,14 @@ assert.strictEqual(run('typeof rcEndingAudit'),'function','runtime ending audit 
 assert.ok(run('String(finalizeEvaluation).includes("canonicalFinalize")'),'canonical finalizer is the last production wrapper');
 assert.ok(!html.includes('钟时（Dragon）'),'Zhong Shi label has no Dragon suffix');
 assert.ok(html.includes('pm-left-panel'),'life-sim ability panel is installed');
+assert.ok(html.includes('#hud .bars,#hud .npcs{display:none!important}'),'legacy top HUD stats and people are hidden');
+assert.ok(html.includes('#cast-wrap{display:none}'),'full cast wall hidden from start screen');
+assert.strictEqual(run('typeof selectUiNpcTab'),'function','interactive NPC tabs installed');
+run("flags.uiInteractedNPC={}; renderLifeSimPanels()");
+assert.ok(el('pm-right-panel').innerHTML.includes('还没有形成需要单独追踪的同事关系'),'empty interaction state is compact');
+run("applyChoice({e:{},npc:{mingye:3}}); renderLifeSimPanels()");
+assert.strictEqual(run('!!flags.uiInteractedNPC.mingye'),true,'NPC appears only after actual interaction');
+assert.ok(el('pm-right-panel').innerHTML.includes('明夜'),'interacted NPC appears as a sidebar tab');
 assert.ok(html.includes('能力数值'),'ability values are visibly labeled');
 assert.ok(html.includes('组织威信'),'boss/team prestige is visibly labeled');
 assert.ok(!html.includes('💗 有人等你'),'love line stays hidden from HUD');
