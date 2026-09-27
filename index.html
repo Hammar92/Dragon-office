@@ -2339,6 +2339,9 @@ function renderHUD(){
     + '<span class="npc-chip" title="理智越低，选项越容易被情绪污染">'+sanityBand().icon+' 情绪 '+sanityBand().name+'</span>'
     + '<span class="npc-chip" title="本局难度">'+(difficulty().id==='hard'?'🔥':difficulty().id==='story'?'📖':'⚖')+' '+difficulty().name+'</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
+    + '<span class="npc-chip intel-chip" onclick="showRelationshipDesk()" title="通过沟通判断别人怎么看你">💬 关系判断</span>'
+    + Object.keys(NPCs).map(function(k){
+    const np = NPCs[k];
     return '<span class="npc-chip'+(np.boss?' boss':'')+'" title="'+np.name+' · '+np.role+'">'+np.name+'</span>';
   }).join('');
 }
