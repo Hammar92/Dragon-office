@@ -381,8 +381,10 @@ function sgn(v){ return (v>0?'+':'') + v; }
 function grant(e, npc){
   Object.keys(e||{}).forEach(function(k){
     if(!STAT_META[k]) return;
-    S[k] = clamp(S[k] + e[k]);
-    toast(STAT_META[k].name + ' ' + sgn(e[k]), e[k]>0 ? 'up' : 'down');
+    const delta=Number(e[k]), current=Number(S[k]);
+    if(!Number.isFinite(delta)) return;
+    S[k] = clamp((Number.isFinite(current)?current:0) + delta);
+    if(delta!==0) toast(STAT_META[k].name + ' ' + sgn(delta), delta>0 ? 'up' : 'down');
   });
   Object.keys(npc||{}).forEach(function(k){
     if(!NPCs[k]) return;
@@ -2611,9 +2613,13 @@ function restPanel(){
 function takeNap(i){
   if(S.restLeft <= 0){ toast('这一章你已经歇过一次了','down'); return; }
   const p = NAP_PLANS[i];
+  if(!p) return;
+  S.progress=clamp(Number(S.progress)||0);
   S.restLeft--;
-  grant({stamina:p.stamina, heart:p.heart, sanity:p.sanity||0, progress:p.progress});
-  showResult(p.name + '。\n\n' + p.note + '\n\n（项目进度 '+p.progress+' —— 你休息的每一分钟，都是从藥来的。）',
+  const recovery={stamina:p.stamina, heart:p.heart, sanity:p.sanity||0};
+  if(p.progress) recovery.progress=p.progress;
+  grant(recovery);
+  showResult(p.name + '。\n\n' + p.note + '\n\n（项目进度 '+p.progress+'）',
     [{label:'⚡ 体力 +'+p.stamina, kind:'up'},{label:'❤️ 心力 +'+p.heart, kind:'up'},{label:'🧠 理智 +'+(p.sanity||0), kind:'up'}]
       .concat(p.progress ? [{label:'📊 进度 '+p.progress, kind:'down'}] : []),
     function(){ if(window._inRest) restPanel(); });
@@ -3309,11 +3315,12 @@ function applyChoice(c){
   if(cs > 0){ S.stamina = clamp(S.stamina - cs); deltas.push({label:'⚡ 体力 -'+cs, kind:'down'}); }
   if(ch_ > 0){ S.heart = clamp(S.heart - ch_); deltas.push({label:'❤️ 心力 -'+ch_, kind:'down'}); }
   Object.keys(c.e||{}).forEach(function(k){
-    const v = c.e[k];
+    const v = Number(c.e[k]);
+    if(!Number.isFinite(v)) return;
     /* 兼容旧事件里把隐藏属性误写进 e 的情况：这些值照样结算，但不在 HUD 暴露。 */
     if(['merit','reputation','piRep','blame'].indexOf(k)>=0){ S[k]=clamp((S[k]||0)+v); return; }
     if(k==='stamina'||k==='heart'){ /* 由 grant() 通道处理 */ }
-    S[k] = clamp(S[k]+v);
+    S[k] = clamp((Number(S[k])||0)+v);
     if(k==='dragon'){ if(v>0) deltas.push({label:'🐉 龙性 +'+v, kind:'dragon'}); return; }
     if(STAT_META[k]) deltas.push({label: STAT_META[k].name + (v>0?' +':' ')+v, kind: v>0?'up':'down'});
   });
@@ -6204,362 +6211,68 @@ renderLifeBuilder();
 })();
 
 
-/* =====================  v13.2.2 · REST PROGRESS GUARD + MEETING QTE RESTORE  ===================== */
+/* v13.2.3 · One canonical meeting-QTE entry for the current 18-chapter story. */
 (function(){
-  /* ---------- A. Rest / convenience-store progress guard ---------- */
-  function expectedProgressAfter(before,delta){
-    delta=(typeof delta==="number"&&isFinite(delta))?delta:0;
-    return clamp(before+delta);
-  }
-
-  /* The convenience-store nap has progress:0. Never let a recovery action mutate project progress
-     through wrapper side-effects. */
-  window.takeNap=function(i){
-    if(S.restLeft<=0){toast("这一章你已经歇过一次了","down");return;}
-    var p=NAP_PLANS[i];if(!p)return;
-    var before=S.progress;
-    S.restLeft--;
-    var restDelta={stamina:p.stamina,heart:p.heart,sanity:p.sanity||0};
-    if(p.progress)restDelta.progress=p.progress;
-    grant(restDelta);
-    var expected=expectedProgressAfter(before,p.progress||0);
-    if(S.progress!==expected){
-      console.warn("[progress-guard] rest action changed progress unexpectedly",before,S.progress,expected);
-      S.progress=expected;
-    }
-    renderHUD();
-    showResult(
-      p.name+"。\n\n"+p.note+"\n\n（项目进度 "+((p.progress||0)>0?"+":"")+(p.progress||0)+"）",
-      [{label:"⚡ 体力 +"+p.stamina,kind:"up"},{label:"❤️ 心力 +"+p.heart,kind:"up"},{label:"🧠 理智 +"+(p.sanity||0),kind:"up"}]
-        .concat(p.progress?[{label:"📊 进度 "+p.progress,kind:p.progress>0?"up":"down"}]:[]),
-      function(){if(window._inRest)restPanel();}
-    );
+  const meetings={
+    v11_4:{title:'方案方向会',theme:'endpoint',attacks:[
+      '“昨天那个只能算讨论，我没有说是 final。今天把 B 再看一下。”',
+      '“你们别总拿之前的纪要限制现在的判断。”',
+      '“如果老板问为什么不选 B，谁来解释？”']},
+    v11_5:{title:'Safety Review',theme:'safety',attacks:[
+      '“先别把这个 case 讲得这么重，PV 还没有形成 signal。”',
+      '“医学判断可以有，但对外口径必须先统一。”',
+      '“现在把风险写死，以后怎么解释？”']},
+    v11_7:{title:'CRO 责任复盘会',theme:'execution',attacks:[
+      '“Sponsor 之前不是已经邮件确认了吗？”',
+      '“现在再讨论是谁的责任，对项目有什么帮助？”',
+      '“Action 已经 close 了，为什么还要翻？”']},
+    v11_9:{title:'PI 角色讨论会',theme:'credit',attacks:[
+      '“两位老师都重要，都叫 Co-Leading 不就好了？”',
+      '“现在先别把学术边界分得这么细。”',
+      '“作者和子研究以后再说，先把主项目做完。”']},
+    v11_13:{title:'三期资源战情会',theme:'execution',attacks:[
+      '“风险这么多，就把所有人都拉进来一起解决。”',
+      '“正式节点不能动，内部时间再往前压。”',
+      '“资源不够不是理由，管理就是要协调。”']},
+    v11_14:{title:'关键文件 Review 会',theme:'documentation',attacks:[
+      '“我提的 comment 既然都提了，最好全部处理。”',
+      '“这个地方再解释一下也不会有坏处。”',
+      '“文件完整一点总比漏东西好。”']},
+    v11_15:{title:'高层决策准备会',theme:'executive',attacks:[
+      '“材料还是要完整，老板自己会判断。”',
+      '“先把所有背景讲完，再说 decision。”',
+      '“这个结论是不是太直接了？再留一点空间。”']},
+    v11_16:{title:'NDA 贡献与署名会',theme:'credit',attacks:[
+      '“团队成果就不要分得太细了。”',
+      '“对外一个声音，内部过程没必要都写出来。”',
+      '“负责人承担责任，成果也该由负责人统一代表。”']}
   };
-
-  /* The late-night convenience-store romance scene also gets a transaction guard:
-     only the progress explicitly written on the selected choice may be applied. */
-  if(typeof pickRomanceEncounter==="function"){
-    var _pickRomanceGuard=pickRomanceEncounter;
-    pickRomanceEncounter=function(i){
-      var b=window._romEv,ev=b&&b.ev,c=ev&&presentedChoice(ev.choices,i);
-      var before=S&&S.progress;
-      var intended=(c&&c.e&&typeof c.e.progress==="number")?c.e.progress:0;
-      var out=_pickRomanceGuard(i);
-      if(S&&typeof before==="number"){
-        var expected=expectedProgressAfter(before,intended);
-        if(S.progress!==expected){
-          console.warn("[progress-guard] romance convenience-store action changed progress unexpectedly",before,S.progress,expected);
-          S.progress=expected;renderHUD();
-        }
-      }
-      return out;
-    };
-  }
-
-  /* ---------- B. Restore meeting argument QTE, rewritten for the canon cast ---------- */
-  var V1322_BATTLES={
-    v11_4:{title:"方案方向会",theme:"endpoint",attacks:[
-      "「昨天那个只能算讨论，我没有说是final。今天还是把B重新看一下。」",
-      "「你们别总拿之前的纪要限制现在的判断。」",
-      "「如果老板今天问为什么不选B，谁来解释？」"
-    ],relevant:["mingye","zihan"]},
-    v11_5:{title:"Safety Review",theme:"safety",attacks:[
-      "「先别把这个case讲得这么重，PV还没有形成signal。」",
-      "「医学判断可以有，但对外口径必须先统一。」",
-      "「现在把风险写死，以后怎么解释？」"
-    ],relevant:["jialin","pvp","xiaoen"]},
-    v11_7:{title:"CRO责任复盘会",theme:"execution",attacks:[
-      "「Sponsor之前不是已经邮件确认了吗？」",
-      "「现在再讨论是谁的责任，对项目有什么帮助？」",
-      "「Action已经close了，为什么还要继续翻？」"
-    ],relevant:["heina","zhuzong","xiaoen","kzong"]},
-    v11_9:{title:"PI角色讨论会",theme:"credit",attacks:[
-      "「两位老师都很重要，都叫Co-Leading不就好了？」",
-      "「现在先别把学术边界分得这么细。」",
-      "「作者和子研究以后再说，先把主项目做完。」"
-    ],relevant:["houpi","niupi","zihan"]},
-    v11_13:{title:"三期资源战情会",theme:"execution",attacks:[
-      "「风险这么多，就把所有人都拉进来一起解决。」",
-      "「正式节点不能动，内部时间再往前压。」",
-      "「资源不够不是理由，管理就是要协调。」"
-    ],relevant:["yangyang","kzong","miaomiao","xiaoen"]},
-    v11_14:{title:"关键文件Review会",theme:"documentation",attacks:[
-      "「我提的comment既然都提了，最好还是全部处理。」",
-      "「这个地方再解释一下也不会有坏处。」",
-      "「文件完整一点总比漏东西好。」"
-    ],relevant:["zihan","mingye","yijian"]},
-    v11_15:{title:"高层决策准备会",theme:"executive",attacks:[
-      "「材料还是要完整，老板自己会判断。」",
-      "「先把所有背景讲完，再说decision。」",
-      "「这个结论是不是太直接了？再留一点空间。」"
-    ],relevant:["ceo","cso","kzong","zihan"]},
-    v11_16:{title:"NDA贡献与署名会",theme:"credit",attacks:[
-      "「团队成果就不要分得太细了。」",
-      "「对外一个声音，内部过程没必要都写出来。」",
-      "「负责人承担责任，成果当然也应该由负责人统一代表。」"
-    ],relevant:["mingye","kzong","zouting"]}
-  };
-
-  function qteConfigFor(chId){
-    return V1322_BATTLES[chId]||null;
-  }
-  function qteOpponent(chId,cfg){
-    var arr=(cfg.relevant||[]).filter(function(k){return NPCs[k]&&S.npc[k]!=null&&(S.npc[k]||0)<34;});
-    if(arr.length){
-      arr.sort(function(a,b){return (S.npc[a]||0)-(S.npc[b]||0);});
-      return arr[0];
-    }
-    return "vp";
-  }
-  function qteEvidenceTag(theme){
-    if(theme==="safety")return "safetyTrail";
-    if(theme==="execution")return "approvalChain";
-    if(theme==="credit")return "authorshipTrail";
-    if(theme==="documentation")return "writtenWarning";
-    if(theme==="executive")return "decisionLog";
-    return "doseMatrix";
-  }
-  function qteAlly(theme){
-    if(theme==="safety")return (NPCs.pvp?"pvp":"xiaoen");
-    if(theme==="execution")return (NPCs.kzong?"kzong":"xiaoen");
-    if(theme==="credit")return (NPCs.zihan?"zihan":"zouting");
-    if(theme==="documentation")return (NPCs.zihan?"zihan":"mingye");
-    if(theme==="executive")return (NPCs.kzong?"kzong":"cso");
-    return "mingye";
-  }
-  function qteResponses(theme){
-    return [
-      {id:"evidence",kind:"evidence",tag:qteEvidenceTag(theme),text:"把现有记录放到桌上：先只谈能核对的事实"},
-      {id:"ally",kind:"ally",text:"把球交给真正负责这个专业判断的人"},
-      {id:"process",kind:"process",text:"停一下：现在只确认Decision、Owner和截止时间"},
-      {id:"power",kind:"power",text:"直接截断争论：这个决定我来承担，按当前方案执行"},
-      {id:"appease",kind:"appease",text:"先顺着她，让这轮过去，会后再处理"}
-    ];
-  }
-  function qteScore(opt,theme,opponent){
-    var s=0;
-    if(opt.kind==="evidence"){s=hasMemory(opt.tag)?5:1;if(memoryCount()>=4)s++;}
-    else if(opt.kind==="ally"){
-      var a=qteAlly(theme),p=socialPerson(a);
-      s=((S.npc[a]||0)>=50?3:0)+((p.favor||0)>0?2:0);
-    }else if(opt.kind==="process"){
-      var mg=(S.player&&S.player.skills&&(S.player.skills.management||S.player.skills.project))||40;
-      s=3+(mg>=50?1:0)+(S.power>=45?1:0);
-    }else if(opt.kind==="power"){
-      s=S.power>=60?4:0;if(opponent==="vp")s-=1;
-    }else if(opt.kind==="appease")s=1;
-    var band=sanityBand().id;
-    if(band==="irritable"&&(opt.kind==="power"||opt.kind==="appease"))s--;
-    if(band==="frayed")s-=2;
-    if(difficulty().id==="hard")s--;
-    return s;
-  }
-  function qteText(opt,theme){
-    var t=opt.text;
-    if(opt.kind==="evidence"&&!hasMemory(opt.tag))t+="【你手上的记录不完整】";
-    if(opt.kind==="ally"){
-      var a=qteAlly(theme),p=socialPerson(a);
-      if((S.npc[a]||0)<50&&(p.favor||0)<=0)t+="【"+NPCs[a].name+"未必愿意替你接球】";
-      else t+="【"+NPCs[a].name+"可以接球】";
-    }
-    if(opt.kind==="power"&&S.power<60)t+="【你的权力还压不住这句话】";
-    return t;
-  }
-
-  window.maybeProjectBattle=function(chId,next){
-    var cfg=qteConfigFor(chId);
-    if(!cfg||flags["qte_"+chId]){next();return;}
-    var opponent=qteOpponent(chId,cfg);
-    var rate=opponent!=="vp"?.88:(difficulty().id==="hard"?.78:difficulty().id==="story"?.42:.62);
-    if(Math.random()>rate){next();return;}
-    flags["qte_"+chId]=true;
-    projectBattleState={chId:chId,cfg:cfg,opponent:opponent,round:0,wins:0,losses:0,next:next,history:[],v1322:true};
-    renderProjectBattle();
-  };
-
-  /* Reuse the existing timer/render shell, but feed canonical response text and scoring. */
-  var _renderProjectBattle1322=renderProjectBattle;
-  renderProjectBattle=function(){
-    var st=projectBattleState;
-    if(!st||!st.v1322)return _renderProjectBattle1322();
-    if(projectBattleTimer){clearTimeout(projectBattleTimer);projectBattleTimer=null;}
-    if(st.round>=3){finishProjectBattle();return;}
-    var attack=st.cfg.attacks[st.round%st.cfg.attacks.length];
-    var limit=battleTimeLimit();
-    var opts=qteResponses(st.cfg.theme);
-    var order=opts.map(function(_,i){return i;}).sort(function(){return Math.random()-.5;});
-    st.opts=opts;
-    document.getElementById("scene-area").innerHTML=
-      '<div class="scene"><span class="event-badge">⚔ 会议交锋 · '+(st.round+1)+' / 3</span>'
-      +'<div class="scene-title">'+st.cfg.title+' · 对手：'+battleOpponentName(st.opponent)+'</div>'
-      +'<div class="scene-sub">'+limit+' 秒内回应。不是背答案，是决定这句话会不会成为会后的“事实”。</div>'
-      +'<div class="vp-line">'+battleOpponentName(st.opponent)+'：'+attack+'</div>'
-      +sanityWarning()
-      +'<div class="choices">'+order.map(function(idx,j){return '<button class="choice" onclick="projectBattlePick('+idx+')"><span class="idx">'+"ABCDE"[j]+'</span>'+qteText(opts[idx],st.cfg.theme)+'</button>';}).join("")+'</div></div>';
-    projectBattleTimer=setTimeout(function(){projectBattlePick(-1);},limit*1000);
-  };
-
-  var _projectBattlePick1322=projectBattlePick;
-  projectBattlePick=function(i){
-    var st=projectBattleState;
-    if(!st||!st.v1322)return _projectBattlePick1322(i);
-    if(projectBattleTimer){clearTimeout(projectBattleTimer);projectBattleTimer=null;}
-    var score=-3,opt=null;
-    if(i>=0){opt=st.opts[i];score=qteScore(opt,st.cfg.theme,st.opponent);}
-    var win=score>=3;
-    if(win){
-      st.wins++;S.power=clamp(S.power+2);S.merit=clamp((S.merit||0)+2);
-      if(st.opponent==="vp"){S.trust=clamp(S.trust-2);S.bossTrust=clamp((S.bossTrust||0)+1);}
-      else{socialPerson(st.opponent).respect=clamp(socialPerson(st.opponent).respect+3);S.npc[st.opponent]=clamp(S.npc[st.opponent]-1);}
-      if(opt&&opt.kind==="ally"){
-        var a=qteAlly(st.cfg.theme),p=socialPerson(a);
-        if((p.favor||0)>0){p.favor--;toast("🤝 "+NPCs[a].name+"替你接住了这一轮","up");}
-      }
-    }else{
-      st.losses++;S.blame=clamp((S.blame||0)+(difficulty().id==="hard"?4:3));S.heart=clamp(S.heart-2);
-      if(st.opponent==="vp")S.trust=clamp(S.trust+2);else socialPerson(st.opponent).fear=clamp(socialPerson(st.opponent).fear+1);
-    }
-    st.history.push({round:st.round,opt:i,score:score});st.round++;
-    var txt=i<0?"你慢了一拍。对方的版本先进入了会议空气。":
-      win?"你没有把人说服。你只是让这件事回到了事实、角色或明确决定上。":
-      "这一轮你没关掉问题。对方的说法会带进会后纪要和走廊里的第二个版本。";
-    showResult(txt,[{label:win?"这一轮接住了":"这一轮失守",kind:win?"up":"down"}],renderProjectBattle);
-  };
-
-  /* Current 18-chapter IDs are v11_1...v11_18. Earlier v11.1 disabled Battle because old configs
-     still referenced c5/c7/x4 and deleted characters. This patch restores it with current IDs/cast. */
-
-  var sub=document.querySelector("#title-screen .subtitle");
-  if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Meeting QTE Restored · Demo v13.2.2";
-})();
-
-
-/* =====================  v13.2.2 · PROGRESS TYPE GUARD + MEETING QTE RESTORE  ===================== */
-(function(){
-  /* A. Fix: a no-op rest action could turn string-like progress "25" into "250" before clamp(),
-     which becomes 100. All core stats are normalized before any grant/choice settlement. */
-  function normalizeCoreStats1322(){
-    if(!S)return;
-    Object.keys(STAT_META||{}).forEach(function(k){
-      var n=Number(S[k]);
-      S[k]=Number.isFinite(n)?n:0;
-    });
-    ["merit","reputation","piRep","blame","bossTrust"].forEach(function(k){
-      if(S[k]!=null){var n=Number(S[k]);S[k]=Number.isFinite(n)?n:0;}
-    });
-    if(S.npc)Object.keys(S.npc).forEach(function(k){
-      var n=Number(S.npc[k]);S.npc[k]=Number.isFinite(n)?n:0;
-    });
-  }
-  var _grant1322=grant;
-  grant=function(e,npc){normalizeCoreStats1322();return _grant1322(e,npc);};
-  var _applyChoice1322=applyChoice;
-  applyChoice=function(ch){normalizeCoreStats1322();return _applyChoice1322(ch);};
-
-  /* Extra guard: resting at the convenience store is explicitly a zero-progress action.
-     Preserve exactly the previous project progress even if another compatibility layer misbehaves. */
-  var _takeNap1322=takeNap;
-  takeNap=function(i){
-    normalizeCoreStats1322();
-    var before=S.progress;
-    _takeNap1322(i);
-    if(i===0||i===1){
-      S.progress=before;
-      renderHUD();
-    }else if(i===2){
-      S.progress=clamp(before-1);
-      renderHUD();
-    }
-  };
-
-  /* The separate late-night convenience-store relationship scene should not function as a hidden
-     project-completion button. Keep its work trade-off small. */
-  try{
-    var rd=ROMANCE_ENCOUNTERS.find(function(x){return x.id==="rom_dinner";});
-    if(rd&&rd.choices&&rd.choices.length===3){
-      rd.choices[0].e.progress=-2;
-      rd.choices[1].e.progress=0;
-      rd.choices[2].e.progress=2;
-    }
-  }catch(e){}
-
-  /* B. Restore the timed meeting-conflict QTE.
-     v11.1 disabled maybeProjectBattle while stale NPC events were being removed, and it was never
-     re-enabled after the canonical cast was rebuilt. These configs use only current NPCs. */
-  Object.assign(PROJECT_BATTLES,{
-    v13qte_3:{title:"方向又变了",theme:"endpoint",defaultOpponent:"钟时",attacks:[
-      "“我昨天不是已经说过，这个方向不能这么死吗？”",
-      "“你们为什么总拿之前的纪要限制现在的判断？”",
-      "“我只是让你们再想完整一点，怎么就变成我改方向了？”"
-    ]},
-    v13qte_6:{title:"Safety Review",theme:"safety",defaultOpponent:"钟时",attacks:[
-      "“一例事件就讲这么重，会不会是我们自己放大了？”",
-      "“PV都说整体可控，Clinical为什么还要继续追？”",
-      "“现在把这个问题升级，对项目到底有什么实际帮助？”"
-    ]},
-    v13qte_10:{title:"三期运营战情会",theme:"execution",defaultOpponent:"钟时",attacks:[
-      "“中心做不完，是不是大家推进力度还不够？”",
-      "“为什么每次有执行问题都先告诉我资源不够？”",
-      "“这个项目现在需要的是解决问题，不是解释为什么做不到。”"
-    ]},
-    v13qte_13:{title:"关键文件评审会",theme:"regulatory",defaultOpponent:"钟时",attacks:[
-      "“我提的这些comment既然都写了，为什么不能全部改？”",
-      "“不要总区分什么Major、Minor，监管看到的都是文件。”",
-      "“你们总想删东西，完整一点有什么坏处？”"
-    ]},
-    v13qte_15:{title:"Pre-NDA高层准备会",theme:"credit",defaultOpponent:"钟时",attacks:[
-      "“对外当然只能有一个声音，不要把内部过程讲得太复杂。”",
-      "“项目最后是Clinical负责，贡献没有必要拆得那么细。”",
-      "“现在最重要的是一致，不是在老板面前讨论谁做了什么。”"
-    ]}
-  });
-  Object.assign(BATTLE_RELEVANT,{
-    v13qte_3:["mingye","zihan"],
-    v13qte_6:["pvp","jialin","xiaoen"],
-    v13qte_10:["kzong","miaomiao","parker","zhuzong","xiaoen"],
-    v13qte_13:["zihan","yijian","xiaoen"],
-    v13qte_15:["kzong","zihan","mingye","zouting"]
-  });
+  Object.assign(PROJECT_BATTLES,meetings);
 
   battleAllyFor=function(theme){
-    if(theme==="safety")return (NPCs.pvp?"pvp":"xiaoen");
-    if(theme==="regulatory")return (NPCs.zihan?"zihan":"yijian");
-    if(theme==="execution")return (NPCs.kzong?"kzong":"miaomiao");
-    if(theme==="credit")return (NPCs.mingye?"mingye":"zouting");
-    return NPCs.zihan?"zihan":"mingye";
+    return ({safety:'pvp',execution:'kzong',credit:'zihan',documentation:'zihan',
+      executive:'kzong',endpoint:'mingye'})[theme]||'mingye';
   };
-
-  function qteKey1322(){
-    var map={3:"v13qte_3",6:"v13qte_6",10:"v13qte_10",13:"v13qte_13",15:"v13qte_15"};
-    return map[chapterIdx]||null;
-  }
+  battleResponses=function(theme){
+    const tag=({safety:'safetyTrail',execution:'approvalChain',credit:'authorshipTrail',
+      documentation:'writtenWarning',executive:'approvalChain',endpoint:'doseMatrix'})[theme];
+    return [
+      {kind:'evidence',text:'打开现有记录，只回答可核对的事实',tag:tag},
+      {kind:'ally',text:'请真正负责专业判断的人当场回答'},
+      {kind:'process',text:'把争论收成 Decision、Owner 和截止时间'},
+      {kind:'power',text:'直接截断：“这个决定我承担，按当前方案执行。”'},
+      {kind:'appease',text:'先顺着钟时，会后再处理'}
+    ];
+  };
   maybeProjectBattle=function(chId,next){
-    var key=qteKey1322();
-    if(!key||!PROJECT_BATTLES[key]){next();return;}
-    if(flags["battle_"+key]){next();return;}
-    var hostile=chooseBattleOpponent(key);
-    var base=difficulty().id==="hard"?.82:difficulty().id==="story"?.42:.62;
-    /* low trust / high power means arguments are more likely to become an actual timed confrontation */
-    if(S.trust<42)base+=.12;
-    if(S.power>55)base+=.08;
-    if(hostile!=="vp")base=Math.max(base,.86);
-    if(Math.random()>Math.min(.95,base)){next();return;}
-    flags["battle_"+key]=true;
-    startProjectBattle(key,hostile,next);
+    if(!Object.prototype.hasOwnProperty.call(meetings,chId)||flags['battle_'+chId]){next();return;}
+    /* The first and the document-review confrontation are story beats; other meetings vary by run. */
+    const certain=chId==='v11_4'||chId==='v11_14';
+    const rate=difficulty().id==='hard'?.78:difficulty().id==='story'?.42:.62;
+    if(!certain&&Math.random()>rate){next();return;}
+    flags['battle_'+chId]=true;
+    startProjectBattle(chId,'vp',next);
   };
-
-  /* QTE copy should feel like an argument, not a system tutorial. */
-  var _renderProjectBattle1322=renderProjectBattle;
-  renderProjectBattle=function(){
-    _renderProjectBattle1322();
-    var sc=document.querySelector("#scene-area .scene-sub");
-    if(sc&&projectBattleState){
-      sc.textContent=battleTimeLimit()+" 秒。对方没有准备等你慢慢组织语言。";
-    }
-  };
-
-  var sub=document.querySelector("#title-screen .subtitle");
-  if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Meeting QTE Restored · Demo v13.2.2";
 })();
 
 buildCast();
