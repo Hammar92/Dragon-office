@@ -32,12 +32,14 @@ assert.strictEqual(run('projectBattleState.chId'),'v11_4','chapter choice reache
 console.log('Chapter integration OK');
 
 assert.strictEqual(run('V11_CHAPTERS.length'),18,'all chapters reachable');
-assert.strictEqual(run('V11_EVENTS.length'),25,'all random events loaded');
-assert.strictEqual(run('ACHIEVEMENTS.length'),99,'achievement cap');
-assert.strictEqual(run('new Set(ACHIEVEMENTS.map(a=>a.id)).size'),99,'unique achievement IDs');
+assert.strictEqual(run('V11_EVENTS.length'),34,'all random events loaded');
+assert.strictEqual(run('ACHIEVEMENTS.length'),108,'achievement count');
+assert.strictEqual(run('new Set(ACHIEVEMENTS.map(a=>a.id)).size'),108,'unique achievement IDs');
+assert.strictEqual(run('Object.keys(ENDINGS).length'),64,'ending count');
 assert.strictEqual(run('V11_EVENTS.every((ev,i)=>ev.choices.some(c=>c.achievement) && RANDOM_ACHIEVEMENT_IDS[i].length>0)'),true,'every random event has an achievement');
 assert.strictEqual(run('V11_EVENTS.slice(15).every(ev=>ev.choices.every(c=>c.achievement))'),true,'new random events award on every choice');
-assert.strictEqual(run('new Set(V11_EVENTS.map((ev,i)=>ACHIEVEMENTS.find(a=>a.id===RANDOM_ACHIEVEMENT_IDS[i][0]).name)).size'),25,'individual black humor event names');
+assert.strictEqual(run('new Set(V11_EVENTS.map((ev,i)=>ACHIEVEMENTS.find(a=>a.id===RANDOM_ACHIEVEMENT_IDS[i][0]).name)).size'),34,'individual black humor event names');
+assert.strictEqual(run('V11_EVENTS.slice(25).every((ev,i)=>ev.choices.every(c=>c.achievement==="a"+(100+i) && c.branchFlag))'),true,'nine new events have assigned awards and consequences');
 assert.strictEqual(run('V11_CHAPTERS.every((ch,i)=>ch.choices.every((c,j)=>c.achievement==="a"+(i*3+j+1)))'),true,'main chapter outcome slots');
 
 run('chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); renderChapter()');
@@ -69,3 +71,32 @@ assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_achievements')),['a5
 assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_achievements')),['PVP本人请发言','机制抢麦'],'retired outcomes archived');
 assert.strictEqual(legacyStorage.get('dragon_ng_points'),'7','earned points preserved');
 console.log('Story, random achievements, migration, and QTE guards OK');
+
+// Every new outcome has a real event choice and a matching final route.
+run('showEnding=function(k){window.testEnding=k}; projectBattleState=null');
+run("flags={}; chapterIdx=4; S.sanity=80; applyChoice(presentedChoice(V11_EVENTS[25].choices,0)); chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); applyChoice(presentedChoice(runChapters[17].choices,0))");
+assert.strictEqual(run('flags.v14Candidate'),'v14_0_0','event choice records its outcome');
+assert.strictEqual(run('flags.v14FinalRoute'),'govern','presented final choice records the route');
+for(let ev=0;ev<9;ev++)for(let choice=0;choice<3;choice++){
+  const key=`v14_${ev}_${choice}`;
+  const route=['govern','appease','power'][choice];
+  run(`flags={v14Candidate:'${key}',v14FinalRoute:'${route}'}; S.progress=80; S.heart=70; S.trust=55; S.morale=60; S.dragon=0; S.power=50; S.merit=30; window.testEnding=''; finalizeEvaluation()`);
+  assert.strictEqual(run('window.testEnding'),key,`event ending ${key}`);
+}
+for(const [key,need,route] of [
+  ['v14_joint_capacity',[0,6],'govern'],['v14_joint_paper',[1,2],'govern'],
+  ['v14_joint_site',[3,6],'govern'],['v14_joint_story',[4,7],'appease'],
+  ['v14_joint_dragon',[5,8],'power']
+]){
+  run(`flags={v14FinalRoute:'${route}'}; flags['v14_${need[0]}_${route==='appease'?1:route==='power'?2:0}']=true; flags['v14_${need[1]}_${route==='appease'?1:route==='power'?2:0}']=true; window.testEnding=''; finalizeEvaluation()`);
+  assert.strictEqual(run('window.testEnding'),key,`combined ending ${key}`);
+}
+run("flags={dragon_take:true,v14Candidate:'v14_0_2',v14FinalRoute:'power'}; S.dragon=12; S.power=70; S.merit=50; window.testEnding=''; finalizeEvaluation()");
+assert.strictEqual(run('window.testEnding'),'true_dragon','deliberate dragon path outranks event ending');
+run("flags={}; chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); S.progress=78; S.power=72; S.merit=55; S.dragon=10; S.heart=80; S.sanity=80; S.trust=60; S.morale=65; window.testEnding=''; pickChapter(2); continueResult()");
+assert.strictEqual(run('window.testEnding'),'true_dragon','real final choice can reach dragon ending');
+run("flags={metaRoute:'echo',meta_echo_refuse:true,v14Candidate:'v14_0_0',v14FinalRoute:'govern'}; S.dragon=0; S.progress=80; S.morale=65; window.testEnding=''; finalizeEvaluation()");
+assert.strictEqual(run('window.testEnding'),'true_afterdragon','second-life refusal outranks event ending');
+run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'power'}; window.testEnding=''; finalizeEvaluation()");
+assert.notStrictEqual(run('window.testEnding'),'v14_0_0','mismatched final decision falls through');
+console.log('64 endings and dragon route priority OK');
