@@ -6433,6 +6433,135 @@ renderLifeBuilder();
   if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Meeting QTE Restored · Demo v13.2.2";
 })();
 
+
+/* =====================  v13.2.2 · PROGRESS TYPE GUARD + MEETING QTE RESTORE  ===================== */
+(function(){
+  /* A. Fix: a no-op rest action could turn string-like progress "25" into "250" before clamp(),
+     which becomes 100. All core stats are normalized before any grant/choice settlement. */
+  function normalizeCoreStats1322(){
+    if(!S)return;
+    Object.keys(STAT_META||{}).forEach(function(k){
+      var n=Number(S[k]);
+      S[k]=Number.isFinite(n)?n:0;
+    });
+    ["merit","reputation","piRep","blame","bossTrust"].forEach(function(k){
+      if(S[k]!=null){var n=Number(S[k]);S[k]=Number.isFinite(n)?n:0;}
+    });
+    if(S.npc)Object.keys(S.npc).forEach(function(k){
+      var n=Number(S.npc[k]);S.npc[k]=Number.isFinite(n)?n:0;
+    });
+  }
+  var _grant1322=grant;
+  grant=function(e,npc){normalizeCoreStats1322();return _grant1322(e,npc);};
+  var _applyChoice1322=applyChoice;
+  applyChoice=function(ch){normalizeCoreStats1322();return _applyChoice1322(ch);};
+
+  /* Extra guard: resting at the convenience store is explicitly a zero-progress action.
+     Preserve exactly the previous project progress even if another compatibility layer misbehaves. */
+  var _takeNap1322=takeNap;
+  takeNap=function(i){
+    normalizeCoreStats1322();
+    var before=S.progress;
+    _takeNap1322(i);
+    if(i===0||i===1){
+      S.progress=before;
+      renderHUD();
+    }else if(i===2){
+      S.progress=clamp(before-1);
+      renderHUD();
+    }
+  };
+
+  /* The separate late-night convenience-store relationship scene should not function as a hidden
+     project-completion button. Keep its work trade-off small. */
+  try{
+    var rd=ROMANCE_ENCOUNTERS.find(function(x){return x.id==="rom_dinner";});
+    if(rd&&rd.choices&&rd.choices.length===3){
+      rd.choices[0].e.progress=-2;
+      rd.choices[1].e.progress=0;
+      rd.choices[2].e.progress=2;
+    }
+  }catch(e){}
+
+  /* B. Restore the timed meeting-conflict QTE.
+     v11.1 disabled maybeProjectBattle while stale NPC events were being removed, and it was never
+     re-enabled after the canonical cast was rebuilt. These configs use only current NPCs. */
+  Object.assign(PROJECT_BATTLES,{
+    v13qte_3:{title:"方向又变了",theme:"endpoint",defaultOpponent:"钟时",attacks:[
+      "“我昨天不是已经说过，这个方向不能这么死吗？”",
+      "“你们为什么总拿之前的纪要限制现在的判断？”",
+      "“我只是让你们再想完整一点，怎么就变成我改方向了？”"
+    ]},
+    v13qte_6:{title:"Safety Review",theme:"safety",defaultOpponent:"钟时",attacks:[
+      "“一例事件就讲这么重，会不会是我们自己放大了？”",
+      "“PV都说整体可控，Clinical为什么还要继续追？”",
+      "“现在把这个问题升级，对项目到底有什么实际帮助？”"
+    ]},
+    v13qte_10:{title:"三期运营战情会",theme:"execution",defaultOpponent:"钟时",attacks:[
+      "“中心做不完，是不是大家推进力度还不够？”",
+      "“为什么每次有执行问题都先告诉我资源不够？”",
+      "“这个项目现在需要的是解决问题，不是解释为什么做不到。”"
+    ]},
+    v13qte_13:{title:"关键文件评审会",theme:"regulatory",defaultOpponent:"钟时",attacks:[
+      "“我提的这些comment既然都写了，为什么不能全部改？”",
+      "“不要总区分什么Major、Minor，监管看到的都是文件。”",
+      "“你们总想删东西，完整一点有什么坏处？”"
+    ]},
+    v13qte_15:{title:"Pre-NDA高层准备会",theme:"credit",defaultOpponent:"钟时",attacks:[
+      "“对外当然只能有一个声音，不要把内部过程讲得太复杂。”",
+      "“项目最后是Clinical负责，贡献没有必要拆得那么细。”",
+      "“现在最重要的是一致，不是在老板面前讨论谁做了什么。”"
+    ]}
+  });
+  Object.assign(BATTLE_RELEVANT,{
+    v13qte_3:["mingye","zihan"],
+    v13qte_6:["pvp","jialin","xiaoen"],
+    v13qte_10:["kzong","miaomiao","parker","zhuzong","xiaoen"],
+    v13qte_13:["zihan","yijian","xiaoen"],
+    v13qte_15:["kzong","zihan","mingye","zouting"]
+  });
+
+  battleAllyFor=function(theme){
+    if(theme==="safety")return (NPCs.pvp?"pvp":"xiaoen");
+    if(theme==="regulatory")return (NPCs.zihan?"zihan":"yijian");
+    if(theme==="execution")return (NPCs.kzong?"kzong":"miaomiao");
+    if(theme==="credit")return (NPCs.mingye?"mingye":"zouting");
+    return NPCs.zihan?"zihan":"mingye";
+  };
+
+  function qteKey1322(){
+    var map={3:"v13qte_3",6:"v13qte_6",10:"v13qte_10",13:"v13qte_13",15:"v13qte_15"};
+    return map[chapterIdx]||null;
+  }
+  maybeProjectBattle=function(chId,next){
+    var key=qteKey1322();
+    if(!key||!PROJECT_BATTLES[key]){next();return;}
+    if(flags["battle_"+key]){next();return;}
+    var hostile=chooseBattleOpponent(key);
+    var base=difficulty().id==="hard"?.82:difficulty().id==="story"?.42:.62;
+    /* low trust / high power means arguments are more likely to become an actual timed confrontation */
+    if(S.trust<42)base+=.12;
+    if(S.power>55)base+=.08;
+    if(hostile!=="vp")base=Math.max(base,.86);
+    if(Math.random()>Math.min(.95,base)){next();return;}
+    flags["battle_"+key]=true;
+    startProjectBattle(key,hostile,next);
+  };
+
+  /* QTE copy should feel like an argument, not a system tutorial. */
+  var _renderProjectBattle1322=renderProjectBattle;
+  renderProjectBattle=function(){
+    _renderProjectBattle1322();
+    var sc=document.querySelector("#scene-area .scene-sub");
+    if(sc&&projectBattleState){
+      sc.textContent=battleTimeLimit()+" 秒。对方没有准备等你慢慢组织语言。";
+    }
+  };
+
+  var sub=document.querySelector("#title-screen .subtitle");
+  if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Meeting QTE Restored · Demo v13.2.2";
+})();
+
 buildCast();
 renderVP();
 renderGallery();
