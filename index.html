@@ -4470,46 +4470,46 @@ var LIFE_STAGE_META=[
 ];
 var LIFE_EVENTS={
   school:[
-    {id:"school_study",name:"埋头学习",cost:2,desc:"把大量时间换成扎实基础。",skill:{professional:4,insight:2},personality:{drive:4,control:2},exp:["study"]},
-    {id:"school_social",name:"社团与朋友",cost:2,desc:"很早就学会读空气和与人相处。",skill:{social:5,charm:2},personality:{trust:3,conflict:-1},exp:["social"]},
-    {id:"school_sport",name:"长期运动",cost:2,desc:"身体是最早可以积累的资本。",skill:{fitness:6},body:{maxStamina:8,recovery:5},personality:{stability:2},exp:["sport"]},
-    {id:"school_compete",name:"竞赛型成长",cost:2,desc:"习惯把输赢和自我证明绑在一起。",skill:{professional:3,insight:2},personality:{drive:7,stability:-2},exp:["competition"]}
+    {id:"school_study",name:"埋头学习",cost:3,desc:"把大量时间换成扎实基础。",skill:{professional:4,insight:2},personality:{drive:4,control:2},exp:["study"]},
+    {id:"school_social",name:"社团与朋友",cost:3,desc:"很早就学会读空气和与人相处。",skill:{social:5,charm:2},personality:{trust:3,conflict:-1},exp:["social"]},
+    {id:"school_sport",name:"长期运动",cost:3,desc:"身体是最早可以积累的资本。",skill:{fitness:6},body:{maxStamina:8,recovery:5},personality:{stability:2},exp:["sport"]},
+    {id:"school_compete",name:"竞赛型成长",cost:3,desc:"习惯把输赢和自我证明绑在一起。",skill:{professional:3,insight:2},personality:{drive:7,stability:-2},exp:["competition"]}
   ],
   college:[
-    {id:"college_top",name:"冲顶尖高校",cost:3,desc:"把大学阶段继续押在学业上。",skill:{professional:5,insight:4},personality:{drive:3},exp:["top_school"]},
-    {id:"college_org",name:"学生组织负责人",cost:2,desc:"第一次发现组织不是把自己的事做好。",skill:{management:5,social:3},personality:{control:1,conflict:2},exp:["leadership"]},
-    {id:"college_lab",name:"实验室搬砖",cost:2,desc:"科研训练让你对证据和版本更敏感。",skill:{professional:4,insight:4},personality:{control:2},exp:["research"]},
-    {id:"college_social",name:"高频社交",cost:2,desc:"你认识的人比课程表上的课更多。",skill:{social:6,charm:4},personality:{trust:3},exp:["social"]},
+    {id:"college_top",name:"冲顶尖高校",cost:4,desc:"把大学阶段继续押在学业上。",skill:{professional:5,insight:4},personality:{drive:3},exp:["top_school"]},
+    {id:"college_org",name:"学生组织负责人",cost:3,desc:"第一次发现组织不是把自己的事做好。",skill:{management:5,social:3},personality:{control:1,conflict:2},exp:["leadership"]},
+    {id:"college_lab",name:"实验室搬砖",cost:3,desc:"科研训练让你对证据和版本更敏感。",skill:{professional:4,insight:4},personality:{control:2},exp:["research"]},
+    {id:"college_social",name:"高频社交",cost:3,desc:"你认识的人比课程表上的课更多。",skill:{social:6,charm:4},personality:{trust:3},exp:["social"]},
     {id:"college_sport",name:"坚持运动",cost:2,desc:"没有把所有青春都换成CV。",skill:{fitness:5},body:{maxStamina:6,recovery:5},personality:{stability:3},exp:["sport"]},
     {id:"college_boundary",name:"第一次学会拒绝",cost:2,desc:"小组作业有人失约时，你没有再替他通宵。",skill:{management:2,social:2},personality:{boundary:6,conflict:2},exp:["boundary"]}
   ],
   graduate:[
-    {id:"grad_deep",name:"专业深挖",cost:2,desc:"几年里真正把一个领域做深。",skill:{professional:7,insight:3},personality:{drive:3},exp:["deep_specialty"]},
-    {id:"grad_paper",name:"高压科研产出",cost:2,desc:"会写、会改、会在凌晨两点继续工作。",skill:{professional:4},body:{maxStamina:3},heart:{resilience:-1},personality:{drive:5,boundary:-2},exp:["overwork"]},
-    {id:"grad_mentor",name:"强导师体系",cost:2,desc:"学会在权威面前表达不同意见。",skill:{social:3,insight:4},personality:{stability:3,boundary:4,conflict:2},exp:["mentor"]},
-    {id:"grad_overseas",name:"海外训练",cost:3,desc:"重新适应语言、规则和陌生组织。",skill:{professional:4,social:4,insight:4},personality:{stability:2,trust:-1},exp:["overseas"]},
-    {id:"grad_setback",name:"经历一次重大挫折并走出来",cost:2,desc:"没有赢，但开始学会不把失败等同于自己。",skill:{insight:3},heart:{resilience:7,recovery:4},personality:{stability:7,drive:-1},exp:["setback"]}
+    {id:"grad_deep",name:"专业深挖",cost:3,desc:"几年里真正把一个领域做深。",skill:{professional:7,insight:3},personality:{drive:3},exp:["deep_specialty"]},
+    {id:"grad_paper",name:"高压科研产出",cost:3,desc:"会写、会改、会在凌晨两点继续工作。",skill:{professional:4},body:{maxStamina:3},heart:{resilience:-1},personality:{drive:5,boundary:-2},exp:["overwork"]},
+    {id:"grad_mentor",name:"强导师体系",cost:3,desc:"学会在权威面前表达不同意见。",skill:{social:3,insight:4},personality:{stability:3,boundary:4,conflict:2},exp:["mentor"]},
+    {id:"grad_overseas",name:"海外训练",cost:4,desc:"重新适应语言、规则和陌生组织。",skill:{professional:4,social:4,insight:4},personality:{stability:2,trust:-1},exp:["overseas"]},
+    {id:"grad_setback",name:"经历一次重大挫折并走出来",cost:3,desc:"没有赢，但开始学会不把失败等同于自己。",skill:{insight:3},heart:{resilience:7,recovery:4},personality:{stability:7,drive:-1},exp:["setback"]}
   ],
   early:[
-    {id:"early_cro",name:"CRO高强度执行",cost:2,desc:"知道交付、中心和供应商是怎么真正跑起来的。",skill:{management:4,social:2,insight:2},body:{maxStamina:3},exp:["cro","execution"]},
-    {id:"early_biotech",name:"早期Biotech",cost:2,desc:"没人替你补空白，很多事情必须自己摸出来。",skill:{management:4,professional:2,insight:3},personality:{control:2},exp:["biotech","ownership"]},
-    {id:"early_mnc",name:"跨国药企训练",cost:2,desc:"流程、角色边界和成熟体系留下肌肉记忆。",skill:{professional:3,management:3,social:2},personality:{boundary:2},exp:["mnc"]},
-    {id:"early_owner",name:"主动接一个小项目",cost:2,desc:"第一次真正对一个结果负责。",skill:{management:6,insight:2},personality:{drive:3,boundary:2},exp:["ownership"]},
+    {id:"early_cro",name:"CRO高强度执行",cost:3,desc:"知道交付、中心和供应商是怎么真正跑起来的。",skill:{management:4,social:2,insight:2},body:{maxStamina:3},exp:["cro","execution"]},
+    {id:"early_biotech",name:"早期Biotech",cost:3,desc:"没人替你补空白，很多事情必须自己摸出来。",skill:{management:4,professional:2,insight:3},personality:{control:2},exp:["biotech","ownership"]},
+    {id:"early_mnc",name:"跨国药企训练",cost:3,desc:"流程、角色边界和成熟体系留下肌肉记忆。",skill:{professional:3,management:3,social:2},personality:{boundary:2},exp:["mnc"]},
+    {id:"early_owner",name:"主动接一个小项目",cost:3,desc:"第一次真正对一个结果负责。",skill:{management:6,insight:2},personality:{drive:3,boundary:2},exp:["ownership"]},
     {id:"early_rescue",name:"总替领导救火",cost:2,desc:"执行力越来越强，边界却越来越模糊。",skill:{management:3,professional:2},body:{maxStamina:3},personality:{boundary:-5,control:4,drive:3},exp:["rescue","overwork"]},
     {id:"early_life",name:"保留工作之外的生活",cost:2,desc:"不是所有时间都用来证明职业价值。",heart:{resilience:5,recovery:6},personality:{stability:4,boundary:3},exp:["life"]}
   ],
   middle:[
-    {id:"mid_cross",name:"负责跨部门项目",cost:2,desc:"开始处理依赖、owner和决策，而不是只催任务。",skill:{management:7,social:3,insight:3},personality:{boundary:2},exp:["crossfunctional","ownership"]},
-    {id:"mid_team",name:"真正带过团队",cost:2,desc:"学会别人的错误也是管理成本。",skill:{management:7,social:4},personality:{control:-2,trust:1},exp:["people_manager"]},
-    {id:"mid_phase2",name:"完整做过一次二期",cost:2,desc:"第一次看完整个临床项目从设计跑到结果。",skill:{professional:5,management:5,insight:3},exp:["phase2"]},
-    {id:"mid_conflict",name:"处理一次严重跨部门冲突",cost:2,desc:"你可以不让他们和解，但必须让事情继续。",skill:{management:5,social:4,insight:4},personality:{stability:4,conflict:2},exp:["conflict_management"]},
+    {id:"mid_cross",name:"负责跨部门项目",cost:3,desc:"开始处理依赖、owner和决策，而不是只催任务。",skill:{management:7,social:3,insight:3},personality:{boundary:2},exp:["crossfunctional","ownership"]},
+    {id:"mid_team",name:"真正带过团队",cost:3,desc:"学会别人的错误也是管理成本。",skill:{management:7,social:4},personality:{control:-2,trust:1},exp:["people_manager"]},
+    {id:"mid_phase2",name:"完整做过一次二期",cost:3,desc:"第一次看完整个临床项目从设计跑到结果。",skill:{professional:5,management:5,insight:3},exp:["phase2"]},
+    {id:"mid_conflict",name:"处理一次严重跨部门冲突",cost:3,desc:"你可以不让他们和解，但必须让事情继续。",skill:{management:5,social:4,insight:4},personality:{stability:4,conflict:2},exp:["conflict_management"]},
     {id:"mid_politics",name:"踩过一次办公室政治的坑",cost:2,desc:"从此知道‘大家都同意’不是证据。",skill:{insight:7,social:2},personality:{trust:-5,stability:2},exp:["politics"]}
   ],
   senior:[
-    {id:"senior_phase3",name:"完整三期经验",cost:3,desc:"真正理解Critical Path、中心规模和后期治理。",skill:{management:8,professional:4,insight:4},exp:["phase3"]},
-    {id:"senior_portfolio",name:"管理多项目Portfolio",cost:3,desc:"资源配置开始比单项目执行更重要。",skill:{management:9,insight:5},personality:{control:-2},exp:["portfolio"]},
-    {id:"senior_exec",name:"频繁向高层汇报",cost:2,desc:"学会把复杂问题压缩成管理层能做的决定。",skill:{social:6,charm:3,insight:4},personality:{stability:2},exp:["executive_comm"]},
-    {id:"senior_nda",name:"从FIH一路做到NDA",cost:4,desc:"极贵，但你真的看过完整开发链条。",skill:{professional:9,management:9,insight:6},personality:{drive:3},exp:["fih_nda"]},
+    {id:"senior_phase3",name:"完整三期经验",cost:4,desc:"真正理解Critical Path、中心规模和后期治理。",skill:{management:8,professional:4,insight:4},exp:["phase3"]},
+    {id:"senior_portfolio",name:"管理多项目Portfolio",cost:4,desc:"资源配置开始比单项目执行更重要。",skill:{management:9,insight:5},personality:{control:-2},exp:["portfolio"]},
+    {id:"senior_exec",name:"频繁向高层汇报",cost:3,desc:"学会把复杂问题压缩成管理层能做的决定。",skill:{social:6,charm:3,insight:4},personality:{stability:2},exp:["executive_comm"]},
+    {id:"senior_nda",name:"从FIH一路做到NDA",cost:5,desc:"极贵，但你真的看过完整开发链条。",skill:{professional:9,management:9,insight:6},personality:{drive:3},exp:["fih_nda"]},
     {id:"senior_boundary",name:"学会删掉工作",cost:2,desc:"管理不是增加动作，而是决定什么不做。",skill:{management:6,insight:4},personality:{boundary:5,control:-3},heart:{resilience:3},exp:["stop_doing"]}
   ]
 };
