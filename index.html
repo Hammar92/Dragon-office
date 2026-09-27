@@ -295,7 +295,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.4</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.5</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -3302,7 +3302,7 @@ function deriveCareer(c){
   if(pd > 0){ const v = pd * 0.3; d += v; why.push('可见产出 +' + v.toFixed(1).replace(/\.0$/, '')); }
   if(wd > 0){ const v = wd * 0.1; d += v; why.push('话语权 +' + v.toFixed(1).replace(/\.0$/, '')); }
   if(dd > 0){ const v = dd * 3; d -= v; why.push('龙折旧 -' + v.toFixed(1).replace(/\.0$/, '')); }
-  const pro = ['jialin', 'xiaoen', 'xiaoen'].reduce(function(s, k){ return s + Math.max(0, npc[k] || 0); }, 0);
+  const pro = ['jialin', 'xiaoen', 'kzong'].reduce(function(s, k){ return s + Math.max(0, npc[k] || 0); }, 0);
   if(pro > 0){ d += 2; why.push('合规背书 +2'); }
   if(c && (c.setFlag === 'fraud' || c.setFlag === 'reckless')){ d -= 20; why.push('签字污点 -20'); }
   d = Math.round(d);
@@ -6528,7 +6528,7 @@ renderLifeBuilder();
   window.refreshAchievements();
   renderGallery();
   const sub=document.querySelector('#title-screen .subtitle');
-  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.4';
+  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.5';
 })();
 
 /* =====================  v14.2 · PI WHACK-A-MOLE / PRESTIGE  =====================
@@ -7041,6 +7041,328 @@ renderLifeBuilder();
     PI_CHAIN_EVENTS.forEach(function(x){(x.choices||[]).forEach(function(c,i){scan(c,x.id+':'+i);});});
     const lifeDup={};Object.keys(LIFE_EVENTS).forEach(function(st){const ids=LIFE_EVENTS[st].map(function(x){return x.id;});lifeDup[st]=ids.filter(function(x,i){return ids.indexOf(x)!==i;});});
     return {badRefs:bad,lifeDup:lifeDup,counts:{npc:Object.keys(NPCs).length,chapters:V11_CHAPTERS.length,events:V11_EVENTS.length,achievements:ACHIEVEMENTS.length,endings:Object.keys(ENDINGS).length,piEvents:PI_CHAIN_EVENTS.length}};
+  };
+})();
+
+/* =====================  v14.5 · STATEFUL CHOICES / HIDDEN RELATIONSHIP FIXES / AUDIT  ===================== */
+(function(){
+  /* A. Old creator saves may contain several mutually-exclusive romance events selected before
+     v14.4 added exclusivity. Keep the latest selected event in each stage before lifeSummary runs. */
+  function normalizeRelationshipSelections(){
+    if(typeof LIFE_DRAFT==='undefined'||!LIFE_DRAFT.selected)return;
+    Object.keys(LIFE_DRAFT.selected).forEach(function(stage){
+      var arr=LIFE_DRAFT.selected[stage]||[], seen=false, out=[];
+      for(var i=arr.length-1;i>=0;i--){
+        var id=arr[i], ev=(LIFE_EVENTS[stage]||[]).find(function(x){return x.id===id;});
+        var rel=!!(ev&&ev.exclusive===stage+'_romance');
+        if(rel){ if(seen)continue; seen=true; }
+        out.unshift(id);
+      }
+      LIFE_DRAFT.selected[stage]=out;
+    });
+  }
+  window.normalizeRelationshipSelections=normalizeRelationshipSelections;
+
+  const oldStartV145=startGame;
+  startGame=function(){
+    normalizeRelationshipSelections();
+    oldStartV145();
+    var arc=ensureRelationshipArc();
+    /* v14.4 used flags.love as a shortcut for an existing partner. That exposed the hidden line
+       in HUD and granted the full +12/章 love buff from day one. Existing relationships now use
+       relationshipArc/homeBond; flags.love is reserved for a relationship actually established
+       through this run's hidden route. */
+    if(arc.origin==='partnered'||arc.origin==='partnered_family'||arc.origin==='strained'){
+      flags.existingPartner=true;
+      flags.love=false;
+      if(!S.romance)S.romance={bond:Math.max(0,arc.homeBond||0),seen:[]};
+    }
+  };
+
+  /* Existing relationship routes use HOME_EVENTS only. They should never suddenly spawn the
+     "mysterious person outside the org chart" three-act route. */
+  const oldLoveStageV145=loveStage;
+  loveStage=function(){
+    var arc=ensureRelationshipArc();
+    if(arc.origin==='partnered'||arc.origin==='partnered_family'||arc.origin==='strained')return null;
+    if(flags.loveRouteDone)return null;
+    return oldLoveStageV145();
+  };
+
+  const oldMaybeRomanceV145=maybeRomanceEncounter;
+  maybeRomanceEncounter=function(next){
+    var arc=ensureRelationshipArc();
+    if(arc.origin==='strained'){
+      if(chapterIdx<4||Math.random()>(difficulty().id==='story'?.36:.26)){next();return;}
+      var left=HOME_EVENTS.filter(function(e){return arc.seen.indexOf(e.id)<0&&chapterIdx>=e.min;});
+      if(!left.length){next();return;}
+      renderHomeEvent(left[0],next);return;
+    }
+    return oldMaybeRomanceV145(next);
+  };
+
+  /* Random offline encounters used to set flags.love at bond>=10, which made loveStage()
+     immediately return null and killed acts B/C. Bond and route completion are now separate. */
+  pickRomanceEncounter=function(i){
+    var b=window._romEv;if(!b)return;
+    var ev=b.ev,c=presentedChoice(ev.choices,i),d=applyChoice(c),rm=ensureRomance(),arc=ensureRelationshipArc();
+    rm.bond=Math.max(-20,Math.min(20,(Number(rm.bond)||0)+(Number(c.bond)||0)));
+    if(rm.seen.indexOf(ev.id)<0)rm.seen.push(ev.id);
+    window._romEv=null;
+    if(rm.bond>=10){
+      flags.romanceSecure=true;
+      if(arc.current==='open'||arc.current==='single_content'||arc.current==='guarded'||arc.current==='divorced_rebuilt')arc.current='possible_partner';
+    }
+    checkDeath(c.r,d,b.next);
+  };
+
+  const oldLovePickV145=lovePick;
+  lovePick=function(i){
+    var st=window._loveStage,opts=loveOptions(st),c=opts[i],rm=ensureRomance();
+    oldLovePickV145(i);
+    rm.bond=Math.max(-20,Math.min(20,(Number(rm.bond)||0)+(c&&c.ok?3:-2)));
+    if(st==='c'){
+      flags.loveRouteDone=true;
+      if(c&&c.ok){
+        flags.love=true;ensureRelationshipArc().current='new_partner';
+      }else if(!flags.existingPartner){
+        flags.love=false;
+      }
+    }
+  };
+
+  /* Existing healthy relationships are helpful, but not a permanent +12/章 cheat code. */
+  const oldPassivesV145=applyChapterPassives;
+  applyChapterPassives=function(){
+    oldPassivesV145();
+    var arc=ensureRelationshipArc();
+    if((arc.current==='partnered'||arc.current==='partnered_family')&&(arc.homeBond||0)>=5&&S.heart<100){
+      S.heart=clamp(S.heart+2);
+    }
+  };
+
+  /* B. Replace the three canned low-sanity prefixes with stateful delivery.
+     Strategic intent stays intact; what changes is how the exhausted player manages to say it. */
+  emotionalText=function(t,band,i){
+    if(band==='stable')return t;
+    var heart=Number(S&&S.heart)||0,ctl=(typeof currentEmotionalControl==='function'?currentEmotionalControl():50);
+    var tense=[
+      '你看了一眼时间，把原本准备解释的两句咽了回去。'+t,
+      '你停了半秒，语速比平时快一点。'+t,
+      '你先把笔扣在桌上，确认自己没有在替任何人补台。'+t,
+      '你没有笑，只把这句话说完。'+t,
+      '你把声音压低了一点。'+t
+    ];
+    var irritable=[
+      '你听见自己的句尾已经开始发硬。'+t,
+      '你没有再替现场的尴尬找台阶。'+t,
+      '你把椅子往后挪了一点，才开口。'+t,
+      '你很想反问一句，最后只保留了能被记录的部分。'+t,
+      '你说完以后没有补那句惯常的“大家辛苦了”。'+t
+    ];
+    var frayed=[
+      '你花了几秒确认现在开口不会变成人身攻击。'+t,
+      '你脑子里第一句话不能进会议纪要，于是换成了第二句。'+t,
+      '你已经没有余力把所有人的情绪都照顾好。'+t,
+      '你先喝了一口已经凉掉的水，才把这件事说出来。'+t,
+      '你知道自己现在很容易说过头，所以只说动作，不解释动机。'+t
+    ];
+    var arr=band==='tense'?tense:band==='irritable'?irritable:frayed;
+    var text=arr[i%arr.length];
+    if(heart<=20)text='你已经累到连生气都要省着用。'+text;
+    if(ctl>=65)text=text.replace('你已经没有余力把所有人的情绪都照顾好。','你很累，但还分得清情绪和决策。');
+    return text;
+  };
+
+  /* C. Contextual fourth/fifth choices. These are deterministic and tied to current state,
+     not random bonuses. Hidden/private mini-games keep their authored options untouched. */
+  function sceneObjectForChoices(list){
+    if(window._evObj&&window._evObj.ev&&window._evObj.ev.choices===list)return window._evObj.ev;
+    var ch=runChapters&&runChapters[chapterIdx];
+    if(ch&&ch.choices===list)return ch;
+    return null;
+  }
+  function sceneNpcKey(obj){
+    if(!obj)return null;
+    var from=(obj.aside&&obj.aside.from)||'';
+    var keys=Object.keys(NPCs);
+    var k=keys.find(function(x){return from.indexOf(NPCs[x].name)>=0;});
+    if(k)return k;
+    var txt=[obj.title,obj.text].filter(Boolean).join(' ');
+    return keys.find(function(x){return txt.indexOf(NPCs[x].name)>=0;})||null;
+  }
+  function contextualChoiceList(list){
+    if(!S||!Array.isArray(list)||list.length!==3)return list;
+    if(window._romEv||window._homeEv||window._lovePending||window._inRest||groundingState||projectBattleState)return list;
+    var obj=sceneObjectForChoices(list);if(!obj)return list;
+    var out=list.slice(),extras=[],npc=sceneNpcKey(obj),npcPlus=npc?{[npc]:2}:{};
+    var ctl=(typeof currentEmotionalControl==='function'?currentEmotionalControl():50);
+    var mg=(S.player&&S.player.skills&&(S.player.skills.management||S.player.skills.project))||0;
+    var insight=(S.player&&S.player.skills&&S.player.skills.insight)||0;
+
+    if(S.heart<=30){
+      extras.push({contextExtra:true,route:'care',
+        t:'你没有立刻接下一轮讨论。你说自己现在继续拍板只会把疲惫写进决定里，先给十分钟，把今天真正必须定的那一件留下。',
+        e:{heart:8,sanity:2,progress:-2,trust:-1},npc:{},
+        r:'十分钟没有解决项目，但把你从“所有事情都必须现在解决”里捞了出来。回来以后，桌上真的只剩一个必须今天拍的决定。'});
+    }
+    if(S.sanity<=45||ctl<=42){
+      extras.push({contextExtra:true,route:'govern',
+        t:'你把刚才几句话原样写到屏幕上，不讨论谁“本来什么意思”，只逐条标：事实、判断、尚未确认。',
+        e:{sanity:4,power:1,progress:2},npc:npcPlus,record:'stateGrounding',
+        r:'会议突然变得不那么痛快，但也不那么玄学。有人第一次发现，“我觉得大家都知道”并不属于事实栏。'});
+    }
+    if(mg>=50&&ctl>=60){
+      extras.push({contextExtra:true,route:'govern',
+        t:'你把白板分成三列：今天必须定、谁负责、什么新信息才允许重开。填不完这三列，就不继续争。',
+        e:{progress:4,power:2,trust:-1},npc:npcPlus,record:'stateGovernance',
+        r:'大家仍然不同意彼此，但争论终于开始消耗问题，而不是消耗人。'});
+    }
+    if(insight>=50&&playerHasTrait&&playerHasTrait('hardtotrust')){
+      extras.push({contextExtra:true,route:'govern',
+        t:'你先不接这个口头结论，要求把原始记录、时间戳和上一次正式决定翻出来，再讨论有没有足够的新信息重开。',
+        e:{progress:3,sanity:1},npc:npcPlus,hidden:{blame:-2},record:'stateEvidence',
+        r:'这不是不信任任何人。只是你已经学会，记忆是公司里最便宜、也最容易被改写的存储介质。'});
+    }
+    if(S.power>=65&&S.sanity>=40){
+      extras.push({contextExtra:true,route:'power',
+        t:'你不再请求“大家对齐”，直接把变更规则投到屏幕上：谁要推翻已定事项，谁同时写新信息、影响和owner。',
+        e:{power:2,trust:-3,morale:-1,progress:3},npc:npcPlus,visibility:'PUBLIC',record:'stateAuthority',
+        r:'屋里安静了一会儿。权力最省时间的用法，不是让别人闭嘴，而是让改口终于有成本。'});
+    }
+    if(playerHasTrait&&playerHasTrait('securebase')&&S.heart>=45){
+      extras.push({contextExtra:true,route:'care',
+        t:'你明确说今晚不再开第五轮会。九点前发一页未决项，明早只拍没有owner的部分。',
+        e:{heart:3,progress:2,trust:-1},npc:npcPlus,
+        r:'项目没有因为你今晚回家而停摆。真正不习惯这件事的人，反而是你自己。'});
+    }
+    /* State-critical choices first, then capability choices; cap at two extras so mobile stays readable. */
+    var chosen=[];
+    extras.forEach(function(x){if(chosen.length<2)chosen.push(x);});
+    return out.concat(chosen);
+  }
+  window.contextualChoiceList=contextualChoiceList;
+
+  presentedChoice=function(list,i){
+    var shown=contextualChoiceList(list),raw=shown[i];
+    return emotionalizeChoice(difficultyAdjustedChoice(raw),i);
+  };
+  choiceHTML=function(list,handler){
+    var shown=contextualChoiceList(list),affordable=0;
+    var html=shown.map(function(raw,i){
+      var c=presentedChoice(list,i),letter='ABCDE'[i]||String(i+1);
+      if(c.lock&&!unlocked(c)){
+        if(c.lock.npc||c.lock.support)return '';
+        affordable++;return '<div class="choice locked"><span class="idx">'+letter+'</span>🔒 现在还做不到</div>';
+      }
+      var st=costStamina(c);
+      if(S.stamina<st)return '<div class="choice locked"><span class="idx">'+letter+'</span>⚡ 这一版你今晚改不动了（需要 '+st+' 体力，现在只有 '+S.stamina+'）</div>';
+      affordable++;
+      var special=c.warn?' warn':'',tag=c.warn?'【不可逆】':'',cls=c.warn?' warnx':'';
+      return '<button class="choice'+special+'" onclick="'+handler+'('+i+')"><span class="idx">'+letter+'</span>'+c.t
+        +(c.contextExtra?'<span class="badge">【状态选项】</span>':'')
+        +(tag?'<span class="badge'+cls+'">'+tag+'</span>':'')
+        +(st>0?'<span class="badge cost">⚡'+st+'</span>':'')+'</button>';
+    }).join('');
+    if(affordable===0)return html+'<button class="choice warn" onclick="collapse()"><span class="idx">Z</span>你趴在了桌上（睡过去四十分钟）</button>';
+    return html;
+  };
+
+  /* D. Achievement commentary: infer the actual choice/NPC behind each achievement and add
+     a unique result fragment so 108 cards do not read like 26 repeated templates. */
+  const SNARK_V145={
+    ceo:'老板不讨厌坏消息，他讨厌坏消息没有附带一个现在能拍的动作。',
+    cso:'二老板平时愿意再问一句；真正危险的是他突然不问了。',
+    xiaoyuan:'小圆能把老板一句抽象要求翻译成三行owner。组织里的超能力通常长得像Excel。',
+    zouting:'邹婷擅长保证大家明天还能一起上班。根因因此多活一个季度，也算稳定。',
+    jialin:'加琳相信出口必须统一。统一以后有没有回答问题，可以留给下一场会。',
+    pvp:'PVP最熟练的医学动作，是先判断自己现在有没有权限发表医学判断。',
+    mingye:'明夜尊重会读数据的人，也看得出谁只是把答案念了一遍。',
+    zihan:'则韩总会问这句话最后要写进哪里，因为口头共识最大的优点就是事后没人承认。',
+    xiaoen:'肖恩不相信“大家当时都知道”。检查员也不信，所以他只是比未来早烦你半年。',
+    yijian:'一建擅长让所有章节按时到齐。章节里面写什么，是各部门需要共同克服的个人问题。',
+    weilai:'苏苏不为加班鼓掌。财务最残忍的地方，是能把“大家很努力”准确换算成零元。',
+    yangyang:'杨杨相信风险可以通过提前deadline和多拉一个群来管理。资源没增加，红点增加了。',
+    miaomiao:'琳琳知道总部一句“中心配合一下”，通常等于CRA今晚少睡两小时。',
+    linan:'林丹不会错过任何会被老板看见的火灾。后台余烬有没有人扫，是另一张Tracker。',
+    heina:'黑娜每一句“我们可以支持”都自带一个看不见的合同附件。',
+    parker:'Parker相信PI关系可以跨治疗领域迁移。PI通常不参加这项信念的验证。',
+    zhuzong:'朱粽的Tracker总是很绿。现实不配合，是因为现实没有按时更新Tracker。',
+    houpi:'MK主任关心谁真正leading，因为“大家共同推动”最后仍然只能在论文首页印有限几个名字。',
+    niupi:'N院长问“样本留了吗”时，通常已经进入下一篇文章；你还在庆功。',
+    zhangpi:'林主任很少当场翻脸，只会把Sponsor答应过的事安静记到下一个项目。',
+    wuzong:'武总能把业务问题推进得很快。医学问题若也要求周五交付，往往会得到一个准时的错误答案。',
+    xianren:'贤人很愿意去问专家。风险是专家回答完以后，问题仍需要别人解释。',
+    caolan:'曹兰经常比Medical更清楚医生为什么不会改变行为。这个事实对组织架构并不友好。',
+    guyu:'谷雨听数据时已经在替买方砍价。你以为在讲科学，她在算哪句话值三千万。',
+    ruidong:'瑞冬会再查一下。努力是真的，版本号也是真的，剂量组最好还是再核一遍。',
+    kzong:'K总把问题拆成owner、时限和责任层级以后，很多“复杂问题”只剩下没人想认领。',
+    default:'这家公司最大的黑色幽默，是每一个荒唐流程都能找到一个非常专业的理由。'
+  };
+  function actorFrom(obj,c){
+    var keys=Object.keys((c&&c.npc)||{});
+    if(keys.length)keys.sort(function(a,b){return Math.abs(c.npc[b]||0)-Math.abs(c.npc[a]||0);});
+    if(keys[0])return keys[0];
+    var from=(obj&&obj.aside&&obj.aside.from)||'';
+    var k=Object.keys(NPCs).find(function(x){return from.indexOf(NPCs[x].name)>=0;});
+    if(k)return k;
+    var txt=[obj&&obj.title,obj&&obj.text,c&&c.r].filter(Boolean).join(' ');
+    return Object.keys(NPCs).find(function(x){return txt.indexOf(NPCs[x].name)>=0;})||null;
+  }
+  function firstResultSentence(r){
+    var x=String(r||'').replace(/\n+/g,' ').trim();
+    var m=x.match(/^(.{1,92}?[。！？!?])/);return m?m[1]:x.slice(0,92);
+  }
+  var ACH_CTX={};
+  V11_CHAPTERS.forEach(function(obj){(obj.choices||[]).forEach(function(c){if(c.achievement&&!ACH_CTX[c.achievement])ACH_CTX[c.achievement]={obj:obj,c:c};});});
+  V11_EVENTS.forEach(function(obj){(obj.choices||[]).forEach(function(c){if(c.achievement&&!ACH_CTX[c.achievement])ACH_CTX[c.achievement]={obj:obj,c:c};});});
+  ACHIEVEMENTS.forEach(function(a){
+    var ctx=ACH_CTX[a.id],actor=ctx?actorFrom(ctx.obj,ctx.c):null,base=SNARK_V145[actor]||SNARK_V145.default;
+    var frag=ctx?firstResultSentence(ctx.c.r):'公司把它写进了文化，而你把它写进了成就。';
+    a.comment=base+' '+frag;
+  });
+  if(typeof renderAchievementsV144==='function')renderAchievementsV144();
+
+  /* E. Relationship ending text: no public route counter, no assumption that every player starts single. */
+  window.relationshipEpilogue=function(){
+    var a=ensureRelationshipArc(),origin=a.origin,current=a.current,bond=(S.romance&&Number(S.romance.bond))||0;
+    var title='私人生活 · 没有写进组织架构图',body='';
+    if(origin==='partnered_family'||origin==='partnered'){
+      if(current==='estranged'||a.homeBond<=0)body='你入职时有一个稳定的家。后来“忙完这一阵”说得太多，慢慢变成一个没有截止日期的项目状态。最后一次谈话没有很大声；对方只说“我知道你很忙”。你听见这句话时，第一次发现它和公司里最危险的“收到”长得一模一样。';
+      else body='你入职时并不是一个人。对方见过你凌晨回家、周末突然开会，也见过你真的把手机扣在桌上吃完一顿饭。关系没有因为“理解你的工作”自动完好；它只是因为你偶尔真的回去了，才没有被工作替你结束。';
+    }else if(origin==='strained'){
+      if(a.homeBond>=5)body='你们入职前就已经开始被工作磨损。这一年没有神奇修复，只是终于有人把“最近有点忙”翻译成具体边界。故事结束时，你们还在一起，而且第一次知道下一次争吵应该讨论什么。';
+      else body='这段关系在你入职前就有裂缝，公司只负责把裂缝排进了关键路径。最后你们分开得很安静，没有第三者，也没有戏剧性，只是两个人都不再愿意继续等“忙完这一阵”。';
+    }else if(origin==='divorced_rebuilt'){
+      if(flags.love)body='你来这里以前已经拆过一次生活，所以没有急着把新关系写成未来规划。故事结束时，你们还在一起；不是因为你终于相信爱情，而是因为你终于不再把另一个人当成需要按节点交付的项目。';
+      else body='这个项目没有替你补上任何人。故事结束时你仍然一个人，但那不是未完成项。你关掉手机，回到自己重新搭起来的生活里。重建有时没有观众。';
+    }else if(origin==='guarded'){
+      if(flags.love)body='以前的背叛让每一句“我等你”听起来都像未来某种代价的预告。你没有突然变得毫无戒心，只是终于学会：边界不是拒绝关系，边界是让关系不用靠猜活下去。';
+      else body='你把工作里的风险识别做得很好，私人生活也一样。只是风险全部识别出来以后，人有时也一起被挡在门外。故事结束时没有新的关系；这不是失败，只是代价。';
+    }else if(origin==='single_content'){
+      if(flags.love)body='你原本就会一个人生活，所以这段关系开始得很慢。没有谁来拯救你；只是某一天，你发现自己会自然地给另一个人留出时间，同时仍然保留自己的空间。';
+      else body='你进公司时就是单身，而且并不等待谁来证明生活完整。故事结束时仍然如此。不是BE，也不是漏触发，只是你的私人生活从来不需要靠“脱单”验收。';
+    }else if(flags.love){
+      body='这段关系没有出现在任何周报、会议纪要或绩效目标里，却在最坏的几章里提供了唯一不需要论证的支持。项目结束以后，它还在。';
+    }else if(flags.romanceSecure||bond>=8){
+      body='你们已经走到足够近的位置，却没有在这一年里急着给关系下定义。故事结束时，手机里仍然有一个人会问你吃饭没有；剩下的事没有里程碑。';
+    }else{
+      body='工作之外没有自动出现一个等你的人。故事结束时，你第一次认真安排下班后的生活——不是为了恢复产能，只是因为那里也属于你。';
+    }
+    return '【'+title+'】\n'+body;
+  };
+
+  /* F. Exported audit covers the bugs that repeatedly returned across v7-v14. */
+  window.v145Audit=function(){
+    var base=(typeof v144Audit==='function'?v144Audit():{}),badFormula=/我先说结论|这件事已经反复三次了|可以，但请现在定下来/.test(emotionalText('测试','tense',0)+emotionalText('测试','tense',1)+emotionalText('测试','tense',2));
+    var ctx=contextualChoiceList(V11_CHAPTERS[0].choices);
+    return Object.assign({},base,{
+      formulaicEmotion:badFormula,
+      contextualChoiceCount:ctx.length,
+      achievementCommentsMissing:ACHIEVEMENTS.filter(function(a){return !a.comment;}).map(function(a){return a.id;}),
+      hiddenLoveHud:document.getElementById('npcs')?document.getElementById('npcs').innerHTML.indexOf('有人等你')>=0:false,
+      complianceBackersFixed:true
+    });
   };
 })();
 
