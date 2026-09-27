@@ -5155,7 +5155,7 @@ renderLifeBuilder();
   window.ACHIEVEMENTS=A_NAMES.map(function(n,i){return{id:"a"+(i+1),name:n,point:(i%3===0?1:0)};});
   function achUnlocked(){try{return JSON.parse(localStorage.getItem("dragon_achievements")||"[]");}catch(e){return[];}}
   window.unlockAchievement=function(id){let a=ACHIEVEMENTS.find(x=>x.id===id),u=achUnlocked();if(!a||u.includes(id))return;u.push(id);localStorage.setItem("dragon_achievements",JSON.stringify(u));if(a.point)localStorage.setItem("dragon_ng_points",String(ngPoints()+a.point));toast("🏆 "+a.name+(a.point?" · 轮回点 +1":""),"up");};
-  window.checkAchievements=function(ch){if(!S)return;if(chapterIdx<=2)unlockAchievement("a1");if(S.stamina<20)unlockAchievement("a2");if(S.power>=55)unlockAchievement("a11");if(hasMemory("doseMatrix"))unlockAchievement("a13");if(S.progress>=70)unlockAchievement("a96");if(S.morale>=70)unlockAchievement("a97");if(ch&&ch.achievement)unlockAchievement(ch.achievement);if((S.dragon||0)>=18)unlockAchievement("a95");};
+  window.checkAchievements=function(ch){if(!S)return;if(ch&&ch.achievement)unlockAchievement(ch.achievement,ch);};
   let _applyChoiceAch=applyChoice;applyChoice=function(ch){let out=_applyChoiceAch(ch);setTimeout(function(){checkAchievements(ch);},0);return out;};
 
   const D=[
@@ -5288,7 +5288,7 @@ renderLifeBuilder();
     if((S.progress||0)<35){showEnding("be_progress");return;}
     showEnding("ge_survive");
   };
-  let _showEndingV11=showEnding;showEnding=function(k){try{if(S&&S.player&&S.player.traits)localStorage.setItem("dragon_last_traits",JSON.stringify(S.player.traits.slice(0,12)));if(k==="be_probation")unlockAchievement("a99");if(k==="true_dragon")unlockAchievement("a95");if(k&&k.indexOf("ge_")===0)unlockAchievement("a97");}catch(e){}return _showEndingV11(k);};
+  let _showEndingV11=showEnding;showEnding=function(k){try{if(S&&S.player&&S.player.traits)localStorage.setItem("dragon_last_traits",JSON.stringify(S.player.traits.slice(0,12)));}catch(e){}return _showEndingV11(k);};
 
   function installAchievementPanel(){let title=document.getElementById("title-screen");if(!title||document.getElementById("achievement-panel"))return;let d=document.createElement("div");d.id="achievement-panel";d.className="intro-box";d.style.marginTop="18px";let u=achUnlocked();d.innerHTML='<b>🏆 成就系统 · 99</b><div class="creator-note">黑色幽默会在你真的经历以后才解锁。当前 '+u.length+' / 99；部分成就奖励轮回点。</div><div class="gallery-grid" style="margin-top:10px">'+ACHIEVEMENTS.map(function(a){return '<span class="g '+(u.includes(a.id)?'got ge':'')+'">'+(u.includes(a.id)?a.name:'？？？')+'</span>';}).join('')+'</div>';title.appendChild(d);}
   installAchievementPanel();
