@@ -1,10 +1,12 @@
 # 药厂生存记 · 临床开发部
 
-## Demo v10.2 · Life Build, Relationship History & Coalition Governance
+## Demo v13.3 · 18 章分支网、25 个随机事件、99 成就
 
 纯 HTML/CSS/JavaScript 的临床开发职场 Galgame / 生存叙事。
 
-### 本版重点
+当前版本修复便利店休息时的项目进度结算，并恢复适配现有人物的三轮会议争论 QTE。每个随机事件有独立的黑色幽默成就名；成就总数保持 99，多周目、年龄与性别、人生构筑和隐藏路线继续可用。更新细节见 `CHANGELOG.md`。
+
+### 核心玩法
 
 - 18 章主线：Phase I → Phase II → EOP2 → Phase III → Pre-NDA / NDA
 - 开局新增“捏人”：性别、学业背景、工作年限、专业能力、社交底色、个人魅力
