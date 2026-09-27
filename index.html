@@ -5279,7 +5279,7 @@ renderLifeBuilder();
       showEnding("ge_project");return;
     }
     if((S.progress||0)<35){showEnding("be_progress");return;}
-    showEnding("ge_survivor");
+    showEnding("ge_survive");
   };
   let _showEndingV11=showEnding;showEnding=function(k){try{if(S&&S.player&&S.player.traits)localStorage.setItem("dragon_last_traits",JSON.stringify(S.player.traits.slice(0,12)));if(k==="be_probation")unlockAchievement("a99");if(k==="true_dragon")unlockAchievement("a95");if(k&&k.indexOf("ge_")===0)unlockAchievement("a97");}catch(e){}return _showEndingV11(k);};
 
@@ -5599,7 +5599,7 @@ renderLifeBuilder();
   var eCro=V11_EVENTS.find(function(x){return x.id==="v11e_cro";});
   if(eCro&&eCro.choices[1])eCro.choices[1].branchFlag="v11_cro_sponsor_mail";
 
-  /* ---------- D. 99 achievements across main chapters and random events ---------- */
+  /* ---------- D. Current achievement catalogue across chapters and events ---------- */
   var ACH_TRIADS=[
     ["选择题管理学","刚来就拍板","Comment全都要"],["优先级终于存在","三个项目三条命","试用期管理层"],
     ["一页就是一页","第九页找到结论","Appendix吞噬正文"],["给记忆留台阶","当众校正历史","新的旧决定"],
@@ -5619,7 +5619,7 @@ renderLifeBuilder();
     ["屠龙后先造制度","先这样以后再改","龙椅终于空了"],["下一项继续吵","项目成功组织归零","制度也可以围着人转"],
     ["62条只改3条","Comment清零主义","解释为什么不解释"]
   ];
-  /* v13.3: 54 main outcomes + 45 random outcomes across all 25 distinct events. */
+  /* v14.0: 54 main outcomes + 54 random outcomes across 34 distinct events. */
   var OLD_RANDOM_TRIADS=[
     ["62条只改3条","Comment清零主义","解释为什么不解释"],
     ["真的删一块","四个项目一双手","Visible资源配置"],
@@ -5664,7 +5664,16 @@ renderLifeBuilder();
     ["买方比我们先读到分母"],
     ["访视表比患者还忙"],
     ["食堂风向，精准误报"],
-    ["医学判断由组织架构决定"]
+    ["医学判断由组织架构决定"],
+    ["容量规划：让一个人扮演三个人"],
+    ["安全信号先过公关审稿"],
+    ["签字人失踪在最终版里"],
+    ["中心的时间不算项目成本"],
+    ["中期图只要看起来有希望"],
+    ["上市以后医学终于可以下班"],
+    ["预算刀法精准避开老板想法"],
+    ["终点会动，统计分析计划不会哭"],
+    ["继任计划：再招一个你"]
   ];
   ACH_TRIADS=ACH_TRIADS.slice(0,18);
   ACH_TRIADS[17]=["下一项有章程","旧流程又开会","项目都等你"];
@@ -5674,7 +5683,7 @@ renderLifeBuilder();
     var ids=[];g.forEach(function(n){names.push(n);groups.push(gi+19);ids.push("a"+names.length);});
     randomIds.push(ids);
   });
-  if(names.length!==99||RANDOM_ACH_GROUPS.length!==25)throw new Error("Achievement catalogue must have 99 entries across 25 events");
+  if(names.length!==108||RANDOM_ACH_GROUPS.length!==34)throw new Error("Achievement catalogue must have 108 entries across 34 events");
   window.RANDOM_ACHIEVEMENT_IDS=randomIds;
   window.ACHIEVEMENTS=names.map(function(n,i){return{id:"a"+(i+1),name:n,point:((i+1)%6===0||[1,7,13,19,25,31,37,43,49,55,61,67,73,79,85,91,97].indexOf(i+1)>=0)?1:0,group:groups[i]};});
 
@@ -5715,7 +5724,7 @@ renderLifeBuilder();
     refreshAchPanel12();
   };
   checkAchievements=function(ch){if(ch&&ch.achievement)unlockAchievement(ch.achievement,ch);};
-  /* Main 54 + random 45 = 99; random groups have 3, 2 or 1 distinct results. */
+  /* Main 54 + random 54 = 108; random groups have 3, 2 or 1 distinct results. */
   V11_CHAPTERS.forEach(function(ch,ci){(ch.choices||[]).forEach(function(x,oi){x.achievement="a"+(ci*3+oi+1);});});
   window.assignRandomAchievements=function(ev,ei){
     var ids=window.RANDOM_ACHIEVEMENT_IDS[ei]||[];
@@ -5727,9 +5736,10 @@ renderLifeBuilder();
     var d=document.getElementById("achievement-panel");if(!d)return;
     var u=unlocked12(),details=achievementDetails12(),legacy=[];
     try{legacy=JSON.parse(localStorage.getItem("dragon_legacy_achievements")||"[]");}catch(e){}
-    d.innerHTML='<b>🏆 成就系统 · 99</b><div class="creator-note">18章各3种结果；25个随机事件各有黑色幽默成就，其中部分另有互斥结果。当前 '+u.length+' / 99。</div><div class="gallery-grid" style="margin-top:10px">'+window.ACHIEVEMENTS.map(function(a){return '<span class="g '+(u.indexOf(a.id)>=0?'got ge':'')+'">'+(u.indexOf(a.id)>=0?(details[a.id]||a.name):'？？？')+'</span>';}).join('')+'</div>'
+    d.innerHTML='<b>🏆 成就系统 · 108</b><div class="creator-note">18章各3种结果；34个随机事件各有黑色幽默成就，其中部分另有互斥结果。当前 '+u.length+' / 108。</div><div class="gallery-grid" style="margin-top:10px">'+window.ACHIEVEMENTS.map(function(a){return '<span class="g '+(u.indexOf(a.id)>=0?'got ge':'')+'">'+(u.indexOf(a.id)>=0?(details[a.id]||a.name):'？？？')+'</span>';}).join('')+'</div>'
       +(legacy.length?'<div class="creator-note">旧版已获得但在新版改为剧情选择的记录：'+legacy.join('、')+'（已归档，轮回点保留）</div>':'');
   }
+  window.refreshAchievements=refreshAchPanel12;
   refreshAchPanel12();
 
   /* branch variants also use the chapter-slot achievement IDs */
@@ -6363,6 +6373,140 @@ renderLifeBuilder();
     flags['battle_'+chId]=true;
     startProjectBattle(chId,'vp',next);
   };
+})();
+
+/* =====================  v14.0 · NINE CONSEQUENCE EVENTS / 64 ENDINGS  ===================== */
+(function(){
+  const events=[
+    {id:'v14_capacity',title:'一张容量表能装几个人',text:'K总把三期、NDA和新项目排进同一张资源表。钟时说：「不用写谁做，大家灵活支持。」杨杨问谁能复核中心启动包，琳琳看见自己的名字出现了四次。',choices:[
+      {t:'明确每个人的容量，删掉一个没有资源的里程碑。',e:{progress:3,morale:5,power:2},npc:{kzong:5,yangyang:2,miaomiao:4},r:'表终于少了一行。老板问为什么慢了，你把原本不存在的人力栏给他看。'},
+      {t:'先答应全部节点，之后靠加班补。',e:{progress:5,stamina:-7,morale:-5},npc:{kzong:-3,miaomiao:-4},r:'表很好看。每个任务的Owner都写着同一个缩写：TBD。'},
+      {t:'把所有关键事项收到自己手里。',e:{power:6,stamina:-5,dragon:2},npc:{kzong:-2,yangyang:-3},r:'这周很快。下周你休假时，所有人都在等一个绿色圆点。'}]},
+    {id:'v14_safety_copy',title:'安全信号的传播顺序',text:'PVP把三例相似事件的时间线放在桌上。加琳说尚未形成signal；谷雨问尽调材料能不能写「未见风险」。钟时建议先统一措辞，医学判断下周再讨论。',choices:[
+      {t:'先确认事实与医学判断，宣传措辞最后写。',e:{progress:3,trust:-1},npc:{pvp:5,guyu:3,jialin:2},r:'材料写得更窄，买方追问时却有完整的时间线。'},
+      {t:'按「未形成signal」先出材料。',e:{trust:5,progress:2},npc:{guyu:-4,pvp:-3},r:'这一页很容易读。下一次尽调多了十七页备份解释。'},
+      {t:'公开指责PV在掩盖风险。',e:{power:5,trust:-5},npc:{jialin:-7,pvp:2},r:'没有人再敢写「可控」。也没有人愿意和你一起复核事实。'}]},
+    {id:'v14_signature',title:'最终版的最后一个签名',text:'肖恩发现NDA模块的审批链缺一位医学Owner。钟时说：「我Review过很多次，可以先提交，签字后补。」一建提醒递交窗口还有四小时。',choices:[
+      {t:'找回医学Owner，保留版本差异并重新确认提交包。',e:{progress:2,power:2},npc:{xiaoen:5,yijian:3},r:'递交晚了半小时。半年后稽查员只问了一个简单的问题。'},
+      {t:'先提交，回头补签。',e:{progress:6,trust:4,blame:5},npc:{xiaoen:-6,yijian:2},r:'系统显示准时。审批记录显示另一种时间。'},
+      {t:'你替所有人签，并要求他们以后向你报告。',e:{power:7,dragon:4,blame:4},npc:{xiaoen:-5,zihan:-3},r:'大家说你有担当。附件里也只有你的名字。'}]},
+    {id:'v14_site_time',title:'中心多出来的一百个小时',text:'杨杨建议给一百名受试者各加一次非计划访视。琳琳问CRC从哪里来，牛教授问患者的交通费谁付。钟时说：「为了稳妥，这点工作量应该可以克服。」',choices:[
+      {t:'量化患者负担，先试既有访视合并检查。',e:{progress:4,morale:3},npc:{miaomiao:5,niupi:4,yangyang:1},r:'项目少了一百次出行，也没有少一条真正需要的数据。'},
+      {t:'照建议加访视，中心自行协调。',e:{trust:4,progress:2},npc:{miaomiao:-6,niupi:-3},r:'总部的风险表变绿。中心的预约表变红。'},
+      {t:'直接否决，谁再提就自己去中心执行。',e:{power:5,trust:-3},npc:{miaomiao:3,yangyang:-6},r:'决定是对的。杨杨从此不再提前告诉你她担心什么。'}]},
+    {id:'v14_interim',title:'这张中期图能不能上会',text:'明夜指出中期亚组的分母只剩十二人。老板看了曲线，说：「趋势很好，给我放第一页。」则韩问SAP是否事先定义过这个切法。',choices:[
+      {t:'标注探索性、人数和限制，讨论真正需要的下一步。',e:{progress:3,career:2},npc:{mingye:5,zihan:4,ceo:-1},r:'第一页没有漂亮的标题，但决策没有把十二人讲成全部人。'},
+      {t:'先按老板要求上会，限制放附录。',e:{trust:5,power:2},npc:{mingye:-4,zihan:-3},r:'会议上每个人都记住了曲线，没人记住了分母。'},
+      {t:'当众说老板不懂统计，把图撤掉。',e:{power:5,trust:-7},npc:{ceo:-8,mingye:2},r:'图没上会。明夜后来问你，是否一定要让正确变成羞辱。'}]},
+    {id:'v14_postmarket',title:'上市以后谁有资格说医学',text:'武总希望MA下周宣布上市后研究方向。苏苏问预算，曹兰说证据还不足，贤人已经邀请好专家。钟时建议Clinical「配合一下」。',choices:[
+      {t:'业务目标与医学问题分开，约定证据门槛和各自Owner。',e:{progress:3,power:2},npc:{caolan:5,weilai:4,wuzong:2},r:'会没取消，但每个人终于知道自己负责回答哪个问题。'},
+      {t:'先让市场定方向，医学随后补材料。',e:{trust:4,progress:3},npc:{wuzong:5,caolan:-4},r:'宣传稿写好以后，医学发现自己只能修改标点。'},
+      {t:'Clinical接管研究，MA只负责传话。',e:{power:6,dragon:2},npc:{wuzong:-7,xianren:-4},r:'边界清楚得像一堵墙。专家的问题还在墙外。'}]},
+    {id:'v14_budget',title:'预算会里的沉默项目',text:'卫来要求删掉一项没有清晰决策用途的分析，二老板想留着探索，老板又提出一项新实验。没人主动说钱从哪里来。',choices:[
+      {t:'逐项说清决策价值与成本，请老板选择取舍。',e:{power:3,progress:2},npc:{weilai:5,cso:3,ceo:1},r:'预算没有神奇地增加，第一次有人为新增实验明确放弃了另一件事。'},
+      {t:'全留着，下一季度再申请预算。',e:{trust:4,progress:-2},npc:{weilai:-5,cso:2},r:'会议纪要写了「原则同意」。财务系统没有这个科目。'},
+      {t:'直接砍掉二老板的探索项，保留老板的新想法。',e:{power:5,trust:2},npc:{ceo:5,cso:-7,weilai:1},r:'你展示了优先级。二老板记住的是谁没有机会解释。'}]},
+    {id:'v14_endpoint',title:'主要终点的第四种说法',text:'锁库前钟时又说主要终点「最好更符合现在的趋势」。则韩把方案、SAP、会议纪要并排打开。明夜看着你，等你说这是不是一次正式变更。',choices:[
+      {t:'维持预设分析，将新问题列为明确标注的探索项。',e:{progress:4,career:2},npc:{zihan:5,mingye:5},r:'故事没变得更漂亮，但最早的问题终于得到可信的回答。'},
+      {t:'先换口径写摘要，正式文件以后再对齐。',e:{trust:5,progress:2,blame:4},npc:{zihan:-6,mingye:-5},r:'摘要里的终点很新。方案里的终点还在旧世界。'},
+      {t:'直接公布钟时之前三次说法，让她当场认错。',e:{power:6,trust:-6},npc:{zihan:2,mingye:2},r:'终点没变。会议的议题变成了你的态度。'}]},
+    {id:'v14_successor',title:'谁能在你请假时做决定',text:'邹婷问团队是否有接班人。K总说流程不能靠一个人记在脑子里。钟时说：「你带得很好，所以目前还是你最合适。」',choices:[
+      {t:'给杨杨和琳琳真实决策边界，留一张可交接的运行图。',e:{morale:5,power:2},npc:{yangyang:4,miaomiao:4,kzong:4},r:'你休假的一天里没有人找你，团队却推进了两件事。'},
+      {t:'先不交接，忙过这一阵再培养。',e:{progress:4,stamina:-4},npc:{zouting:2,yangyang:-2},r:'这一阵持续了九个月。你仍是唯一知道文件在哪的人。'},
+      {t:'指定自己为所有决定的最终审批人。',e:{power:7,dragon:4,morale:-4},npc:{kzong:-5,miaomiao:-4},r:'组织图很清楚。休假审批也得由你批准。'}]}
+  ];
+  const outcomeNames=[
+    ['资源表终于有减号','TBD负责到凌晨','不可替代直到不能请假'],
+    ['没形成信号也要看见事实','十七页解释一个否定句','把事实吵成阵营'],
+    ['晚半小时，少十年解释','元数据比人诚实','签字权是最后一口锅'],
+    ['少一次访视，多一点人性','总部绿灯，中心红灯','正确决定的错误传达'],
+    ['十二个人不是全部世界','附录里的分母','把统计正确说成了人身攻击'],
+    ['业务和医学各答各的','医学负责最后一个句号','围墙里的正确'],
+    ['新增一项，必须删一项','原则同意不能付款','优先级长着老板的脸'],
+    ['预设终点还活着','摘要先于方案诞生','会议纪要成了证人'],
+    ['你请假，项目还在','再忙过这一阵','全公司等你点同意']
+  ];
+  const outcomeStories=[
+    ['下一项研究启动时，资源表第一次允许写「做不了」。老板仍不喜欢减号，但团队终于不再用身体填空。','递交按时，琳琳离职。复盘会上钟时表扬大家超额承担，空缺岗位继续写着TBD。','你能回答每个问题。你请假的第一天，会议取消了三场，大家都称赞你不可替代。'],
+    ['谷雨带买方看完整时间线，PVP回答医学判断。没人说风险不存在，交易也没有因此失去可信度。','对外写了「未见风险」，后来用十七页解释它的限定条件。法务问这十七页为什么没有跟第一页一起发。','事实最后查清了，但PV和Clinical不再愿意同桌。你赢了争吵，失去了下一次提前知道问题的机会。'],
+    ['递交晚了半小时，审计时每个签字都有对应版本。肖恩说这是他见过最无聊的检查，听起来像赞美。','递交时间是对的，补签时间也是对的。两者被放到同一页时，没人再问项目是否按时。','你替团队签完所有文件。问责信也很尊重你的领导力，收件人只有你。'],
+    ['牛教授说患者没有多跑一趟。总部风险表少了一行，中心第一次相信总部看见了他们的时间。','方案新增一百次访视，执行率却越来越低。总部继续讨论为什么中心不够积极。','你替中心省下工作，却把杨杨的担忧一起否掉。下一次真正需要提醒你的事，她选择发给别人。'],
+    ['明夜在结题会重新打开那张十二人的图，限制和结果都仍然完整。没人需要替漂亮曲线补造一个分母。','投资人记住了曲线。数据锁定后，他们问起分母，整场会突然变得非常重视附录。','图撤了，老板也不再让明夜直接上会。统计判断被当成了你和老板的私人胜负。'],
+    ['上市后研究有清楚的医学问题和预算边界。贤人仍负责专家关系，曹兰终于不必在最后一刻替别人核对数字。','市场写完第一版，医学只能改标点。后来每个人都说自己参与过科学决策。','Clinical赢得了控制权，也接手了专家关系、预算和所有答不完的问题。武总学会了说「你们自己定的」。'],
+    ['老板的新实验留下了，另一项低价值分析明确停止。卫来第一次能把预算与决策写在同一张纸上。','所有人都得到口头批准。下季度卫来拿着空科目问谁来付款，会议纪要没有回答。','预算过了，二老板的项目没过。他之后不再在会上反对你，只在会前把问题交给别人。'],
+    ['NDA包里原终点和探索结果各有位置。监管追问时，则韩不必解释为何问题在锁库前换了名字。','摘要比方案走得快。审评者并排打开两份文件，问哪一个才是预设的主要终点。','钟时当场退让。之后每一次合理的统计提醒，她都先问你是不是又要拿旧纪要压她。'],
+    ['你休假时团队仍然拍了板。邹婷把这件事写进继任计划，没有把它写成你不重要。','你一直是最可靠的人，可靠到所有人觉得不用培养第二个。下一年你仍在回答同一个问题。','每个审批都经过你，连你的休假都没人敢批。组织很稳定，你也终于明白钟时为什么不肯放手。']
+  ];
+  const route=['govern','appease','power'];
+  events.forEach(function(ev,ei){
+    ev.npcEv=true;
+    ev.choices.forEach(function(c,ci){c.route=route[ci];c.branchFlag='v14_'+ei+'_'+ci;});
+    window.assignRandomAchievements(ev,V11_EVENTS.length);
+    V11_EVENTS.push(ev);
+    outcomeNames[ei].forEach(function(name,ci){
+      ENDINGS['v14_'+ei+'_'+ci]={type:'GE · 事件回响',cls:'ge',name:name,story:outcomeStories[ei][ci]};
+    });
+  });
+  const joint=[
+    {id:'v14_joint_capacity',name:'没有人力的关键路径',story:'容量表说做不了，预算会说不能停。你把两张表放在一起，老板第一次必须在日期和资源之间选一个。',need:['v14_0_0','v14_6_0'],route:'govern'},
+    {id:'v14_joint_paper',name:'两份文件一条时间线',story:'安全判断和签字版本终于对得上。检查组原本准备开两天会，最后只留下一个问题：以前为什么做不到？',need:['v14_1_0','v14_2_0'],route:'govern'},
+    {id:'v14_joint_site',name:'最便宜的是别让患者来',story:'中心负担与预算同时被摆上桌。少一次无用访视省下的钱，付给了真正需要随访的人。',need:['v14_3_0','v14_6_0'],route:'govern'},
+    {id:'v14_joint_story',name:'漂亮故事的两份分母',story:'中期图和终点摘要都很好看，也都在附录里藏了分母。审评者问了两句，整栋楼的人开始重读第一页。',need:['v14_4_1','v14_7_1'],route:'appease'},
+    {id:'v14_joint_dragon',name:'新的龙有审批权限',story:'上市后研究、NDA和下一项项目都要你签。你终于拥有一套没有钟时也能运转的系统，唯一的问题是它也没有别人。',need:['v14_5_2','v14_8_2'],route:'power'}
+  ];
+  joint.forEach(function(x){ENDINGS[x.id]={type:'隐藏结局 · 组织回响',cls:'true',name:x.name,story:x.story};});
+  const oldApply=applyChoice;
+  applyChoice=function(c){
+    const result=oldApply(c);
+    if(c&&c.branchFlag&&/^v14_\d+_\d+$/.test(c.branchFlag))flags.v14Candidate=c.branchFlag;
+    if(chapterIdx===17&&c&&/^a5[234]$/.test(c.achievement||''))flags.v14FinalRoute=c.route;
+    return result;
+  };
+  const oldFinalize=finalizeEvaluation;
+  finalizeEvaluation=function(){
+    /* The two dragon routes have priority over event echoes. Reaching the chair
+       is a deliberate final choice plus a sustained power/merit trajectory. */
+    if(flags.metaRoute==='echo'&&flags.meta_echo_refuse&&S.progress>=72&&S.morale>=58&&S.dragon<20){oldFinalize();return;}
+    if(S.progress>=60&&S.dragon>=10&&S.power>=65&&S.merit>=45&&(flags.dragon_take||flags.main_18_3)){
+      showEnding('true_dragon');return;
+    }
+    if(S.dragon>=26&&S.power>=72&&S.merit>=55){oldFinalize();return;}
+
+    /* Event endings need the player's final decision to match the event's
+       response. Other decisions keep the existing ending distribution. */
+    if(S.progress>=60&&S.heart>0&&S.trust>0&&S.morale>0){
+      const finalRoute=flags.v14FinalRoute;
+      for(const x of joint){if(finalRoute===x.route&&x.need.every(function(k){return flags[k];})){showEnding(x.id);return;}}
+      const candidate=flags.v14Candidate;
+      if(candidate){const m=/^v14_(\d+)_(\d+)$/.exec(candidate);if(m&&finalRoute===route[Number(m[2])]){showEnding(candidate);return;}}
+    }
+
+    /* Restore legacy gallery routes that the v11 finale had bypassed. Specific
+       relationships and career outcomes win only when their prerequisites hold. */
+    if(S.progress>=60){
+      if(S.merit>=70&&S.reputation>=45&&S.bossTrust>=45&&promotionEndorsements().support.length>=3){showEnding('ge_promotion');return;}
+      if(S.merit>=75&&S.reputation<35){showEnding('ge_unsung');return;}
+      if(flags.main_18_3&&S.dragon<10&&S.power>=65&&supportCount(60)>=3){showEnding('ge_slayer');return;}
+      if(S.npc.xiaoyuan>=85&&flags.main_18_1){showEnding('nc_xiaoyuan');return;}
+      if(S.npc.caolan>=65&&flags.main_18_1){showEnding('nc_caolan');return;}
+      if(S.npc.ruidong>=70&&flags.main_18_1){showEnding('nc_ruidong');return;}
+      if(S.npc.heina>=70&&S.dragon>=6&&flags.main_18_3){showEnding('nc_heina');return;}
+      if(flags.main_18_1&&S.career>=75&&S.dragon<10){showEnding('ge_next');return;}
+      if(flags.main_18_1&&S.career>=55&&S.dragon<10){showEnding('ge_firstline');return;}
+    }else if(S.progress>=35){
+      if(flags.love&&S.heart>=50&&S.dragon<=6){showEnding('nc_love');return;}
+      if(S.npc.weilai>=60){showEnding('nc_weilai');return;}
+      if(Math.max.apply(null,Object.keys(S.npc).map(function(k){return S.npc[k];}))<=30){showEnding('be_island');return;}
+      if(S.trust>=45&&S.morale>=45&&S.sanity>=35){showEnding('mid_halfbridge');return;}
+      if(S.trust>=35&&S.morale>=35&&S.sanity>=35){showEnding('ge_survive');return;}
+    }
+    oldFinalize();
+  };
+  if(ACHIEVEMENTS.length!==108||V11_EVENTS.length!==34||Object.keys(ENDINGS).length!==64)throw new Error('v14 catalogue mismatch');
+  window.refreshAchievements();
+  renderGallery();
+  const sub=document.querySelector('#title-screen .subtitle');
+  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.0';
 })();
 
 buildCast();
