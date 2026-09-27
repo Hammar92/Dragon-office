@@ -281,6 +281,13 @@
     .choice{font-size:13.5px;padding:11px 12px}
   }
 
+
+  .ach-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+  .ach-card{border:1px solid #dec8b3;background:#fffaf3;border-radius:9px;padding:9px 10px;text-align:left}
+  .ach-card.locked{opacity:.45;min-height:42px;display:flex;align-items:center}
+  .ach-name{font-weight:800;font-size:12.5px;color:#5a463c}
+  .ach-comment{font-size:11.5px;line-height:1.55;color:#897365;margin-top:5px}
+  @media(max-width:600px){.ach-list{grid-template-columns:1fr}}
 </style>
 </head>
 <body data-page-node-id="zufCBekY8A4x5CCBsDU0kr">
@@ -288,7 +295,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.3</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.4</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -1942,7 +1949,7 @@ const ENDINGS = {
   ge_slayer: { type:"GE", cls:"ge", name:"GE · 屠龙者",
     story:"一个月后，钟时「因个人职业规划」调任集团战略顾问——一个没有兵、没有预算、没有会议邀请的荣誉岗位。而你，接过了临床开发负责人的工牌。\n\n交接那天她拍着你的肩：「这摊子交给你了。」语气里没有恨，只有一种金鱼般的、真诚的茫然。\n\n决定胜负的那一晚，你不是一个人站出来的：加琳提供了完整的安全性数据，明夜做了三条备选 SAP，一建提前打好了注册侧的招呼，Parker 把富集策略塞进了你的备选方案，小圆在老板面前说了句「这孩子我看着做起来的」。\n\n上任第一件事：把所有会议纪要模板里的「字号规范」一节，整节删除。第二件事：把黑娜叫来，重新谈 CRO 合同的交付标准。\n\n——屠龙成功。你在他的废墟上建了一座说人话的办公室。这一次，不是你一个人建的。" },
   true_dragon: { type:"隐藏结局", cls:"true", name:"真结局 · 新龙诞生",
-    story:"一年后。\n\n新来的医学经理站在会议室里，看着你敲着投影笔说：「这个封面不够大气。字号，再大一点。」\n\n他说：「可是我们 Q4 的里程碑……」你摆摆手：「年轻人要有全局观嘛。」\n\n这句话出口的瞬间，你耳边响起一声极轻的、熟悉的龙吟。你摸了摸下巴，忽然觉得深蓝，确实不如紫色稳重。\n\n当年那群人陆续离开了：加琳去了监管机构做技术审评，明夜回了海外读书，一建跳去了更大的平台，Parker 拿到 offer 那天没跟任何人告别。不是他们输了——是你赢的方式，让他们在这里没有位置。\n\n你和黑娜签了新的战略合作协议。她在合同签字页微笑着对你说：「X 总，您这套打法，比那位强多了。」\n\n你其实也想过走。后来算了：这两年里，见过你在这间屋子里做过什么的人太多了。没有一家公司会为一个善于甩锅的人，开出比这里更高的价钱。\n\n你忽然懂了她为什么从来没走。\n\n你其实也想过走。后来算了：这两年里，见过你在这间屋子里做过什么的人太多了。没有一家公司会为一个善于甩锅的人，开出比这里更高的价钱。\n\n你忽然懂了她为什么从来没走。\n\n当年你坐在台下，恨透了这一切。现在你终于明白：龙从来不是一个人，龙是这间屋子里所有不愿说「不」的声音的总和。\n\n——你屠了那条龙，然后毫不费力地，长成了它。恭喜你。或者说，节哀。" },
+    story:"一年后。\n\n新来的医学经理站在会议室里，看着你敲着投影笔说：「这个封面不够大气。字号，再大一点。」\n\n他说：「可是我们 Q4 的里程碑……」你摆摆手：「年轻人要有全局观嘛。」\n\n这句话出口的瞬间，你耳边响起一声极轻的、熟悉的龙吟。你摸了摸下巴，忽然觉得深蓝，确实不如紫色稳重。\n\n当年那群人陆续离开了：加琳去了监管机构做技术审评，明夜回了海外读书，一建跳去了更大的平台，Parker 拿到 offer 那天没跟任何人告别。不是他们输了——是你赢的方式，让他们在这里没有位置。\n\n你和黑娜签了新的战略合作协议。她在合同签字页微笑着对你说：「X 总，您这套打法，比那位强多了。」\n\n你其实也想过走。后来算了：这两年里，见过你在这间屋子里做过什么的人太多了。没有一家公司会为一个善于甩锅的人，开出比这里更高的价钱。\n\n你忽然懂了她为什么从来没走。\n\n当年你坐在台下，恨透了这一切。现在你终于明白：龙从来不是一个人，龙是这间屋子里所有不愿说「不」的声音的总和。\n\n——你屠了那条龙，然后毫不费力地，长成了它。恭喜你。或者说，节哀。" },
   // —— 主线新结局：把药做出来 ——
   ge_firstline: { type:"GE · 项目做成", cls:"ge", name:"GE · 交付者",
     story:"递交那天是周三下午三点四十。\n\n一建在受理大厅门口打电话过来，说「进去了」，声音是哑的。挂掉之后你坐在会议室里，忽然不知道该干什么——这两年你全部的力气都花在阻止这件事被搞砸上，从没想过它真的会发生。\n\n当晚庆功宴，她举杯说「团队合作的力量」。你把杯沿压低半寸——这不是谦虚，这是精度。\n\n一周后老板把你叫进去，问明年还想做什么。你说：把二期做完。他愣了一下，他以为你会要一个头衔。\n\n加琳在楼梯上拦住你，问三期的安全性数据库还想不想让她管；明夜把新的统计计划第一页发给你审阅，附言只有一句「这次请你先读」；琳琳说她手下那个跑遍了十四家中心的小孩想转做医学，问你收不收。\n\n——药做成了，没有人需要离开。这是这一行里最不常见的一种胜利，因为它既不产生新闻，也不产生英雄。" },
@@ -2332,10 +2339,6 @@ function renderHUD(){
     + '<span class="npc-chip" title="理智越低，选项越容易被情绪污染">'+sanityBand().icon+' 情绪 '+sanityBand().name+'</span>'
     + '<span class="npc-chip" title="本局难度">'+(difficulty().id==='hard'?'🔥':difficulty().id==='story'?'📖':'⚖')+' '+difficulty().name+'</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
-    + (flags.love ? '<span class="npc-chip hi" title="有人记得你几点下班 —— 每章恢复 12 点心力">💗 有人等你</span>' : '')
-    + '<span class="npc-chip intel-chip" onclick="showRelationshipDesk()" title="通过沟通判断别人怎么看你">💬 关系判断</span>'
-    + Object.keys(NPCs).map(function(k){
-    const np = NPCs[k];
     return '<span class="npc-chip'+(np.boss?' boss':'')+'" title="'+np.name+' · '+np.role+'">'+np.name+'</span>';
   }).join('');
 }
@@ -6522,7 +6525,7 @@ renderLifeBuilder();
   window.refreshAchievements();
   renderGallery();
   const sub=document.querySelector('#title-screen .subtitle');
-  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.3';
+  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.4';
 })();
 
 /* =====================  v14.2 · PI WHACK-A-MOLE / PRESTIGE  =====================
@@ -6801,6 +6804,241 @@ renderLifeBuilder();
 
   var oldStartGameV143=startGame;
   startGame=function(){enrichShortDialogue();oldStartGameV143();renderLifeSimPanels();};
+})();
+
+/* =====================  v14.4 · BUG AUDIT / HIDDEN RELATIONSHIP ENDINGS / ACHIEVEMENT COMMENTARY  ===================== */
+(function(){
+  /* A. Normalize all relationship-heavy life events into one exclusive slot per life stage.
+     Older v13.2 additions omitted exclusivity, allowing contradictory histories such as
+     "married + divorced + empty private life" in the same stage. */
+  const REL_EVENT_IDS={
+    school:['school_crush','school_reject'],
+    college:['college_firstlove','college_breakup','college_betrayal','college_single','college_longlove','college_longdistance'],
+    graduate:['grad_stable_partner','grad_longdistance','grad_breakup_recover','grad_avoid_intimacy','grad_partner','grad_betrayal','grad_single'],
+    early:['early_partner_support','early_relationship_conflict','early_cheated','early_single_focus','early_officecrush','early_badromance'],
+    middle:['mid_marriage','mid_divorce','mid_betrayal','mid_single'],
+    senior:['senior_stable_family','senior_divorce_rebuild','senior_lonely','senior_complicated','senior_secondmarriage','senior_emptyhome']
+  };
+  Object.keys(REL_EVENT_IDS).forEach(function(stage){
+    (LIFE_EVENTS[stage]||[]).forEach(function(e){
+      if(REL_EVENT_IDS[stage].indexOf(e.id)>=0){
+        e.category='emotion';
+        e.exclusive=stage+'_romance';
+      }
+    });
+  });
+
+  /* B. Relationship state is no longer a boolean. The line stays hidden during play;
+     only the ending explains what happened outside the org chart. */
+  const REL_STAGE_ORDER=['school','college','graduate','early','middle','senior'];
+  const REL_STATUS_BY_EVENT={
+    school_crush:'open',school_reject:'guarded',
+    college_firstlove:'partnered',college_longlove:'partnered',college_longdistance:'partnered',
+    college_breakup:'single_rebuilt',college_betrayal:'guarded',college_single:'single_content',
+    grad_stable_partner:'partnered',grad_partner:'partnered',grad_longdistance:'partnered',
+    grad_breakup_recover:'single_rebuilt',grad_betrayal:'guarded',grad_single:'single_content',grad_avoid_intimacy:'single_content',
+    early_partner_support:'partnered',early_relationship_conflict:'strained',early_cheated:'guarded',early_single_focus:'single_content',
+    early_officecrush:'open',early_badromance:'guarded',
+    mid_marriage:'partnered_family',mid_divorce:'divorced_rebuilt',mid_betrayal:'guarded',mid_single:'single_content',
+    senior_stable_family:'partnered_family',senior_secondmarriage:'partnered_family',
+    senior_divorce_rebuild:'divorced_rebuilt',senior_lonely:'single_content',senior_emptyhome:'single_content',senior_complicated:'guarded'
+  };
+  function inferInitialRelationship(){
+    let status='open',source='';
+    REL_STAGE_ORDER.forEach(function(stage){
+      (LIFE_DRAFT.selected[stage]||[]).forEach(function(id){
+        if(REL_STATUS_BY_EVENT[id]){status=REL_STATUS_BY_EVENT[id];source=id;}
+      });
+    });
+    return {status:status,source:source};
+  }
+  function ensureRelationshipArc(){
+    if(!S)return {origin:'open',current:'open',homeBond:0,source:'',seen:[]};
+    if(!S.relationshipArc){
+      const x=inferInitialRelationship();
+      S.relationshipArc={origin:x.status,current:x.status,homeBond:0,source:x.source,seen:[]};
+      if(x.status==='partnered'||x.status==='partnered_family'){
+        S.relationshipArc.homeBond=5;
+        flags.love=true; // mechanical support source only; still hidden from HUD
+      }
+    }
+    return S.relationshipArc;
+  }
+  window.ensureRelationshipArc=ensureRelationshipArc;
+
+  const HOME_EVENTS=[
+    {id:'home_deadline',min:4,title:'饭已经热过两次',text:'晚上十点四十，手机上只有一句：“饭在冰箱。回来前说一声。”没有追问，也没有情绪。你反而更难装作没看见。',choices:[
+      {t:'把真正必须今晚做的事收尾，剩下的明天再说。',e:{heart:12,progress:1},bond:3,r:'你到家时饭已经凉了，但人还醒着。你第一次没有把“项目关键期”当成一张无限期通行证。'},
+      {t:'回一句“今晚别等我”，继续把所有东西清零。',e:{progress:5,heart:-6},bond:-3,r:'工作清得很干净。第二天早上，餐桌也很干净。'},
+      {t:'不解释工作，只问一句：“你今天怎么样？”',e:{heart:9,sanity:3},bond:2,r:'对方讲了一件和公司完全无关的小事。你听了十分钟，世界没有因此停摆。'}
+    ]},
+    {id:'home_weekend',min:9,title:'这个周末原本没有项目',text:'周六上午没有会议。你刚打开电脑，对方在门口问：“今天不是说好出去吗？”这不是争吵，只是一次非常普通的确认。',choices:[
+      {t:'合上电脑。真正紧急的事会打电话。',e:{heart:18,sanity:5,progress:-2},bond:4,r:'下午你们没有讨论职业、老板或项目。周一回来时，工作还在那里，居然没有因为你快乐过半天而报复。'},
+      {t:'上午工作两小时，下午按原计划出去。',e:{heart:10,progress:2},bond:2,r:'这不是浪漫，是排期。奇怪的是，关系有时候确实需要排期。'},
+      {t:'“就这一次，下周一定。”',e:{progress:5,heart:-8},bond:-4,r:'“下周一定”已经开始像“最终版”——名字越来越确定，内容越来越不可信。'}
+    ]},
+    {id:'home_truth',min:13,title:'你最近回家以后不说话',text:'对方没有问你是不是要离职，只说：“你最近回家以后，像还坐在会议室里。”这句话没有action item。',choices:[
+      {t:'承认自己已经把公司的情绪带回家了。',e:{heart:15,sanity:7},bond:4,r:'问题没有当晚解决，但至少终于被说成了真正的问题，而不是“最近有点忙”。'},
+      {t:'约定一个边界：回家后除安全事件外不再处理群消息。',e:{heart:13,sanity:5,progress:-1},bond:5,r:'你第一次给私人生活写了一个比项目排期更可信的边界。'},
+      {t:'说“没事”，转身去洗澡。',e:{heart:-10,sanity:-3},bond:-5,r:'你在公司一天说了十一次“没事”。第十二次最贵。'}
+    ]}
+  ];
+  function renderHomeEvent(ev,next){
+    window._homeEv={ev:ev,next:next};
+    document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title">'+ev.title+'</div><div class="scene-sub">私人时间 · 不进入工作日志</div><div class="vp-line">'+ev.text+'</div><div class="choices">'+choiceHTML(ev.choices,'pickHomeEvent')+'</div></div>';
+  }
+  window.pickHomeEvent=function(i){
+    const b=window._homeEv;if(!b)return;
+    const c=presentedChoice(b.ev.choices,i),d=applyChoice(c),arc=ensureRelationshipArc();
+    arc.homeBond=clamp((arc.homeBond||0)+(c.bond||0));arc.seen.push(b.ev.id);
+    if(arc.homeBond<=0){arc.current='estranged';flags.love=false;}
+    else if(arc.origin==='partnered_family')arc.current='partnered_family';
+    else arc.current='partnered';
+    window._homeEv=null;
+    checkDeath(c.r,d,b.next);
+  };
+
+  const oldMaybeRomanceV144=maybeRomanceEncounter;
+  maybeRomanceEncounter=function(next){
+    const arc=ensureRelationshipArc();
+    if(arc.origin==='partnered'||arc.origin==='partnered_family'){
+      if(chapterIdx<4||Math.random()>(difficulty().id==='story'?.36:.26)){next();return;}
+      const left=HOME_EVENTS.filter(function(e){return arc.seen.indexOf(e.id)<0&&chapterIdx>=e.min;});
+      if(!left.length){next();return;}
+      renderHomeEvent(left[0],next);return;
+    }
+    return oldMaybeRomanceV144(next);
+  };
+
+  const oldPickRomanceV144=pickRomanceEncounter;
+  pickRomanceEncounter=function(i){
+    const before=!!flags.love;
+    oldPickRomanceV144(i);
+    const arc=ensureRelationshipArc();
+    if(!before&&flags.love)arc.current='new_partner';
+  };
+  const oldLovePickV144=lovePick;
+  lovePick=function(i){
+    const before=!!flags.love;
+    oldLovePickV144(i);
+    const arc=ensureRelationshipArc();
+    if(!before&&flags.love)arc.current='new_partner';
+  };
+
+  const oldStartGameV144=startGame;
+  startGame=function(){
+    oldStartGameV144();
+    ensureRelationshipArc();
+  };
+
+  window.relationshipEpilogue=function(){
+    const a=ensureRelationshipArc(),origin=a.origin,current=a.current;
+    let title='私人生活 · 没有写进组织架构图';
+    let body='';
+    if((origin==='partnered'||origin==='partnered_family')&&current!=='estranged'){
+      body='你进公司时并不是一个人。项目最乱的时候，对方见过你凌晨回家、周末突然开会，也见过你把手机扣在桌上真正吃完一顿饭。\n\n到故事结束时，这段关系没有因为“理解你的工作”就自动完好；它只是因为你偶尔真的回去了，才没有被工作替你结束。';
+    }else if((origin==='partnered'||origin==='partnered_family')&&current==='estranged'){
+      body='你进公司时有一个稳定的家。后来“忙完这一阵”说得太多，逐渐变成一种没有截止日期的项目状态。\n\n最后一次争吵甚至没有很大声。对方只是说：“我知道你很忙。”你突然发现，这句话和公司里最危险的“收到”长得一模一样。';
+    }else if(origin==='divorced_rebuilt'&&flags.love){
+      body='你来这里以前已经把一段生活拆过一次，所以你很清楚“重新开始”不是一句漂亮话。\n\n这一次你没有急着把关系写成未来规划。故事结束时，你们仍然在一起；不是因为你终于学会相信爱情，而是因为你终于不再把另一个人当成需要按节点交付的项目。';
+    }else if(origin==='divorced_rebuilt'&&!flags.love){
+      body='你来这里以前已经经历过一次长期关系结束。这个项目没有替你补上任何人。\n\n但故事结束时，你也没有回到“一个人就是失败”的旧版本。你回到自己的住处，关掉手机，第二天照常起床。重建有时没有观众。';
+    }else if(origin==='single_content'&&!flags.love){
+      body='你进公司时就是单身，而且并不等待谁来证明生活完整。隐藏支线出现过几次，你没有把每一次关心都解释成命运。\n\n故事结束时你还是一个人。不是BE，也不是漏触发。只是你的私人生活从来不需要靠“脱单”完成验收。';
+    }else if(origin==='single_content'&&flags.love){
+      body='你原本很习惯一个人生活，所以这段关系开始得很慢。没有谁来“拯救”你，只是某一天你发现，自己会自然地给另一个人留出时间。\n\n故事结束时，你仍然保留自己的空间，也多了一个知道你几点下班的人。';
+    }else if(origin==='guarded'&&flags.love){
+      body='你以前被亲近的人伤过，所以最初每一次“我等你”听起来都像未来某种代价的预告。\n\n后来你没有突然变得毫无戒心。你只是学会了：边界不是拒绝关系，边界是让关系不用靠猜活下去。';
+    }else if(origin==='guarded'&&!flags.love){
+      body='你把工作里的风险识别做得很好，私人生活也一样。只是风险全部识别出来以后，人有时也会一起被挡在门外。\n\n故事结束时没有新的关系。你并不后悔，只是在某几个很晚的晚上，会想起那些自己没有接起来的电话。';
+    }else if(flags.love){
+      body='这段关系没有出现在任何周报、会议纪要或绩效目标里，却在最坏的几章里提供了唯一不需要论证的支持。\n\n项目结束以后，它还在。';
+    }else{
+      body='工作之外没有自动出现一个等你的人。故事结束时，你开始第一次认真安排下班后的生活——不是为了恢复产能，只是因为那里也属于你。';
+    }
+    return '【'+title+'】\n'+body;
+  };
+
+  const oldShowEndingV144=showEnding;
+  showEnding=function(key){
+    oldShowEndingV144(key);
+    const el=document.getElementById('ending-story');
+    if(el&&!el.textContent.includes('【私人生活 ·'))el.textContent+='\n\n──────────\n'+relationshipEpilogue();
+  };
+
+  /* C. Achievement comments: short, black-humor notes grounded in the NPC involved. */
+  const ACH_SNARK={
+    '钟时':'钟时会认为这说明团队正在成长；团队会认为这说明同一个问题终于没有再开第六次会。',
+    '老板':'老板不需要完整过程，只需要一个现在能拍的决定。你最好确保那个决定明天不会长出另一个版本。',
+    '二老板':'二老板通常愿意再给一次机会。真正危险的是他不再问细节的时候。',
+    'K总':'K总把问题拆成owner、时限和责任层级以后，很多“复杂问题”会突然只剩下没人想认领。',
+    '明夜':'明夜尊重会读数据的人。好消息是他会告诉你答案；坏消息是他也看得出谁只是把答案念了一遍。',
+    '则韩':'则韩总会问这句话最后要写进哪里。因为口头共识最大的优点，就是出了问题以后谁都可以不承认。',
+    '加琳':'加琳相信出口必须统一。至于统一以后有没有回答到问题，那通常属于下一场会。',
+    'PVP':'PVP最熟练的医学动作，是先判断自己现在有没有权限发表医学判断。',
+    '肖恩':'肖恩不相信“大家当时都知道”。检查员也不信，所以他只是比未来早烦你半年。',
+    '一建':'一建最擅长让所有章节按时到齐。至于章节里面写什么，那是各部门需要共同克服的个人问题。',
+    '苏苏':'苏苏不为加班鼓掌。财务最残忍的地方，是它会把“大家很努力”准确换算成零元。',
+    '杨杨':'杨杨相信风险可以通过把deadline提前和把人拉进群来管理。资源没有增加，但红点增加了。',
+    '琳琳':'琳琳知道总部一句“中心配合一下”通常等于CRA今晚少睡两小时。',
+    '林丹':'林丹不会错过任何会被老板看见的火灾。后台余烬有没有人扫，是另一张Tracker。',
+    '黑娜':'黑娜每一句“我们可以支持”都自带一个看不见的合同附件。你听不见，不代表它不存在。',
+    'Parker':'Parker相信PI关系具有跨治疗领域可迁移性。PI通常不参加这项信念的验证。',
+    '朱粽':'朱粽的Tracker总是很绿。现实之所以不配合，是因为现实没有按时更新Tracker。',
+    'MK主任':'MK主任关心谁真正leading。因为“大家共同推动”通常意味着论文首页只能印一个名字。',
+    'N院长':'N院长问“样本留了吗”的时候，往往已经在想下一篇文章。你还在庆功，他已经进入下一轮竞争。',
+    '林主任':'林主任很少当场翻脸。他只会把Sponsor答应过的每件事，安静地记到下一个项目。',
+    '武总':'武总能把业务问题推进得很快。医学问题如果也按周五前交付，通常会得到一个非常准时的错误答案。',
+    '贤人':'贤人很愿意去问专家。最大的风险是专家回答完以后，问题仍然需要别人再解释一次。',
+    '曹兰':'曹兰经常比Medical更清楚医生为什么不会改变行为。这个事实对组织架构并不友好。',
+    '谷雨':'谷雨听数据时已经在替买方砍价。你以为在讲科学，她在计算哪句话值三千万。',
+    '瑞冬':'瑞冬会再查一下。努力当然是真的，版本号也是真的，只是剂量组最好再核一遍。',
+    '小圆':'小圆最强的专业能力是把老板一句模糊的话翻译成所有人今晚要做的具体事情。',
+    '邹婷':'邹婷擅长让大家明天还能一起上班。根因如果因此多活一个季度，也属于组织稳定的一部分。'
+  };
+  function sourceForAchievement(a){
+    let obj=null;
+    if(a.group>=1&&a.group<=18)obj=V11_CHAPTERS[a.group-1];
+    else if(a.group>=19&&a.group<=52)obj=V11_EVENTS[a.group-19];
+    const txt=[obj&&obj.title,obj&&obj.text,obj&&obj.aside&&obj.aside.from,obj&&obj.aside&&obj.aside.text].filter(Boolean).join(' ');
+    const names=Object.keys(NPCs).map(function(k){return NPCs[k].name;}).concat(['钟时']);
+    return names.find(function(n){return txt.indexOf(n)>=0;})||'钟时';
+  }
+  ACHIEVEMENTS.forEach(function(a){
+    const who=sourceForAchievement(a);
+    a.comment=(ACH_SNARK[who]||'这家公司最大的黑色幽默，是每一个荒唐流程都能找到一个非常专业的理由。')+' ——「'+a.name+'」';
+  });
+
+  function achUnlockedV144(){try{return JSON.parse(localStorage.getItem('dragon_achievements')||'[]');}catch(e){return[];}}
+  function achDetailsV144(){try{return JSON.parse(localStorage.getItem('dragon_achievement_details')||'{}');}catch(e){return{};}}
+  window.renderAchievementsV144=function(){
+    const d=document.getElementById('achievement-panel');if(!d)return;
+    const u=achUnlockedV144(),details=achDetailsV144();
+    d.innerHTML='<b>🏆 成就系统 · 108</b><div class="creator-note">已解锁 '+u.length+' / 108。解锁后的评述来自这些人真实的工作习惯；没解锁的部分继续装作公司里一切正常。</div><div class="ach-list">'
+      +ACHIEVEMENTS.map(function(a){
+        const got=u.indexOf(a.id)>=0;
+        return '<div class="ach-card '+(got?'got':'locked')+'"><div class="ach-name">'+(got?(details[a.id]||a.name):'？？？')+'</div>'+(got?'<div class="ach-comment">'+a.comment+'</div>':'')+'</div>';
+      }).join('')+'</div>';
+  };
+  const oldUnlockV144=unlockAchievement;
+  unlockAchievement=function(id,choice){oldUnlockV144(id,choice);renderAchievementsV144();};
+  window.refreshAchievements=renderAchievementsV144;
+  renderAchievementsV144();
+
+  /* D. Sanity checks exported for smoke/audit. */
+  window.v144Audit=function(){
+    const canon=new Set(Object.keys(NPCs)),bad=[];
+    function scan(c,where){
+      Object.keys((c&&c.npc)||{}).forEach(function(k){if(!canon.has(k))bad.push(where+':npc:'+k);});
+      if(c&&c.lock&&c.lock.npc&&!canon.has(c.lock.npc))bad.push(where+':lock:'+c.lock.npc);
+      ((c&&c.witnesses)||[]).forEach(function(k){if(!canon.has(k))bad.push(where+':witness:'+k);});
+    }
+    V11_CHAPTERS.forEach(function(x){(x.choices||[]).forEach(function(c,i){scan(c,x.id+':'+i);});});
+    V11_EVENTS.forEach(function(x){(x.choices||[]).forEach(function(c,i){scan(c,x.id+':'+i);});});
+    PI_CHAIN_EVENTS.forEach(function(x){(x.choices||[]).forEach(function(c,i){scan(c,x.id+':'+i);});});
+    const lifeDup={};Object.keys(LIFE_EVENTS).forEach(function(st){const ids=LIFE_EVENTS[st].map(function(x){return x.id;});lifeDup[st]=ids.filter(function(x,i){return ids.indexOf(x)!==i;});});
+    return {badRefs:bad,lifeDup:lifeDup,counts:{npc:Object.keys(NPCs).length,chapters:V11_CHAPTERS.length,events:V11_EVENTS.length,achievements:ACHIEVEMENTS.length,endings:Object.keys(ENDINGS).length,piEvents:PI_CHAIN_EVENTS.length}};
+  };
 })();
 
 buildCast();
