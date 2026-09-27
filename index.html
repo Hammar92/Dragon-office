@@ -4560,7 +4560,13 @@ function lifeSummary(){
     });
   });
   x.skills.project=x.skills.management; // 兼容v10之前的项目管理门槛
-  Object.keys(x.skills).forEach(function(k){x.skills[k]=clamp(x.skills[k]);});
+  /* 8点/阶段允许更丰富的人生履历，但高能力不再线性叠满。
+     65以下保留全部经历收益；65以上按40%折算，专精仍强但不会轻易多项封顶。 */
+  function lifeSkillCurve(v){
+    v=Number(v)||0;
+    return clamp(Math.round(v<=65?v:65+(v-65)*0.40));
+  }
+  Object.keys(x.skills).forEach(function(k){x.skills[k]=lifeSkillCurve(x.skills[k]);});
   Object.keys(x.personality).forEach(function(k){x.personality[k]=clamp(x.personality[k]);});
   x.body.maxStamina=Math.max(45,Math.min(100,x.body.maxStamina));
   x.heart.resilience=clamp(x.heart.resilience);
