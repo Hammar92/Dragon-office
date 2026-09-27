@@ -1,7 +1,7 @@
 /* Dragon Office RC browser bridge.
- * Loaded after ending-resolver.js and after the legacy game script.
- * It replaces the final wrapper chain with one canonical resolver call while leaving
- * immediate death/fraud/vendor/probation entries untouched.
+ * Runs after ending-resolver.js and after the legacy game declarations.
+ * Important: S / flags / NPCs are global lexical bindings in index.html, not guaranteed window properties.
+ * Therefore production state is read through direct identifiers while exports are attached to window.
  */
 (function(root){
   'use strict';
@@ -10,19 +10,20 @@
 
   function allyThresholds(){
     const out={};
-    Object.keys(root.NPCs||{}).forEach(function(k){out[k]=Number(root.NPCs[k]&&root.NPCs[k].allyAt)||0;});
+    if(typeof NPCs!=='undefined')Object.keys(NPCs||{}).forEach(function(k){out[k]=Number(NPCs[k]&&NPCs[k].allyAt)||0;});
     return out;
   }
   function promotionCounts(){
-    if(typeof root.promotionEndorsements!=='function')return {support:[],oppose:[]};
-    const p=root.promotionEndorsements()||{};
+    if(typeof promotionEndorsements!=='function')return {support:[],oppose:[]};
+    const p=promotionEndorsements()||{};
     return {support:Array.isArray(p.support)?p.support:[],oppose:Array.isArray(p.oppose)?p.oppose:[]};
   }
   function difficultyId(){
-    try{return typeof root.difficulty==='function'&&root.difficulty()?root.difficulty().id:'normal';}catch(e){return 'normal';}
+    try{return typeof difficulty==='function'&&difficulty()?difficulty().id:'normal';}catch(e){return 'normal';}
   }
   function rawFinalState(){
-    const S=root.S||{},f=root.flags||{},promo=promotionCounts();
+    if(typeof S==='undefined'||!S)throw new Error('Game state S is not initialized');
+    const f=(typeof flags!=='undefined'&&flags)||{},promo=promotionCounts();
     f.promotionSupport=promo.support.length;f.promotionOppose=promo.oppose.length;
     return Object.assign({},S,{
       flags:f,
@@ -40,15 +41,15 @@
     const state=R.buildFinalEndingState(raw);
     const id=R.resolveFinalEnding(state);
     if(!id)throw new Error('Canonical ending resolver returned no ending');
-    if(!root.ENDINGS||!root.ENDINGS[id])throw new Error('Canonical ending is not in gallery: '+id);
+    if(typeof ENDINGS==='undefined'||!ENDINGS[id])throw new Error('Canonical ending is not in gallery: '+id);
     root.__lastEndingAudit={id:id,raw:raw,state:state};
-    root.showEnding(id);
+    showEnding(id);
     return id;
   }
   root.buildRuntimeFinalEndingState=rawFinalState;
-  root.finalizeEvaluation=canonicalFinalize;
+  finalizeEvaluation=canonicalFinalize;
   root.rcEndingAudit=function(){
     const raw=rawFinalState(),state=R.buildFinalEndingState(raw),id=R.resolveFinalEnding(state);
-    return {id:id,exists:!!(root.ENDINGS&&root.ENDINGS[id]),raw:raw,state:state};
+    return {id:id,exists:!!(typeof ENDINGS!=='undefined'&&ENDINGS[id]),raw:raw,state:state};
   };
 })(typeof window!=='undefined'?window:globalThis);
