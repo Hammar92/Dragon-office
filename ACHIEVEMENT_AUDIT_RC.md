@@ -4,74 +4,83 @@
 
 ## 结论
 
-当前 108 个成就：
+当前108个成就：
 
 - 目录数量：108
-- ID 唯一：108/108
+- ID唯一：108/108
 - 有真实 chapter/random-event source：108/108
 - Orphan：0
 - 缺失黑色幽默评述：0
 - 评述唯一性：108/108
 - 旧版硬编码 `unlockAchievement("aXX")`：0
 
+状态：`108/108 SOURCED · 0 ORPHAN · 0 STALE HARD-CODED AUTO-UNLOCK · 108 UNIQUE COMMENTS`
+
 ## Source Map
 
-### A. 主线选择成就：a1–a54
+### A. 主线选择：a1–a54
 
 18章 × 3个正式 authored outcome，共54个。每个基础主线选择各有唯一成就。
 
-v14.5 的动态第4/5状态选项不会创造新ID，而是继承最近的 authored route / achievement / branch flag。其目的不是增加成就目录，而是保证状态选项仍进入既有分支网。
+动态第4/5状态选项不创造新ID，而是继承最近的 authored route / achievement / branch flag。它们属于同一个 outcome family，不额外膨胀图鉴。
 
-### B. 早期随机事件 outcome 成就：a55–a89
+### B. 早期随机事件：a55–a89
 
-来自 v11/v12 随机事件。部分事件按选择区分成就，部分第三选项不另发成就；目录中的 a55–a89 均至少有一个真实选择来源。
+来自 v11/v12 随机事件。部分事件按选择区分成就，部分选择共享事件结果；a55–a89 均至少有一个真实选择来源。
 
-### C. v13/v14 事件级成就：a90–a108
+### C. v13/v14事件级：a90–a108
 
-- a90–a99：10个 v13 character-driven random events，一事件一个成就；三个选择均可解锁同一事件成就。
-- a100–a108：9个 v14 consequence events，一事件一个成就；三个选择均可解锁同一事件成就，同时选择各自产生不同 branchFlag 和结局回响。
+- a90–a99：10个 character-driven random events，一事件一个成就；三个选择可共享该事件成就。
+- a100–a108：9个 consequence events，一事件一个成就；三个选择共享事件成就，同时产生不同 branchFlag / ending echo。
 
-## 本轮发现并修复的发布级 Bug
+## 已修复的发布级Bug
 
-108目录重排后，旧99成就时代仍遗留一批硬编码自动解锁：
+108目录重排后，旧99成就时代曾遗留一批按全局数值/结局硬编码自动解锁的 `aXX`。这些ID在108目录中已经换义，会造成“做A却解锁B名字”。
 
-- `chapterIdx<=2 → a1`
-- `Stamina<20 → a2`
-- `Power>=55 → a11`
-- `doseMatrix → a13`
-- `Progress>=70 → a96`
-- `Morale>=70 → a97`
-- `Dragon>=18 / true_dragon → a95`
-- `be_probation → a99`
-- 任意 `ge_*` ending → a97
+RC已删除这类旧硬编码来源。现在新周目解锁只认当前 choice/event 的 `achievement` 字段；migration只负责旧档迁移。
 
-这些ID在108目录中已经有了完全不同的含义，因此会造成“做了A，却解锁B名字”的错误。
+## 重复与幂等
 
-RC修复：删除所有旧硬编码ID自动解锁。现在解锁来源只认当前 choice/event 的 `achievement` 字段；`unlockAchievement()` 自身仍保持幂等，因此重复进入同一来源不会重复发放轮回点。
+### 合理共享
 
-## 重复覆盖判断
+- v13/v14事件的三个选择共享同一事件成就：设计行为。
+- contextual第4/5选项继承 authored slot：同一 outcome family。
 
-### 合理重复
+### 必须幂等
 
-- v13/v14 的事件级成就：同一事件三个选择共享一个 achievement ID，属于设计行为。
-- 动态第4/5选项继承 authored slot achievement：属于同一主线 outcome family，不新增图鉴项。
-- `unlockAchievement()` 对已解锁ID直接 return，因此不会重复计轮回点。
+同一个achievement ID无论因重复回调、重复渲染或旧档再次加载被请求多少次，都只能首次加入图鉴和首次发放对应轮回收益。现有 `unlockAchievement()` 对已解锁ID直接返回；smoke同时检查旧档迁移保留既有NG点。
 
-### 不允许重复
+### 禁止来源
 
-- 结局、数值阈值、旧版本全局状态不得再硬编码解锁某个已被重新定义的 aXX。
-- migration 只能迁移旧存档，不得在新周目运行时产生额外 achievement source。
+- ending ID / 数值阈值不得硬编码映射到已经重新定义的 `aXX`；
+- migration不得在新周目运行时制造额外source；
+- QTE callback不得绕过choice/event source临时发一个目录成就。
 
 ## 随机事件可达性
 
-最终普通随机池使用 `V11_EVENTS`，当前共34个事件；v13/v14事件均已 append 进入该池。基础 `eventWeight()` 不会把任何事件降为0，因此全部34个事件在多周目中均保留抽取可能。
+最终普通随机池 `V11_EVENTS` 当前34个事件；v13/v14均已append进入。基础权重不会把任何事件永久降为0。
 
-PI连锁事件和跨周目 meta 事件会在满足条件时优先截获一次普通随机事件入口，但都有一次性 flag；不会永久把某个普通随机事件从全局池删除。
+PI连锁和跨周目meta事件可以优先截获一次普通随机入口，但均有一次性flag，不会永久删除普通随机事件。
 
-## RC Gate
+## 黑色幽默comment质量门槛
 
-Achievement layer 当前状态：
+机器检查只证明108条comment存在且唯一，不代表文案已经足够像角色本人。最终人工审校继续按以下规则：
 
-`108/108 SOURCED · 0 ORPHAN · 0 STALE HARD-CODED AUTO-UNLOCK · 108 UNIQUE COMMENTS`
+1. 先写玩家刚造成的具体后果；
+2. 能绑定NPC时，使用其稳定行为模式，而不是通用“职场吐槽”；
+3. 成就名负责第一层笑点，comment负责第二刀；
+4. 通常1–2句；
+5. 笑点来自流程、权责、汇报线、组织荒谬，不攻击现实人物外貌或身份。
 
-后续仍需和最终 `main` 合并后的 smoke / migration 回归一起验证。
+## 与RC总门禁的关系
+
+Achievement layer 本身当前可以从P1 blocker降级为 **PASS AT STATIC/VM LAYER**。
+
+仍随整包一起做的回归：
+
+- 浏览器真实重复点击 / stale callback；
+- 损坏旧档和重复migration；
+- 全Choice replay；
+- Monte Carlo检查某些随机事件是否因权重/截获机制变成实际极低频。
+
+成就层不再是当前主要发布阻断；当前主要阻断见 `RELEASE_AUDIT_RC.md` 的 RC-06（仍有PLACEHOLDER/待数值测试的角色成长与能力机制）。
