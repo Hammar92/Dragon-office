@@ -2062,7 +2062,8 @@ function startGame(){
   initSocial(); ensureOrgSystems();
   S.restLeft = REST_MAX; S.adLeft = AD_MAX; S.sanityCareLeft = 1; S.relationTalkLeft = 1; S.sanityCareLeft = 1;
   LOVE_META.a.ch = -1; LOVE_META.b.ch = -1; LOVE_META.c.ch = -1;
-  const priorRuns=parseInt(localStorage.getItem('dragon_runs')||'0',10);
+  const _priorRuns=parseInt(localStorage.getItem('dragon_runs')||'0',10);
+  const priorRuns=Number.isFinite(_priorRuns)&&_priorRuns>=0?_priorRuns:0;
   flags = {newGamePlus:priorRuns>0}; localStorage.setItem('dragon_runs', String(priorRuns+1)); usedEvents = []; usedHeina = []; chapterIdx = 0;
   runChapters = buildDevelopmentTimeline();
   addLog({act:'入职第一天', from:'zouting', to:['me'], cc:[], subj:'欢迎加入临床开发部 · 岗位说明', attach:'JD_医学经理.pdf',
@@ -5182,7 +5183,7 @@ renderLifeBuilder();
 
   const A_NAMES=["试用期体验卡","有问题，但先上班","第六版就是最终版","最终版_v2_final","这次真的Final","会议生会议","老板只是随口一说","大家都很辛苦","辛苦不是资源","都很重要等于都不重要","把锅做成铁的","我记得不是这样","昨天已经定过","新的旧决定","十七页的一页纸","Appendix吞噬正文","Comment比正文长","解释一下为什么要解释","请再完整一点","所以结论呢","统一出口","PVP本人请勿发言","有医学岗位就算有医学能力","先内部对齐","Sponsor请确认","这封邮件值一个月","CRO说可以","Action关了，问题还在","大家都知道","口头批准具有薛定谔效力","关系很好但不熟","主任跟你挺投缘","Leading可以有两个吗","都Leading等于都不Leading","样本留了吗","漂亮结果，机制失踪","学术成果是可再生资源","承诺是未来的负债","中心最近比较忙","作者名额有限","老板看见了","Invisible Work不存在","花蝴蝶效应","今天为什么突然这么积极","功劳出现在最后一公里","K总看一眼就知道","Tracker很绿","项目很红","再拉个专项会","会议里解决会议过多","资源管理：大家辛苦一下","0.5个人做2个人的活","管理就是让别人再想想","VP一直在场","Presence without Guidance","D级工作，VP级签名","Role Compression","看了很久","没问到点上","语言问题也是问题","AI替我想一下","老板年轻时的影子","培养不出来还要培养","临床第一人","Vendor Capture","Sponsor Ownership失踪","CRA今晚再核一遍","现场不是无限算力","PI关系学","社交能力自信区间","既合作又竞争","MK–N张力","Scientific Territory","研究不是一篇文章","指南里见","Friendly Courier","市场比医学更懂产品","Evidence Strategist","Deal Window Anxiety","Paper Shield","专业不同意但关系很好","高能力NPC集体沉默","你们再想想","这事我来承担（暂定）","出了事我担着（过期）","工作量识别不产生资源","一页总结二十三页附件","Comment Triage","只改措辞不改逻辑","High Review Activity","Low Editorial Value","Information ≠ Insight","Merit ≠ Reputation","Reputation ≠ Power","Power ≠ Competence","项目做成了，人没了","吵着把事做完","这公司居然还活着","提桶走人"];
   window.ACHIEVEMENTS=A_NAMES.map(function(n,i){return{id:"a"+(i+1),name:n,point:(i%3===0?1:0)};});
-  function achUnlocked(){try{return JSON.parse(localStorage.getItem("dragon_achievements")||"[]");}catch(e){return[];}}
+  function achUnlocked(){try{const x=JSON.parse(localStorage.getItem("dragon_achievements")||"[]");return Array.isArray(x)?x:[];}catch(e){return[];}}
   window.unlockAchievement=function(id){let a=ACHIEVEMENTS.find(x=>x.id===id),u=achUnlocked();if(!a||u.includes(id))return;u.push(id);localStorage.setItem("dragon_achievements",JSON.stringify(u));if(a.point)localStorage.setItem("dragon_ng_points",String(ngPoints()+a.point));toast("🏆 "+a.name+(a.point?" · 轮回点 +1":""),"up");};
   window.checkAchievements=function(ch){if(!S)return;if(ch&&ch.achievement)unlockAchievement(ch.achievement,ch);};
   let _applyChoiceAch=applyChoice;applyChoice=function(ch){let out=_applyChoiceAch(ch);setTimeout(function(){checkAchievements(ch);},0);return out;};
@@ -5741,7 +5742,7 @@ renderLifeBuilder();
     if(legacy.length)localStorage.setItem("dragon_legacy_achievements",JSON.stringify(legacy));
     localStorage.setItem("dragon_ach_schema","v13.3");
   }
-  function unlocked12(){try{return JSON.parse(localStorage.getItem("dragon_achievements")||"[]");}catch(e){return[];}}
+  function unlocked12(){try{const x=JSON.parse(localStorage.getItem("dragon_achievements")||"[]");return Array.isArray(x)?x:[];}catch(e){return[];}}
   function achievementDetails12(){try{return JSON.parse(localStorage.getItem("dragon_achievement_details")||"{}");}catch(e){return{};}}
   unlockAchievement=function(id,choice){
     if(window._v12Ending)return;
@@ -5878,11 +5879,11 @@ renderLifeBuilder();
 
   /* ---------- 2. Cross-run hidden routes ---------- */
   function allAchNames(){
-    var ids=[];try{ids=JSON.parse(localStorage.getItem("dragon_achievements")||"[]");}catch(e){}
+    var ids=[];try{const x=JSON.parse(localStorage.getItem("dragon_achievements")||"[]");ids=Array.isArray(x)?x:[];}catch(e){}
     return ids.map(function(id){var a=(window.ACHIEVEMENTS||[]).find(function(x){return x.id===id;});return a&&a.name;}).filter(Boolean);
   }
   function endingHistory(){
-    try{return JSON.parse(localStorage.getItem("dragon_endings")||"[]");}catch(e){return[];}
+    try{const x=JSON.parse(localStorage.getItem("dragon_endings")||"[]");return Array.isArray(x)?x:[];}catch(e){return[];}
   }
   function hasNames(arr,names){return names.every(function(n){return arr.indexOf(n)>=0;});}
   window.META_ROUTES={
@@ -7026,7 +7027,7 @@ renderLifeBuilder();
     a.comment=(ACH_SNARK[who]||'这家公司最大的黑色幽默，是每一个荒唐流程都能找到一个非常专业的理由。')+' ——「'+a.name+'」';
   });
 
-  function achUnlockedV144(){try{return JSON.parse(localStorage.getItem('dragon_achievements')||'[]');}catch(e){return[];}}
+  function achUnlockedV144(){try{const x=JSON.parse(localStorage.getItem('dragon_achievements')||'[]');return Array.isArray(x)?x:[];}catch(e){return[];}}
   function achDetailsV144(){try{return JSON.parse(localStorage.getItem('dragon_achievement_details')||'{}');}catch(e){return{};}}
   window.renderAchievementsV144=function(){
     const d=document.getElementById('achievement-panel');if(!d)return;
