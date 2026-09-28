@@ -5727,7 +5727,7 @@ renderLifeBuilder();
   /* Preserve old unlocked outcomes where the same choice still has a slot. Archive the
      ten retired third-choice outcomes by their old names rather than silently relabeling. */
   if(localStorage.getItem("dragon_ach_schema")!=="v13.3"){
-    var saved=[];try{saved=JSON.parse(localStorage.getItem("dragon_achievements")||"[]");}catch(e){}
+    var saved=[];try{var _savedRaw=JSON.parse(localStorage.getItem("dragon_achievements")||"[]");saved=Array.isArray(_savedRaw)?_savedRaw:[];}catch(e){}
     var migrated=[],legacy=[];
     saved.forEach(function(id){
       var n=Number(String(id).slice(1));
