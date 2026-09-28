@@ -3571,7 +3571,7 @@ const BATTLE_RELEVANT={
   c12:['mingye','miaomiao','zhuzong'],
   x5:['yijian','xiaoen','zouting','mingye']
 };
-let projectBattleState=null, projectBattleTimer=null;
+let projectBattleState=null, projectBattleTimer=null, projectBattleSeq=0;
 
 function chooseBattleOpponent(chId){
   const arr=(BATTLE_RELEVANT[chId]||[]).filter(function(k){return NPCs[k] && (S.npc[k]||0)<34;});
@@ -3651,7 +3651,7 @@ function maybeProjectBattle(chId,next){
 }
 function startProjectBattle(chId,opponent,next){
   const cfg=PROJECT_BATTLES[chId];
-  projectBattleState={chId:chId,cfg:cfg,opponent:opponent,round:0,wins:0,losses:0,next:next,history:[]};
+  projectBattleState={token:++projectBattleSeq,chId:chId,cfg:cfg,opponent:opponent,round:0,wins:0,losses:0,next:next,history:[]};
   renderProjectBattle();
 }
 function renderProjectBattle(){
@@ -3670,13 +3670,13 @@ function renderProjectBattle(){
     +'<div class="scene-sub">'+limit+' 秒。你不是在找“最礼貌”的回答，而是在决定谁拥有这次会议的叙事权。</div>'
     +'<div class="vp-line">'+battleOpponentName(st.opponent)+'：'+attack+'</div>'
     +sanityWarning()
-    +'<div class="choices">'+order.map(function(idx,j){return '<button class="choice" onclick="projectBattlePick('+idx+','+st.round+')"><span class="idx">'+'ABCDE'[j]+'</span>'+battleOptionText(opts[idx],st.cfg.theme)+'</button>';}).join('')+'</div></div>';
-  const round=st.round;
-  projectBattleTimer=setTimeout(function(){projectBattlePick(-1,round);},limit*1000);
+    +'<div class="choices">'+order.map(function(idx,j){return '<button class="choice" onclick="projectBattlePick('+idx+','+st.round+','+st.token+')"><span class="idx">'+'ABCDE'[j]+'</span>'+battleOptionText(opts[idx],st.cfg.theme)+'</button>';}).join('')+'</div></div>';
+  const round=st.round, token=st.token;
+  projectBattleTimer=setTimeout(function(){projectBattlePick(-1,round,token);},limit*1000);
 }
-function projectBattlePick(i,round){
+function projectBattlePick(i,round,token){
   const st=projectBattleState;if(!st)return;
-  if(st.awaitingResult||(round!=null&&round!==st.round))return;
+  if((token!=null&&token!==st.token)||st.awaitingResult||(round!=null&&round!==st.round))return;
   st.awaitingResult=true;
   if(projectBattleTimer){clearTimeout(projectBattleTimer);projectBattleTimer=null;}
   let score=-3,opt=null;
@@ -3855,26 +3855,31 @@ const DUEL_ROUNDS = [
  {vp:"你现在这么强势，团队其实对你意见也很大。",opts:["管理就是要有人怕。","如果是团队问题，请看匿名离职访谈和项目协作评分；如果是我的问题，我接受具体证据。","他们至少比喜欢你多。"],correct:1},
  {vp:"最后这是我负责的项目，成果当然首先属于负责人。",opts:["头衔可以属于负责人，决策记录属于做决定的人。我们把里程碑逐条打开。","我不同意。","老板会判断的。"],correct:0}
 ];
-let duelState=null, duelTimer=null;
+let duelState=null, duelTimer=null, duelSeq=0;
 function shouldDuel(){ return !flags.duelResolved && S.trust<=30 && (S.merit||0)>=55; }
 function evaluateFinal(){
   if(shouldDuel()){ startDuel(); return; }
   finalizeEvaluation();
 }
 function startDuel(){
-  duelState={round:0,score:0}; flags.duelStarted=true; renderDuelRound();
+  duelState={token:++duelSeq,round:0,score:0,awaitingResult:false}; flags.duelStarted=true; renderDuelRound();
 }
 function renderDuelRound(){
   if(duelTimer){ clearTimeout(duelTimer); duelTimer=null; }
+  if(!duelState)return;
+  duelState.awaitingResult=false;
   const r=DUEL_ROUNDS[duelState.round];
   if(!r){ finishDuel(); return; }
   document.getElementById('scene-area').innerHTML='<div class="scene"><span class="event-badge">⚔ 决斗 · '+(duelState.round+1)+' / '+DUEL_ROUNDS.length+'</span>'
     +'<div class="scene-title">老板让你们把话讲清楚</div><div class="scene-sub">5 秒内选出能经得住记录核对的反驳。情绪不是证据。</div>'
-    +'<div class="vp-line">钟时：'+r.vp+'</div><div class="choices">'+r.opts.map(function(o,i){return '<button class="choice" onclick="duelPick('+i+')"><span class="idx">'+'ABC'[i]+'</span>'+o+'</button>';}).join('')+'</div></div>';
-  duelTimer=setTimeout(function(){ duelPick(-1); },5000);
+    +'<div class="vp-line">钟时：'+r.vp+'</div><div class="choices">'+r.opts.map(function(o,i){return '<button class="choice" onclick="duelPick('+i+','+duelState.round+','+duelState.token+')"><span class="idx">'+'ABC'[i]+'</span>'+o+'</button>';}).join('')+'</div></div>';
+  const round=duelState.round, token=duelState.token;
+  duelTimer=setTimeout(function(){ duelPick(-1,round,token); },5000);
 }
-function duelPick(i){
+function duelPick(i,round,token){
   if(!duelState) return;
+  if((token!=null&&token!==duelState.token)||(round!=null&&round!==duelState.round)||duelState.awaitingResult)return;
+  duelState.awaitingResult=true;
   if(duelTimer){ clearTimeout(duelTimer); duelTimer=null; }
   const r=DUEL_ROUNDS[duelState.round];
   let ok=i===r.correct;
