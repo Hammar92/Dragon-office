@@ -55,7 +55,7 @@
     const power=num(raw.power),dragon=num(raw.dragon),merit=num(raw.merit),reputation=num(raw.reputation),bossTrust=num(raw.bossTrust),career=num(raw.career);
     const promoSupport=num(raw.promotionSupport),promoOppose=num(raw.promotionOppose),hard=raw.difficultyId==='hard';
     const mid60=supportCount(raw,60),alive3=trust>=35&&morale>=35&&sanity>=35;
-    const projectFull=progress>=60,projectStrong=progress>=72;
+    const projectFull=progress>=60,projectStrong=progress>=75;
     const candidate=raw.v14Candidate||f.v14Candidate||null,finalRoute=raw.v14FinalRoute||f.v14FinalRoute||null;
     const joints=deriveJoints(f,finalRoute,raw.joints);
     const ally50=supportCount(raw,50),ally58=supportCount(raw,58);
@@ -65,10 +65,10 @@
     return {
       duelWinEnding:yes(raw.duelWinEnding),duelLoseEnding:yes(raw.duelLoseEnding),
       trueAfterdragon:f.metaRoute==='echo'&&yes(f.meta_echo_refuse)&&progress>=72&&morale>=58&&dragon<20,
-      trueDragon:projectFull&&dragon>=10&&power>=65&&merit>=45&&(yes(f.dragon_take)||finalRouteIs(raw,'power')),
+      trueDragon:projectFull&&dragon>=8&&power>=65&&merit>=45&&(yes(f.dragon_take)||finalRouteIs(raw,'power')),
       slayer:projectFull&&finalRouteIs(raw,'power')&&dragon<10&&power>=65&&mid60>=3,
       promotion:projectFull&&merit>=70&&reputation>=45&&bossTrust>=45&&promoSupport>=(hard?4:3)&&promoOppose<=(hard?2:3)&&(yes(f.duelWin)||trust>=30),
-      unsung:projectFull&&merit>=75&&reputation<35,
+      unsung:projectFull&&merit>=75&&reputation<25,
       next:projectFull&&finalRouteIs(raw,'govern')&&career>=75&&dragon<10,
       firstline:projectFull&&finalRouteIs(raw,'govern')&&career>=55&&dragon<10,
       /* v11 organization endings remain public gallery endings. They sit below explicit
@@ -88,7 +88,7 @@
       ncRuidong:projectFull&&rel(raw,'ruidong')>=36&&finalRouteIs(raw,'govern'),
       ncHeina:projectFull&&rel(raw,'heina')>=35&&dragon>=6&&finalRouteIs(raw,'power'),
       ncWeilai:progress>=35&&!projectFull&&rel(raw,'weilai')>=50,
-      ncLove:progress>=35&&!projectFull&&yes(f.love)&&heart>=50&&dragon<=6,
+      ncLove:progress>=35&&progress<50&&yes(f.love)&&heart>=50&&dragon<=6,
       projectFullySuccessful:projectFull,
       v14Eligible:projectFull&&heart>0&&trust>0&&morale>0,
       island:maxRel(raw)<=30,
