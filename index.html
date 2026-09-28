@@ -7466,7 +7466,7 @@ renderLifeBuilder();
     const projectFull=progress>=60,projectStrong=progress>=72;
     const candidate=raw.v14Candidate||f.v14Candidate||null,finalRoute=raw.v14FinalRoute||f.v14FinalRoute||null;
     const joints=deriveJoints(f,finalRoute,raw.joints);
-    const ally58=supportCount(raw,58);
+    const ally50=supportCount(raw,50),ally58=supportCount(raw,58);
     const bossBand=avgRel(raw,['ceo','cso','xiaoyuan']);
     const proBand=avgRel(raw,['kzong','xiaoen','zihan','mingye']);
 
@@ -7481,21 +7481,21 @@ renderLifeBuilder();
       firstline:projectFull&&finalRouteIs(raw,'govern')&&career>=55&&dragon<10,
       /* v11 organization endings remain public gallery endings. They sit below explicit
          career trajectories, but above event echoes: they summarize the whole operating model. */
-      orgSuccession:projectStrong&&power>=68&&bossBand>=58&&trust>=50,
-      orgPuppetmaster:projectStrong&&power>=64&&trust>=58&&bossBand>=55&&morale<62,
+      orgSuccession:projectStrong&&power>=68&&bossBand>=42&&trust>=50,
+      orgPuppetmaster:projectStrong&&power>=64&&trust>=58&&bossBand>=38&&morale<62,
       orgRegent:projectStrong&&power>=60&&proBand>=55&&trust<55,
-      orgCoalition:projectStrong&&ally58>=7&&morale>=58&&power>=48,
+      orgCoalition:projectStrong&&ally50>=5&&morale>=58&&power>=48,
       orgCourt:projectStrong&&power>=52&&trust>=50,
       orgSystem:projectStrong&&morale>=62&&power>=48,
       orgProject:projectStrong,
       joints:joints,
       v14Candidate:candidate,
       v14RouteMatched:eventRouteMatches(candidate,finalRoute),
-      ncXiaoyuan:projectFull&&rel(raw,'xiaoyuan')>=85&&finalRouteIs(raw,'govern'),
-      ncCaolan:projectFull&&rel(raw,'caolan')>=65&&finalRouteIs(raw,'govern'),
-      ncRuidong:projectFull&&rel(raw,'ruidong')>=70&&finalRouteIs(raw,'govern'),
-      ncHeina:projectFull&&rel(raw,'heina')>=70&&dragon>=6&&finalRouteIs(raw,'power'),
-      ncWeilai:progress>=35&&!projectFull&&rel(raw,'weilai')>=60,
+      ncXiaoyuan:projectFull&&rel(raw,'xiaoyuan')>=43&&finalRouteIs(raw,'govern'),
+      ncCaolan:projectFull&&rel(raw,'caolan')>=50&&finalRouteIs(raw,'govern'),
+      ncRuidong:projectFull&&rel(raw,'ruidong')>=36&&finalRouteIs(raw,'govern'),
+      ncHeina:projectFull&&rel(raw,'heina')>=35&&dragon>=6&&finalRouteIs(raw,'power'),
+      ncWeilai:progress>=35&&!projectFull&&rel(raw,'weilai')>=50,
       ncLove:progress>=35&&!projectFull&&yes(f.love)&&heart>=50&&dragon<=6,
       projectFullySuccessful:projectFull,
       v14Eligible:projectFull&&heart>0&&trust>0&&morale>0,
@@ -7505,7 +7505,7 @@ renderLifeBuilder();
       beTrust:progress>=35&&!projectFull&&!alive3,
       beProgress:progress<35,
       legacy:raw.legacy||null,
-      _audit:{mid60:mid60,ally58:ally58,bossBand:bossBand,proBand:proBand,maxRel:maxRel(raw),finalRoute:finalRoute,joints:joints}
+      _audit:{mid60:mid60,ally50:ally50,ally58:ally58,bossBand:bossBand,proBand:proBand,maxRel:maxRel(raw),finalRoute:finalRoute,joints:joints}
     };
   }
 
