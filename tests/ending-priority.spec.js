@@ -5,8 +5,8 @@ const cases=[
  ['duel beats true route',{duelWinEnding:true,trueDragon:true},'duelWin'],['true route beats career',{trueDragon:true,promotion:true},'true_dragon'],
  ['true route beats joint',{trueAfterdragon:true,joints:{v14_joint_capacity:true}},'true_afterdragon'],['true route beats event',{slayer:true,v14Candidate:'v14_0_0'},'ge_slayer'],
  ['career beats joint',{promotion:true,joints:{v14_joint_capacity:true}},'ge_promotion'],['career beats event',{unsung:true,v14Candidate:'v14_4_1'},'ge_unsung'],
- ['joint beats event',{joints:{v14_joint_paper:true},v14Candidate:'v14_2_0'},'v14_joint_paper'],['career beats NPC',{next:true,ncXiaoyuan:true},'ge_next'],
- ['event beats NPC',{v14Candidate:'v14_8_2',ncHeina:true},'v14_8_2'],['NPC beats generic',{ncCaolan:true,survive:true},'nc_caolan'],
+ ['joint beats event',{v14Eligible:true,joints:{v14_joint_paper:true},v14Candidate:'v14_2_0'},'v14_joint_paper'],['career beats NPC',{next:true,ncXiaoyuan:true},'ge_next'],
+ ['event beats NPC',{v14Eligible:true,v14Candidate:'v14_8_2',ncHeina:true},'v14_8_2'],['NPC beats generic',{ncCaolan:true,survive:true},'nc_caolan'],
  ['love blocked by full success',{ncLove:true,projectFullySuccessful:true,survive:true},'ge_survive'],['love allowed when incomplete',{ncLove:true,projectFullySuccessful:false,survive:true},'nc_love'],
  ['invalid candidate ignored',{v14Candidate:'ge_promotion',beTrust:true},'be_trust'],['route mismatch blocks echo',{v14Candidate:'v14_2_1',v14RouteMatched:false,survive:true},'ge_survive'],
  ['legacy last',{legacy:'legacy_old_finalize'},'legacy_old_finalize']
@@ -24,7 +24,7 @@ const rawCases=[
  ['joint story from flags',raw({flags:{v14_4_1:true,v14_7_1:true},v14FinalRoute:'appease'}),'v14_joint_story'],
  ['joint dragon from flags',raw({flags:{v14_5_2:true,v14_8_2:true},v14FinalRoute:'power'}),'v14_joint_dragon'],
  ['joint wrong route ignored',raw({progress:50,flags:{v14_0_0:true,v14_6_0:true},v14FinalRoute:'power'}),'mid_halfbridge'],
- ['raw matching echo',raw({v14Candidate:'v14_4_1',v14FinalRoute:'appease'}),'v14_4_1'],['raw mismatched echo',raw({progress:50,v14Candidate:'v14_4_1',v14FinalRoute:'govern'}),'mid_halfbridge'],
+ ['raw matching echo',raw({v14Candidate:'v14_4_1',v14FinalRoute:'appease'}),'v14_4_1'],['raw low-progress echo blocked',raw({progress:50,v14Candidate:'v14_4_1',v14FinalRoute:'appease'}),'mid_halfbridge'],['raw low-progress joint blocked',raw({progress:50,flags:{v14_1_0:true,v14_2_0:true},v14FinalRoute:'govern'}),'mid_halfbridge'],['raw mismatched echo',raw({progress:50,v14Candidate:'v14_4_1',v14FinalRoute:'govern'}),'mid_halfbridge'],
  ['raw xiaoyuan',raw({npc:{xiaoyuan:86},flags:{main_18_1:true}}),'nc_xiaoyuan'],['raw love incomplete',raw({progress:50,flags:{love:true}}),'nc_love'],
  ['raw halfbridge',raw({progress:50}),'mid_halfbridge'],['raw survive',raw({progress:50,trust:40,morale:40,sanity:40}),'ge_survive'],
  ['raw trust failure',raw({progress:50,trust:20,morale:40,sanity:40}),'be_trust'],['raw progress failure',raw({progress:20}),'be_progress']
