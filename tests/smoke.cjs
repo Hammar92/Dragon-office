@@ -207,6 +207,42 @@ assert.deepStrictEqual(vm.runInContext('getUnlocked()',migrated),['be_heart','tr
 assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_endings')),['retired_old_ending'],'stale ending ids archived');
 console.log('Story, random achievements, migration, and QTE guards OK');
 
+// Corrupted-save regression: valid JSON with wrong types must not crash startup,
+// and a broken run counter must recover into a normal first/second/third-run sequence.
+const corruptStorage=new Map([
+  ['dragon_runs','not-a-number'],
+  ['dragon_achievements','{}'],
+  ['dragon_achievement_details','[]'],
+  ['dragon_legacy_achievements','{}'],
+  ['dragon_endings','{}'],
+  ['dragon_legacy_endings','{}'],
+  ['dragon_last_traits','{}'],
+  ['dragon_ng_points','bogus'],
+  ['dragon_difficulty','impossible']
+]);
+const corruptLocal={
+  getItem:k=>corruptStorage.has(k)?corruptStorage.get(k):null,
+  setItem:(k,v)=>corruptStorage.set(k,String(v)),
+  removeItem:k=>corruptStorage.delete(k)
+};
+const corruptCtx=Object.assign({},context,{localStorage:corruptLocal,sessionStorage:corruptLocal});
+corruptCtx.window=corruptCtx;
+vm.createContext(corruptCtx);vm.runInContext(code,corruptCtx,{timeout:5000});
+vm.runInContext("renderAchievementsV144();renderNGPanel();renderGallery();getUnlocked()",corruptCtx,{timeout:5000});
+assert.deepStrictEqual(JSON.parse(corruptStorage.get('dragon_achievements')),[],'wrong-type achievement save normalized');
+assert.deepStrictEqual(JSON.parse(corruptStorage.get('dragon_endings')),[],'wrong-type ending save normalized');
+vm.runInContext('startGame()',corruptCtx,{timeout:5000});
+assert.strictEqual(corruptStorage.get('dragon_runs'),'1','broken run counter recovers to first run');
+assert.strictEqual(vm.runInContext('flags.newGamePlus',corruptCtx),false,'recovered first run is not NG+');
+assert.strictEqual(vm.runInContext('S.difficulty',corruptCtx),'normal','invalid saved difficulty recovers to normal');
+vm.runInContext('startGame()',corruptCtx,{timeout:5000});
+assert.strictEqual(corruptStorage.get('dragon_runs'),'2','second run increments recovered counter');
+assert.strictEqual(vm.runInContext('flags.newGamePlus',corruptCtx),true,'second run enables NG+');
+vm.runInContext('startGame()',corruptCtx,{timeout:5000});
+assert.strictEqual(corruptStorage.get('dragon_runs'),'3','third run increments recovered counter');
+assert.strictEqual(vm.runInContext('flags.newGamePlus',corruptCtx),true,'third run keeps NG+ enabled');
+console.log('Corrupted-save and three-run NG+ regression OK');
+
 run('showEnding=function(k){window.testEnding=k}; projectBattleState=null');
 run("flags={}; chapterIdx=4; S.sanity=80; applyChoice(presentedChoice(V11_EVENTS[25].choices,0)); chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); applyChoice(presentedChoice(runChapters[17].choices,0))");
 assert.strictEqual(run('flags.v14Candidate'),'v14_0_0','event choice records its outcome');
