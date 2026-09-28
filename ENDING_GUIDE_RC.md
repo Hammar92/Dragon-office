@@ -1,4 +1,4 @@
-# Dragon Office · 64结局攻略（RC v14.5.1）
+# Dragon Office · 64结局攻略（RC v14.6）
 
 > 本文件以 `ending-resolver.js` 当前生产逻辑为准。  
 > “条件满足”不等于“一定得到”：先看优先级。高层结局会覆盖低层结局。
@@ -20,11 +20,11 @@
 
 - **Progress <35**：主要进入失败类。
 - **Progress 35–59**：半座桥 / 幸存者 / 信任失败 / 苏苏 / 爱情等。
-- **Progress 60–71**：最重要的“长尾窗口”。
+- **Progress 60–74**：最重要的“长尾窗口”。
   - v14 Joint / Event 只有这里最容易拿到；
   - 成功型NPC结局也主要在这里拿；
-  - 因为 Progress≥72 时至少会触发 `ge_project`，组织层会覆盖这些低层结局。
-- **Progress ≥72**：组织型 / 职业型 / 隐藏核心结局主战场。
+  - 因为 Progress≥75 时至少会触发 `ge_project`，组织层会覆盖这些低层结局。
+- **Progress ≥75**：组织型 / 职业型 / 隐藏核心结局主战场。
 
 ---
 
@@ -36,7 +36,7 @@
 
 - 上一周目解锁 echo 路线并本周目选择；
 - `meta_echo_refuse=true`；
-- Progress≥72；
+- Progress≥75；
 - Morale≥58；
 - Dragon<20。
 
@@ -55,7 +55,7 @@
 条件：
 
 - Progress≥60；
-- Dragon≥10；
+- Dragon≥8；
 - Power≥65；
 - Merit≥45；
 - 终章真实选择 Power，或明确 `dragon_take`。
@@ -75,7 +75,7 @@
 - 终章真实route=Power；
 - Dragon<10；
 - Power≥65；
-- 至少3名有效支持者达到60（若NPC有更高 `allyAt` 则按更高值）。
+- 至少2名有效支持者达到60（若NPC有更高 `allyAt` 则按更高值）。
 
 推荐路线：
 
@@ -86,7 +86,7 @@
    - 肖恩 62
 3. 不通过甩锅/集权累积Dragon。
 4. 第18章改选 Power。
-5. 不要求基础 `main_18_3`；v12分支终章只要 `v14FinalRoute=power` 即可。
+5. 不要求基础 `main_18_3`；v12分支终章只要 `v14FinalRoute=power` 即可。若 Dragon≥8 且 Merit≥45，同时满足 true_dragon，则 true_dragon 优先于 Slayer。
 
 真实路径已验证：`v12_18_network → power → ge_slayer`。
 
@@ -118,7 +118,7 @@
 
 - Progress≥60
 - Merit≥75
-- Reputation<35
+- Reputation<25
 
 攻略：大量做成真正工作，但少做可见功劳/政治展示。
 
@@ -147,29 +147,29 @@
 
 ---
 
-# 3. 组织结局（7，Progress≥72）
+# 3. 组织结局（7，Progress≥75）
 
-> 若没有命中P1/P2，Progress≥72至少会进入 `ge_project`，所以这一层也构成v14 Event/NPC的天然上界。
+> 若没有命中P1/P2，Progress≥75至少会进入 `ge_project`，所以这一层也构成v14 Event/NPC的天然上界。
 
 ## ge_succession · 继承人名单上没有名字
 
-- Progress≥72
+- Progress≥75
 - Power≥68
-- BossBand≥58
+- BossBand≥42
   - BossBand=(CEO+CSO+小圆)/3
 - Trust≥50
 
 ## ge_puppetmaster · 老板说得对
 
-- Progress≥72
+- Progress≥75
 - Power≥64
 - Trust≥58
-- BossBand≥55
+- BossBand≥38
 - Morale<62
 
 ## ge_regent · 摄政
 
-- Progress≥72
+- Progress≥75
 - Power≥60
 - ProfessionalBand≥55
   - K总 / 肖恩 / 则韩 / 明夜平均
@@ -177,26 +177,26 @@
 
 ## ge_coalition · 没有王座的多数派
 
-- Progress≥72
-- ≥7名有效支持者达到58
+- Progress≥75
+- ≥5名有效支持者达到50
 - Morale≥58
 - Power≥48
 
 ## ge_court · 听调不听宣
 
-- Progress≥72
+- Progress≥75
 - Power≥52
 - Trust≥50
 
 ## ge_system · 吵着把事做完
 
-- Progress≥72
+- Progress≥75
 - Morale≥62
 - Power≥48
 
 ## ge_project · 药做出来了
 
-- Progress≥72
+- Progress≥75
 - 未命中上述任何更具体组织/职业/隐藏结局
 
 这是强项目成功的最终组织兜底。
@@ -207,7 +207,7 @@
 
 共同条件：
 
-- **Progress 60–71最安全**
+- **Progress 60–74最安全**
 - Heart>0 / Trust>0 / Morale>0
 - 对应两个历史选择都发生
 - 第18章最终route一致
@@ -234,7 +234,7 @@
 - Progress≥60；
 - Heart/Trust/Morale>0；
 - 第18章最终route与事件choice route一致；
-- 最好保持 Progress 60–71；
+- 最好保持 Progress 60–74；
 - 不命中更高优先级结局。
 
 ## Event 0 · 一张容量表能装几个人
@@ -317,37 +317,37 @@
 
 ## nc_xiaoyuan · 元老的船
 
-- Progress 60–71最安全
-- 小圆≥85
+- Progress 60–74最安全
+- 小圆≥43
 - 最终route=Govern
 
 ## nc_caolan · 商业化的门
 
-- Progress 60–71最安全
-- 曹兰≥65
+- Progress 60–74最安全
+- 曹兰≥50
 - 最终route=Govern
 
 ## nc_ruidong · 毒理的答案
 
-- Progress 60–71最安全
-- 瑞冬≥70
+- Progress 60–74最安全
+- 瑞冬≥36
 - 最终route=Govern
 
 ## nc_heina · 对面的椅子
 
-- Progress 60–71最安全
-- 黑娜≥70
+- Progress 60–74最安全
+- 黑娜≥35
 - Dragon≥6
 - 最终route=Power
 
 ## nc_weilai · 财务的计算器
 
 - Progress 35–59
-- 苏苏≥60
+- 苏苏≥50
 
 ## nc_love · 有人记得你几点下班
 
-- Progress 35–59
+- Progress 35–49
 - 隐藏爱情三幕完成，`flags.love=true`
 - Heart≥50
 - Dragon≤6
@@ -377,7 +377,7 @@
 两类入口：
 
 1. Progress 35–59，Trust/Morale/Sanity均≥35，但没达到半座桥；
-2. **Progress 60–71，未命中更具体成功结局**。
+2. **Progress 60–74，未命中更具体成功结局**。
 
 第二条是v14.5.1恢复的成功项目兜底，防止resolver返回null。
 
