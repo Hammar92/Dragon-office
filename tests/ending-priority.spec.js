@@ -25,7 +25,7 @@ const rawCases=[
  ['joint dragon from flags',raw({flags:{v14_5_2:true,v14_8_2:true},v14FinalRoute:'power'}),'v14_joint_dragon'],
  ['joint wrong route ignored',raw({progress:50,flags:{v14_0_0:true,v14_6_0:true},v14FinalRoute:'power'}),'mid_halfbridge'],
  ['raw matching echo',raw({v14Candidate:'v14_4_1',v14FinalRoute:'appease'}),'v14_4_1'],['raw low-progress echo blocked',raw({progress:50,v14Candidate:'v14_4_1',v14FinalRoute:'appease'}),'mid_halfbridge'],['raw low-progress joint blocked',raw({progress:50,flags:{v14_1_0:true,v14_2_0:true},v14FinalRoute:'govern'}),'mid_halfbridge'],['raw mismatched echo',raw({progress:50,v14Candidate:'v14_4_1',v14FinalRoute:'govern'}),'mid_halfbridge'],
- ['raw xiaoyuan',raw({npc:{xiaoyuan:86},flags:{main_18_1:true}}),'nc_xiaoyuan'],['raw love incomplete',raw({progress:50,flags:{love:true}}),'nc_love'],
+ ['raw xiaoyuan',raw({npc:{xiaoyuan:86},flags:{main_18_1:true}}),'nc_xiaoyuan'],['raw love incomplete',raw({progress:45,flags:{love:true}}),'nc_love'],
  ['raw halfbridge',raw({progress:50}),'mid_halfbridge'],['raw survive',raw({progress:50,trust:40,morale:40,sanity:40}),'ge_survive'],
  ['raw trust failure',raw({progress:50,trust:20,morale:40,sanity:40}),'be_trust'],['raw 60-71 fallback survives',raw({progress:65,career:35,flags:{main_18_2:true}}),'ge_survive'],['raw progress failure',raw({progress:20}),'be_progress']
 ];
