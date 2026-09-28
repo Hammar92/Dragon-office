@@ -36,7 +36,7 @@ add('nc_caolan',base({flags:{main_18_1:true},npc:{caolan:50}}));
 add('nc_ruidong',base({flags:{main_18_1:true},npc:{ruidong:36}}));
 add('nc_heina',base({dragon:7,flags:{main_18_3:true},npc:{heina:35}}));
 add('nc_weilai',base({progress:50,npc:{weilai:50}}));
-add('nc_love',base({progress:50,flags:{love:true}}));
+add('nc_love',base({progress:45,flags:{love:true}}));
 add('be_island',base({progress:50,npc:{ceo:25,cso:25,xiaoyuan:25,caolan:25,ruidong:25,heina:25,weilai:25,kzong:25,xiaoen:25,zihan:25,mingye:25}}));
 add('mid_halfbridge',base({progress:50,trust:50,morale:50,sanity:50}));
 add('ge_survive',base({progress:50,trust:40,morale:40,sanity:40}));
