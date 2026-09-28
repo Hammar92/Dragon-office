@@ -1,5 +1,23 @@
 # Dragon-office 版本迭代记录
 
+## v14.5.1 — RC结局接线、成就迁移与可达性平衡修复
+
+- 将64公开结局统一接入 canonical resolver，并以内嵌方式保持 `index.html` 单文件直接运行；历史多层 `finalizeEvaluation()` wrapper 不再决定最终优先级。
+- 建立结局优先级 contract、57个final witness、7个terminal witness和64/64 catalogue gate；当前 priority contract 41/41 PASS。
+- 恢复v11的7个组织型公开结局，并固定 True/职业/组织/Joint/Event/NPC/Generic 的单一优先顺序。
+- 修复 v14 Joint/Event 在项目未完成时也可误触发的问题：必须 Progress≥60 且 Heart/Trust/Morale仍存活。
+- 修复 Progress 60–71、未命中特化结局时可能返回空结局的问题；按历史真实规则恢复 `ge_survive` 兜底。
+- 修复v12分支终章没有 `main_18_1/3` 导致 `ge_slayer / ge_next / ge_firstline / NPC特化` 被错误阻断的问题；终章意图现统一读取 `v14FinalRoute` 或旧主线flag。
+- 真实18章治理→分支终章Power路径已验证可进入 `ge_slayer`；同一路径实测可形成3名≥60支持者。
+- 修复108成就目录重排后旧硬编码 `aXX` 自动解锁仍在运行的问题；当前108/108均有真实章节/随机事件来源，0 orphan，108条黑色幽默评述均唯一。
+- 旧存档中退出当前目录的结局ID归档至 `dragon_legacy_endings`，不再导致“已解锁数量 > 64”；旧成就迁移与轮回点保留继续通过回归。
+- 34/34普通随机事件均通过生产 `maybeEvent()` 入口验证可抽取。
+- 修复第一个PI连锁与“按下葫芦浮起瓢”关系损耗互相冲突造成几乎不可达的问题；第9章治理选择真实结算后即可进入“两个Leading，只有一个封面”。
+- 新增 `tests/balance-sim.cjs`：用固定seed驱动真实章节、随机事件、会议QTE、电话/私人关系、休息、隐藏爱情与终局判定，检测路线死亡垄断、空结局和隐藏结局不可达。
+- 当前不因为压力代理的高Heart死亡率直接削弱Heart成本；代码中的既有校准表明“长期迎合但不维护私人生活”高死亡属于设计目标，后续调整必须同时验证私人生活救援路径。
+
+---
+
 ## v14.5 — 状态化选项、隐藏婚恋线闭环与二次Bug审计
 
 - 修复低理智选项长期被“我先说结论 / 这件事已经反复三次 / 可以但请现在定下来”三套模板污染的问题；现在表达方式由理智、心力和情绪控制共同影响。
