@@ -33,9 +33,9 @@
 
 ## 3. 当前开放问题
 
-### RC-04 · QTE真实计时器竞争 — P2 / OPEN
+### RC-04 · QTE计时器竞争 — LOGIC CLOSED / MANUAL UI SMOKE REMAINS
 
-VM timer 是stub。浏览器仍需覆盖 timeout临界点击、双击、旧按钮、callback乱序、手机端快速点击、旧timer污染新scene。
+v14.6 已为会议Battle与最终Duel加入 session token + round token + awaitingResult 三重守卫。已用可控timer顺序验证：同轮点击与已排队timeout、旧round callback、旧session callback均不会重复结算或污染下一轮。剩余只需要真实浏览器/手机端做手感与按钮响应人工 smoke，不再属于已知逻辑竞态。
 
 ### RC-05 · 多层 monkey patch — P2 / ACCEPTED RC TECH DEBT
 
@@ -120,11 +120,10 @@ relationshipEpilogue()
 
 ## 8. 剩余RC顺序
 
-1. 浏览器层QTE timeout/double-click/stale timer。
-2. 新档、损坏存档、重复迁移、连续NG+。
-3. 64结局从规则witness升级为逐ID攻略型完整路径。
-4. 多seed/多难度运行 `tests/balance-sim.cjs`，确认v14.6阈值在不同随机序列下不产生路线垄断。
-5. 全部通过后标记正式 RC PASS。
+1. 新档、损坏存档、重复迁移、连续NG+。
+2. 64结局从规则witness升级为逐ID攻略型完整路径。
+3. 真实浏览器/手机端对QTE按钮与计时手感做最终人工 smoke（逻辑竞态已关闭）。
+4. 全部通过后标记正式 RC PASS。
 
 ## RC-06 数值冻结进展
 
