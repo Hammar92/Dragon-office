@@ -1,6 +1,6 @@
 # Dragon Office — RC Balance Audit
 
-基线：Demo v14.5.1。  
+基线：Demo v14.6。  
 目的：区分**逻辑Bug、理论可达但现实不可达、设计性高风险路线、纯长尾结局**，避免只凭一次游玩调整阈值。
 
 ## 1. 可重复模拟工具
@@ -56,14 +56,14 @@ SIM_N=2000 SIM_SEED=20260928 node tests/balance-sim.cjs
 
 才允许 v14 Joint/Event 成为最终结局。
 
-### B2. Progress 60–71 可能没有任何结局
+### B2. Progress 60–74 可能没有任何结局
 
-组织结局从 Progress≥72 才开始，而早期canonical把 `ge_survive` 限成 Progress<60，造成60–71的一批合法状态返回 `null`。
+组织结局从 Progress≥75 才开始，而早期canonical把 `ge_survive` 限成 Progress<60，造成60–71的一批合法状态返回 `null`。
 
 回溯v11真实规则后恢复：
 
-- Progress≥72：组织结局层
-- Progress 60–71：若没有更具体终局，回落 `ge_survive`
+- Progress≥75：组织结局层
+- Progress 60–74：若没有更具体终局，回落 `ge_survive`
 - Progress 35–59：按半座桥/幸存者/信任失败处理
 
 修复后压力代理未再出现 resolver `null`。
@@ -173,7 +173,7 @@ v12分支终章使用：
 
 - 前期治理积累真实成果
 - 后期转Power
-- Dragon≥10
+- Dragon≥8
 - Power/Merit满足
 - 终章主动接管
 
@@ -221,17 +221,26 @@ v12分支终章使用：
 - 完整路径至少有一条可构造攻略；
 - 不被永久shadow。
 
-## 6. 当前不建议调整的数值
+## 6. v14.6 最小平衡修订
 
-暂不改：
+本轮只改5个与频率集中直接相关的门槛，不改事件结构：
 
-- `costHeart heavy=5`
-- ge_slayer 3名支持者
-- ge_slayer 支持阈值60
-- v14 Event项目成功门槛60
-- Organization门槛72
+- Organization 强项目门槛：Progress≥72 → **Progress≥75**。目的：减少 `ge_court` 对60段成功路线的过早覆盖，并把 v14 Event/Joint 的安全窗口扩大为60–74。
+- `ge_unsung`：Reputation<35 → **Reputation<25**。治理样本中原<35的大量命中实际位于25–34，更像“有一定可见度”而非真正无名。
+- `true_dragon`：Dragon≥10 → **Dragon≥8**。定向 Dragon profile 在正式模拟中约48%命中，仍保持隐藏但不再过度苛刻。
+- `nc_love`：Progress 35–59 → **Progress 35–49**。避免“项目已经接近完成”时爱情主结局覆盖半桥/幸存者；项目成功后仍只追加私人尾声。
+- `ge_slayer`：≥3名60支持者 → **≥2名60支持者**。固定seed N=500 A/B中，Slayer profile从5/500（1%）提升到75/500（15%）；random / pure power / dragon profile均保持0次误触发。
 
-理由：当前发现的主要问题都是**路由/兼容/可达性Bug**，不是这些阈值本身造成。
+正式 `tests/balance-sim.cjs`（seed 20260928, N=500）当前信号：
+
+- random：分散于半桥、Heart BE、幸存者、firstline、court等，没有单一结局超过50%；
+- govern：以 `ge_next` 为主，符合定向职业治理策略；`ge_unsung`降至低频；
+- appease：不维护私人生活时仍以Heart死亡为主；
+- love_appease：Heart死亡仅2/500，说明私人生活/休息救援链有效；主要代价转为Progress不足；
+- dragon：`true_dragon` 239/500（47.8%）；
+- slayer：门槛A/B后约15%，保持隐藏但不再是近乎抽奖。
+
+这些修改均已写入 priority boundary contract，后续改回旧阈值会直接触发测试失败。
 
 ## 7. 下一轮平衡任务
 
@@ -259,4 +268,4 @@ v12分支终章使用：
 
 `SLAYER REAL PATH: VERIFIED`
 
-`BALANCE FREEZE: NOT YET`
+`BALANCE FREEZE: v14.6 THRESHOLDS LOCKED · MULTI-SEED CONFIRMATION PENDING`
