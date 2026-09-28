@@ -29,6 +29,15 @@
   function supportCount(s,min){const n=s&&s.npc||{},ally=s&&s.allyAt||{};return Object.keys(n).filter(function(k){return num(n[k],0)>=Math.max(min,num(ally[k],0));}).length;}
   function avgRel(s,keys){return keys.reduce(function(a,k){return a+rel(s,k);},0)/keys.length;}
   function finalMainFlag(s,n){return yes(s&&s.flags&&s.flags['main_18_'+n]);}
+  function finalRouteIs(s,route){
+    const f=s&&s.flags||{};
+    const explicit=(s&&s.v14FinalRoute)||f.v14FinalRoute||null;
+    if(explicit)return explicit===route;
+    if(route==='govern')return finalMainFlag(s,1);
+    if(route==='appease')return finalMainFlag(s,2);
+    if(route==='power')return finalMainFlag(s,3);
+    return false;
+  }
   function eventRouteMatches(candidate,finalRoute){const m=/^v14_([0-8])_([0-2])$/.exec(candidate||'');return !!(m&&finalRoute===V14_ROUTE[Number(m[2])]);}
   function deriveJoints(flags,finalRoute,override){
     const out={};
@@ -56,12 +65,12 @@
     return {
       duelWinEnding:yes(raw.duelWinEnding),duelLoseEnding:yes(raw.duelLoseEnding),
       trueAfterdragon:f.metaRoute==='echo'&&yes(f.meta_echo_refuse)&&progress>=72&&morale>=58&&dragon<20,
-      trueDragon:projectFull&&dragon>=10&&power>=65&&merit>=45&&(yes(f.dragon_take)||finalMainFlag(raw,3)),
-      slayer:projectFull&&finalMainFlag(raw,3)&&dragon<10&&power>=65&&mid60>=3,
+      trueDragon:projectFull&&dragon>=10&&power>=65&&merit>=45&&(yes(f.dragon_take)||finalRouteIs(raw,'power')),
+      slayer:projectFull&&finalRouteIs(raw,'power')&&dragon<10&&power>=65&&mid60>=3,
       promotion:projectFull&&merit>=70&&reputation>=45&&bossTrust>=45&&promoSupport>=(hard?4:3)&&promoOppose<=(hard?2:3)&&(yes(f.duelWin)||trust>=30),
       unsung:projectFull&&merit>=75&&reputation<35,
-      next:projectFull&&finalMainFlag(raw,1)&&career>=75&&dragon<10,
-      firstline:projectFull&&finalMainFlag(raw,1)&&career>=55&&dragon<10,
+      next:projectFull&&finalRouteIs(raw,'govern')&&career>=75&&dragon<10,
+      firstline:projectFull&&finalRouteIs(raw,'govern')&&career>=55&&dragon<10,
       /* v11 organization endings remain public gallery endings. They sit below explicit
          career trajectories, but above event echoes: they summarize the whole operating model. */
       orgSuccession:projectStrong&&power>=68&&bossBand>=58&&trust>=50,
@@ -74,10 +83,10 @@
       joints:joints,
       v14Candidate:candidate,
       v14RouteMatched:eventRouteMatches(candidate,finalRoute),
-      ncXiaoyuan:projectFull&&rel(raw,'xiaoyuan')>=85&&finalMainFlag(raw,1),
-      ncCaolan:projectFull&&rel(raw,'caolan')>=65&&finalMainFlag(raw,1),
-      ncRuidong:projectFull&&rel(raw,'ruidong')>=70&&finalMainFlag(raw,1),
-      ncHeina:projectFull&&rel(raw,'heina')>=70&&dragon>=6&&finalMainFlag(raw,3),
+      ncXiaoyuan:projectFull&&rel(raw,'xiaoyuan')>=85&&finalRouteIs(raw,'govern'),
+      ncCaolan:projectFull&&rel(raw,'caolan')>=65&&finalRouteIs(raw,'govern'),
+      ncRuidong:projectFull&&rel(raw,'ruidong')>=70&&finalRouteIs(raw,'govern'),
+      ncHeina:projectFull&&rel(raw,'heina')>=70&&dragon>=6&&finalRouteIs(raw,'power'),
       ncWeilai:progress>=35&&!projectFull&&rel(raw,'weilai')>=60,
       ncLove:progress>=35&&!projectFull&&yes(f.love)&&heart>=50&&dragon<=6,
       projectFullySuccessful:projectFull,
@@ -123,5 +132,5 @@
     return s.legacy||null;
   }
 
-  return {PRIORITY:PRIORITY,V14_EVENT:V14_EVENT,JOINT:JOINT,JOINT_RULES:JOINT_RULES,V14_ROUTE:V14_ROUTE,deriveJoints:deriveJoints,buildFinalEndingState:buildFinalEndingState,resolveFinalEnding:resolveFinalEnding};
+  return {PRIORITY:PRIORITY,V14_EVENT:V14_EVENT,JOINT:JOINT,JOINT_RULES:JOINT_RULES,V14_ROUTE:V14_ROUTE,deriveJoints:deriveJoints,finalRouteIs:finalRouteIs,buildFinalEndingState:buildFinalEndingState,resolveFinalEnding:resolveFinalEnding};
 });
