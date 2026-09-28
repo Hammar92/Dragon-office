@@ -54,6 +54,7 @@ function run(s){return vm.runInContext(s,context,{timeout:20000})}
 
 const N=Math.max(10,parseInt(process.env.SIM_N||'1000',10)||1000);
 const SEED=(parseInt(process.env.SIM_SEED||'20260928',10)||20260928)>>>0;
+const DIFFICULTY=['story','normal','hard'].includes(process.env.SIM_DIFFICULTY)?process.env.SIM_DIFFICULTY:'normal';
 
 const result=run(`
 (function(){
@@ -146,6 +147,7 @@ const result=run(`
     localStorage.setItem('dragon_runs','0');
     window.__simEnding=null;window._next=null;window._evObj=null;window._romEv=null;window._homeEv=null;
     window._lovePending=false;projectBattleState=null;duelState=null;
+    selectedDifficulty='${DIFFICULTY}';
     startGame();
     showEnding=function(k){window.__simEnding=k;return k};
     var rests=0,steps=0;
@@ -175,9 +177,27 @@ const result=run(`
     Object.keys(sum).forEach(function(k){sum[k]/=${N}});
     out[profile]={N:${N},counts:counts,avgRests:rests/${N},loveRate:love/${N},pi1Rate:pi1/${N},pi2Rate:pi2/${N},avg:sum};
   });
-  return {seed:${SEED},N:${N},profiles:out};
+  return {seed:${SEED},N:${N},difficulty:'${DIFFICULTY}',profiles:out};
 })()
 `);
 
 console.log(JSON.stringify(result,null,2));
-if(Object.values(result.profiles).some(x=>x.counts.NO_END))process.exitCode=2;
+
+const balanceBlockers=[];
+for(const [name,p] of Object.entries(result.profiles)){
+  if(p.counts.NO_END)balanceBlockers.push(`${name}: NO_END=${p.counts.NO_END}`);
+}
+if(DIFFICULTY==='normal'){
+  const rate=(profile,id)=>(result.profiles[profile].counts[id]||0)/N;
+  const maxRandom=Math.max(...Object.values(result.profiles.random.counts))/N;
+  if(rate('slayer','ge_slayer')<0.08)balanceBlockers.push(`slayer route too rare: ${rate('slayer','ge_slayer').toFixed(3)}`);
+  if(rate('dragon','true_dragon')<0.30)balanceBlockers.push(`dragon route too rare: ${rate('dragon','true_dragon').toFixed(3)}`);
+  if(rate('love_appease','be_heart')>0.05)balanceBlockers.push(`love_appease heart death too high: ${rate('love_appease','be_heart').toFixed(3)}`);
+  if(maxRandom>=0.45)balanceBlockers.push(`random route monopoly: ${maxRandom.toFixed(3)}`);
+}
+if(balanceBlockers.length){
+  console.error('BALANCE GATE FAIL\n'+balanceBlockers.map(x=>' - '+x).join('\n'));
+  process.exitCode=2;
+}else{
+  console.log(`PASS balance gate · ${DIFFICULTY} · seed ${SEED} · N=${N}`);
+}
