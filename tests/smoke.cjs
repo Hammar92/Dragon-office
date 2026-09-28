@@ -144,8 +144,49 @@ assert.ok(el('achievement-panel').innerHTML.includes(run('runChapters[17].choice
 
 run('projectBattleState=null; chapterIdx=3; flags.battle_v11_4=false; maybeProjectBattle("v11_4",function(){})');
 const before=el('scene-area').innerHTML;
+
+// RC v14.6 timer-race guards: queued timeout must never score the next round/session.
+const battleToken=run('projectBattleState.token'), battleRound=run('projectBattleState.round');
+run(`projectBattlePick(2,${battleRound},${battleToken})`);
+const battleAfterClick=run('projectBattleState.round');
+run(`projectBattlePick(-1,${battleRound},${battleToken})`);
+assert.strictEqual(run('projectBattleState.round'),battleAfterClick,'same-round queued battle timeout ignored after click');
+run('continueResult()');
+const battleNextRound=run('projectBattleState.round');
+run(`projectBattlePick(-1,${battleRound},${battleToken})`);
+assert.strictEqual(run('projectBattleState.round'),battleNextRound,'stale battle timeout cannot score next round');
+run('projectBattleState=null; startProjectBattle("v11_4","vp",function(){})');
+const battleNewToken=run('projectBattleState.token');
+assert.notStrictEqual(battleNewToken,battleToken,'new battle session gets a new token');
+const battleNewRound=run('projectBattleState.round');
+run(`projectBattlePick(-1,${battleRound},${battleToken})`);
+assert.strictEqual(run('projectBattleState.round'),battleNewRound,'old battle session timeout cannot hit new battle');
+run('projectBattleState=null');
+
+run('duelState=null; startDuel()');
+const duelToken=run('duelState.token'), duelRound=run('duelState.round');
+const duelCorrect=run('DUEL_ROUNDS[duelState.round].correct');
+run(`duelPick(${duelCorrect},${duelRound},${duelToken})`);
+const duelScoreAfterClick=run('duelState.score'), duelAfterClick=run('duelState.round');
+run(`duelPick(-1,${duelRound},${duelToken})`);
+assert.strictEqual(run('duelState.score'),duelScoreAfterClick,'same-round queued duel timeout ignored after click');
+assert.strictEqual(run('duelState.round'),duelAfterClick,'same-round duel timeout cannot advance twice');
+run('continueResult()');
+const duelNextRound=run('duelState.round');
+run(`duelPick(-1,${duelRound},${duelToken})`);
+assert.strictEqual(run('duelState.round'),duelNextRound,'stale duel timeout cannot score next round');
+run('duelState=null; startDuel()');
+const duelNewToken=run('duelState.token');
+assert.notStrictEqual(duelNewToken,duelToken,'new duel session gets a new token');
+const duelNewRound=run('duelState.round');
+run(`duelPick(-1,${duelRound},${duelToken})`);
+assert.strictEqual(run('duelState.round'),duelNewRound,'old duel session timeout cannot hit new duel');
+run('duelState=null');
+
+run('projectBattleState=null; chapterIdx=3; flags.battle_v11_4=false; maybeProjectBattle("v11_4",function(){})');
+const before2=el('scene-area').innerHTML;
 run('showRest()');
-assert.strictEqual(el('scene-area').innerHTML,before,'rest cannot replace active QTE');
+assert.strictEqual(el('scene-area').innerHTML,before2,'rest cannot replace active QTE');
 run('projectBattlePick(2,0); projectBattlePick(2,0)');
 assert.strictEqual(run('projectBattleState.round'),1,'duplicate round submission ignored');
 run('continueResult(); projectBattlePick(2,0)');
