@@ -6,7 +6,7 @@ const {buildFinalEndingState,resolveFinalEnding}=require('../ending-resolver.js'
 
 function base(overrides){
   const b={progress:65,trust:50,morale:50,sanity:60,heart:60,power:40,dragon:2,merit:20,reputation:30,bossTrust:30,career:35,difficultyId:'normal',promotionSupport:0,promotionOppose:0,
-    npc:{ceo:40,cso:40,xiaoyuan:45,caolan:45,ruidong:45,heina:45,weilai:45,kzong:40,xiaoen:40,zihan:40,mingye:40},allyAt:{},flags:{main_18_2:true}};
+    npc:{ceo:22,cso:25,xiaoyuan:38,caolan:35,ruidong:28,heina:28,weilai:31,kzong:38,xiaoen:36,zihan:34,mingye:34},allyAt:{},flags:{main_18_2:true}};
   const o=Object.assign({},b,overrides||{});o.flags=Object.assign({},b.flags,(overrides&&overrides.flags)||{});o.npc=Object.assign({},b.npc,(overrides&&overrides.npc)||{});return o;
 }
 const W={};
@@ -31,11 +31,11 @@ add('ge_project',base({progress:75,power:40,trust:45,morale:55}));
  ['v14_joint_story',['v14_4_1','v14_7_1'],'appease'],['v14_joint_dragon',['v14_5_2','v14_8_2'],'power']
 ].forEach(([id,fs,route])=>{const flags={main_18_2:true};fs.forEach(k=>flags[k]=true);add(id,base({flags,v14FinalRoute:route}));});
 for(let e=0;e<9;e++)for(let c=0;c<3;c++){const id=`v14_${e}_${c}`;add(id,base({v14Candidate:id,v14FinalRoute:['govern','appease','power'][c]}));}
-add('nc_xiaoyuan',base({flags:{main_18_1:true},npc:{xiaoyuan:86}}));
-add('nc_caolan',base({flags:{main_18_1:true},npc:{caolan:66}}));
-add('nc_ruidong',base({flags:{main_18_1:true},npc:{ruidong:71}}));
-add('nc_heina',base({dragon:7,flags:{main_18_3:true},npc:{heina:71}}));
-add('nc_weilai',base({progress:50,npc:{weilai:61}}));
+add('nc_xiaoyuan',base({flags:{main_18_1:true},npc:{xiaoyuan:43}}));
+add('nc_caolan',base({flags:{main_18_1:true},npc:{caolan:50}}));
+add('nc_ruidong',base({flags:{main_18_1:true},npc:{ruidong:36}}));
+add('nc_heina',base({dragon:7,flags:{main_18_3:true},npc:{heina:35}}));
+add('nc_weilai',base({progress:50,npc:{weilai:50}}));
 add('nc_love',base({progress:50,flags:{love:true}}));
 add('be_island',base({progress:50,npc:{ceo:25,cso:25,xiaoyuan:25,caolan:25,ruidong:25,heina:25,weilai:25,kzong:25,xiaoen:25,zihan:25,mingye:25}}));
 add('mid_halfbridge',base({progress:50,trust:50,morale:50,sanity:50}));
