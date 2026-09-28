@@ -4015,7 +4015,7 @@ function getUnlocked(){
       legacy.forEach(function(k){if(archived.indexOf(k)<0)archived.push(k);});
       localStorage.setItem('dragon_legacy_endings',JSON.stringify(archived));
     }
-    if(valid.length!==list.length)localStorage.setItem('dragon_endings',JSON.stringify(valid));
+    if(!Array.isArray(raw)||valid.length!==list.length)localStorage.setItem('dragon_endings',JSON.stringify(valid));
     return valid;
   }catch(e){ return []; }
 }
