@@ -70,6 +70,13 @@ for(const k of ['anyu','qiaoqiao','wenjing','xiaoke','linpi','tongxin']){
   assert.strictEqual(run(`Object.prototype.hasOwnProperty.call(NPC_BIOS,'${k}')`),false,`deleted NPC bio ${k} absent`);
 }
 assert.strictEqual(run('PI_CHAIN_EVENTS.length'),2,'PI chain events installed');
+run("Math.random=()=>0.01; const __ids=V11_EVENTS.map(e=>e.id); window.__eventReach=[]; __ids.forEach(target=>{usedEvents=__ids.filter(id=>id!==target);flags.metaRoute=null;flags.metaSeen=true;flags.piChainEvent1=true;flags.piChainEvent2=true;chapterIdx=6;window._evObj=null;maybeEvent('v11_7',()=>{});if(window._evObj&&window._evObj.ev.id===target)window.__eventReach.push(target);window._evObj=null;});");
+assert.strictEqual(run('window.__eventReach.length'),34,'all 34 random events reachable through maybeEvent');
+run("usedEvents=[];flags={piChainEvent1:false,piChainEvent2:false};chapterIdx=8;S.npc.houpi=40;S.npc.niupi=40;S.npc.zhangpi=40;window._evObj=null;maybeEvent('v11_9',()=>{})");
+assert.strictEqual(run('window._evObj.ev.id'),'pi_chain_lead','first PI chain reachable');
+run("flags.piChainEvent1=true;flags.piChainEvent2=false;chapterIdx=11;window._evObj=null;maybeEvent('v11_12',()=>{})");
+assert.strictEqual(run('window._evObj.ev.id'),'pi_chain_site','second PI chain reachable');
+run("window._evObj=null; Math.random=()=>0.1");
 run('S.prestige={boss:0,team:0,chain:0,last:null,history:[]}; const _p=prestigeState(); addPrestige(3,4,"test")');
 assert.strictEqual(run('S.prestige.boss'),3,'boss prestige');
 assert.strictEqual(run('S.prestige.team'),4,'team prestige');
@@ -151,6 +158,10 @@ vm.createContext(migrated);vm.runInContext(code,migrated,{timeout:5000});
 assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_achievements')),['a55','a70'],'old unlocked outcomes mapped');
 assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_achievements')),['PVP本人请发言','机制抢麦'],'retired outcomes archived');
 assert.strictEqual(legacyStorage.get('dragon_ng_points'),'7','earned points preserved');
+legacyStorage.set('dragon_endings','["be_heart","retired_old_ending","true_dragon","be_heart"]');
+legacyStorage.delete('dragon_legacy_endings');
+assert.deepStrictEqual(vm.runInContext('getUnlocked()',migrated),['be_heart','true_dragon'],'stale ending ids removed from active gallery');
+assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_endings')),['retired_old_ending'],'stale ending ids archived');
 console.log('Story, random achievements, migration, and QTE guards OK');
 
 run('showEnding=function(k){window.testEnding=k}; projectBattleState=null');
@@ -181,6 +192,10 @@ run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'govern'}; S.progress=75; S.pow
 assert.strictEqual(run('window.testEnding'),'ge_system','whole-run organization ending outranks one-event echo');
 run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'power'}; window.testEnding=''; finalizeEvaluation()");
 assert.notStrictEqual(run('window.testEnding'),'v14_0_0','mismatched final decision falls through');
+run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'govern'}; S.progress=50; S.heart=70; S.trust=50; S.morale=50; S.sanity=50; S.power=40; S.career=35; window.testEnding=''; finalizeEvaluation()");
+assert.notStrictEqual(run('window.testEnding'),'v14_0_0','v14 event ending blocked when project is incomplete');
+run("flags={v14FinalRoute:'govern',v14_0_0:true,v14_6_0:true}; S.progress=50; window.testEnding=''; finalizeEvaluation()");
+assert.notStrictEqual(run('window.testEnding'),'v14_joint_capacity','v14 joint ending blocked when project is incomplete');
 console.log('64 endings and dragon route priority OK');
 
 assert.strictEqual(run('typeof v145Audit'), 'function', 'v14.5 audit installed');
