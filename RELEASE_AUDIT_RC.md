@@ -1,6 +1,6 @@
 # Dragon Office · Release Candidate System Bug Audit
 
-基线：`rc-ending-integration`，2026-09-27。目标是把当前版本按候选发布版验收，而不是继续以“目录数量正确”代替可发布性。
+基线：`main` / Demo v14.6，2026-09-28。目标是把当前版本按候选发布版验收，而不是继续以“目录数量正确”代替可发布性。
 
 ## 1. 审计范围
 
@@ -41,7 +41,7 @@ VM timer 是stub。浏览器仍需覆盖 timeout临界点击、双击、旧按�
 
 RC不做全面模块化，以免扩大回归面；但从本次起冻结新增无审计wrapper。v15再拆 state/story/events/relationship/qte/achievements/endings/ui/save。
 
-### RC-06 · 仍残留开发期PLACEHOLDER/待数值测试机制 — P1 / OPEN
+### RC-06 · 开发期PLACEHOLDER/待数值测试机制 — CLOSED
 
 深审发现角色构筑与组织系统仍有开发期占位：
 
@@ -55,7 +55,7 @@ RC不做全面模块化，以免扩大回归面；但从本次起冻结新增无
 
 这会直接告诉玩家系统未定稿，也会影响能力门槛、成长经济、组织凝聚力和分支频率。
 
-已新增 `tests/release-placeholders.spec.js`。该门禁**现在应当保持红灯**，直到RC常量冻结并清理上述开发文案；不能通过删除测试来获得假PASS。
+已新增 `tests/release-placeholders.spec.js`。该门禁现已转为永久发布门禁并保持绿色：RC常量已冻结，开发期占位文案已清理。
 
 处理原则：先冻结常量，再Monte Carlo；严重偏斜时只调常量，不改事件结构。
 
@@ -120,13 +120,11 @@ relationshipEpilogue()
 
 ## 8. 剩余RC顺序
 
-1. 冻结并清理 RC-06 placeholder 数值/文案，使 `release-placeholders.spec.js` 变绿。
-2. 浏览器层QTE timeout/double-click/stale timer。
-3. 新档、损坏存档、重复迁移、连续NG+。
-4. 18章、34随机事件、2 PI链全Choice replay。
-5. Monte Carlo：64结局频率、Heart崩溃率、隐藏路线、动态选项、能力门槛锁死率。
-6. 更新 `FLOW_TREE.md` 与最终实现一致。
-7. 全部通过后再合并 PR #4。
+1. 浏览器层QTE timeout/double-click/stale timer。
+2. 新档、损坏存档、重复迁移、连续NG+。
+3. 64结局从规则witness升级为逐ID攻略型完整路径。
+4. 多seed/多难度运行 `tests/balance-sim.cjs`，确认v14.6阈值在不同随机序列下不产生路线垄断。
+5. 全部通过后标记正式 RC PASS。
 
 ## RC-06 数值冻结进展
 
@@ -154,4 +152,4 @@ relationshipEpilogue()
 
 但仍为 **RC NOT PASS**。
 
-当前P1发布阻断是 RC-06；发布门禁已经显式编码为红灯测试。其次是浏览器真实QTE计时与最终概率平衡。
+RC-06 已关闭。当前剩余发布阻断是：浏览器真实QTE计时器竞争、64结局攻略型完整路径逐项固化，以及多seed/多难度频率复核。
