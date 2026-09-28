@@ -15,9 +15,9 @@ function raw(o){const b={progress:65,trust:50,morale:55,sanity:60,heart:60,power
 const rawCases=[
  ['raw after-dragon',raw({progress:72,morale:58,dragon:10,flags:{metaRoute:'echo',meta_echo_refuse:true}}),'true_afterdragon'],
  ['raw dragon beats promotion',raw({power:70,dragon:12,merit:80,reputation:60,bossTrust:60,promotionSupport:4,flags:{main_18_3:true,dragon_take:true}}),'true_dragon'],
- ['raw slayer',raw({power:70,dragon:5,flags:{main_18_3:true},npc:{ceo:65,cso:60,xiaoyuan:65,caolan:62}}),'ge_slayer'],
+ ['raw slayer',raw({power:70,dragon:5,flags:{main_18_3:true},npc:{ceo:65,cso:60,xiaoyuan:65,caolan:62}}),'ge_slayer'], ['branch-final power route slayer',raw({power:70,dragon:5,v14FinalRoute:'power',flags:{main_18_2:true},npc:{ceo:65,cso:60,xiaoyuan:65,caolan:62}}),'ge_slayer'],
  ['raw promotion',raw({merit:75,reputation:55,bossTrust:55,promotionSupport:3}),'ge_promotion'],['raw unsung',raw({merit:80,reputation:20}),'ge_unsung'],
- ['raw next',raw({career:80,flags:{main_18_1:true}}),'ge_next'],['raw firstline',raw({career:60,flags:{main_18_1:true}}),'ge_firstline'],
+ ['raw next',raw({career:80,flags:{main_18_1:true}}),'ge_next'],['branch-final govern route next',raw({career:80,v14FinalRoute:'govern',flags:{main_18_2:true}}),'ge_next'],['raw firstline',raw({career:60,flags:{main_18_1:true}}),'ge_firstline'],
  ['joint capacity from flags',raw({flags:{v14_0_0:true,v14_6_0:true},v14FinalRoute:'govern'}),'v14_joint_capacity'],
  ['joint paper from flags',raw({flags:{v14_1_0:true,v14_2_0:true},v14FinalRoute:'govern'}),'v14_joint_paper'],
  ['joint site from flags',raw({flags:{v14_3_0:true,v14_6_0:true},v14FinalRoute:'govern'}),'v14_joint_site'],
