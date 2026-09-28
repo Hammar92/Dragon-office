@@ -3994,7 +3994,25 @@ function showEnding(key){
 }
 
 /* 图鉴 */
-function getUnlocked(){ try{ return JSON.parse(localStorage.getItem('dragon_endings')||'[]'); }catch(e){ return []; } }
+function getUnlocked(){
+  try{
+    const raw=JSON.parse(localStorage.getItem('dragon_endings')||'[]');
+    const list=Array.isArray(raw)?raw:[];
+    const valid=[],legacy=[];
+    list.forEach(function(k){
+      if(Object.prototype.hasOwnProperty.call(ENDINGS,k)){ if(valid.indexOf(k)<0)valid.push(k); }
+      else if(legacy.indexOf(k)<0)legacy.push(k);
+    });
+    if(legacy.length){
+      let archived=[];try{archived=JSON.parse(localStorage.getItem('dragon_legacy_endings')||'[]');}catch(e){}
+      archived=Array.isArray(archived)?archived:[];
+      legacy.forEach(function(k){if(archived.indexOf(k)<0)archived.push(k);});
+      localStorage.setItem('dragon_legacy_endings',JSON.stringify(archived));
+    }
+    if(valid.length!==list.length)localStorage.setItem('dragon_endings',JSON.stringify(valid));
+    return valid;
+  }catch(e){ return []; }
+}
 function saveEnding(k){ const u=getUnlocked(); if(u.indexOf(k)<0){ u.push(k); localStorage.setItem('dragon_endings', JSON.stringify(u)); } }
 function renderGallery(){
   const got = getUnlocked();
