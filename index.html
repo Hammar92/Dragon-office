@@ -7474,7 +7474,7 @@ renderLifeBuilder();
       duelWinEnding:yes(raw.duelWinEnding),duelLoseEnding:yes(raw.duelLoseEnding),
       trueAfterdragon:f.metaRoute==='echo'&&yes(f.meta_echo_refuse)&&progress>=72&&morale>=58&&dragon<20,
       trueDragon:projectFull&&dragon>=8&&power>=65&&merit>=45&&(yes(f.dragon_take)||finalRouteIs(raw,'power')),
-      slayer:projectFull&&finalRouteIs(raw,'power')&&dragon<10&&power>=65&&mid60>=3,
+      slayer:projectFull&&finalRouteIs(raw,'power')&&dragon<10&&power>=65&&mid60>=2,
       promotion:projectFull&&merit>=70&&reputation>=45&&bossTrust>=45&&promoSupport>=(hard?4:3)&&promoOppose<=(hard?2:3)&&(yes(f.duelWin)||trust>=30),
       unsung:projectFull&&merit>=75&&reputation<25,
       next:projectFull&&finalRouteIs(raw,'govern')&&career>=75&&dragon<10,
