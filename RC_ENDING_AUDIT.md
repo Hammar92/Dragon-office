@@ -13,9 +13,9 @@
 - [x] `tests/terminal-ending-witness.spec.js` 已为 **7 个 terminal-only ending** 建立真实入口 witness。
 - [x] `tests/all-ending-witness.spec.js` 增加 **57 + 7 = 64、无重复 primary witness** 的 catalogue gate。
 - [x] `index.html` 已在 RC 分支内嵌 canonical resolver + runtime bridge，最终 `finalizeEvaluation()` 单点委托。
-- [ ] witness 目前证明“规则层可达”，尚未完成浏览器逐步选择的 end-to-end path replay。
-- [ ] `FLOW_TREE.md` 尚未与最终 resolver 顺序重新核对。
-- [ ] RC PASS 尚未允许：需完成 108 成就 source/orphan 审计与最终 `main` 回归后再标记。
+- [~] 64个结局已完成规则层witness；True/Dragon/Slayer、组织、v14事件代表类已完成真实主循环replay，完整64条攻略型路径仍待逐一固化。
+- [x] `FLOW_TREE.md` 已与canonical resolver顺序同步，并补齐PI连锁真实阈值。
+- [ ] RC逻辑门禁已基本通过；最终RC PASS仍等待完整64条攻略型path replay与多seed平衡冻结。
 
 ## 64结局入口分类
 
@@ -109,7 +109,7 @@ P7 Legacy fallback
 - `index.html` 继续保持**单文件可运行**：`ending-resolver.js` 与 `ending-runtime-bridge.js` 的 canonical source 被内嵌到末尾、旧 wrapper 之后。
 - runtime bridge 通过直接词法标识符读取 `S / flags / NPCs`；已修复早期草案使用 `window.S` 导致浏览器拿不到状态的问题。
 - 内联 JavaScript syntax check：PASS。
-- ending priority contract：36/36 PASS。
+- ending priority contract：41/41 PASS。
 - final resolver witnesses：57/57 PASS。
 - terminal witnesses：7/7 PASS。
 - all-ending catalogue gate：64/64 PASS。
@@ -119,6 +119,25 @@ P7 Legacy fallback
 
 ### 当前剩余 Release Blocker
 
-1. 108 个成就必须逐个建立 source map，并确认没有 orphan / 重复覆盖 / 动态选项继承造成的永久不可达。
-2. 需要把最终 resolver 顺序同步回 `FLOW_TREE.md`。
-3. 合并回 `main` 后再跑一次 catalog / QTE / relationship / ending regression，才允许标记 RC PASS。
+1. 规则层64/64已通过，但仍需把64个结局逐个转换为“攻略型真实选择路径”，不能只停留在final-state witness。
+2. 使用 `tests/balance-sim.cjs` 做多seed/多难度频率冻结，确认没有长期shadow或路线垄断。
+3. 完成上述两项后，再标记正式 RC PASS。
+
+
+## v14.5.1 补充审计
+
+本轮继续发现并关闭4类canonical迁移/可达性问题：
+
+- **v14资格门槛丢失**：Joint/Event现恢复为Progress≥60且Heart/Trust/Morale>0才可进入。
+- **60–71空结局**：恢复历史v11的 `ge_survive` 成功项目兜底，压力模拟不再出现resolver null。
+- **分支终章route丢失**：`v14FinalRoute` 现作为终章真实选择方向，兼容 `v12_18_dragonpath / v12_18_network`，不再依赖只有基础第18章才有的 `main_18_x`。
+- **PI连锁A不可达**：阈值改为双方均≥32且合计≥70；真实第9章治理选择结算32/38后可直接进入。
+
+真实完整路径已验证：
+- `true_dragon` 可由前期治理→后期Power→终章接管稳定达成；
+- `ge_slayer` 可由治理积累3名≥60专业支持者→分支终章Power、Dragon<10达成，即使 `main_18_3=false`；
+- 34/34普通随机事件均可通过生产 `maybeEvent()` 抽取；
+- 2/2 PI连锁均有真实入口；
+- 旧结局ID会归档到 `dragon_legacy_endings`，不再污染64图鉴计数。
+
+平衡层见 `BALANCE_AUDIT_RC.md`。
