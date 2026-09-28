@@ -84,7 +84,7 @@
       v14Eligible:projectFull&&heart>0&&trust>0&&morale>0,
       island:maxRel(raw)<=30,
       halfbridge:progress>=35&&!projectFull&&alive3&&trust>=45&&morale>=45,
-      survive:progress>=35&&!projectFull&&alive3,
+      survive:progress>=35&&((projectFull&&!projectStrong)||(!projectFull&&alive3)),
       beTrust:progress>=35&&!projectFull&&!alive3,
       beProgress:progress<35,
       legacy:raw.legacy||null,
