@@ -14,6 +14,14 @@ const cases=[
 function raw(o){const b={progress:65,trust:50,morale:55,sanity:60,heart:60,power:45,dragon:2,merit:30,reputation:30,bossTrust:35,career:40,difficultyId:'normal',promotionSupport:1,promotionOppose:0,npc:{ceo:35,cso:35,xiaoyuan:50,caolan:45,ruidong:45,heina:40,weilai:40},allyAt:{},flags:{main_18_2:true},joints:{}};const x=Object.assign({},b,o||{});x.flags=Object.assign({},b.flags,(o&&o.flags)||{});x.npc=Object.assign({},b.npc,(o&&o.npc)||{});x.joints=Object.assign({},b.joints,(o&&o.joints)||{});return x;}
 const rawCases=[
  ['raw after-dragon',raw({progress:72,morale:58,dragon:10,flags:{metaRoute:'echo',meta_echo_refuse:true}}),'true_afterdragon'],
+ ['v14.6 dragon threshold 8',raw({power:70,dragon:8,merit:45,v14FinalRoute:'power'}),'true_dragon'],
+ ['v14.6 slayer two supporters',raw({power:70,dragon:5,v14FinalRoute:'power',npc:{ceo:65,cso:65,xiaoyuan:40,caolan:40,ruidong:40,heina:20,weilai:40}}),'ge_slayer'],
+ ['v14.6 unsung reputation 24',raw({merit:80,reputation:24}),'ge_unsung'],
+ ['v14.6 unsung reputation 25 blocked',raw({merit:80,reputation:25}),'ge_survive'],
+ ['v14.6 love progress 49',raw({progress:49,flags:{love:true}}),'nc_love'],
+ ['v14.6 love progress 50 blocked',raw({progress:50,flags:{love:true}}),'mid_halfbridge'],
+ ['v14.6 organization progress 75',raw({progress:75,power:52,trust:50,morale:55}),'ge_court'],
+ ['v14.6 organization progress 74 blocked',raw({progress:74,power:52,trust:50,morale:55}),'ge_survive'],
  ['raw dragon beats promotion',raw({power:70,dragon:12,merit:80,reputation:60,bossTrust:60,promotionSupport:4,flags:{main_18_3:true,dragon_take:true}}),'true_dragon'],
  ['raw slayer',raw({power:70,dragon:5,flags:{main_18_3:true},npc:{ceo:65,cso:60,xiaoyuan:65,caolan:62}}),'ge_slayer'], ['branch-final power route slayer',raw({power:70,dragon:5,v14FinalRoute:'power',flags:{main_18_2:true},npc:{ceo:65,cso:60,xiaoyuan:65,caolan:62}}),'ge_slayer'],
  ['raw promotion',raw({merit:75,reputation:55,bossTrust:55,promotionSupport:3}),'ge_promotion'],['raw unsung',raw({merit:80,reputation:20}),'ge_unsung'],
