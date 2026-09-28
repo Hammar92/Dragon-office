@@ -3,6 +3,7 @@
  * fabricating final states. Use:
  *   node tests/balance-sim.cjs
  *   SIM_N=2000 SIM_SEED=20260928 node tests/balance-sim.cjs
+ *   SIM_DIFFICULTY=hard SIM_N=1000 node tests/balance-sim.cjs
  *
  * This is a structural balance tool, not a model of human play. Profiles are intentionally
  * simple policies used to detect route collapse, unreachable outcomes and ending monopolies.
