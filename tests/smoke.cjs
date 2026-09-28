@@ -188,6 +188,8 @@ run("flags={dragon_take:true,v14Candidate:'v14_0_2',v14FinalRoute:'power'}; S.dr
 assert.strictEqual(run('window.testEnding'),'true_dragon','deliberate dragon path outranks event ending');
 run("flags={}; chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); S.progress=78; S.power=72; S.merit=55; S.dragon=10; S.heart=80; S.sanity=80; S.trust=60; S.morale=65; window.testEnding=''; pickChapter(2); continueResult()");
 assert.strictEqual(run('window.testEnding'),'true_dragon','real final choice can reach dragon ending');
+run("flags={v14FinalRoute:'power'}; S.progress=99; S.power=100; S.dragon=0; S.merit=100; S.trust=49; S.career=88; S.npc.kzong=76; S.npc.zihan=64; S.npc.xiaoen=62; window.testEnding=''; finalizeEvaluation()");
+assert.strictEqual(run('window.testEnding'),'ge_slayer','branch-final power route can reach slayer without main_18_3');
 run("flags={metaRoute:'echo',meta_echo_refuse:true,v14Candidate:'v14_0_0',v14FinalRoute:'govern'}; S.dragon=0; S.progress=80; S.morale=65; window.testEnding=''; finalizeEvaluation()");
 assert.strictEqual(run('window.testEnding'),'true_afterdragon','second-life refusal outranks event ending');
 run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'govern'}; S.progress=75; S.power=50; S.trust=45; S.morale=65; S.dragon=0; S.merit=20; S.career=35; window.testEnding=''; finalizeEvaluation()");
