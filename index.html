@@ -7489,6 +7489,7 @@ renderLifeBuilder();
       ncWeilai:progress>=35&&!projectFull&&rel(raw,'weilai')>=60,
       ncLove:progress>=35&&!projectFull&&yes(f.love)&&heart>=50&&dragon<=6,
       projectFullySuccessful:projectFull,
+      v14Eligible:projectFull&&heart>0&&trust>0&&morale>0,
       island:maxRel(raw)<=30,
       halfbridge:progress>=35&&!projectFull&&alive3&&trust>=45&&morale>=45,
       survive:progress>=35&&!projectFull&&alive3,
@@ -7518,9 +7519,11 @@ renderLifeBuilder();
       {id:'ge_project',when:yes(s.orgProject)}
     ]);
     if(hit)return hit;
-    hit=first(JOINT.map(function(id){return{id:id,when:yes(s.joints&&s.joints[id])};}));
-    if(hit)return hit;
-    if(V14_EVENT.test(s.v14Candidate||'')&&s.v14RouteMatched!==false)return s.v14Candidate;
+    if(yes(s.v14Eligible)){
+      hit=first(JOINT.map(function(id){return{id:id,when:yes(s.joints&&s.joints[id])};}));
+      if(hit)return hit;
+      if(V14_EVENT.test(s.v14Candidate||'')&&s.v14RouteMatched!==false)return s.v14Candidate;
+    }
     hit=first([{id:'nc_xiaoyuan',when:yes(s.ncXiaoyuan)},{id:'nc_caolan',when:yes(s.ncCaolan)},{id:'nc_ruidong',when:yes(s.ncRuidong)},{id:'nc_heina',when:yes(s.ncHeina)},{id:'nc_weilai',when:yes(s.ncWeilai)},{id:'nc_love',when:yes(s.ncLove)&&!yes(s.projectFullySuccessful)}]);
     if(hit)return hit;
     hit=first([{id:'be_island',when:yes(s.island)},{id:'mid_halfbridge',when:yes(s.halfbridge)},{id:'ge_survive',when:yes(s.survive)},{id:'be_trust',when:yes(s.beTrust)},{id:'be_progress',when:yes(s.beProgress)}]);
