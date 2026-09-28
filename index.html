@@ -6629,7 +6629,7 @@ renderLifeBuilder();
 
   const oldMaybeEventV142=maybeEvent;
   maybeEvent=function(chapterId,next){
-    if(S&&chapterIdx>=8&&!flags.piChainEvent1&&(S.npc.houpi||0)>=38&&(S.npc.niupi||0)>=38){
+    if(S&&chapterIdx>=8&&!flags.piChainEvent1&&Math.min(S.npc.houpi||0,S.npc.niupi||0)>=32&&((S.npc.houpi||0)+(S.npc.niupi||0))>=70){
       flags.piChainEvent1=true;
       window._evObj={ev:PI_CHAIN_EVENTS[0],next:next,cro:false};
       renderEventFromObj();
