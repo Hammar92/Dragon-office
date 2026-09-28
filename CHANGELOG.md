@@ -1,5 +1,19 @@
 # Dragon-office 版本迭代记录
 
+## v14.6 — RC频率平衡、隐藏结局可达性与攻略阈值对齐
+
+- 在 canonical ending resolver 上完成一轮固定seed全流程压力测试，并以真实状态机而非final-state伪造状态做频率检查。
+- Organization强项目门槛由 Progress≥72 调整为 **≥75**，给 v14 Joint/Event 扩大60–74的可收集窗口，同时减少 `ge_court` 过早覆盖。
+- `ge_unsung` 的声望门槛由 Reputation<35 收窄为 **<25**，避免治理路线中过多“其实已经有一定可见度”的状态被判成无名功臣。
+- `true_dragon` 的 Dragon 门槛由10降到 **8**；正式Dragon定向profile在seed 20260928、N=500下约47.8%命中，保持隐藏但不再过度苛刻。
+- `nc_love` 的公开主结局窗口收窄为 **Progress 35–49**；Progress≥50时爱情继续作为隐藏私人生活尾声，不再覆盖半桥/幸存者。
+- `ge_slayer` 从3名≥60强支持者调整为 **2名≥60**。A/B模拟中Slayer定向profile由1%提升到15%，而random/power/dragon profile均保持0次误触发。
+- 新增并冻结对应边界contract：Dragon=8、Unsung Reputation=24/25、Love Progress=49/50、Organization Progress=74/75、Slayer两名强支持者。
+- 修复旧存档中已退出64目录的结局ID仍计入图鉴的问题：旧ID归档至 `dragon_legacy_endings`，不再出现“已解锁数量 > 64”。
+- 34/34普通随机事件和2/2 PI连锁通过真实 `maybeEvent()` 入口可达性回归；旧成就迁移继续保留轮回点。
+- `ENDING_GUIDE_RC.md`、`FLOW_TREE.md`、`BALANCE_AUDIT_RC.md` 与 `RELEASE_AUDIT_RC.md` 同步到v14.6阈值。
+
+
 ## v14.5.1 — RC结局接线、成就迁移与可达性平衡修复
 
 - 将64公开结局统一接入 canonical resolver，并以内嵌方式保持 `index.html` 单文件直接运行；历史多层 `finalizeEvaluation()` wrapper 不再决定最终优先级。
