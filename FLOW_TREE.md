@@ -514,8 +514,8 @@
    └─ canonical final resolver
       P1 隐藏/跨周目
       ├─ echo周目拒绝龙椅 + Progress≥72 + Morale≥58 + Dragon<20 → true_afterdragon
-      ├─ 主动接管 + Progress≥60 + Dragon≥10 + Power≥65 + Merit≥45 → true_dragon
-      └─ 终章权力路线 + Dragon<10 + Power≥65 + ≥3支持者 → ge_slayer
+      ├─ 主动接管 + Progress≥60 + Dragon≥8 + Power≥65 + Merit≥45 → true_dragon
+      └─ 终章权力路线 + Dragon<10 + Power≥65 + ≥2名强支持者 → ge_slayer
 
       P2 整局职业轨迹
       ├─ ge_promotion
@@ -523,7 +523,7 @@
       ├─ ge_next
       └─ ge_firstline
 
-      P2.5 整局组织运行模式（Progress≥72）
+      P2.5 整局组织运行模式（Progress≥75）
       ├─ ge_succession
       ├─ ge_puppetmaster
       ├─ ge_regent
@@ -549,7 +549,7 @@
       ├─ nc_ruidong
       ├─ nc_heina
       ├─ nc_weilai
-      └─ nc_love（仅35≤Progress<60；项目做成后爱情只作为隐藏私人尾声）
+      └─ nc_love（仅35≤Progress<50；项目做成后爱情只作为隐藏私人尾声）
 
       P6 普通生存/失败
       ├─ be_island
@@ -583,7 +583,7 @@
 - final resolver witness：57/57
 - terminal-only witness：7/7
 - 公开结局目录：64/64
-- priority contract：36/36
+- priority contract：49/49
 - 当前结论：`64/64 RULE-WITNESSED`
 
 ## 6. 开发用检查点
