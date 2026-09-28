@@ -268,4 +268,53 @@ v12分支终章使用：
 
 `SLAYER REAL PATH: VERIFIED`
 
-`BALANCE FREEZE: v14.6 THRESHOLDS LOCKED · MULTI-SEED CONFIRMATION PENDING`
+`BALANCE FREEZE: v14.6 NORMAL MULTI-SEED PASS · STORY/HARD DIAGNOSTIC PASS`
+
+
+## 8. v14.6 多seed / 多难度复核
+
+### Normal
+
+正式状态机模拟：
+
+- seed 20260928, N=1000：Slayer 181/1000（18.1%）；Dragon 481/1000（48.1%）；Love+Appease Heart死亡7/1000；0 NO_END。
+- seed 20260929, N=500：Slayer 90/500（18.0%）；Dragon 239/500（47.8%）；Love+Appease Heart死亡4/500；0 NO_END。
+- seed 137137, N=500：Slayer 116/500（23.2%）；Dragon 243/500（48.6%）；Love+Appease Heart死亡3/500；0 NO_END。
+
+三组随机序列方向一致，因此Normal的v14.6门槛可视为冻结。
+
+### Story（seed 20260928, N=500）
+
+- Slayer 53/500（10.6%）
+- Dragon 213/500（42.6%）
+- Love+Appease Heart死亡1/500
+- 0 NO_END
+
+Story明显提高生存与中段成功率，但没有让隐藏路线自动泛滥。
+
+### Hard（seed 20260928, N=500）
+
+- Slayer 11/500（2.2%）
+- Dragon 61/500（12.2%）
+- Love+Appease Heart死亡29/500
+- 0 NO_END
+
+Hard 的主要压力来自 Heart、Probation 与 Trust；隐藏路线仍可达但明显更稀有。当前不把Hard强行调到Normal频率，否则会破坏难度差异。
+
+### 自动门禁
+
+`tests/balance-sim.cjs` 现在接受 `SIM_DIFFICULTY=story|normal|hard`。
+
+所有难度共同门禁：
+
+- 不允许任何 profile 出现 `NO_END`。
+
+Normal额外冻结：
+
+- Slayer定向 `ge_slayer` ≥8%
+- Dragon定向 `true_dragon` ≥30%
+- Love+Appease 的 `be_heart` ≤5%
+- random profile 任一单结局 <45%
+
+当前固定seed均通过。
+
