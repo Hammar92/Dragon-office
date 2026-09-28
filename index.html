@@ -5165,7 +5165,7 @@ renderLifeBuilder();
   window.NG_ALLOC={professional:0,social:0,management:0,insight:0,fitness:0};window.NG_KEEP="";
   function ngPoints(){return parseInt(localStorage.getItem("dragon_ng_points")||"0",10)||0;}
   function ngSpent(){return Object.values(NG_ALLOC).reduce((a,b)=>a+b,0);}
-  function priorTraits(){try{return JSON.parse(localStorage.getItem("dragon_last_traits")||"[]");}catch(e){return[];}}
+  function priorTraits(){try{const x=JSON.parse(localStorage.getItem("dragon_last_traits")||"[]");return Array.isArray(x)?x:[];}catch(e){return[];}}
   window.ngSpend=function(k,d){if(NG_ALLOC[k]==null)return;let next=Math.max(0,NG_ALLOC[k]+d);if(d>0&&ngSpent()>=ngPoints())return;NG_ALLOC[k]=next;renderNGPanel();renderLifeBuilder();};
   window.ngKeep=function(id){NG_KEEP=id;renderNGPanel();};
   window.renderNGPanel=function(){let el=document.getElementById("ng-panel");if(!el)return;let pts=ngPoints(),left=pts-ngSpent(),old=priorTraits();el.innerHTML='<div class="sec-title">多周目 · 轮回点</div><div class="creator-note">成就会奖励轮回点。开局前可以随时加点、退点重选；上一周目可免费保留一个关键词条。</div><div class="creator-stats"><span>可用 <b>'+left+' / '+pts+'</b></span></div><div class="creator-row"><span class="creator-label">加点</span>'+Object.keys(NG_ALLOC).map(function(k){return '<button class="creator-chip" onclick="ngSpend(\''+k+'\',1)">'+skillName(k)+' +'+NG_ALLOC[k]+'</button><button class="creator-chip" onclick="ngSpend(\''+k+'\',-1)">退</button>';}).join('')+'</div><div class="creator-row"><span class="creator-label">保留词条</span>'+(old.length?old.map(function(t){return '<button class="creator-chip '+(NG_KEEP===t?'selected':'')+'" onclick="ngKeep(\''+t+'\')">'+t+'</button>';}).join(''):'<span class="creator-note">上一周目还没有可继承词条</span>')+'</div>';};
@@ -5743,7 +5743,7 @@ renderLifeBuilder();
     localStorage.setItem("dragon_ach_schema","v13.3");
   }
   function unlocked12(){try{const x=JSON.parse(localStorage.getItem("dragon_achievements")||"[]");return Array.isArray(x)?x:[];}catch(e){return[];}}
-  function achievementDetails12(){try{return JSON.parse(localStorage.getItem("dragon_achievement_details")||"{}");}catch(e){return{};}}
+  function achievementDetails12(){try{const x=JSON.parse(localStorage.getItem("dragon_achievement_details")||"{}");return x&&typeof x==="object"&&!Array.isArray(x)?x:{};}catch(e){return{};}}
   unlockAchievement=function(id,choice){
     if(window._v12Ending)return;
     var a=window.ACHIEVEMENTS.find(function(x){return x.id===id;}),u=unlocked12();if(!a||u.indexOf(id)>=0)return;
@@ -5772,7 +5772,7 @@ renderLifeBuilder();
   function refreshAchPanel12(){
     var d=document.getElementById("achievement-panel");if(!d)return;
     var u=unlocked12(),details=achievementDetails12(),legacy=[];
-    try{legacy=JSON.parse(localStorage.getItem("dragon_legacy_achievements")||"[]");}catch(e){}
+    try{const x=JSON.parse(localStorage.getItem("dragon_legacy_achievements")||"[]");legacy=Array.isArray(x)?x:[];}catch(e){}
     d.innerHTML='<b>🏆 成就系统 · 108</b><div class="creator-note">18章各3种结果；34个随机事件各有黑色幽默成就，其中部分另有互斥结果。当前 '+u.length+' / 108。</div><div class="gallery-grid" style="margin-top:10px">'+window.ACHIEVEMENTS.map(function(a){return '<span class="g '+(u.indexOf(a.id)>=0?'got ge':'')+'">'+(u.indexOf(a.id)>=0?(details[a.id]||a.name):'？？？')+'</span>';}).join('')+'</div>'
       +(legacy.length?'<div class="creator-note">旧版已获得但在新版改为剧情选择的记录：'+legacy.join('、')+'（已归档，轮回点保留）</div>':'');
   }
@@ -6113,7 +6113,7 @@ renderLifeBuilder();
       var order=LIFE_STAGE_META.map(function(x){return x.id;}),idx=order.indexOf(id);
       var mx=(AGE_OPTIONS[PLAYER_AGE]||AGE_OPTIONS.g3).maxStage;return idx<=mx;
     };
-    var old=[];try{old=JSON.parse(localStorage.getItem("dragon_last_traits")||"[]");}catch(e){}
+    var old=[];try{const x=JSON.parse(localStorage.getItem("dragon_last_traits")||"[]");old=Array.isArray(x)?x:[];}catch(e){}
     function traitLabel13(id){var t=TRAIT_RECIPES.find(function(x){return x.id===id;});return t?t.name:id;}
     var meta="";
     if(typeof unlockedMetaRoutes==="function"){
@@ -7028,7 +7028,7 @@ renderLifeBuilder();
   });
 
   function achUnlockedV144(){try{const x=JSON.parse(localStorage.getItem('dragon_achievements')||'[]');return Array.isArray(x)?x:[];}catch(e){return[];}}
-  function achDetailsV144(){try{return JSON.parse(localStorage.getItem('dragon_achievement_details')||'{}');}catch(e){return{};}}
+  function achDetailsV144(){try{const x=JSON.parse(localStorage.getItem('dragon_achievement_details')||'{}');return x&&typeof x==='object'&&!Array.isArray(x)?x:{};}catch(e){return{};}}
   window.renderAchievementsV144=function(){
     const d=document.getElementById('achievement-panel');if(!d)return;
     const u=achUnlockedV144(),details=achDetailsV144();
