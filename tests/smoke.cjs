@@ -72,8 +72,10 @@ for(const k of ['anyu','qiaoqiao','wenjing','xiaoke','linpi','tongxin']){
 assert.strictEqual(run('PI_CHAIN_EVENTS.length'),2,'PI chain events installed');
 run("Math.random=()=>0.01; const __ids=V11_EVENTS.map(e=>e.id); window.__eventReach=[]; __ids.forEach(target=>{usedEvents=__ids.filter(id=>id!==target);flags.metaRoute=null;flags.metaSeen=true;flags.piChainEvent1=true;flags.piChainEvent2=true;chapterIdx=6;window._evObj=null;maybeEvent('v11_7',()=>{});if(window._evObj&&window._evObj.ev.id===target)window.__eventReach.push(target);window._evObj=null;});");
 assert.strictEqual(run('window.__eventReach.length'),34,'all 34 random events reachable through maybeEvent');
-run("usedEvents=[];flags={piChainEvent1:false,piChainEvent2:false};chapterIdx=8;S.npc.houpi=40;S.npc.niupi=40;S.npc.zhangpi=40;window._evObj=null;maybeEvent('v11_9',()=>{})");
-assert.strictEqual(run('window._evObj.ev.id'),'pi_chain_lead','first PI chain reachable');
+run("S=null;flags={};usedEvents=[];usedHeina=[];chapterIdx=0;runChapters=[];startGame();chapterIdx=8;S.npc.houpi=31;S.npc.niupi=31;S.npc.zhangpi=40;window._evObj=null;applyChoice(presentedChoice(V11_CHAPTERS[8].choices,0));maybeEvent('v11_9',()=>{})");
+assert.strictEqual(run('S.npc.houpi'),32,'chapter 9 governance keeps MK above PI-chain floor after whack-a-mole');
+assert.strictEqual(run('S.npc.niupi'),38,'chapter 9 governance raises N院长 to PI-chain threshold');
+assert.strictEqual(run('window._evObj.ev.id'),'pi_chain_lead','first PI chain reachable from real chapter 9 governance path');
 run("flags.piChainEvent1=true;flags.piChainEvent2=false;chapterIdx=11;window._evObj=null;maybeEvent('v11_12',()=>{})");
 assert.strictEqual(run('window._evObj.ev.id'),'pi_chain_site','second PI chain reachable');
 run("window._evObj=null; Math.random=()=>0.1");
