@@ -295,7 +295,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.6</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.7</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -6543,7 +6543,7 @@ renderLifeBuilder();
   window.refreshAchievements();
   renderGallery();
   const sub=document.querySelector('#title-screen .subtitle');
-  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.6';
+  if(sub)sub.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.7';
 })();
 
 /* =====================  v14.2 · PI WHACK-A-MOLE / PRESTIGE  =====================
@@ -7610,6 +7610,208 @@ renderLifeBuilder();
 })(typeof window!=='undefined'?window:globalThis);
 
 /* RC_ENDING_RUNTIME_BRIDGE_END */
+
+
+/* =====================  v14.7 · STAMINA COVERAGE / DELIVERY SIDE SYSTEM  =====================
+   Release isolation:
+   - v14.6 remains frozen on archive/v14.6.
+   - This module is additive and intentionally appended after all v14.5/v14.6 runtime wrappers.
+   - Removing this block restores the previous event cadence without rewriting the 18 main chapters.
+
+   Design rule:
+   stamina is no longer only "can I afford this choice"; it also controls how many extra workstreams
+   the player can physically cover after the authored chapter/random-event chain.
+   Higher max stamina + higher remaining stamina => more optional delivery slots.
+   More slots create more possible merit/output, but also more ways to burn heart, become a single
+   point of failure, or accumulate Dragon-like control habits. */
+(function(){
+  const COVERAGE_RUN_CAP=8;
+  const COVERAGE_MIN_STAMINA=45;
+
+  function coverageState(){
+    if(!S.coverage)S.coverage={
+      completed:0, highValue:0, rescue:0, failed:0, skipped:0,
+      chapters:0, lastSlots:0, lastUsed:0, seen:[]
+    };
+    if(!Array.isArray(S.coverage.seen))S.coverage.seen=[];
+    return S.coverage;
+  }
+  window.coverageState=coverageState;
+
+  function maxStamina147(){
+    var p=S&&S.player&&S.player.body;
+    var v=p&&Number(p.maxStamina);
+    return Number.isFinite(v)?Math.max(45,Math.min(100,v)):100;
+  }
+
+  function coverageSlots147(){
+    var c=coverageState(),cur=Number(S.stamina)||0,max=maxStamina147();
+    if(c.completed>=COVERAGE_RUN_CAP||cur<COVERAGE_MIN_STAMINA)return 0;
+    var slots=1;
+    /* The second slot is deliberately demanding: the player needs both a high ceiling and
+       enough fuel left after the main work. This makes fitness/life-build choices matter without
+       turning stamina into an automatic win stat. */
+    if(max>=72&&cur>=68)slots=2;
+    return Math.min(slots,COVERAGE_RUN_CAP-c.completed);
+  }
+  window.coverageSlots147=coverageSlots147;
+
+  const DELIVERY_EVENTS_147=[
+    {id:"d147_safety",title:"额外交付 · 安全性时间线",from:"加琳",text:"当天的主任务刚结束，加琳又发来两例实验室异常的时间线。正式评估明天才截止，但今晚如果有人先把基线、给药、ALT/AST和胆红素串起来，明早的讨论会少绕一圈。",choices:[
+      {t:"把关键时点、缺失数据和待判断项整理成一页，不替PV下最终结论。",e:{progress:3,power:1},npc:{jialin:4},hidden:{merit:5,reputation:3},coverage:{completed:1,highValue:1},r:"你交出去的是一页能直接用于明早判断的时间线，不是另一份数据搬运。加琳在群里只回了两个字：收到。"},
+      {t:"直接把两例都写成完整医学评估，今晚一次性替所有人关掉。",e:{progress:4,heart:-4},npc:{jialin:2},hidden:{merit:3},coverage:{completed:1,rescue:1},r:"材料确实完整了。问题是第二天所有人都默认：以后这种临时缺口也可以直接找你补。"},
+      {t:"只把原始表转发回去：数据都在这里，明天再说。",e:{progress:-1},npc:{jialin:-3},hidden:{blame:2},coverage:{failed:1},r:"你省下了今晚。明早第一件事仍然是重新把这些数据串起来。"}
+    ]},
+    {id:"d147_stats",title:"额外交付 · 数据核对",from:"明夜",text:"明夜在下班前丢来一个截图：同一亚组在两版PPT里的分母不一样。他没说哪版错，只说：「你要是今晚还看得动，帮我确认这是口径问题还是版本问题。」",choices:[
+      {t:"只核定义、分母和数据截止日，确认差异来源后留下版本记录。",e:{progress:3},npc:{mingye:5},hidden:{merit:5,reputation:3},record:"coverageDataCheck",recordSource:"额外交付：数据核对",coverage:{completed:1,highValue:1},r:"十五分钟后你找到原因：不是统计错，是两版材料用了不同数据截止日。明夜把你的说明直接贴进版本记录。"},
+      {t:"把整套PPT从头到尾重新算一遍，顺便把所有表都检查了。",e:{progress:4,heart:-3},npc:{mingye:3},hidden:{merit:3},coverage:{completed:1,rescue:1},r:"你没有发现第二个错误。你只是证明了自己愿意为一个分母重新检查四十页。"},
+      {t:"先不碰，告诉他统计自己的表自己确认。",e:{power:1},npc:{mingye:-4},coverage:{failed:1},r:"边界非常清楚。版本问题也非常清楚地留到了明天。"}
+    ]},
+    {id:"d147_reg",title:"额外交付 · 监管回复一句话",from:"一建",text:"一建发来一段监管回复，只差最后一句结论。她问：「这个医学立场你能不能今晚帮我锁一下？我不需要你重写全文。」",choices:[
+      {t:"只改结论句，并把支持它的两条证据列在下面。",e:{progress:3,power:1},npc:{yijian:5},hidden:{merit:5,reputation:3},coverage:{completed:1,highValue:1},r:"你没有接管整份回复，只把真正需要Medical承担的那句话锁住。一建十分钟后发出了最终版。"},
+      {t:"既然打开了，就把整份回复重新写一遍。",e:{progress:4,heart:-4},npc:{yijian:2},hidden:{merit:3},coverage:{completed:1,rescue:1},r:"全文更漂亮了。凌晨一点，一建又发来另一份回复：『这个也顺便看一下？』"},
+      {t:"回复『明天统一review』，今晚不再增加交付。",e:{heart:2},npc:{yijian:-1},coverage:{failed:1},r:"你保住了精力，也接受了明早会多一个未决项。"}
+    ]},
+    {id:"d147_pi",title:"额外交付 · PI briefing",from:"MK主任",text:"研究者秘书临时确认：明早MK主任有二十分钟空档。团队已经有一套完整材料，但没有人把真正需要他判断的三件事压成一页。",choices:[
+      {t:"提炼三项需要PI判断的问题，每项只留证据、选项和建议。",e:{progress:3,power:2},npc:{houpi:5},hidden:{merit:6,piRep:5},coverage:{completed:1,highValue:1},r:"第二天二十分钟正好用完。MK主任没有听背景汇报，而是直接给了三个决定。"},
+      {t:"把完整材料再过一遍，确保主任什么都能看到。",e:{progress:2,heart:-3},npc:{houpi:1},hidden:{merit:2},coverage:{completed:1,rescue:1},r:"材料很完整。二十分钟过去十二分钟时，主任还在问：『所以今天到底需要我定什么？』"},
+      {t:"没有正式会议就不额外准备。",e:{progress:-1},npc:{houpi:-2},coverage:{failed:1},r:"程序上没有问题。机会窗口也按程序关上了。"}
+    ]},
+    {id:"d147_cro",title:"额外交付 · CRO边界确认",from:"黑娜",text:"黑娜把一封待发邮件转给你，里面有一句需要Sponsor确认的话。她没有催，但你知道如果今晚不拆清责任，明早这句话大概率会变成『Sponsor已确认』。",choices:[
+      {t:"只确认Sponsor真正需要承担的判断，其余明确退回CRO owner。",e:{progress:2,power:2},npc:{heina:3,xiaoen:3},hidden:{merit:5,reputation:3,blame:-2},coverage:{completed:1,highValue:1},r:"邮件在十分钟内发出。半年后再翻，也能看出谁决定了什么。"},
+      {t:"为了不耽误，整封邮件由你代为确认。",e:{progress:4,heart:-3},npc:{heina:4},hidden:{merit:2,blame:4},coverage:{completed:1,rescue:1},r:"事情很快关掉。责任边界也很快消失。"},
+      {t:"不回复，让他们自己决定怎么写。",e:{progress:-1},npc:{heina:-2},hidden:{blame:3},coverage:{failed:1},r:"第二天邮件已经发出，抄送里有你。"}
+    ]},
+    {id:"d147_version",title:"额外交付 · 版本清理",from:"K总",text:"K总发现共享盘里同时躺着Final、Final2、Final_new和Final_use_this四个版本。没有人能保证明早会上打开的是哪一个。",choices:[
+      {t:"锁唯一工作版本，列出owner和最后更新时间，其余全部归档。",e:{progress:3,power:1},npc:{kzong:5,xiaoen:2},hidden:{merit:5,reputation:3},record:"coverageVersionLock",recordSource:"额外交付：版本清理",coverage:{completed:1,highValue:1},r:"第二天没人再问『你看的是哪一版』。这大概是项目管理里最接近魔法的一件事。"},
+      {t:"自己把四版逐页合并成第五个Final。",e:{progress:4,heart:-4},npc:{kzong:1},hidden:{merit:3},coverage:{completed:1,rescue:1},r:"第五个Final诞生了。它的名字暂时是Final_really_final。"},
+      {t:"在群里提醒大家注意版本，不再额外处理。",e:{trust:1},hidden:{blame:1},coverage:{failed:1},r:"所有人都回复了收到。明天仍然有人打开了Final2。"}
+    ]},
+    {id:"d147_site",title:"额外交付 · 中心风险预判",from:"琳琳",text:"琳琳说某中心这周已经被三个不同部门追加要求。如果再加一次临时采样，CRA大概率还能顶住，但她问你：『这个真的非这周不可吗？』",choices:[
+      {t:"把医学必要性和时间窗讲清，能延后的延后，只保留真正不可替代的要求。",e:{progress:2,morale:3},npc:{miaomiao:5},hidden:{merit:5,piRep:3},coverage:{completed:1,highValue:1},r:"要求从三项变成一项。中心没有因为少做两件事而损失任何科学价值。"},
+      {t:"你亲自协调三方，把所有事情都在这周做完。",e:{progress:4,heart:-4},npc:{miaomiao:1},hidden:{merit:3},coverage:{completed:1,rescue:1},r:"这一周确实都做完了。琳琳下周开始默认复杂中心都先来找你。"},
+      {t:"既然CRA说能顶住，就按原计划全部执行。",e:{progress:2,morale:-3},npc:{miaomiao:-5},hidden:{blame:2},coverage:{failed:1},r:"执行没有立即出错。只是下一次你说『中心应该可以配合』时，琳琳没有接话。"}
+    ]},
+    {id:"d147_decision",title:"额外交付 · 决策留痕",from:"明夜",text:"一天里开了三场会，同一个问题出现了三个版本的『大家基本同意』。明夜问你要不要趁现在把真正的决定和未决项写下来。",choices:[
+      {t:"写一页decision log：已决定、未决定、owner、截止日。",e:{progress:3,power:2},npc:{mingye:4,kzong:4},hidden:{merit:6,reputation:4},record:"coverageDecisionLog",recordSource:"额外交付：决策留痕",coverage:{completed:1,highValue:1},r:"第二天有人想重新解释昨天的结论。你没有争，只把那一页重新投到屏幕上。"},
+      {t:"你来替大家统一口径，直接写成一个版本。",e:{progress:4,power:3,dragon:2},npc:{mingye:-1},hidden:{merit:3},coverage:{completed:1,rescue:1},r:"口径终于统一。只是没有人记得自己什么时候同意过它。"},
+      {t:"反正明天还会再开会，不额外记录。",e:{trust:1},hidden:{blame:2},coverage:{failed:1},r:"第二天第一场会的前二十分钟，用来回忆昨天第三场会到底定了什么。"}
+    ]}
+  ];
+  window.DELIVERY_EVENTS_147=DELIVERY_EVENTS_147;
+
+  function pickDelivery147(){
+    var c=coverageState(),pool=DELIVERY_EVENTS_147.filter(function(e){return c.seen.indexOf(e.id)<0;});
+    if(!pool.length){c.seen=[];pool=DELIVERY_EVENTS_147.slice();}
+    return pool[Math.floor(Math.random()*pool.length)];
+  }
+
+  function deliveryChoiceHtml147(ev){
+    return choiceHTML(ev.choices,"pickCoverageDelivery147")
+      +'<button class="choice" onclick="skipCoverage147()"><span class="idx">S</span>不接这项额外交付，保留精力<span class="badge">【边界】</span></button>';
+  }
+
+  function renderCoverageDelivery147(ev,left,next){
+    var c=coverageState();
+    c.current={eventId:ev.id,left:left,next:next};
+    if(c.seen.indexOf(ev.id)<0)c.seen.push(ev.id);
+    renderHUD();
+    document.getElementById("scene-area").innerHTML=
+      '<div class="scene"><div class="event-badge npc-ev">额外交付</div>'
+      +'<div class="scene-title"><span class="accent">▎</span>'+ev.title+'</div>'
+      +'<div class="scene-sub">体力覆盖支线 · 剩余可覆盖 '+left+' 项 · 本局累计交付 '+c.completed+'/'+COVERAGE_RUN_CAP+'</div>'
+      +'<div class="aside"><div class="from">📱 来自 '+ev.from+'</div>'+ev.text+'</div>'
+      +'<div class="choices">'+deliveryChoiceHtml147(ev)+'</div></div>';
+    window._sceneMode="coverage147";
+    window._heavyScene=false;
+  }
+
+  function runCoverage147(next){
+    var c=coverageState(),slots=coverageSlots147();
+    c.lastSlots=slots;c.lastUsed=0;
+    if(slots<=0){next();return;}
+    c.chapters++;
+    renderCoverageDelivery147(pickDelivery147(),slots,next);
+  }
+
+  window.pickCoverageDelivery147=function(i){
+    var c=coverageState(),cur=c.current;
+    if(!cur)return;
+    var ev=DELIVERY_EVENTS_147.find(function(x){return x.id===cur.eventId;});
+    if(!ev){c.current=null;cur.next();return;}
+    var choice=presentedChoice(ev.choices,i);
+    if(choice.lock&&!unlocked(choice))return;
+    if(S.stamina<costStamina(choice)){toast("体力不足，无法覆盖这项交付","down");return;}
+    var deltas=applyChoice(choice),m=choice.coverage||{};
+    c.completed+=Number(m.completed)||0;
+    c.highValue+=Number(m.highValue)||0;
+    c.rescue+=Number(m.rescue)||0;
+    c.failed+=Number(m.failed)||0;
+    c.lastUsed++;
+    c.current=null;
+    renderHUD();
+    var left=Math.max(0,cur.left-1);
+    checkDeath(choice.r,deltas,function(){
+      if(flags.fraud){showEnding("be_fraud");return;}
+      if(left>0&&c.completed<COVERAGE_RUN_CAP&&S.stamina>=COVERAGE_MIN_STAMINA){
+        renderCoverageDelivery147(pickDelivery147(),left,cur.next);
+      }else cur.next();
+    });
+  };
+
+  window.skipCoverage147=function(){
+    var c=coverageState(),cur=c.current;
+    if(!cur)return;
+    c.skipped++;c.current=null;
+    S.heart=clamp((S.heart||0)+2);
+    showResult("你看了一眼剩余体力，没有把“还能做”自动翻译成“必须做”。这项交付回到原本的owner手里。",
+      [{label:"❤️ 心力 +2",kind:"up"},{label:"保留本章剩余体力",kind:"up"}],cur.next);
+  };
+
+  /* Chain after the existing random-event stack. The authored main chapter and all existing random
+     events remain untouched; v14.7 only adds an optional delivery layer afterwards. */
+  var oldMaybeEvent147=maybeEvent;
+  maybeEvent=function(chapterId,next){
+    oldMaybeEvent147(chapterId,function(){runCoverage147(next);});
+  };
+
+  var oldHUD147=renderHUD;
+  renderHUD=function(){
+    oldHUD147();
+    var n=document.getElementById("npcs"),c=coverageState();
+    if(!n)return;
+    var slots=coverageSlots147();
+    var chip=document.getElementById("coverage-chip-147");
+    if(!chip){
+      chip=document.createElement("span");
+      chip.id="coverage-chip-147";
+      chip.className="npc-chip";
+      chip.title="高体力/高体力上限会增加本章可覆盖的额外交付；最多2项/章、8项/局。";
+      n.insertBefore(chip,n.firstChild);
+    }
+    chip.textContent="📦 额外交付 "+c.completed+"/"+COVERAGE_RUN_CAP+" · 当前可覆盖 "+slots;
+  };
+
+  var oldStart147=startGame;
+  startGame=function(){
+    oldStart147();
+    coverageState();
+    renderHUD();
+  };
+
+  var oldShowEnding147=showEnding;
+  showEnding=function(k){
+    var out=oldShowEnding147(k),c=coverageState(),box=document.getElementById("ending-stats");
+    if(box&&!document.getElementById("coverage-ending-147")){
+      var x=document.createElement("span");x.id="coverage-ending-147";x.className="s";
+      x.textContent="额外交付 "+c.completed+" · 高价值 "+c.highValue+" · 救火 "+c.rescue;
+      box.appendChild(x);
+    }
+    return out;
+  };
+})();
+
+/* =====================  v14.7 END  ===================== */
 
 buildCast();
 renderVP();
