@@ -1,0 +1,28 @@
+name: v14.7 balance regression
+
+on:
+  push:
+    branches:
+      - release/v14.7-stamina-coverage
+  workflow_dispatch:
+
+jobs:
+  balance:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        difficulty: [story, normal, hard]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Syntax check balance runner
+        run: node --check tests/balance-sim.cjs
+      - name: Run balance simulation
+        env:
+          SIM_N: 1500
+          SIM_SEED: 20261007
+          SIM_DIFFICULTY: ${{ matrix.difficulty }}
+        run: node tests/balance-sim.cjs
