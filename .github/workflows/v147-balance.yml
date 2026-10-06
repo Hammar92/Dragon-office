@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - release/v14.7-stamina-coverage
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
