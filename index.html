@@ -7759,6 +7759,12 @@ renderLifeBuilder();
     if(!cur)return;
     var ev=DELIVERY_EVENTS_147.find(function(x){return x.id===cur.eventId;});
     if(!ev){c.current=null;cur.next();return;}
+    if(ev.id==="d147_handoff"&&i===0){
+      var tm=teamState147();
+      if((S.power||0)<RECRUIT_POWER){toast("至少需要 "+RECRUIT_POWER+" 权力才能把这项工作真正交出去","down");return;}
+      if(!tm.members.length){toast("你还没有直属下属。没有人可以接这项工作。","down");return;}
+      openDelegate147();return;
+    }
     var choice=presentedChoice(ev.choices,i);
     if(choice.lock&&!unlocked(choice))return;
     if(S.stamina<costStamina(choice)){toast("体力不足，无法覆盖这项交付","down");return;}
@@ -7969,6 +7975,14 @@ renderLifeBuilder();
   }
 
   window.showTeam147=function(){
+    window._teamReturn147=(S.coverage&&S.coverage.current)?function(){
+      var c=coverageState(),cur=c.current;
+      if(cur){
+        var ev=DELIVERY_EVENTS_147.find(function(x){return x.id===cur.eventId;});
+        if(ev){renderCoverageDelivery147(ev,cur.left,cur.next);return;}
+      }
+      renderChapter();
+    }:renderChapter;
     var t=teamState147(),cap=headcountCap147(),canHire=(S.power||0)>=RECRUIT_POWER&&t.members.length<cap;
     document.getElementById("scene-area").innerHTML='<div class="result-box"><h4>▎👥 我的团队</h4>'
       +'<div class="result-text">编制 '+t.members.length+' / '+cap+'　·　招聘吸引力 '+playerAttraction147()+'　·　委派 '+t.delegated+'　·　返工接管 '+t.covered+''
@@ -7977,9 +7991,10 @@ renderLifeBuilder();
       +'<div class="choices">'
       +(canHire?'<button class="choice" onclick="showRecruit147()"><span class="idx">R</span>发起招聘</button>':'')
       +t.members.map(function(m,i){return '<button class="choice" onclick="trainStaff147('+i+')"><span class="idx">T</span>培养 '+m.name+'<span class="badge cost">⚡8</span></button>';}).join('')
-      +'<button class="choice" onclick="renderChapter()"><span class="idx">B</span>返回当前工作</button></div></div>';
+      +'<button class="choice" onclick="backFromTeam147()"><span class="idx">B</span>返回当前工作</button></div></div>';
   };
 
+  window.backFromTeam147=function(){var fn=window._teamReturn147||renderChapter;window._teamReturn147=null;fn();};
   window.showRecruit147=function(){
     var t=teamState147(),cap=headcountCap147();
     if((S.power||0)<RECRUIT_POWER){toast("至少需要 "+RECRUIT_POWER+" 权力才能争取直属编制","down");return;}
