@@ -7929,13 +7929,13 @@ renderLifeBuilder();
   }
   window.playerAttraction147=playerAttraction147;
 
-  function window.effectiveStat147(m,k){
+  function effectiveStat147(m,k){
     var base=Number((m.stats||{})[k])||0;
     var growth=Number((m.growth||{})[k])||0;
     return Math.max(0,Math.min(100,base+growth));
   }
 
-  function window.staffOverall147(m){
+  function staffOverall147(m){
     return Math.round(
       window.effectiveStat147(m,"professional")*.22+
       window.effectiveStat147(m,"execution")*.20+
