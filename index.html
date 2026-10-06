@@ -7929,22 +7929,24 @@ renderLifeBuilder();
   }
   window.playerAttraction147=playerAttraction147;
 
-  function effectiveStat147(m,k){
+  function window.effectiveStat147(m,k){
     var base=Number((m.stats||{})[k])||0;
     var growth=Number((m.growth||{})[k])||0;
     return Math.max(0,Math.min(100,base+growth));
   }
 
-  function staffOverall147(m){
+  function window.staffOverall147(m){
     return Math.round(
-      effectiveStat147(m,"professional")*.22+
-      effectiveStat147(m,"execution")*.20+
-      effectiveStat147(m,"judgment")*.22+
-      effectiveStat147(m,"learning")*.10+
-      effectiveStat147(m,"reliability")*.18+
-      effectiveStat147(m,"communication")*.08
+      window.effectiveStat147(m,"professional")*.22+
+      window.effectiveStat147(m,"execution")*.20+
+      window.effectiveStat147(m,"judgment")*.22+
+      window.effectiveStat147(m,"learning")*.10+
+      window.effectiveStat147(m,"reliability")*.18+
+      window.effectiveStat147(m,"communication")*.08
     );
   }
+  window.effectiveStat147=effectiveStat147;
+  window.staffOverall147=staffOverall147;
 
   function candidatePool147(){
     var attraction=playerAttraction147(),team=teamState147();
@@ -7968,9 +7970,9 @@ renderLifeBuilder();
   }
 
   function staffCard147(m){
-    return '<div class="intel-item"><div class="ih"><span class="it">'+m.name+' · '+m.role+'</span><span class="isrc">综合 '+staffOverall147(m)+'</span></div>'
-      +'<div class="ib">专业 '+effectiveStat147(m,"professional")+' · 执行 '+effectiveStat147(m,"execution")+' · 判断 '+effectiveStat147(m,"judgment")
-      +' · 学习 '+effectiveStat147(m,"learning")+' · 可靠 '+effectiveStat147(m,"reliability")+' · 沟通 '+effectiveStat147(m,"communication")
+    return '<div class="intel-item"><div class="ih"><span class="it">'+m.name+' · '+m.role+'</span><span class="isrc">综合 '+window.staffOverall147(m)+'</span></div>'
+      +'<div class="ib">专业 '+window.effectiveStat147(m,"professional")+' · 执行 '+window.effectiveStat147(m,"execution")+' · 判断 '+window.effectiveStat147(m,"judgment")
+      +' · 学习 '+window.effectiveStat147(m,"learning")+' · 可靠 '+window.effectiveStat147(m,"reliability")+' · 沟通 '+window.effectiveStat147(m,"communication")
       +'\n经验 '+(m.xp||0)+' · 培养 '+(m.training||0)+' · 返工 '+(m.rework||0)+'</div></div>';
   }
 
@@ -8075,7 +8077,7 @@ renderLifeBuilder();
     var t=teamState147(),m=t.members[window._trainStaff147];if(!m)return;
     S.stamina=clamp(S.stamina-8);S.heart=clamp(S.heart-2);t.trainingChapter=chapterIdx;m.training++;
     if(!m.growth)m.growth={};
-    var learn=effectiveStat147(m,"learning"),gain=learn>=70?5:learn>=55?4:3;
+    var learn=window.effectiveStat147(m,"learning"),gain=learn>=70?5:learn>=55?4:3;
     if(kind==="judgment"){m.growth.judgment=(m.growth.judgment||0)+gain;m.growth.professional=(m.growth.professional||0)+2;}
     if(kind==="execution"){m.growth.execution=(m.growth.execution||0)+gain;m.growth.reliability=(m.growth.reliability||0)+2;}
     if(kind==="communication"){m.growth.communication=(m.growth.communication||0)+gain;m.growth.judgment=(m.growth.judgment||0)+1;}
@@ -8087,13 +8089,20 @@ renderLifeBuilder();
   function delegationScore147(m,ev){
     var meta=TASK_META_147[ev.id]||{domain:"handoff",difficulty:55},fit=(m.fit||[]).indexOf(meta.domain)>=0?8:0;
     var technical=(meta.domain==="pi"||meta.domain==="competitor")?
-      effectiveStat147(m,"professional")*.25+effectiveStat147(m,"judgment")*.35+effectiveStat147(m,"communication")*.25+effectiveStat147(m,"reliability")*.15:
+      window.effectiveStat147(m,"professional")*.25+window.effectiveStat147(m,"judgment")*.35+window.effectiveStat147(m,"communication")*.25+window.effectiveStat147(m,"reliability")*.15:
       (meta.domain==="cro"||meta.domain==="site"||meta.domain==="version"||meta.domain==="handoff")?
-      effectiveStat147(m,"execution")*.32+effectiveStat147(m,"judgment")*.22+effectiveStat147(m,"reliability")*.30+effectiveStat147(m,"communication")*.16:
-      effectiveStat147(m,"professional")*.28+effectiveStat147(m,"judgment")*.30+effectiveStat147(m,"execution")*.20+effectiveStat147(m,"reliability")*.22;
+      window.effectiveStat147(m,"execution")*.32+window.effectiveStat147(m,"judgment")*.22+window.effectiveStat147(m,"reliability")*.30+window.effectiveStat147(m,"communication")*.16:
+      window.effectiveStat147(m,"professional")*.28+window.effectiveStat147(m,"judgment")*.30+window.effectiveStat147(m,"execution")*.20+window.effectiveStat147(m,"reliability")*.22;
     var mgr=((S.player&&S.player.skills&&S.player.skills.management)||40);
-    return technical+fit+(m.xp||0)*.6+mgr*.08-meta.difficulty;
+    var people=0;
+    if(m.trust!=null)people+=(m.trust-50)*.06;
+    if(m.initiative!=null)people+=(m.initiative-45)*.08;
+    if(m.confidence!=null)people+=(m.confidence-50)*.06;
+    if(m.dependence!=null)people-=(m.dependence-35)*.09;
+    if(m.burnout!=null)people-=m.burnout*.06;
+    return technical+fit+(m.xp||0)*.6+mgr*.08+people-meta.difficulty;
   }
+  window.delegationScore147=delegationScore147;
 
   window.openDelegate147=function(){
     var c=coverageState(),cur=c.current,t=teamState147();
@@ -8220,7 +8229,7 @@ renderLifeBuilder();
     if(m.dependence==null)m.dependence=35;
     if(m.burnout==null)m.burnout=10;
     if(m.potential==null){
-      var learn=effectiveStat147(m,"learning");
+      var learn=window.effectiveStat147(m,"learning");
       m.potential=Math.max(60,Math.min(95,Math.round(55+learn*.45)));
     }
     if(!m.interactions)m.interactions={praise:0,coach:0,delegate:0,takeover:0,challenge:0};
@@ -8245,12 +8254,12 @@ renderLifeBuilder();
   function staffDetail147(m){
     ensurePeopleState147(m);
     var all=[
-      ["专业",effectiveStat147(m,"professional")],
-      ["执行",effectiveStat147(m,"execution")],
-      ["判断",effectiveStat147(m,"judgment")],
-      ["学习",effectiveStat147(m,"learning")],
-      ["可靠",effectiveStat147(m,"reliability")],
-      ["沟通",effectiveStat147(m,"communication")]
+      ["专业",window.effectiveStat147(m,"professional")],
+      ["执行",window.effectiveStat147(m,"execution")],
+      ["判断",window.effectiveStat147(m,"judgment")],
+      ["学习",window.effectiveStat147(m,"learning")],
+      ["可靠",window.effectiveStat147(m,"reliability")],
+      ["沟通",window.effectiveStat147(m,"communication")]
     ];
     return '<div class="pm-section"><h4>能力</h4>'+all.map(function(x){return capabilityBar147(x[0],x[1]);}).join('')+'</div>'
       +'<div class="pm-section"><h4>管理状态</h4>'
@@ -8266,9 +8275,9 @@ renderLifeBuilder();
   /* Replace compact card with visible capability summary + management state. */
   staffCard147=function(m){
     ensurePeopleState147(m);
-    return '<div class="intel-item"><div class="ih"><span class="it">'+m.name+' · '+m.role+'</span><span class="isrc">综合 '+staffOverall147(m)+' · 潜力 '+m.potential+'</span></div>'
-      +'<div class="ib">专业 '+effectiveStat147(m,"professional")+' · 执行 '+effectiveStat147(m,"execution")+' · 判断 '+effectiveStat147(m,"judgment")
-      +' · 学习 '+effectiveStat147(m,"learning")+' · 可靠 '+effectiveStat147(m,"reliability")+' · 沟通 '+effectiveStat147(m,"communication")
+    return '<div class="intel-item"><div class="ih"><span class="it">'+m.name+' · '+m.role+'</span><span class="isrc">综合 '+window.staffOverall147(m)+' · 潜力 '+m.potential+'</span></div>'
+      +'<div class="ib">专业 '+window.effectiveStat147(m,"professional")+' · 执行 '+window.effectiveStat147(m,"execution")+' · 判断 '+window.effectiveStat147(m,"judgment")
+      +' · 学习 '+window.effectiveStat147(m,"learning")+' · 可靠 '+window.effectiveStat147(m,"reliability")+' · 沟通 '+window.effectiveStat147(m,"communication")
       +'\n信任 '+m.trust+' · 主动性 '+m.initiative+' · 信心 '+m.confidence+' · 依赖 '+m.dependence+' · 疲劳 '+m.burnout
       +'\nXP '+(m.xp||0)+' · 培养 '+(m.training||0)+' · 返工 '+(m.rework||0)+'</div></div>';
   };
@@ -8290,7 +8299,7 @@ renderLifeBuilder();
 
   function growTowardPotential147(m,key,raw){
     ensurePeopleState147(m);
-    var cur=effectiveStat147(m,key),room=Math.max(0,m.potential-cur);
+    var cur=window.effectiveStat147(m,key),room=Math.max(0,m.potential-cur);
     if(room<=0)return 0;
     var gain=Math.max(1,Math.min(raw,Math.ceil(room*.22)));
     m.growth[key]=(m.growth[key]||0)+gain;
@@ -8310,16 +8319,16 @@ renderLifeBuilder();
       ds=[{label:'信任 +4',kind:'up'},{label:'信心 +6',kind:'up'},{label:'主动性 +3',kind:'up'}];
     }else if(kind==="coach"){
       m.interactions.coach++;
-      var g1=growTowardPotential147(m,"judgment",effectiveStat147(m,"learning")>=70?4:3);
+      var g1=growTowardPotential147(m,"judgment",window.effectiveStat147(m,"learning")>=70?4:3);
       var g2=growTowardPotential147(m,"reliability",2);
       m.trust=Math.min(100,m.trust+5);m.dependence=Math.max(0,m.dependence-5);m.confidence=Math.min(100,m.confidence+2);
       txt='你让'+m.name+'自己重新讲一遍：哪里判断错了、如果重来会先看什么、哪一个检查点应该提前出现。你只在关键处追问。';
       ds=[{label:'判断 +'+g1,kind:'up'},{label:'可靠 +'+g2,kind:'up'},{label:'依赖 -5',kind:'up'}];
     }else if(kind==="challenge"){
       m.interactions.challenge++;
-      var learn=effectiveStat147(m,"learning"),risk=Math.random()*100;
+      var learn=window.effectiveStat147(m,"learning"),risk=Math.random()*100;
       if(risk<Math.min(82,35+learn*.55+m.confidence*.18)){
-        var target=effectiveStat147(m,"judgment")<effectiveStat147(m,"execution")?"judgment":"execution";
+        var target=window.effectiveStat147(m,"judgment")<window.effectiveStat147(m,"execution")?"judgment":"execution";
         var gg=growTowardPotential147(m,target,learn>=70?5:4);
         m.initiative=Math.min(100,m.initiative+7);m.confidence=Math.min(100,m.confidence+5);m.dependence=Math.max(0,m.dependence-4);m.xp=(m.xp||0)+2;
         txt=m.name+'没有一次做得完美，但大部分问题自己关掉了。你没有在中途接管。下一次，TA知道自己可以先形成判断再来找你。';
@@ -8346,7 +8355,7 @@ renderLifeBuilder();
   finishTrain147=function(kind){
     var t=teamState147(),m=t.members[window._trainStaff147];if(!m)return;
     ensurePeopleState147(m);
-    var before=staffOverall147(m);
+    var before=window.staffOverall147(m);
     oldFinishTrainPeople147(kind);
     /* old function already applied the normal growth and rendered a result; add catch-up growth now */
     var catchup=before<48?3:before<58?2:0;
@@ -8363,19 +8372,6 @@ renderLifeBuilder();
       }
       m.trust=Math.min(100,m.trust+3);m.dependence=Math.max(0,m.dependence-2);
     }
-  };
-
-  /* Delegation outcome now responds to manager-subordinate relationship, not only raw skill. */
-  var oldDelegationScorePeople147=delegationScore147;
-  delegationScore147=function(m,ev){
-    ensurePeopleState147(m);
-    var base=oldDelegationScorePeople147(m,ev);
-    base+=(m.trust-50)*.06;
-    base+=(m.initiative-45)*.08;
-    base+=(m.confidence-50)*.06;
-    base-=(m.dependence-35)*.09;
-    base-=m.burnout*.06;
-    return base;
   };
 
   /* Assignment itself teaches. Independent success grows capability, failure can teach too if the
@@ -8395,7 +8391,7 @@ renderLifeBuilder();
       m.dependence=Math.max(0,m.dependence-2);
       m.trust=Math.min(100,m.trust+2);
     }else if(reworked){
-      var learning=effectiveStat147(m,"learning");
+      var learning=window.effectiveStat147(m,"learning");
       if(learning>=60)growTowardPotential147(m,"reliability",1);
       m.burnout=Math.min(100,m.burnout+2);
     }
