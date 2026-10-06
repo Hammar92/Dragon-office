@@ -7837,6 +7837,358 @@ renderLifeBuilder();
   };
 })();
 
+
+/* =====================  v14.7 · RECRUITMENT / DIRECT REPORT SYSTEM  =====================
+   Management layer:
+   - Headcount is earned through organizational power, not granted at start.
+   - Candidate quality depends on the player's market/organizational attractiveness.
+   - Recruitment contains an interview interaction; different interview styles reveal different risks.
+   - Direct reports have persistent capability, learning and reliability stats.
+   - Delegation can succeed, require manager cover, or fail; weak reports push work back to the player.
+   - Training consumes manager capacity and changes later delegation outcomes.
+   This block is additive and can be removed independently from the stamina-coverage layer. */
+(function(){
+  const RECRUIT_POWER=35;
+  const TEAM_MAX=3;
+
+  const STAFF_CANDIDATES_147=[
+    {id:"staff_chen",name:"陈澄",role:"Clinical Scientist",tier:1,ask:34,
+      stats:{professional:50,execution:42,judgment:48,learning:68,reliability:50,communication:46},
+      fit:["safety","reg","pi","tfl"],bio:"医学基础扎实，Sponsor经验不多。遇到新问题会先查证，不太会抢着给答案。"},
+    {id:"staff_luo",name:"罗宁",role:"Medical Manager",tier:2,ask:49,
+      stats:{professional:66,execution:58,judgment:64,learning:60,reliability:62,communication:55},
+      fit:["safety","reg","pi","competitor","tfl"],bio:"做过完整后期项目，判断稳，能独立关掉大多数医学交付；对管理混乱容忍度低。"},
+    {id:"staff_qin",name:"秦卓",role:"Clinical Operations Liaison",tier:1,ask:35,
+      stats:{professional:38,execution:65,judgment:44,learning:62,reliability:64,communication:60},
+      fit:["cro","site","version","handoff"],bio:"执行很强，知道中心和CRO怎么跑；医学判断一般，但owner清楚时很少掉链子。"},
+    {id:"staff_he",name:"何简",role:"Clinical Scientist",tier:3,ask:63,
+      stats:{professional:78,execution:65,judgment:76,learning:72,reliability:70,communication:62},
+      fit:["safety","reg","pi","competitor","tfl","decision"],bio:"成熟后期开发人才，能自己把复杂问题压成结论。对岗位授权和老板质量要求很高。"},
+    {id:"staff_sun",name:"孙可",role:"Project Medical Associate",tier:0,ask:23,
+      stats:{professional:34,execution:46,judgment:30,learning:74,reliability:44,communication:48},
+      fit:["version","competitor","handoff"],bio:"聪明、肯学，但经验很浅。短任务可以做，复杂判断容易把资料整理完却没形成结论。"},
+    {id:"staff_wen",name:"文岚",role:"Medical Writer / Scientist",tier:1,ask:37,
+      stats:{professional:55,execution:60,judgment:52,learning:64,reliability:58,communication:50},
+      fit:["reg","tfl","version","decision"],bio:"文件和数据整合能力强，交付稳定；面对PI和高压现场时不太主动。"},
+    {id:"staff_xu",name:"徐放",role:"Senior Clinical Scientist",tier:2,ask:52,
+      stats:{professional:70,execution:54,judgment:68,learning:55,reliability:66,communication:70},
+      fit:["pi","competitor","safety","decision"],bio:"科学讨论和外部专家互动强，做事有自己的判断；不喜欢被当成纯执行资源。"},
+    {id:"staff_tao",name:"陶然",role:"Medical Associate",tier:0,ask:20,
+      stats:{professional:30,execution:52,judgment:28,learning:80,reliability:48,communication:42},
+      fit:["version","handoff"],bio:"起点低但学习很快。需要明确模板、复盘和反馈，否则会在同一种错误上反复返工。"}
+  ];
+  window.STAFF_CANDIDATES_147=STAFF_CANDIDATES_147;
+
+  const TASK_META_147={
+    d147_safety:{domain:"safety",difficulty:62,label:"安全性时间线"},
+    d147_stats:{domain:"tfl",difficulty:58,label:"数据核对"},
+    d147_reg:{domain:"reg",difficulty:60,label:"监管回复"},
+    d147_pi:{domain:"pi",difficulty:68,label:"PI briefing"},
+    d147_cro:{domain:"cro",difficulty:54,label:"CRO边界确认"},
+    d147_version:{domain:"version",difficulty:44,label:"版本清理"},
+    d147_site:{domain:"site",difficulty:56,label:"中心风险预判"},
+    d147_decision:{domain:"decision",difficulty:64,label:"决策留痕"},
+    d147_tfl:{domain:"tfl",difficulty:58,label:"TFL医学核对"},
+    d147_mentor:{domain:"handoff",difficulty:46,label:"带新人"},
+    d147_competitor:{domain:"competitor",difficulty:56,label:"竞品情报"},
+    d147_handoff:{domain:"handoff",difficulty:48,label:"任务委派"}
+  };
+
+  function teamState147(){
+    if(!S.team147)S.team147={members:[],candidateSeen:[],trainingChapter:-1,hireAttempts:0,delegated:0,covered:0,failures:0};
+    return S.team147;
+  }
+  window.teamState147=teamState147;
+
+  function headcountCap147(){
+    var p=Number(S.power)||0;
+    if(p>=75)return 3;
+    if(p>=55)return 2;
+    if(p>=RECRUIT_POWER)return 1;
+    return 0;
+  }
+
+  function playerAttraction147(){
+    var sk=(S.player&&S.player.skills)||{};
+    return Math.round(
+      (Number(S.power)||0)*.22+
+      (Number(S.career)||0)*.18+
+      (Number(S.reputation)||0)*.14+
+      (Number(sk.management)||0)*.16+
+      (Number(sk.social)||0)*.10+
+      (Number(sk.charm)||0)*.05+
+      (Number(S.progress)||0)*.10+
+      (Number(S.morale)||0)*.05
+    );
+  }
+  window.playerAttraction147=playerAttraction147;
+
+  function effectiveStat147(m,k){
+    var base=Number((m.stats||{})[k])||0;
+    var growth=Number((m.growth||{})[k])||0;
+    return Math.max(0,Math.min(100,base+growth));
+  }
+
+  function staffOverall147(m){
+    return Math.round(
+      effectiveStat147(m,"professional")*.22+
+      effectiveStat147(m,"execution")*.20+
+      effectiveStat147(m,"judgment")*.22+
+      effectiveStat147(m,"learning")*.10+
+      effectiveStat147(m,"reliability")*.18+
+      effectiveStat147(m,"communication")*.08
+    );
+  }
+
+  function candidatePool147(){
+    var attraction=playerAttraction147(),team=teamState147();
+    var hiredIds=team.members.map(function(m){return m.id;});
+    var pool=STAFF_CANDIDATES_147.filter(function(c){return hiredIds.indexOf(c.id)<0;});
+    pool.sort(function(a,b){
+      var da=Math.abs(a.ask-attraction)+Math.random()*12;
+      var db=Math.abs(b.ask-attraction)+Math.random()*12;
+      return da-db;
+    });
+    /* Stronger candidates only surface when the player has enough pull. Keep one stretch candidate
+       so the player can see what they cannot yet attract. */
+    var feasible=pool.filter(function(c){return c.ask<=attraction+10;}).slice(0,2);
+    var stretch=pool.filter(function(c){return c.ask>attraction+10;})[0];
+    if(stretch&&feasible.length<3)feasible.push(stretch);
+    while(feasible.length<3&&pool.length){
+      var x=pool.find(function(c){return feasible.indexOf(c)<0;});
+      if(!x)break;feasible.push(x);
+    }
+    return feasible.slice(0,3);
+  }
+
+  function staffCard147(m){
+    return '<div class="intel-item"><div class="ih"><span class="it">'+m.name+' · '+m.role+'</span><span class="isrc">综合 '+staffOverall147(m)+'</span></div>'
+      +'<div class="ib">专业 '+effectiveStat147(m,"professional")+' · 执行 '+effectiveStat147(m,"execution")+' · 判断 '+effectiveStat147(m,"judgment")
+      +' · 学习 '+effectiveStat147(m,"learning")+' · 可靠 '+effectiveStat147(m,"reliability")+' · 沟通 '+effectiveStat147(m,"communication")
+      +'\n经验 '+(m.xp||0)+' · 培养 '+(m.training||0)+' · 返工 '+(m.rework||0)+'</div></div>';
+  }
+
+  window.showTeam147=function(){
+    var t=teamState147(),cap=headcountCap147(),canHire=(S.power||0)>=RECRUIT_POWER&&t.members.length<cap;
+    document.getElementById("scene-area").innerHTML='<div class="result-box"><h4>▎👥 我的团队</h4>'
+      +'<div class="result-text">编制 '+t.members.length+' / '+cap+'　·　招聘吸引力 '+playerAttraction147()+'　·　委派 '+t.delegated+'　·　返工接管 '+t.covered+''
+      +(cap===0?'\n\n需要至少 '+RECRUIT_POWER+' 权力才能获得第一个直属编制。':'')+'</div>'
+      +(t.members.length?t.members.map(staffCard147).join(''):'<div class="creator-note">你现在没有直属下属。所有额外交付最终都只能落回你自己。</div>')
+      +'<div class="choices">'
+      +(canHire?'<button class="choice" onclick="showRecruit147()"><span class="idx">R</span>发起招聘</button>':'')
+      +t.members.map(function(m,i){return '<button class="choice" onclick="trainStaff147('+i+')"><span class="idx">T</span>培养 '+m.name+'<span class="badge cost">⚡8</span></button>';}).join('')
+      +'<button class="choice" onclick="renderChapter()"><span class="idx">B</span>返回当前工作</button></div></div>';
+  };
+
+  window.showRecruit147=function(){
+    var t=teamState147(),cap=headcountCap147();
+    if((S.power||0)<RECRUIT_POWER){toast("至少需要 "+RECRUIT_POWER+" 权力才能争取直属编制","down");return;}
+    if(t.members.length>=cap){toast("当前权力只能支持 "+cap+" 个直属编制","down");return;}
+    var pool=candidatePool147();window._recruitPool147=pool;
+    document.getElementById("scene-area").innerHTML='<div class="result-box"><h4>▎📄 招聘 · 本轮候选人</h4>'
+      +'<div class="result-text">你的招聘吸引力：'+playerAttraction147()+'。更高的权力、履历、声誉、管理和社交能力，会提高成熟候选人进入面试池和接受offer的概率。</div>'
+      +pool.map(function(c,i){
+        var visible=c.ask<=playerAttraction147()+10;
+        return '<div class="intel-item"><div class="ih"><span class="it">'+c.name+' · '+c.role+'</span><span class="isrc">'+(visible?'可竞争':'Stretch candidate')+'</span></div>'
+          +'<div class="ib">'+c.bio+'\n简历初筛：专业/执行方向可见；判断力和可靠性需要通过面试确认。</div>'
+          +'<button class="btn" onclick="interviewCandidate147('+i+')">安排面试</button></div>';
+      }).join('')
+      +'<button class="btn" onclick="showTeam147()">返回团队</button></div>';
+  };
+
+  window.interviewCandidate147=function(i){
+    var c=(window._recruitPool147||[])[i];if(!c)return;
+    window._interview147=c;
+    document.getElementById("scene-area").innerHTML='<div class="scene"><div class="event-badge npc-ev">招聘互动</div>'
+      +'<div class="scene-title"><span class="accent">▎</span>'+c.name+' · '+c.role+'</div>'
+      +'<div class="scene-sub">你只有一轮深挖机会。问什么，会决定你真正看见什么。</div>'
+      +'<div class="vp-line">'+c.bio+'</div><div class="choices">'
+      +'<button class="choice" onclick="interviewStyle147(\'case\')"><span class="idx">A</span>给一个真实case，看TA怎么形成医学/业务判断</button>'
+      +'<button class="choice" onclick="interviewStyle147(\'execution\')"><span class="idx">B</span>追问一次失败交付：怎么发现、怎么补救、怎么避免重犯</button>'
+      +'<button class="choice" onclick="interviewStyle147(\'motivation\')"><span class="idx">C</span>讲清岗位真实处境，看TA为什么还愿意来</button>'
+      +'</div></div>';
+  };
+
+  window.interviewStyle147=function(style){
+    var c=window._interview147;if(!c)return;
+    var reveal="",bonus=0;
+    if(style==="case"){reveal="判断 "+c.stats.judgment+" · 专业 "+c.stats.professional;bonus=((S.player&&S.player.skills&&S.player.skills.professional)||0)>=55?4:0;}
+    else if(style==="execution"){reveal="可靠 "+c.stats.reliability+" · 执行 "+c.stats.execution;bonus=((S.player&&S.player.skills&&S.player.skills.management)||0)>=52?4:0;}
+    else {reveal="沟通 "+c.stats.communication+" · 学习 "+c.stats.learning;bonus=((S.player&&S.player.skills&&S.player.skills.social)||0)>=50?5:0;}
+    window._interviewStyle147={style:style,bonus:bonus};
+    var acceptance=playerAttraction147()+bonus-c.ask;
+    document.getElementById("scene-area").innerHTML='<div class="result-box"><h4>▎面试结果</h4>'
+      +'<div class="result-text">'+c.name+'没有给标准答案。\n\n你真正看见了：'+reveal+'。\n'
+      +(acceptance>=12?'TA明显对岗位有兴趣。':acceptance>=0?'双方都还在评估。':'TA在反向面试你：授权、团队质量和直属老板会是决定因素。')+'</div>'
+      +'<div class="choices"><button class="choice" onclick="offerCandidate147()"><span class="idx">O</span>发Offer</button>'
+      +'<button class="choice" onclick="showRecruit147()"><span class="idx">N</span>继续看其他人</button></div></div>';
+  };
+
+  window.offerCandidate147=function(){
+    var c=window._interview147,t=teamState147(),iv=window._interviewStyle147||{bonus:0};
+    if(!c)return;
+    var score=playerAttraction147()+iv.bonus-c.ask;
+    var chance=Math.max(.12,Math.min(.95,.52+score/55));
+    t.hireAttempts++;
+    if(Math.random()>chance){
+      S.reputation=clamp((S.reputation||0)-1);
+      showResult(c.name+'最后拒绝了Offer。\n\nHR转来的反馈很短：岗位本身有吸引力，但TA对授权边界和管理稳定性仍有顾虑。',
+        [{label:'招聘未成功',kind:'down'}],showTeam147);return;
+    }
+    var m=JSON.parse(JSON.stringify(c));m.growth={};m.xp=0;m.training=0;m.rework=0;m.confidence=50;m.hiredAt=chapterIdx;
+    t.members.push(m);
+    S.morale=clamp((S.morale||0)+2);
+    showResult(c.name+'接受了Offer。\n\n从现在开始，你不再只是决定自己怎么做事。你还要决定什么该交出去、交给谁、什么时候必须自己兜底。',
+      [{label:'👥 新直属下属：'+c.name,kind:'up'},{label:'团队士气 +2',kind:'up'}],showTeam147);
+  };
+
+  window.trainStaff147=function(i){
+    var t=teamState147(),m=t.members[i];if(!m)return;
+    if(t.trainingChapter===chapterIdx){toast("这一章你已经投入过一次正式培养","down");return;}
+    if((S.stamina||0)<8){toast("需要至少8体力进行一次有效培养","down");return;}
+    window._trainStaff147=i;
+    document.getElementById("scene-area").innerHTML='<div class="scene"><div class="event-badge npc-ev">1:1培养</div>'
+      +'<div class="scene-title"><span class="accent">▎</span>'+m.name+'</div>'
+      +'<div class="scene-sub">培养会占用你的管理容量，但会改变后续委派结果。</div><div class="choices">'
+      +'<button class="choice" onclick="finishTrain147(\'judgment\')"><span class="idx">A</span>复盘判断框架：不要只给答案<span class="badge cost">⚡8</span></button>'
+      +'<button class="choice" onclick="finishTrain147(\'execution\')"><span class="idx">B</span>拆交付标准和检查点<span class="badge cost">⚡8</span></button>'
+      +'<button class="choice" onclick="finishTrain147(\'communication\')"><span class="idx">C</span>让TA独立做一次stakeholder沟通演练<span class="badge cost">⚡8</span></button>'
+      +'</div></div>';
+  };
+
+  window.finishTrain147=function(kind){
+    var t=teamState147(),m=t.members[window._trainStaff147];if(!m)return;
+    S.stamina=clamp(S.stamina-8);S.heart=clamp(S.heart-2);t.trainingChapter=chapterIdx;m.training++;
+    if(!m.growth)m.growth={};
+    var learn=effectiveStat147(m,"learning"),gain=learn>=70?5:learn>=55?4:3;
+    if(kind==="judgment"){m.growth.judgment=(m.growth.judgment||0)+gain;m.growth.professional=(m.growth.professional||0)+2;}
+    if(kind==="execution"){m.growth.execution=(m.growth.execution||0)+gain;m.growth.reliability=(m.growth.reliability||0)+2;}
+    if(kind==="communication"){m.growth.communication=(m.growth.communication||0)+gain;m.growth.judgment=(m.growth.judgment||0)+1;}
+    m.confidence=Math.min(100,(m.confidence||50)+3);
+    showResult('你没有替'+m.name+'把下一次任务做掉，而是把这一次为什么成功/失败拆开。\n\n培养的收益不会立刻变成项目进度，但会改变以后哪些事情真的可以交出去。',
+      [{label:'⚡ 体力 -8',kind:'down'},{label:'❤️ 心力 -2',kind:'down'},{label:m.name+' 成长 +'+gain,kind:'up'}],showTeam147);
+  };
+
+  function delegationScore147(m,ev){
+    var meta=TASK_META_147[ev.id]||{domain:"handoff",difficulty:55},fit=(m.fit||[]).indexOf(meta.domain)>=0?8:0;
+    var technical=(meta.domain==="pi"||meta.domain==="competitor")?
+      effectiveStat147(m,"professional")*.25+effectiveStat147(m,"judgment")*.35+effectiveStat147(m,"communication")*.25+effectiveStat147(m,"reliability")*.15:
+      (meta.domain==="cro"||meta.domain==="site"||meta.domain==="version"||meta.domain==="handoff")?
+      effectiveStat147(m,"execution")*.32+effectiveStat147(m,"judgment")*.22+effectiveStat147(m,"reliability")*.30+effectiveStat147(m,"communication")*.16:
+      effectiveStat147(m,"professional")*.28+effectiveStat147(m,"judgment")*.30+effectiveStat147(m,"execution")*.20+effectiveStat147(m,"reliability")*.22;
+    var mgr=((S.player&&S.player.skills&&S.player.skills.management)||40);
+    return technical+fit+(m.xp||0)*.6+mgr*.08-meta.difficulty;
+  }
+
+  window.openDelegate147=function(){
+    var c=coverageState(),cur=c.current,t=teamState147();
+    if(!cur)return;
+    if((S.power||0)<RECRUIT_POWER){toast("至少需要 "+RECRUIT_POWER+" 权力才能真正把任务委派给直属下属","down");return;}
+    if(!t.members.length){toast("你还没有可以接任务的直属下属","down");return;}
+    var ev=DELIVERY_EVENTS_147.find(function(x){return x.id===cur.eventId;});if(!ev)return;
+    document.getElementById("scene-area").innerHTML='<div class="result-box"><h4>▎↪ 委派 · '+((TASK_META_147[ev.id]||{}).label||ev.title)+'</h4>'
+      +'<div class="result-text">委派不是“少做一点”。你需要选择谁来承担，并接受TA可能把工作重新弹回给你。</div>'
+      +t.members.map(function(m,i){
+        var score=delegationScore147(m,ev),hint=score>=14?'独立完成概率高':score>=2?'大概率需要复核':score>=-10?'明显返工风险':'不适合这项任务';
+        return '<button class="choice" onclick="delegateTo147('+i+')"><span class="idx">'+(i+1)+'</span>'+m.name+' · '+m.role
+          +'<span class="badge">'+hint+'</span></button>';
+      }).join('')
+      +'<button class="choice" onclick="renderCoverageDelivery147(window.DELIVERY_EVENTS_147.find(function(x){return x.id===coverageState().current.eventId}),coverageState().current.left,coverageState().current.next)"><span class="idx">B</span>返回</button></div>';
+  };
+
+  window.delegateTo147=function(i){
+    var c=coverageState(),cur=c.current,t=teamState147(),m=t.members[i];
+    if(!cur||!m)return;
+    var ev=DELIVERY_EVENTS_147.find(function(x){return x.id===cur.eventId;});if(!ev)return;
+    var score=delegationScore147(m,ev),roll=(Math.random()*32)-12,result=score+roll;
+    t.delegated++;m.xp=(m.xp||0)+1;
+    var deltas=[],left=Math.max(0,cur.left-1),next=cur.next;c.current=null;
+
+    if(result>=12){
+      c.completed++;c.highValue++;m.confidence=Math.min(100,(m.confidence||50)+4);
+      S.progress=clamp((S.progress||0)+2);S.merit=clamp((S.merit||0)+3);S.morale=clamp((S.morale||0)+2);
+      deltas=[{label:'📦 下属独立交付',kind:'up'},{label:'进度 +2',kind:'up'},{label:'功勋 +3',kind:'up'}];
+      showResult(m.name+'独立完成了这项工作。你只做了最终验收，没有重写。\n\n这是第一次这类任务完成以后，你的体力几乎没有变化。',
+        deltas,function(){if(left>0&&coverageSlots147()>0)renderCoverageDelivery147(pickDelivery147(),left,next);else next();});
+      return;
+    }
+
+    if(result>=-4){
+      c.completed++;c.rescue++;t.covered++;m.rework=(m.rework||0)+1;m.confidence=Math.max(0,(m.confidence||50)-2);
+      var cost=10;
+      S.stamina=clamp((S.stamina||0)-cost);S.heart=clamp((S.heart||0)-3);S.progress=clamp((S.progress||0)+1);
+      deltas=[{label:'⚡ 最终覆盖 -10',kind:'down'},{label:'❤️ 心力 -3',kind:'down'},{label:'进度 +1',kind:'up'}];
+      showResult(m.name+'做出了可用的第一版，但关键判断/边界没有关掉。\n\n你最后还是把电脑拉到自己面前，把它补成能发出去的版本。任务交出去了，责任没有。',
+        deltas,function(){if(left>0&&S.stamina>=COVERAGE_MIN_STAMINA)renderCoverageDelivery147(pickDelivery147(),left,next);else next();});
+      return;
+    }
+
+    c.failed++;t.failures++;t.covered++;m.rework=(m.rework||0)+1;m.confidence=Math.max(0,(m.confidence||50)-6);
+    var emergency=(S.stamina||0)>=18;
+    if(emergency){
+      S.stamina=clamp(S.stamina-18);S.heart=clamp(S.heart-6);S.blame=clamp((S.blame||0)+3);S.progress=clamp((S.progress||0)-1);
+      deltas=[{label:'⚡ 紧急返工 -18',kind:'down'},{label:'❤️ 心力 -6',kind:'down'},{label:'背锅风险 +3',kind:'down'},{label:'进度 -1',kind:'down'}];
+      showResult(m.name+'交回来的版本无法使用，而且已经接近deadline。\n\n你没有时间再教。你只能自己从头覆盖。弱下属最贵的地方不是工资，是你以为已经交出去的时间。',
+        deltas,function(){if(left>0&&S.stamina>=COVERAGE_MIN_STAMINA)renderCoverageDelivery147(pickDelivery147(),left,next);else next();});
+    }else{
+      S.heart=clamp(S.heart-8);S.blame=clamp((S.blame||0)+6);S.progress=clamp((S.progress||0)-4);
+      deltas=[{label:'❤️ 心力 -8',kind:'down'},{label:'背锅风险 +6',kind:'down'},{label:'进度 -4',kind:'down'}];
+      showResult(m.name+'的交付失败了，而你也已经没有足够体力把它重新做一遍。\n\n这一次，管理问题直接变成了项目问题。',
+        deltas,next);
+    }
+  };
+
+  /* Add delegation to each active coverage event without replacing authored choices. */
+  var oldRenderCoverage147=renderCoverageDelivery147;
+  renderCoverageDelivery147=function(ev,left,next){
+    oldRenderCoverage147(ev,left,next);
+    var box=document.querySelector&&document.querySelector("#scene-area .choices");
+    if(!box)return;
+    var t=teamState147();
+    if((S.power||0)>=RECRUIT_POWER&&t.members.length){
+      box.insertAdjacentHTML("beforeend",'<button class="choice" onclick="openDelegate147()"><span class="idx">D</span>交给下属负责，我只做最终验收<span class="badge">【管理】</span></button>');
+    }
+  };
+  window.renderCoverageDelivery147=renderCoverageDelivery147;
+
+  /* Handoff itself now requires real authority and a real direct report. */
+  var hand=DELIVERY_EVENTS_147.find(function(e){return e.id==="d147_handoff";});
+  if(hand&&hand.choices&&hand.choices[0]){
+    hand.choices[0].lock={power:RECRUIT_POWER};
+    hand.choices[0].t="建立owner和验收标准，再交给直属下属执行";
+    hand.choices[0].r="只有当你已经有真实的管理权和直属下属时，这句话才不是把活重新甩给空气。";
+  }
+
+  var oldHUDTeam147=renderHUD;
+  renderHUD=function(){
+    oldHUDTeam147();
+    var n=document.getElementById("npcs");if(!n)return;
+    var t=teamState147(),cap=headcountCap147(),chip=document.getElementById("team-chip-147");
+    if(!chip){
+      chip=document.createElement("span");chip.id="team-chip-147";chip.className="npc-chip intel-chip";
+      chip.style.cursor="pointer";chip.onclick=showTeam147;n.insertBefore(chip,n.firstChild);
+    }
+    chip.textContent="👥 团队 "+t.members.length+"/"+cap;
+    chip.title=(S.power||0)<RECRUIT_POWER?"权力达到 "+RECRUIT_POWER+" 后可争取第一个直属编制":"招聘、培养和查看直属下属";
+  };
+
+  var oldStartTeam147=startGame;
+  startGame=function(){oldStartTeam147();teamState147();renderHUD();};
+
+  var oldEndTeam147=showEnding;
+  showEnding=function(k){
+    var out=oldEndTeam147(k),t=teamState147(),box=document.getElementById("ending-stats");
+    if(box&&!document.getElementById("team-ending-147")){
+      var x=document.createElement("span");x.id="team-ending-147";x.className="s";
+      x.textContent="团队 "+t.members.length+" · 委派 "+t.delegated+" · 返工接管 "+t.covered+" · 失败 "+t.failures;
+      box.appendChild(x);
+    }
+    return out;
+  };
+})();
+
+/* =====================  v14.7 RECRUITMENT END  ===================== */
+
 /* =====================  v14.7 END  ===================== */
 
 buildCast();
