@@ -129,6 +129,13 @@ const result=run(`
         var ev=window._evObj.ev;
         pickEvent(chooseIndex(contextualChoiceList(ev.choices||[]),profile,'event'));continue;
       }
+      if(S&&S.coverage&&S.coverage.current){
+        var cev=(window.DELIVERY_EVENTS_147||[]).find(function(e){return e.id===S.coverage.current.eventId});
+        if(!cev){skipCoverage147();continue;}
+        var ci=profile==='random'?Math.floor(rnd()*cev.choices.length):
+          (profile==='appease'||profile==='love_appease'||profile==='power'?1:0);
+        pickCoverageDelivery147(Math.min(ci,cev.choices.length-1));continue;
+      }
       if(window._romEv){
         var rev=window._romEv.ev;
         pickRomanceEncounter(chooseIndex(contextualChoiceList(rev.choices||[]),profile,'private'));continue;
@@ -144,12 +151,20 @@ const result=run(`
     }
     if(guard>=140)throw new Error('balance-sim drain guard exceeded');
   }
-  function one(profile){
+  function applyStaminaBuild(build){
+    if(!S.player)S.player={};
+    if(!S.player.body)S.player.body={};
+    if(build==='low'){S.player.body.maxStamina=52;S.player.body.recovery=6;S.stamina=Math.min(S.stamina,52);}
+    else if(build==='high'){S.player.body.maxStamina=82;S.player.body.recovery=16;S.stamina=Math.max(S.stamina,78);}
+    else {S.player.body.maxStamina=66;S.player.body.recovery=10;S.stamina=Math.min(Math.max(S.stamina,60),66);}
+  }
+  function one(profile,build){
     localStorage.setItem('dragon_runs','0');
     window.__simEnding=null;window._next=null;window._evObj=null;window._romEv=null;window._homeEv=null;
     window._lovePending=false;projectBattleState=null;duelState=null;
     selectedDifficulty='${DIFFICULTY}';
     startGame();
+    applyStaminaBuild(build||'standard');
     showEnding=function(k){window.__simEnding=k;return k};
     var rests=0,steps=0;
     while(!window.__simEnding&&chapterIdx<18&&steps++<30){
@@ -163,7 +178,13 @@ const result=run(`
       id:window.__simEnding||'NO_END',rests:rests,love:!!flags.love,
       pi1:!!flags.piChainEvent1,pi2:!!flags.piChainEvent2,
       progress:S.progress,heart:S.heart,trust:S.trust,power:S.power,dragon:S.dragon,career:S.career,
-      support60:supportCount(60)
+      stamina:S.stamina,maxStamina:(S.player&&S.player.body&&S.player.body.maxStamina)||100,
+      support60:supportCount(60),
+      coverageCompleted:(S.coverage&&S.coverage.completed)||0,
+      coverageHighValue:(S.coverage&&S.coverage.highValue)||0,
+      coverageRescue:(S.coverage&&S.coverage.rescue)||0,
+      coverageFailed:(S.coverage&&S.coverage.failed)||0,
+      coverageSkipped:(S.coverage&&S.coverage.skipped)||0
     };
   }
 
@@ -171,14 +192,27 @@ const result=run(`
   profiles.forEach(function(profile){
     var counts={},rests=0,love=0,pi1=0,pi2=0,sum={progress:0,heart:0,trust:0,power:0,dragon:0,career:0,support60:0};
     for(var i=0;i<${N};i++){
-      var r=one(profile);
+      var r=one(profile,'standard');
       counts[r.id]=(counts[r.id]||0)+1;rests+=r.rests;love+=r.love?1:0;pi1+=r.pi1?1:0;pi2+=r.pi2?1:0;
       Object.keys(sum).forEach(function(k){sum[k]+=Number(r[k])||0});
     }
     Object.keys(sum).forEach(function(k){sum[k]/=${N}});
     out[profile]={N:${N},counts:counts,avgRests:rests/${N},loveRate:love/${N},pi1Rate:pi1/${N},pi2Rate:pi2/${N},avg:sum};
   });
-  return {seed:${SEED},N:${N},difficulty:'${DIFFICULTY}',profiles:out};
+  var coverageBuilds={};
+  ['low','standard','high'].forEach(function(build){
+    var csum={completed:0,highValue:0,rescue:0,failed:0,stamina:0,progress:0,dragon:0},counts={};
+    for(var j=0;j<${N};j++){
+      var rr=one('govern',build);
+      csum.completed+=rr.coverageCompleted;csum.highValue+=rr.coverageHighValue;
+      csum.rescue+=rr.coverageRescue;csum.failed+=rr.coverageFailed;
+      csum.stamina+=rr.stamina;csum.progress+=rr.progress;csum.dragon+=rr.dragon;
+      counts[rr.id]=(counts[rr.id]||0)+1;
+    }
+    Object.keys(csum).forEach(function(k){csum[k]/=${N}});
+    coverageBuilds[build]={N:${N},avg:csum,counts:counts};
+  });
+  return {seed:${SEED},N:${N},difficulty:'${DIFFICULTY}',profiles:out,coverageBuilds:coverageBuilds};
 })()
 `);
 
@@ -195,6 +229,12 @@ if(DIFFICULTY==='normal'){
   if(rate('dragon','true_dragon')<0.30)balanceBlockers.push(`dragon route too rare: ${rate('dragon','true_dragon').toFixed(3)}`);
   if(rate('love_appease','be_heart')>0.05)balanceBlockers.push(`love_appease heart death too high: ${rate('love_appease','be_heart').toFixed(3)}`);
   if(maxRandom>=0.45)balanceBlockers.push(`random route monopoly: ${maxRandom.toFixed(3)}`);
+  const cb=result.coverageBuilds||{};
+  if(cb.low&&cb.standard&&cb.high){
+    if(cb.low.avg.completed>2.5)balanceBlockers.push(`low-stamina coverage too high: ${cb.low.avg.completed.toFixed(2)}`);
+    if(cb.high.avg.completed<cb.standard.avg.completed+1.0)balanceBlockers.push(`high-stamina coverage advantage too small: high=${cb.high.avg.completed.toFixed(2)} standard=${cb.standard.avg.completed.toFixed(2)}`);
+    if(cb.high.avg.completed>7.5)balanceBlockers.push(`high-stamina coverage nearly always caps: ${cb.high.avg.completed.toFixed(2)}`);
+  }
 }
 if(balanceBlockers.length){
   console.error('BALANCE GATE FAIL\n'+balanceBlockers.map(x=>' - '+x).join('\n'));
