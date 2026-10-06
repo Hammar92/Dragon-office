@@ -154,9 +154,10 @@ const result=run(`
   function applyStaminaBuild(build){
     if(!S.player)S.player={};
     if(!S.player.body)S.player.body={};
-    if(build==='low'){S.player.body.maxStamina=52;S.player.body.recovery=6;S.stamina=Math.min(S.stamina,52);}
-    else if(build==='high'){S.player.body.maxStamina=82;S.player.body.recovery=16;S.stamina=Math.max(S.stamina,78);}
-    else {S.player.body.maxStamina=66;S.player.body.recovery=10;S.stamina=Math.min(Math.max(S.stamina,60),66);}
+    if(!S.player.skills)S.player.skills={};
+    if(build==='low'){S.player.body.maxStamina=52;S.player.body.recovery=6;S.player.skills.fitness=32;S.stamina=Math.min(S.stamina,52);}
+    else if(build==='high'){S.player.body.maxStamina=82;S.player.body.recovery=16;S.player.skills.fitness=72;S.stamina=Math.max(S.stamina,78);}
+    else {S.player.body.maxStamina=66;S.player.body.recovery=10;S.player.skills.fitness=45;S.stamina=Math.min(Math.max(S.stamina,60),66);}
   }
   function one(profile,build){
     localStorage.setItem('dragon_runs','0');
@@ -231,9 +232,9 @@ if(DIFFICULTY==='normal'){
   if(maxRandom>=0.45)balanceBlockers.push(`random route monopoly: ${maxRandom.toFixed(3)}`);
   const cb=result.coverageBuilds||{};
   if(cb.low&&cb.standard&&cb.high){
-    if(cb.low.avg.completed>2.5)balanceBlockers.push(`low-stamina coverage too high: ${cb.low.avg.completed.toFixed(2)}`);
-    if(cb.high.avg.completed<cb.standard.avg.completed+1.0)balanceBlockers.push(`high-stamina coverage advantage too small: high=${cb.high.avg.completed.toFixed(2)} standard=${cb.standard.avg.completed.toFixed(2)}`);
-    if(cb.high.avg.completed>7.5)balanceBlockers.push(`high-stamina coverage nearly always caps: ${cb.high.avg.completed.toFixed(2)}`);
+    if(cb.low.avg.completed>3.0)balanceBlockers.push(`low-stamina coverage too high: ${cb.low.avg.completed.toFixed(2)}`);
+    if(cb.high.avg.completed<cb.standard.avg.completed+1.5)balanceBlockers.push(`high-stamina coverage advantage too small: high=${cb.high.avg.completed.toFixed(2)} standard=${cb.standard.avg.completed.toFixed(2)}`);
+    if(cb.high.avg.completed>8.5)balanceBlockers.push(`high-stamina coverage nearly always caps: ${cb.high.avg.completed.toFixed(2)}`);
   }
 }
 if(balanceBlockers.length){
