@@ -7625,8 +7625,8 @@ renderLifeBuilder();
    More slots create more possible merit/output, but also more ways to burn heart, become a single
    point of failure, or accumulate Dragon-like control habits. */
 (function(){
-  const COVERAGE_RUN_CAP=8;
-  const COVERAGE_MIN_STAMINA=45;
+  const COVERAGE_RUN_CAP=10;
+  const COVERAGE_MIN_STAMINA=40;
 
   function coverageState(){
     if(!S.coverage)S.coverage={
@@ -7651,7 +7651,7 @@ renderLifeBuilder();
     /* The second slot is deliberately demanding: the player needs both a high ceiling and
        enough fuel left after the main work. This makes fitness/life-build choices matter without
        turning stamina into an automatic win stat. */
-    if(max>=72&&cur>=68)slots=2;
+    if(max>=72&&cur>=60)slots=2;
     return Math.min(slots,COVERAGE_RUN_CAP-c.completed);
   }
   window.coverageSlots147=coverageSlots147;
@@ -7696,6 +7696,26 @@ renderLifeBuilder();
       {t:"写一页decision log：已决定、未决定、owner、截止日。",e:{progress:3,power:2},npc:{mingye:4,kzong:4},hidden:{merit:6,reputation:4},record:"coverageDecisionLog",recordSource:"额外交付：决策留痕",coverage:{completed:1,highValue:1},r:"第二天有人想重新解释昨天的结论。你没有争，只把那一页重新投到屏幕上。"},
       {t:"你来替大家统一口径，直接写成一个版本。",e:{progress:4,power:3,dragon:2},npc:{mingye:-1},hidden:{merit:3},coverage:{completed:1,rescue:1},r:"口径终于统一。只是没有人记得自己什么时候同意过它。"},
       {t:"反正明天还会再开会，不额外记录。",e:{trust:1},hidden:{blame:2},coverage:{failed:1},r:"第二天第一场会的前二十分钟，用来回忆昨天第三场会到底定了什么。"}
+    ]},
+    {id:"d147_tfl",title:"额外交付 · TFL医学核对",from:"则韩",text:"则韩把一张即将锁版的关键TFL发给你。统计结果没问题，但脚注里把临床解释写成了结论。正式QC明天才开始，现在改最省事。",choices:[
+      {t:"只改医学解释和脚注边界，不碰统计结果。",e:{progress:2},npc:{zihan:5,mingye:3},hidden:{merit:4,reputation:3},coverage:{completed:1,highValue:1},r:"表没有变，结论变得能站住。则韩把你的修改标成Medical QC，而不是“顺手帮忙”。"},
+      {t:"既然看了，把整套TFL都医学review一遍。",e:{progress:3,heart:-4},npc:{zihan:2},hidden:{merit:2},coverage:{completed:1,rescue:1},r:"你找到了两个措辞问题，也让团队发现整套TFL都可以在下班后找你免费加一道QC。"},
+      {t:"等正式QC再说。",e:{trust:1},coverage:{failed:1},r:"流程没有错。第二天同一条脚注进入正式意见，流转了三个版本。"}
+    ]},
+    {id:"d147_mentor",title:"额外交付 · 带新人",from:"PVP",text:"PVP私下问你怎么看一个case。他不是要你替他签字，只是想确认自己的判断框架有没有漏。你今晚本来还有别的事。",choices:[
+      {t:"用十分钟让他自己讲时间关系、替代解释和证据缺口，你只补框架。",e:{morale:2},npc:{pvp:6},hidden:{merit:4,reputation:2},coverage:{completed:1,highValue:1},r:"最后的判断还是他自己说出来的。下次同类问题，他没有再先问你答案。"},
+      {t:"直接把你的判断和标准措辞发给他，让他照着写。",e:{progress:2,heart:-2},npc:{pvp:3},hidden:{merit:2},coverage:{completed:1,rescue:1},r:"今晚很快。下一次他仍然先问你怎么写。"},
+      {t:"让他按PV内部流程自己处理。",e:{power:1},npc:{pvp:-2},coverage:{failed:1},r:"边界很清楚。成长也被一起留在了边界外。"}
+    ]},
+    {id:"d147_competitor",title:"额外交付 · 竞品情报",from:"曹兰",text:"曹兰转来一条刚发布的竞品结果，明早老板大概率会问。新闻很多，但真正可能改变内部判断的只有终点定义、人群和停药后的结果。",choices:[
+      {t:"只做一页：可比什么、不可比什么、对当前策略有什么影响。",e:{power:1},npc:{caolan:5,ceo:2},hidden:{merit:4,reputation:4},coverage:{completed:1,highValue:1},r:"第二天老板问竞品时，你没有念新闻，而是直接说清楚为什么不能横向比较，以及哪一点值得警惕。"},
+      {t:"把竞品从一期到现在所有公开资料重新整理一遍。",e:{progress:2,heart:-4},npc:{caolan:2},hidden:{merit:2},coverage:{completed:1,rescue:1},r:"资料非常完整。老板最后只问了其中一个数字。"},
+      {t:"先不做，等老板真的问再查。",e:{trust:1},coverage:{failed:1},r:"第二天老板真的问了。会议里多了十二分钟现场搜索。"}
+    ]},
+    {id:"d147_handoff",title:"额外交付 · 把活交出去",from:"K总",text:"K总看见你又准备自己补一个跨部门缺口，问了一句：「这个真的只能你做吗？」任务本身不难，难的是找到合适owner并把标准说清楚。",choices:[
+      {t:"把交付标准写成三条，交给真正的owner，你只保留最终验收。",e:{power:2,morale:2},npc:{kzong:5},hidden:{merit:4,reputation:3},coverage:{completed:1,highValue:1},r:"事情完成得比你自己做慢一点，但下一次没有再回到你桌上。"},
+      {t:"今晚自己做掉，省得来回解释。",e:{progress:3,heart:-4},npc:{kzong:-1},hidden:{merit:2},coverage:{completed:1,rescue:1},r:"你确实更快。组织也更确定：凡是owner不清楚的活，最后都可以变成你的活。"},
+      {t:"明确拒绝，但不指定owner。",e:{heart:2},coverage:{failed:1},r:"你没有接。任务也没有自动长出负责人。"}
     ]}
   ];
   window.DELIVERY_EVENTS_147=DELIVERY_EVENTS_147;
@@ -7742,6 +7762,12 @@ renderLifeBuilder();
     var choice=presentedChoice(ev.choices,i);
     if(choice.lock&&!unlocked(choice))return;
     if(S.stamina<costStamina(choice)){toast("体力不足，无法覆盖这项交付","down");return;}
+    /* 第7项起进入边际收益递减：高体力继续看到更多内容，但不把Progress/Merit无限堆高。 */
+    if(c.completed>=6){
+      choice=Object.assign({},choice,{e:Object.assign({},choice.e||{}),hidden:Object.assign({},choice.hidden||{})});
+      if((choice.e.progress||0)>1)choice.e.progress=1;
+      if((choice.hidden.merit||0)>2)choice.hidden.merit=2;
+    }
     var deltas=applyChoice(choice),m=choice.coverage||{};
     c.completed+=Number(m.completed)||0;
     c.highValue+=Number(m.highValue)||0;
@@ -7786,7 +7812,7 @@ renderLifeBuilder();
       chip=document.createElement("span");
       chip.id="coverage-chip-147";
       chip.className="npc-chip";
-      chip.title="高体力/高体力上限会增加本章可覆盖的额外交付；最多2项/章、8项/局。";
+      chip.title="高体力/高体力上限会增加本章可覆盖的额外交付；最多2项/章、10项/局。";
       n.insertBefore(chip,n.firstChild);
     }
     chip.textContent="📦 额外交付 "+c.completed+"/"+COVERAGE_RUN_CAP+" · 当前可覆盖 "+slots;
