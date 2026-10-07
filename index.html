@@ -321,7 +321,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.7</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.8</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -8751,6 +8751,16 @@ renderLifeBuilder();
   }catch(e){}
   mountAppearanceCreator();
 
+  /* The life-builder re-renders its whole root. Re-mount appearance after every rebuild. */
+  if(typeof renderLifeBuilder==="function"){
+    var oldRenderLifeAppearance=renderLifeBuilder;
+    renderLifeBuilder=function(){
+      oldRenderLifeAppearance();
+      mountAppearanceCreator();
+    };
+    window.renderLifeBuilder=renderLifeBuilder;
+  }
+
   /* Re-render appearance after gender/age changes. */
   if(typeof setLifeGender==="function"){
     var oldGenderAppearance=setLifeGender;
@@ -8815,20 +8825,33 @@ renderLifeBuilder();
   window.npcAvatar1478=npcAvatar1478;
 
   /* Upgrade existing dialogue renderer without touching event data. */
-  if(typeof window.dialogueHTML==="function"){
-    var oldDialogueHTML1478=window.dialogueHTML;
-    window.dialogueHTML=function(text,defaultSpeaker){
-      var html=oldDialogueHTML1478(text,defaultSpeaker);
-      var wrap=document.createElement("div");wrap.innerHTML=html;
-      Array.from(wrap.querySelectorAll(".dialogue-row")).forEach(function(row){
-        var n=row.querySelector(".dialogue-name"),face=row.querySelector(".dialogue-face");
-        if(n&&face){
-          face.innerHTML=npcAvatar1478(n.textContent.trim());
-          face.classList.add("dialogue-face-art");
-        }
-      });
-      return wrap.innerHTML;
-    };
+  function decorateDialogue1478(){
+    Array.from(document.querySelectorAll(".dialogue-row")).forEach(function(row){
+      var n=row.querySelector(".dialogue-name"),face=row.querySelector(".dialogue-face");
+      if(n&&face&&!face.classList.contains("dialogue-face-art")){
+        face.innerHTML=npcAvatar1478(n.textContent.trim());
+        face.classList.add("dialogue-face-art");
+      }
+    });
+  }
+  window.decorateDialogue1478=decorateDialogue1478;
+
+  /* Existing chapter/event renderers keep private references to the old dialogue builder.
+     Decorate the DOM after each render so every dialogue path receives a portrait. */
+  if(typeof renderChapter==="function"){
+    var oldRenderChapterAppearance=renderChapter;
+    renderChapter=function(){oldRenderChapterAppearance();decorateDialogue1478();refreshPlayerAvatar1478();};
+    window.renderChapter=renderChapter;
+  }
+  if(typeof renderEventFromObj==="function"){
+    var oldRenderEventAppearance=renderEventFromObj;
+    renderEventFromObj=function(){oldRenderEventAppearance();decorateDialogue1478();};
+    window.renderEventFromObj=renderEventFromObj;
+  }
+  if(typeof renderHUD==="function"){
+    var oldHUDAppearance=renderHUD;
+    renderHUD=function(){oldHUDAppearance();refreshPlayerAvatar1478();decorateDialogue1478();};
+    window.renderHUD=renderHUD;
   }
 
   var style=document.createElement("style");
