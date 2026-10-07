@@ -8597,6 +8597,253 @@ renderLifeBuilder();
 
 /* =====================  v14.7 RECRUITMENT END  ===================== */
 
+
+/* =====================  v14.8 · PRESET APPEARANCE / DIALOGUE PORTRAITS  ===================== */
+(function(){
+  const APPEARANCE_OPTIONS={
+    body:[
+      ["slim","偏瘦"],["standard","标准"],["balanced","匀称"],["strong","微壮"],["round","圆润"],
+      ["tall","高挑"],["petite","娇小"],["broad","肩宽"],["soft","柔和"],["desk","久坐型"]
+    ],
+    hair:[
+      ["short","短直发"],["side","侧分"],["medium","齐肩"],["layered","层次短发"],["wave","微卷"],
+      ["pony","低马尾"],["highpony","高马尾"],["bun","盘发"],["slick","后梳"],["natural","自然蓬松"]
+    ],
+    face:[
+      ["oval","鹅蛋脸"],["round","圆脸"],["square","方脸"],["long","长脸"],["narrow","窄脸"],
+      ["diamond","菱形"],["heart","心形"],["softsquare","方圆脸"],["defined","轮廓分明"],["widejaw","宽下颌"]
+    ],
+    makeup:[
+      ["none","素净"],["light","淡妆/清爽"],["office","通勤"],["sharp","干练"],["soft","温和"],
+      ["cool","冷静"],["tired","疲惫感"],["natural","自然"],["formal","正式"],["warm","亲和"]
+    ],
+    hairColor:[
+      ["black","纯黑"],["naturalblack","自然黑"],["darkbrown","深棕"],["chestnut","栗棕"],["coolbrown","冷棕"],
+      ["lightbrown","浅棕"],["grayblack","灰黑"],["salt","少量白发"],["silvermix","灰白混合"],["softblack","柔黑"]
+    ],
+    outfit:[
+      ["navy","深蓝西装"],["charcoal","炭灰西装"],["casual","商务休闲"],["academic","学术型"],["executive","高管风"],
+      ["medical","医学经理"],["minimal","极简"],["classic","传统"],["youngpro","年轻专业"],["meeting","会议日"]
+    ]
+  };
+  window.APPEARANCE_OPTIONS=APPEARANCE_OPTIONS;
+
+  const APPEARANCE_PRESETS=[
+    {id:"calm",name:"沉稳通勤",a:{body:"standard",hair:"side",face:"oval",makeup:"office",hairColor:"naturalblack",outfit:"navy"}},
+    {id:"sharp",name:"干练项目经理",a:{body:"balanced",hair:"short",face:"defined",makeup:"sharp",hairColor:"black",outfit:"charcoal"}},
+    {id:"academic",name:"学者型",a:{body:"slim",hair:"natural",face:"long",makeup:"natural",hairColor:"darkbrown",outfit:"academic"}},
+    {id:"friendly",name:"亲和协调",a:{body:"soft",hair:"medium",face:"round",makeup:"warm",hairColor:"chestnut",outfit:"casual"}},
+    {id:"executive",name:"高管型",a:{body:"broad",hair:"slick",face:"square",makeup:"formal",hairColor:"grayblack",outfit:"executive"}},
+    {id:"young",name:"年轻专业",a:{body:"balanced",hair:"layered",face:"heart",makeup:"light",hairColor:"coolbrown",outfit:"youngpro"}},
+    {id:"tired",name:"被项目磨过",a:{body:"desk",hair:"natural",face:"softsquare",makeup:"tired",hairColor:"softblack",outfit:"medical"}},
+    {id:"field",name:"现场派",a:{body:"strong",hair:"short",face:"widejaw",makeup:"none",hairColor:"black",outfit:"casual"}},
+    {id:"minimal",name:"极简派",a:{body:"slim",hair:"side",face:"narrow",makeup:"cool",hairColor:"naturalblack",outfit:"minimal"}},
+    {id:"senior",name:"资深研发",a:{body:"standard",hair:"slick",face:"defined",makeup:"natural",hairColor:"salt",outfit:"classic"}},
+    {id:"warm",name:"温和管理",a:{body:"round",hair:"wave",face:"round",makeup:"soft",hairColor:"darkbrown",outfit:"meeting"}},
+    {id:"independent",name:"我有自己的样子",a:{body:"petite",hair:"highpony",face:"diamond",makeup:"natural",hairColor:"lightbrown",outfit:"medical"}}
+  ];
+  window.APPEARANCE_PRESETS=APPEARANCE_PRESETS;
+
+  var DEFAULT_APPEARANCE=Object.assign({preset:"calm"},APPEARANCE_PRESETS[0].a);
+  window.PLAYER_APPEARANCE_DRAFT=Object.assign({},DEFAULT_APPEARANCE);
+
+  function appearanceAgeBand(){
+    var a=window.PLAYER_AGE||"g3";
+    return {g1:0,g2:1,g3:2,g4:3,g5:4,g6:5}[a]||2;
+  }
+
+  function pickOption(group,key){
+    var arr=APPEARANCE_OPTIONS[group]||[];
+    return arr.find(function(x){return x[0]===key;})||arr[0]||["",""];
+  }
+
+  function svgEscape(v){return String(v).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+  function avatarSVG1478(ap,gender,small){
+    ap=ap||DEFAULT_APPEARANCE;gender=gender||((window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified");
+    var age=appearanceAgeBand();
+    var skin=gender==="female"?"#e9c2a5":"#ddb493";
+    var hairMap={black:"#171717",naturalblack:"#24201f",darkbrown:"#3c2d29",chestnut:"#5b3829",coolbrown:"#4b403b",lightbrown:"#76513c",grayblack:"#4b4b4b",salt:"#555",silvermix:"#777",softblack:"#292526"};
+    var hair=hairMap[ap.hairColor]||"#222";
+    var shirt=ap.outfit==="charcoal"?"#dce5ef":ap.outfit==="casual"?"#efe6da":"#e8eef6";
+    var jacket=ap.outfit==="youngpro"?"#253f63":ap.outfit==="academic"?"#423c43":ap.outfit==="casual"?"#59616d":"#252b36";
+    var bodyW={slim:76,standard:86,balanced:90,strong:100,round:104,tall:82,petite:80,broad:108,soft:98,desk:102}[ap.body]||88;
+    var rx={oval:28,round:31,square:24,long:26,narrow:23,diamond:25,heart:27,softsquare:28,defined:24,widejaw:30}[ap.face]||28;
+    var headH={long:55,round:48,oval:51,narrow:53,diamond:51,heart:50,square:49,softsquare:50,defined:50,widejaw:49}[ap.face]||51;
+    var makeupColor={sharp:"#8f4f59",formal:"#a05c63",warm:"#b86b72",soft:"#b57d82",light:"#c28488",office:"#a96b73"}[ap.makeup]||"#9d6868";
+    var wrinkles=age>=4?'<path d="M56 62 q8 3 16 0 M88 62 q8 3 16 0" stroke="#b38770" stroke-width="1" fill="none" opacity=".45"/>':'';
+    var hairPath="";
+    if(["short","layered","natural"].includes(ap.hair)) hairPath='M48 42 Q80 8 112 42 L108 60 Q82 44 50 60 Z';
+    else if(["side","slick"].includes(ap.hair)) hairPath='M46 45 Q77 9 114 37 Q95 30 61 55 Z';
+    else if(["medium","wave"].includes(ap.hair)) hairPath='M45 43 Q80 8 115 42 L116 94 Q105 77 105 60 Q80 40 53 60 Q54 80 44 95 Z';
+    else if(["pony","highpony"].includes(ap.hair)) hairPath='M46 43 Q80 9 114 42 L108 62 Q80 42 52 61 Z M109 48 Q131 56 124 91 Q116 73 106 69 Z';
+    else if(ap.hair==="bun") hairPath='M47 43 Q80 10 113 43 L108 61 Q80 42 52 61 Z M72 23 Q81 8 92 23 Q84 29 72 23 Z';
+    else hairPath='M46 44 Q80 7 114 42 L108 61 Q80 42 52 61 Z';
+
+    var eyeLine=ap.makeup==="tired"?'M59 68 q6 3 12 0 M89 68 q6 3 12 0':'';
+    var beard=gender==="male"&&["none","natural"].includes(ap.makeup)?'<path d="M66 94 Q80 102 94 94" stroke="#8b6c5b" stroke-width="1.2" opacity=".18"/>':'';
+    var lip=gender==="female"?makeupColor:"#925f5a";
+    var size=small?120:220;
+    return '<svg class="appearance-svg" width="'+size+'" height="'+Math.round(size*1.18)+'" viewBox="0 0 160 188" xmlns="http://www.w3.org/2000/svg">'
+      +'<rect width="160" height="188" rx="18" fill="#d9d7d5"/>'
+      +'<path d="M'+(80-bodyW/2)+' 184 Q'+(80-bodyW/2+3)+' 125 80 120 Q'+(80+bodyW/2-3)+' 125 '+(80+bodyW/2)+' 184 Z" fill="'+jacket+'"/>'
+      +'<path d="M58 184 L65 124 L80 143 L95 124 L102 184 Z" fill="'+shirt+'"/>'
+      +'<rect x="72" y="111" width="16" height="18" rx="7" fill="'+skin+'"/>'
+      +'<ellipse cx="80" cy="77" rx="'+rx+'" ry="'+headH+'" fill="'+skin+'"/>'
+      +'<path d="'+hairPath+'" fill="'+hair+'"/>'
+      +'<ellipse cx="67" cy="72" rx="3.2" ry="2.3" fill="#352a28"/><ellipse cx="93" cy="72" rx="3.2" ry="2.3" fill="#352a28"/>'
+      +(eyeLine?'<path d="'+eyeLine+'" stroke="#8d6f68" stroke-width="1" fill="none" opacity=".5"/>':'')
+      +'<path d="M78 76 Q80 84 77 87" stroke="#b3826d" stroke-width="1.4" fill="none"/>'
+      +'<path d="M70 96 Q80 101 90 96" stroke="'+lip+'" stroke-width="'+(ap.makeup==="formal"||ap.makeup==="sharp"?2.3:1.8)+'" fill="none" stroke-linecap="round"/>'
+      +wrinkles+beard
+      +'</svg>';
+  }
+  window.avatarSVG1478=avatarSVG1478;
+
+  function renderAppearanceCreator(){
+    var root=document.getElementById("appearance-creator-1478");if(!root)return;
+    var ap=window.PLAYER_APPEARANCE_DRAFT,gender=(window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified";
+    function chips(group){
+      return APPEARANCE_OPTIONS[group].map(function(x){
+        return '<button type="button" class="creator-chip '+(ap[group]===x[0]?'selected':'')+'" onclick="setAppearance1478(\''+group+'\',\''+x[0]+'\')">'+x[1]+'</button>';
+      }).join("");
+    }
+    var makeupLabel=gender==="male"?"气质/修饰":"妆容/气质";
+    root.innerHTML='<div class="appearance-layout"><div class="appearance-preview">'
+      +avatarSVG1478(ap,gender,false)
+      +'<div class="appearance-caption">'+svgEscape((gender==="female"?"女":gender==="male"?"男":"中性"))+' · '+svgEscape((window.AGE_OPTIONS&&AGE_OPTIONS[window.PLAYER_AGE]?AGE_OPTIONS[window.PLAYER_AGE].label:""))+'</div></div>'
+      +'<div class="appearance-controls"><div class="sec-title" style="margin-top:0">外观预设</div><div class="appearance-preset-grid">'
+      +APPEARANCE_PRESETS.map(function(p){return '<button class="appearance-preset '+(ap.preset===p.id?'selected':'')+'" onclick="applyAppearancePreset1478(\''+p.id+'\')">'+p.name+'</button>';}).join("")
+      +'</div><div class="appearance-group"><b>体型</b><div class="ng-wrap">'+chips("body")+'</div></div>'
+      +'<div class="appearance-group"><b>发型</b><div class="ng-wrap">'+chips("hair")+'</div></div>'
+      +'<div class="appearance-group"><b>脸型</b><div class="ng-wrap">'+chips("face")+'</div></div>'
+      +'<div class="appearance-group"><b>'+makeupLabel+'</b><div class="ng-wrap">'+chips("makeup")+'</div></div>'
+      +'<div class="appearance-group"><b>发色</b><div class="ng-wrap">'+chips("hairColor")+'</div></div>'
+      +'<div class="appearance-group"><b>服装</b><div class="ng-wrap">'+chips("outfit")+'</div></div>'
+      +'<div class="creator-note">预设只负责快速组合。你可以在预设基础上逐项修改；这些选择不改变能力数值，只改变人物外观和对话头像。</div></div></div>';
+  }
+  window.renderAppearanceCreator1478=renderAppearanceCreator;
+
+  window.applyAppearancePreset1478=function(id){
+    var p=APPEARANCE_PRESETS.find(function(x){return x.id===id;});if(!p)return;
+    window.PLAYER_APPEARANCE_DRAFT=Object.assign({preset:id},p.a);
+    try{localStorage.setItem("dragon_appearance_1478",JSON.stringify(window.PLAYER_APPEARANCE_DRAFT));}catch(e){}
+    renderAppearanceCreator();
+  };
+  window.setAppearance1478=function(group,key){
+    if(!APPEARANCE_OPTIONS[group])return;
+    window.PLAYER_APPEARANCE_DRAFT[group]=key;
+    window.PLAYER_APPEARANCE_DRAFT.preset="custom";
+    try{localStorage.setItem("dragon_appearance_1478",JSON.stringify(window.PLAYER_APPEARANCE_DRAFT));}catch(e){}
+    renderAppearanceCreator();
+  };
+
+  function mountAppearanceCreator(){
+    var root=document.getElementById("character-creator");if(!root||document.getElementById("appearance-creator-1478"))return;
+    var box=document.createElement("div");box.id="appearance-creator-1478";box.className="appearance-creator";
+    root.insertBefore(box,root.firstChild);
+    renderAppearanceCreator();
+  }
+
+  try{
+    var saved=JSON.parse(localStorage.getItem("dragon_appearance_1478")||"null");
+    if(saved)window.PLAYER_APPEARANCE_DRAFT=Object.assign({},DEFAULT_APPEARANCE,saved);
+  }catch(e){}
+  mountAppearanceCreator();
+
+  /* Re-render appearance after gender/age changes. */
+  if(typeof setLifeGender==="function"){
+    var oldGenderAppearance=setLifeGender;
+    setLifeGender=function(g){oldGenderAppearance(g);setTimeout(renderAppearanceCreator,0);};
+    window.setLifeGender=setLifeGender;
+  }
+  if(typeof setPlayerAge==="function"){
+    var oldAgeAppearance=setPlayerAge;
+    setPlayerAge=function(a){oldAgeAppearance(a);setTimeout(renderAppearanceCreator,0);};
+    window.setPlayerAge=setPlayerAge;
+  }
+
+  /* Persist into the canonical player object after all earlier creator wrappers finish. */
+  var oldStartAppearance=startGame;
+  startGame=function(){
+    oldStartAppearance();
+    if(S&&S.player){
+      S.player.appearance=Object.assign({},window.PLAYER_APPEARANCE_DRAFT);
+      S.player.appearance.gender=S.player.gender;
+      S.player.appearance.age=S.player.age;
+    }
+  };
+
+  /* Player side panel portrait. */
+  function refreshPlayerAvatar1478(){
+    if(!S||!S.player)return;
+    var el=document.querySelector(".pm-avatar");if(!el)return;
+    el.innerHTML=avatarSVG1478(S.player.appearance||window.PLAYER_APPEARANCE_DRAFT,S.player.gender,true);
+    el.classList.add("pm-avatar-art");
+  }
+  var oldLifePanelAppearance=window.renderLifeSimPanels;
+  if(typeof oldLifePanelAppearance==="function"){
+    window.renderLifeSimPanels=function(){oldLifePanelAppearance();refreshPlayerAvatar1478();};
+  }
+
+  /* Dialogue portrait infrastructure. NPCs use stable generated visual presets now; replacing
+     any character with a final image later only requires setting NPC_PORTRAIT_URLS[name]. */
+  window.NPC_PORTRAIT_URLS=window.NPC_PORTRAIT_URLS||{};
+  var NPC_VISUALS_1478={
+    "钟时":{g:"female",p:"tired",h:"medium",f:"softsquare",c:"naturalblack",o:"medical",b:"round"},
+    "老板":{g:"male",p:"executive",h:"side",f:"narrow",c:"grayblack",o:"executive",b:"slim"},
+    "二老板":{g:"male",p:"academic",h:"short",f:"long",c:"salt",o:"academic",b:"slim"},
+    "小圆":{g:"male",p:"warm",h:"natural",f:"oval",c:"naturalblack",o:"casual",b:"standard"},
+    "加琳":{g:"female",p:"cool",h:"medium",f:"defined",c:"black",o:"charcoal",b:"balanced"},
+    "PVP":{g:"male",p:"soft",h:"natural",f:"oval",c:"black",o:"medical",b:"slim"},
+    "明夜":{g:"male",p:"sharp",h:"layered",f:"narrow",c:"black",o:"youngpro",b:"slim"},
+    "则韩":{g:"male",p:"natural",h:"side",f:"oval",c:"black",o:"navy",b:"standard"},
+    "肖恩":{g:"female",p:"cool",h:"pony",f:"oval",c:"darkbrown",o:"charcoal",b:"balanced"},
+    "一建":{g:"female",p:"office",h:"side",f:"defined",c:"naturalblack",o:"navy",b:"standard"},
+    "杨杨":{g:"female",p:"light",h:"pony",f:"heart",c:"darkbrown",o:"youngpro",b:"petite"},
+    "琳琳":{g:"female",p:"warm",h:"medium",f:"round",c:"darkbrown",o:"casual",b:"standard"},
+    "K总":{g:"male",p:"natural",h:"side",f:"square",c:"grayblack",o:"classic",b:"standard"},
+    "黑娜":{g:"female",p:"formal",h:"medium",f:"defined",c:"naturalblack",o:"executive",b:"balanced"}
+  };
+  function npcAvatar1478(name){
+    var url=window.NPC_PORTRAIT_URLS[name];
+    if(url)return '<img class="dialogue-portrait-img" src="'+svgEscape(url)+'" alt="">';
+    var v=NPC_VISUALS_1478[name]||{g:"unspecified",p:"natural",h:"short",f:"oval",c:"black",o:"navy",b:"standard"};
+    var ap={body:v.b,hair:v.h,face:v.f,makeup:v.p,hairColor:v.c,outfit:v.o};
+    return avatarSVG1478(ap,v.g,true);
+  }
+  window.npcAvatar1478=npcAvatar1478;
+
+  /* Upgrade existing dialogue renderer without touching event data. */
+  if(typeof window.dialogueHTML==="function"){
+    var oldDialogueHTML1478=window.dialogueHTML;
+    window.dialogueHTML=function(text,defaultSpeaker){
+      var html=oldDialogueHTML1478(text,defaultSpeaker);
+      var wrap=document.createElement("div");wrap.innerHTML=html;
+      Array.from(wrap.querySelectorAll(".dialogue-row")).forEach(function(row){
+        var n=row.querySelector(".dialogue-name"),face=row.querySelector(".dialogue-face");
+        if(n&&face){
+          face.innerHTML=npcAvatar1478(n.textContent.trim());
+          face.classList.add("dialogue-face-art");
+        }
+      });
+      return wrap.innerHTML;
+    };
+  }
+
+  var style=document.createElement("style");
+  style.textContent=
+    '.appearance-creator{border-bottom:1px dashed var(--line);padding-bottom:16px;margin-bottom:16px}.appearance-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;align-items:start}'
+   +'.appearance-preview{position:sticky;top:12px;text-align:center;background:#eee9e4;border:1px solid var(--line);border-radius:14px;padding:10px}.appearance-preview svg{max-width:100%;height:auto}.appearance-caption{font-size:12px;color:var(--dim);margin-top:4px}'
+   +'.appearance-preset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.appearance-preset{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;padding:8px 6px;font-size:11.5px;cursor:pointer}.appearance-preset.selected{border-color:var(--accent);color:var(--accent)}'
+   +'.appearance-group{border-top:1px dashed var(--line);padding-top:9px;margin-top:9px}.appearance-group>b{display:block;font-size:12px;color:var(--dim);margin-bottom:6px}'
+   +'.pm-avatar-art{overflow:hidden;background:#d9d7d5!important;padding:0!important}.pm-avatar-art svg{width:100%;height:100%;display:block;object-fit:cover}'
+   +'.dialogue-face-art{overflow:hidden;padding:0!important;background:#d9d7d5!important;border-radius:12px!important}.dialogue-face-art svg,.dialogue-portrait-img{width:100%;height:100%;object-fit:cover;display:block}'
+   +'@media(max-width:700px){.appearance-layout{grid-template-columns:1fr}.appearance-preview{position:static}.appearance-preview svg{width:150px}.appearance-preset-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}';
+  document.head.appendChild(style);
+})();
+/* =====================  v14.8 APPEARANCE END  ===================== */
+
 /* =====================  v14.7 END  ===================== */
 
 buildCast();
