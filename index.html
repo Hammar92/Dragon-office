@@ -321,7 +321,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v15.2</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v15.2.1</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -9307,17 +9307,49 @@ renderLifeBuilder();
 
 /* =====================  v15.2 · COMPLETE PORTRAIT INTEGRATION  ===================== */
 (function(){
+  /* v15.2.1 hotfix:
+     the originally uploaded NPC sheet was truncated in GitHub and only its first row
+     decodes reliably. Keep every portrait on a guaranteed-valid first-row slot until
+     the full binary sheet is replaced. */
   const NPC_INDEX={
-    "钟时":26,"老板":12,"二老板":4,"小圆":25,"邹婷":14,"加琳":6,"PVP":17,
-    "明夜":21,"则韩":22,"肖恩":0,"一建":23,"苏苏":11,"杨杨":16,"琳琳":9,
-    "武总":13,"贤人":7,"曹兰":8,"谷雨":24,"瑞冬":2,"Parker":10,"朱粽":15,
-    "黑娜":19,"MK主任":20,"N院长":27,"林主任":5,"K总":3,"林丹":26
+    "钟时":2,
+    "老板":5,
+    "二老板":4,
+    "小圆":3,
+    "邹婷":2,
+    "加琳":3,
+    "PVP":0,
+    "明夜":0,
+    "则韩":5,
+    "肖恩":1,
+    "一建":3,
+    "苏苏":2,
+    "杨杨":1,
+    "琳琳":2,
+    "武总":5,
+    "贤人":0,
+    "曹兰":0,
+    "谷雨":3,
+    "瑞冬":1,
+    "Parker":5,
+    "朱粽":1,
+    "黑娜":3,
+    "MK主任":4,
+    "N院长":4,
+    "林主任":5,
+    "K总":2,
+    "林丹":1
   };
   window.NPC_PORTRAIT_INDEX=NPC_INDEX;
 
   function spriteStyle152(asset,index,cols,rows){
     cols=cols||6;rows=rows||5;
     var col=index%cols,row=Math.floor(index/cols);
+    /* npc asset hotfix: only use the first decoded row of the current repository image */
+    if(asset.indexOf('npc_portraits_sheet.jpg')>=0){
+      var nx=cols===1?0:(col/(cols-1))*100;
+      return 'background-image:url('+asset+');background-size:'+(cols*100)+'% auto;background-position:'+nx+'% 0%;background-repeat:no-repeat;background-color:#d8d5d2;';
+    }
     var x=cols===1?0:(col/(cols-1))*100;
     var y=rows===1?0:(row/(rows-1))*100;
     return 'background-image:url('+asset+');background-size:'+(cols*100)+'% '+(rows*100)+'%;background-position:'+x+'% '+y+'%;background-repeat:no-repeat;background-color:#d8d5d2;';
