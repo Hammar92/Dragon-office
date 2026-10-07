@@ -314,6 +314,26 @@
   .ach-name{font-weight:800;font-size:12.5px;color:#5a463c}
   .ach-comment{font-size:11.5px;line-height:1.55;color:#897365;margin-top:5px}
   @media(max-width:600px){.ach-list{grid-template-columns:1fr}}
+#creator-screen{padding:0!important;max-width:none!important;text-align:left!important;min-height:100vh;background:#f2eee7;color:#263449}
+#creator-screen *{box-sizing:border-box}
+.cc-shell{display:grid;grid-template-columns:205px minmax(440px,1fr) 330px;min-height:100vh;background:#f5f1ea;font-family:system-ui,sans-serif}
+.cc-nav{background:linear-gradient(170deg,#111d2d,#182b40);color:#dce4ed;padding:28px 0;position:sticky;top:0;height:100vh}
+.cc-brand{padding:0 20px 30px;font:11px Georgia;letter-spacing:2px;color:#98aabd}.cc-brand b{display:block;font:23px Georgia;letter-spacing:0;color:#e8e0d2;margin:7px 0}.cc-brand small{font-size:11px}
+.cc-nav>button{display:flex;gap:14px;align-items:center;width:100%;padding:18px 15px;border:0;border-left:3px solid transparent;background:transparent;color:inherit;text-align:left;cursor:pointer}.cc-nav>button>span{width:36px;height:36px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;background:#8696a9;color:#112338;font-size:20px;font-weight:700}.cc-nav>button.active{border-left-color:#5dbbf9;background:linear-gradient(90deg,#17629265,transparent);color:white}.cc-nav>button.active>span{background:#f1e2c6;box-shadow:0 0 20px #67b2e347}.cc-nav>button.cc-back{margin-top:20px;font-size:12px;color:#a9baca}.cc-nav>p{font:italic 12px Georgia;color:#7d8b9c;line-height:1.7;padding:25px}
+.cc-main{padding:28px 24px 40px;min-width:0;background:radial-gradient(at 70% 0,#fffdf9,#f5f1ea 70%)}.cc-main h1{margin:0 0 7px;font:700 30px Georgia,serif;color:#0c2b50}.cc-subtitle{font-size:12px;color:#7c7e7f;line-height:1.7;margin:0 0 22px}.cc-main h2{font-size:15px;color:#243b57;margin:22px 0 12px}.cc-main h2>span{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#eed5a7;color:#34322e;margin-right:5px}.cc-main h3{font-size:12px;margin:0 0 8px;color:#37475a}
+.cc-identity{border:1px solid #dcd5ca;background:#ffffff70;border-radius:10px;padding:13px;display:flex;gap:12px;flex-wrap:wrap}.cc-identity>div{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.cc-identity b{font-size:12px}.cc-segment{display:flex;gap:3px;flex-wrap:wrap;background:#e6e1da;border-radius:7px;padding:3px}.cc-segment button{border:0;background:transparent;padding:8px 11px;border-radius:5px;color:#243954;font:600 12px system-ui;cursor:pointer}.cc-segment button.selected{background:#123455;color:white;box-shadow:0 2px 6px #14375c3b}
+.cc-template,.cc-option{border:1px solid #d8d0c4;border-radius:7px;background:#fffdf8;color:#354459;padding:4px;cursor:pointer;text-align:left;min-width:0;overflow:hidden}.cc-template.selected,.cc-option.selected{border-color:#206eaa;box-shadow:0 0 0 2px #3985bb44;background:#f4faff}.cc-templates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.cc-template-photo{display:block;width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:4px}.cc-template b{display:block;font-size:12px;margin:8px 4px 3px}.cc-template small{font-size:10px;color:#87919a;display:block;margin:0 4px 6px}.cc-templates>.cc-placeholder{grid-column:1/-1;min-height:150px;border:1px dashed #c6c0b4;background:#ede8df}
+.cc-reset{float:right;padding:5px 8px;font-size:11px;background:transparent;border:1px solid #c7c0b5;border-radius:5px;cursor:pointer;color:#6b747c}.cc-details{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cc-detail-group{border:1px solid #d9d1c5;background:#ffffff75;border-radius:8px;padding:10px;min-width:0}.cc-detail-group:nth-child(6),.cc-detail-group:nth-child(7){grid-column:1/-1}.cc-options{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}.cc-option{text-align:center;padding:3px;position:relative}.cc-option>span:last-child{display:block;font-size:9px;line-height:1.5;padding:4px 0 2px;overflow-wrap:anywhere}.cc-option.selected:after{content:'✓';position:absolute;right:2px;top:2px;background:#286f9e;color:white;font-size:10px;width:14px;height:14px;border-radius:50%}.cc-option:disabled{cursor:default;opacity:.55}.cc-thumb{width:100%;height:65px;display:block;object-fit:cover;background:#d9d3c9;border-radius:4px}.cc-thumb.cc-hair,.cc-thumb.cc-hairColor,.cc-thumb.cc-outfit,.cc-thumb.cc-accessory,.cc-thumb.cc-pose{object-fit:contain}.cc-thumb.cc-body{object-position:50% 90%;height:90px}.cc-thumb.cc-face,.cc-thumb.cc-makeup,.cc-thumb.cc-expression{object-position:50% 21%;object-fit:cover;height:65px;aspect-ratio:1}.cc-no-accessory{display:grid;place-items:center;height:65px;background:#ded9ce;color:#8d7957;font-size:30px;border-radius:4px}.cc-thumb.color-1{filter:sepia(.3)}.cc-thumb.color-2{filter:sepia(.7)}.cc-thumb.color-3{filter:sepia(1) saturate(1.5)}.cc-thumb.color-4{filter:sepia(.4) saturate(.5)}.cc-thumb.color-5{filter:sepia(1) brightness(1.6)}.cc-thumb.color-6{filter:grayscale(1) brightness(1.5)}.cc-thumb.color-7{filter:grayscale(1) brightness(2)}.cc-thumb.color-8{filter:grayscale(1) brightness(2.8)}.cc-thumb.color-9{filter:sepia(1) saturate(2) hue-rotate(325deg)}
+.cc-preview{padding:22px 18px;background:linear-gradient(160deg,#292b2c,#162132);color:#f5f0e7;position:sticky;top:0;align-self:start;min-height:100vh}.cc-preview>h2{font:700 19px Georgia;margin:0 0 15px}.cc-preview-frame{width:100%;aspect-ratio:3/4;max-height:55vh;border:1px solid #64707b;border-radius:9px;overflow:hidden;background:#5c6164}.cc-preview-photo{width:100%;height:100%;object-fit:cover;display:block;object-position:50% 18%}.cc-placeholder{height:100%;display:grid;place-items:center;text-align:center;color:#8b939a;font-size:13px;line-height:1.8;padding:22px}.cc-preview .cc-placeholder{color:#c4cbd1}.cc-info{padding:12px;background:#111d2bb3;border:1px solid #42505d;border-radius:8px;margin-top:12px}.cc-info h3{margin:0 0 10px;font-size:13px}.cc-info dl{display:grid;grid-template-columns:70px 1fr;gap:5px 8px;font-size:11px;margin:0}.cc-info dt{color:#a3b2c0}.cc-info dd{margin:0;color:#eee}.cc-status{font-size:11px;line-height:1.6;margin:10px 0;color:#8c9ba8;min-height:18px}.cc-primary{background:linear-gradient(110deg,#164976,#1e6595);color:white;border:1px solid #1c608f;border-radius:7px;padding:12px 18px;font-weight:700;cursor:pointer}.cc-primary:disabled{opacity:.45;cursor:default}.cc-preview>.cc-primary{width:100%;margin-top:15px;background:linear-gradient(100deg,#c59b55,#efd2a0);border-color:#ddb573;color:#29333c}
+.cc-basic-note,.cc-confirm-card{padding:25px;border:1px solid #dcd4c8;border-radius:10px;background:#ffffff80;line-height:1.8;margin:24px 0;color:#4f6277}.cc-basic-note p{font-size:13px}.cc-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cc-stats>div{border:1px solid #ded7cd;background:#fffaf2;border-radius:7px;padding:12px;position:relative;overflow:hidden;font-size:12px;color:#5a6977}.cc-stats b{float:right;color:#173c61}.cc-stats i{position:absolute;bottom:0;left:0;height:3px;background:#3b7fb1}.cc-footer{display:flex;justify-content:space-between;gap:10px;margin-top:25px}.cc-footer button:not(.cc-primary){padding:10px 15px;background:transparent;border:1px solid #b9b3aa;border-radius:7px;color:#475667;cursor:pointer}
+#cc-ng-slot{margin-top:20px;color:var(--text);--panel:#fffaf2;--panel2:#f5eee4;--text:#28384b;--dim:#6f7b83;--line:#d5cbbb;--accent:#927244}.cc-main .ng-stepper{color:#33435a}.cc-main .ng-head{color:#263e5a}.cc-main .creator-note{color:#77818a}.cc-main .life-event{background:#fffaf2;color:#263e50;border-color:#d7ccbd}.cc-main .life-desc{color:#76818b}.cc-main .life-stage-head{color:#283e55}.cc-main .life-stage-desc{color:#7d8489}.cc-main .life-stage{border-color:#d6cebf}.cc-main .creator-stats span{color:#3d556a;background:#ede8dc}.cc-main .trait.common{color:#63686c}.cc-main .trait.uncommon{color:#368049}.cc-main .trait-row{font-size:12px}#cc-life-slot>.creator-row{display:none}.cc-main .difficulty-card{color:#344b60;background:#fffaf2;border-color:#d6cbb9}.cc-main .difficulty-desc{color:#737d86}
+.portrait-np{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:start}.np-portrait{width:96px;height:128px;object-fit:cover;object-position:50% 18%;border-radius:10px;display:block;border:1px solid #bca98d;flex-shrink:0}.np-copy{min-width:0}.portrait-meta{font-size:10px;line-height:1.6;color:var(--dim);margin:5px 0}.vp-dossier-layout{display:grid;grid-template-columns:180px minmax(0,1fr);gap:20px;align-items:start}.vp-portrait-final{width:180px;aspect-ratio:3/4;object-fit:cover;border-radius:10px}.dialogue-face{width:54px!important;height:72px!important;border-radius:9px!important;overflow:hidden;background:#ded6ca!important}.dialogue-portrait-img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block}.pm-avatar-photo{width:100%!important;max-width:160px!important;height:auto!important;aspect-ratio:3/4;border-radius:10px!important;overflow:hidden;padding:0!important}.pm-player-photo{width:100%;height:100%;object-fit:cover;display:block}.portrait-initial{display:grid;place-items:center;height:100%;font-size:14px}
+@media(min-width:1550px){.cc-shell{grid-template-columns:225px minmax(440px,1fr) 390px}.cc-options{grid-template-columns:repeat(10,minmax(0,1fr))}.cc-detail-group{grid-column:1/-1}.cc-main{padding:30px 35px}.cc-template-photo{aspect-ratio:1.3/1;object-position:50% 12%}}
+@media(max-width:1120px){.cc-shell{grid-template-columns:165px minmax(350px,1fr) 280px}.cc-brand b{font-size:19px}.cc-main{padding:22px 16px}.cc-nav>button{padding:15px 10px;gap:9px}.cc-nav>button b{font-size:12px}.cc-details{grid-template-columns:1fr}.cc-detail-group{grid-column:1/-1}.cc-thumb{height:70px}}
+@media(max-width:820px){.cc-shell{grid-template-columns:minmax(0,1fr)}.cc-nav{position:static;height:auto;padding:8px;display:flex;gap:4px;overflow:auto}.cc-brand,.cc-nav>p,.cc-nav>.cc-back{display:none}.cc-nav>button{width:auto;min-width:110px;border-left:0;border-bottom:3px solid transparent;padding:8px 4px}.cc-nav>button.active{border-bottom-color:#70b8e8}.cc-nav>button>span{width:26px;height:26px;font-size:13px}.cc-preview{position:static;min-height:0;display:grid;grid-template-columns:180px minmax(0,1fr);gap:10px;padding:16px}.cc-preview>h2{grid-column:1/-1}.cc-preview-frame{grid-column:1;grid-row:2/5;max-height:none}.cc-preview>.cc-status,.cc-info,.cc-preview>.cc-primary{grid-column:2;margin:0}.cc-info dl{font-size:10px;gap:4px}.cc-preview>.cc-primary{align-self:end}.cc-main h1{font-size:26px}.cc-main{padding:20px 16px}.vp-dossier-layout{grid-template-columns:140px minmax(0,1fr)}.vp-portrait-final{width:140px}}
+@media(max-width:480px){.cc-preview{grid-template-columns:135px minmax(0,1fr);gap:8px;padding:12px}.cc-preview-frame{aspect-ratio:3/4;grid-row:2/4}.cc-preview>.cc-primary{grid-column:1/-1;margin-top:8px}.cc-info{padding:8px}.cc-info h3{font-size:11px}.cc-info dl{grid-template-columns:55px 1fr;font-size:9px;gap:3px}.cc-preview>.cc-status{font-size:9px}.cc-identity{padding:10px;gap:10px}.cc-segment button{font-size:11px;padding:7px 8px}.cc-template b{font-size:10px}.cc-template small{font-size:9px}.cc-main{padding:18px 12px}.cc-details{gap:10px}.cc-options{gap:4px}.cc-thumb{height:58px}.cc-option>span:last-child{font-size:8px}.cc-basic-note,.cc-confirm-card{padding:15px}.portrait-np{grid-template-columns:78px minmax(0,1fr);gap:10px}.np-portrait{width:78px;height:104px}.vp-dossier-layout{grid-template-columns:1fr}.vp-portrait-final{width:150px;margin:auto}.cc-stats{grid-template-columns:1fr 1fr}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
 </style>
 </head>
 <body data-page-node-id="zufCBekY8A4x5CCBsDU0kr">
@@ -6949,7 +6969,7 @@ renderLifeBuilder();
     paras.forEach(function(p){
       var d=parseParagraph(p,defaultSpeaker);
       if(d){
-        html+='<div class="dialogue-row"><div class="dialogue-speaker"><div class="dialogue-face">'+faceLabel(d.speaker)+'</div><div class="dialogue-name">'+esc(d.speaker)+'</div></div>'
+        html+='<div class="dialogue-row"><div class="dialogue-speaker"><div class="dialogue-face">'+PortraitResolver.npc(d.speaker,'dialogue-portrait-img')+'</div><div class="dialogue-name">'+esc(d.speaker)+'</div></div>'
           +'<div class="dialogue-bubble">'+(d.speaker!==lastSpeaker?'<span class="dialogue-action">'+esc(speakerRole(d.speaker))+'</span>':'')+esc(d.speech)
           +(d.tail?'<div class="dialogue-action" style="margin-top:7px">'+esc(d.tail)+'</div>':'')+'</div></div>';
         lastSpeaker=d.speaker;
@@ -8598,1198 +8618,956 @@ renderLifeBuilder();
 /* =====================  v14.7 RECRUITMENT END  ===================== */
 
 
-/* =====================  v14.8 · PRESET APPEARANCE / DIALOGUE PORTRAITS  ===================== */
+/* ===================== CharacterCreatorV2 · v16.0.0 ===================== */
 (function(){
-  const APPEARANCE_OPTIONS={
-    body:[
-      ["slim","偏瘦"],["standard","标准"],["balanced","匀称"],["strong","微壮"],["round","圆润"],
-      ["tall","高挑"],["petite","娇小"],["broad","肩宽"],["soft","柔和"],["desk","久坐型"]
-    ],
-    hair:[
-      ["short","短直发"],["side","侧分"],["medium","齐肩"],["layered","层次短发"],["wave","微卷"],
-      ["pony","低马尾"],["highpony","高马尾"],["bun","盘发"],["slick","后梳"],["natural","自然蓬松"]
-    ],
-    face:[
-      ["oval","鹅蛋脸"],["round","圆脸"],["square","方脸"],["long","长脸"],["narrow","窄脸"],
-      ["diamond","菱形"],["heart","心形"],["softsquare","方圆脸"],["defined","轮廓分明"],["widejaw","宽下颌"]
-    ],
-    makeup:[
-      ["none","素净"],["light","淡妆/清爽"],["office","通勤"],["sharp","干练"],["soft","温和"],
-      ["cool","冷静"],["tired","疲惫感"],["natural","自然"],["formal","正式"],["warm","亲和"]
-    ],
-    hairColor:[
-      ["black","纯黑"],["naturalblack","自然黑"],["darkbrown","深棕"],["chestnut","栗棕"],["coolbrown","冷棕"],
-      ["lightbrown","浅棕"],["grayblack","灰黑"],["salt","少量白发"],["silvermix","灰白混合"],["softblack","柔黑"]
-    ],
-    outfit:[
-      ["navy","深蓝西装"],["charcoal","炭灰西装"],["casual","商务休闲"],["academic","学术型"],["executive","高管风"],
-      ["medical","医学经理"],["minimal","极简"],["classic","传统"],["youngpro","年轻专业"],["meeting","会议日"]
-    ]
-  };
-  window.APPEARANCE_OPTIONS=APPEARANCE_OPTIONS;
-
-  const APPEARANCE_PRESETS=[
-    {id:"calm",name:"沉稳通勤",a:{body:"standard",hair:"side",face:"oval",makeup:"office",hairColor:"naturalblack",outfit:"navy"}},
-    {id:"sharp",name:"干练项目经理",a:{body:"balanced",hair:"short",face:"defined",makeup:"sharp",hairColor:"black",outfit:"charcoal"}},
-    {id:"academic",name:"学者型",a:{body:"slim",hair:"natural",face:"long",makeup:"natural",hairColor:"darkbrown",outfit:"academic"}},
-    {id:"friendly",name:"亲和协调",a:{body:"soft",hair:"medium",face:"round",makeup:"warm",hairColor:"chestnut",outfit:"casual"}},
-    {id:"executive",name:"高管型",a:{body:"broad",hair:"slick",face:"square",makeup:"formal",hairColor:"grayblack",outfit:"executive"}},
-    {id:"young",name:"年轻专业",a:{body:"balanced",hair:"layered",face:"heart",makeup:"light",hairColor:"coolbrown",outfit:"youngpro"}},
-    {id:"tired",name:"被项目磨过",a:{body:"desk",hair:"natural",face:"softsquare",makeup:"tired",hairColor:"softblack",outfit:"medical"}},
-    {id:"field",name:"现场派",a:{body:"strong",hair:"short",face:"widejaw",makeup:"none",hairColor:"black",outfit:"casual"}},
-    {id:"minimal",name:"极简派",a:{body:"slim",hair:"side",face:"narrow",makeup:"cool",hairColor:"naturalblack",outfit:"minimal"}},
-    {id:"senior",name:"资深研发",a:{body:"standard",hair:"slick",face:"defined",makeup:"natural",hairColor:"salt",outfit:"classic"}},
-    {id:"warm",name:"温和管理",a:{body:"round",hair:"wave",face:"round",makeup:"soft",hairColor:"darkbrown",outfit:"meeting"}},
-    {id:"independent",name:"我有自己的样子",a:{body:"petite",hair:"highpony",face:"diamond",makeup:"natural",hairColor:"lightbrown",outfit:"medical"}}
-  ];
-  window.APPEARANCE_PRESETS=APPEARANCE_PRESETS;
-
-  var DEFAULT_APPEARANCE=Object.assign({preset:"calm"},APPEARANCE_PRESETS[0].a);
-  window.PLAYER_APPEARANCE_DRAFT=Object.assign({},DEFAULT_APPEARANCE);
-
-  function appearanceAgeBand(){
-    var a=window.PLAYER_AGE||"g3";
-    return {g1:0,g2:1,g3:2,g4:3,g5:4,g6:5}[a]||2;
-  }
-
-  function pickOption(group,key){
-    var arr=APPEARANCE_OPTIONS[group]||[];
-    return arr.find(function(x){return x[0]===key;})||arr[0]||["",""];
-  }
-
-  function svgEscape(v){return String(v).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
-
-  function avatarSVG1478(ap,gender,small){
-    ap=ap||DEFAULT_APPEARANCE;gender=gender||((window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified");
-    var age=appearanceAgeBand();
-    var skin=gender==="female"?"#e9c2a5":"#ddb493";
-    var hairMap={black:"#171717",naturalblack:"#24201f",darkbrown:"#3c2d29",chestnut:"#5b3829",coolbrown:"#4b403b",lightbrown:"#76513c",grayblack:"#4b4b4b",salt:"#555",silvermix:"#777",softblack:"#292526"};
-    var hair=hairMap[ap.hairColor]||"#222";
-    var shirt=ap.outfit==="charcoal"?"#dce5ef":ap.outfit==="casual"?"#efe6da":"#e8eef6";
-    var jacket=ap.outfit==="youngpro"?"#253f63":ap.outfit==="academic"?"#423c43":ap.outfit==="casual"?"#59616d":"#252b36";
-    var bodyW={slim:76,standard:86,balanced:90,strong:100,round:104,tall:82,petite:80,broad:108,soft:98,desk:102}[ap.body]||88;
-    var rx={oval:28,round:31,square:24,long:26,narrow:23,diamond:25,heart:27,softsquare:28,defined:24,widejaw:30}[ap.face]||28;
-    var headH={long:55,round:48,oval:51,narrow:53,diamond:51,heart:50,square:49,softsquare:50,defined:50,widejaw:49}[ap.face]||51;
-    var makeupColor={sharp:"#8f4f59",formal:"#a05c63",warm:"#b86b72",soft:"#b57d82",light:"#c28488",office:"#a96b73"}[ap.makeup]||"#9d6868";
-    var wrinkles=age>=4?'<path d="M56 62 q8 3 16 0 M88 62 q8 3 16 0" stroke="#b38770" stroke-width="1" fill="none" opacity=".45"/>':'';
-    var hairPath="";
-    if(["short","layered","natural"].includes(ap.hair)) hairPath='M48 42 Q80 8 112 42 L108 60 Q82 44 50 60 Z';
-    else if(["side","slick"].includes(ap.hair)) hairPath='M46 45 Q77 9 114 37 Q95 30 61 55 Z';
-    else if(["medium","wave"].includes(ap.hair)) hairPath='M45 43 Q80 8 115 42 L116 94 Q105 77 105 60 Q80 40 53 60 Q54 80 44 95 Z';
-    else if(["pony","highpony"].includes(ap.hair)) hairPath='M46 43 Q80 9 114 42 L108 62 Q80 42 52 61 Z M109 48 Q131 56 124 91 Q116 73 106 69 Z';
-    else if(ap.hair==="bun") hairPath='M47 43 Q80 10 113 43 L108 61 Q80 42 52 61 Z M72 23 Q81 8 92 23 Q84 29 72 23 Z';
-    else hairPath='M46 44 Q80 7 114 42 L108 61 Q80 42 52 61 Z';
-
-    var eyeLine=ap.makeup==="tired"?'M59 68 q6 3 12 0 M89 68 q6 3 12 0':'';
-    var beard=gender==="male"&&["none","natural"].includes(ap.makeup)?'<path d="M66 94 Q80 102 94 94" stroke="#8b6c5b" stroke-width="1.2" opacity=".18"/>':'';
-    var lip=gender==="female"?makeupColor:"#925f5a";
-    var size=small?120:220;
-    return '<svg class="appearance-svg" width="'+size+'" height="'+Math.round(size*1.18)+'" viewBox="0 0 160 188" xmlns="http://www.w3.org/2000/svg">'
-      +'<rect width="160" height="188" rx="18" fill="#d9d7d5"/>'
-      +'<path d="M'+(80-bodyW/2)+' 184 Q'+(80-bodyW/2+3)+' 125 80 120 Q'+(80+bodyW/2-3)+' 125 '+(80+bodyW/2)+' 184 Z" fill="'+jacket+'"/>'
-      +'<path d="M58 184 L65 124 L80 143 L95 124 L102 184 Z" fill="'+shirt+'"/>'
-      +'<rect x="72" y="111" width="16" height="18" rx="7" fill="'+skin+'"/>'
-      +'<ellipse cx="80" cy="77" rx="'+rx+'" ry="'+headH+'" fill="'+skin+'"/>'
-      +'<path d="'+hairPath+'" fill="'+hair+'"/>'
-      +'<ellipse cx="67" cy="72" rx="3.2" ry="2.3" fill="#352a28"/><ellipse cx="93" cy="72" rx="3.2" ry="2.3" fill="#352a28"/>'
-      +(eyeLine?'<path d="'+eyeLine+'" stroke="#8d6f68" stroke-width="1" fill="none" opacity=".5"/>':'')
-      +'<path d="M78 76 Q80 84 77 87" stroke="#b3826d" stroke-width="1.4" fill="none"/>'
-      +'<path d="M70 96 Q80 101 90 96" stroke="'+lip+'" stroke-width="'+(ap.makeup==="formal"||ap.makeup==="sharp"?2.3:1.8)+'" fill="none" stroke-linecap="round"/>'
-      +wrinkles+beard
-      +'</svg>';
-  }
-  window.avatarSVG1478=avatarSVG1478;
-
-  function renderAppearanceCreator(){
-    var root=document.getElementById("appearance-creator-1478");if(!root)return;
-    var ap=window.PLAYER_APPEARANCE_DRAFT,gender=(window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified";
-    function chips(group){
-      return APPEARANCE_OPTIONS[group].map(function(x){
-        return '<button type="button" class="creator-chip '+(ap[group]===x[0]?'selected':'')+'" onclick="setAppearance1478(\''+group+'\',\''+x[0]+'\')">'+x[1]+'</button>';
-      }).join("");
+  'use strict';
+  const DATA = {
+  "version": "16.0.0",
+  "npc": [
+    {
+      "id": "zhongshi",
+      "name": "钟时",
+      "gender": "female",
+      "age": "45–50",
+      "body": "微胖",
+      "portrait": "assets/portraits/npc/zhongshi.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "ceo",
+      "name": "老板",
+      "gender": "male",
+      "age": "48–55",
+      "body": "偏瘦",
+      "portrait": "assets/portraits/npc/ceo.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "cso",
+      "name": "二老板",
+      "gender": "male",
+      "age": "58–63",
+      "body": "偏瘦",
+      "portrait": "assets/portraits/npc/cso.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "xiaoyuan",
+      "name": "小圆",
+      "gender": "female",
+      "age": "40–48",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/xiaoyuan.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "zouting",
+      "name": "邹婷",
+      "gender": "female",
+      "age": "45–52",
+      "body": "微圆润",
+      "portrait": "assets/portraits/npc/zouting.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "jialin",
+      "name": "加琳",
+      "gender": "female",
+      "age": "40–48",
+      "body": "匀称",
+      "portrait": "assets/portraits/npc/jialin.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "pvp",
+      "name": "PVP",
+      "gender": "male",
+      "age": "32–38",
+      "body": "偏瘦",
+      "portrait": "assets/portraits/npc/pvp.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "mingye",
+      "name": "明夜",
+      "gender": "male",
+      "age": "28–33",
+      "body": "偏瘦",
+      "portrait": "assets/portraits/npc/mingye.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "zihan",
+      "name": "则韩",
+      "gender": "male",
+      "age": "42–45",
+      "body": "强壮",
+      "portrait": "assets/portraits/npc/zihan.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "xiaoen",
+      "name": "肖恩",
+      "gender": "male",
+      "age": "42–45",
+      "body": "微胖",
+      "portrait": "assets/portraits/npc/xiaoen.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "yijian",
+      "name": "一建",
+      "gender": "female",
+      "age": "35–42",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/yijian.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "weilai",
+      "name": "苏苏",
+      "gender": "female",
+      "age": "40–48",
+      "body": "偏瘦",
+      "portrait": "assets/portraits/npc/weilai.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "yangyang",
+      "name": "杨杨",
+      "gender": "female",
+      "age": "28–34",
+      "body": "娇小 / 匀称",
+      "portrait": "assets/portraits/npc/yangyang.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "miaomiao",
+      "name": "琳琳",
+      "gender": "female",
+      "age": "35–42",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/miaomiao.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "wuzong",
+      "name": "武总",
+      "gender": "male",
+      "age": "45–52",
+      "body": "偏壮",
+      "portrait": "assets/portraits/npc/wuzong.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "xianren",
+      "name": "贤人",
+      "gender": "male",
+      "age": "38–45",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/xianren.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "caolan",
+      "name": "曹兰",
+      "gender": "male",
+      "age": "38–45",
+      "body": "匀称",
+      "portrait": "assets/portraits/npc/caolan.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "guyu",
+      "name": "谷雨",
+      "gender": "female",
+      "age": "35–42",
+      "body": "偏瘦",
+      "portrait": "assets/portraits/npc/guyu.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "ruidong",
+      "name": "瑞冬",
+      "gender": "female",
+      "age": "30–36",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/ruidong.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "parker",
+      "name": "Parker",
+      "gender": "male",
+      "age": "32–38",
+      "body": "匀称",
+      "portrait": "assets/portraits/npc/parker.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "zhuzong",
+      "name": "朱粽",
+      "gender": "female",
+      "age": "38–45",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/zhuzong.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "heina",
+      "name": "黑娜",
+      "gender": "female",
+      "age": "35–42",
+      "body": "匀称",
+      "portrait": "assets/portraits/npc/heina.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "kzong",
+      "name": "K总",
+      "gender": "female",
+      "age": "45–52",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/kzong.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "linan",
+      "name": "林丹",
+      "gender": "female",
+      "age": "28–34",
+      "body": "娇小",
+      "portrait": "assets/portraits/npc/linan.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "houpi",
+      "name": "MK主任",
+      "gender": "male",
+      "age": "50–60",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/houpi.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "niupi",
+      "name": "N院长",
+      "gender": "male",
+      "age": "60–68",
+      "body": "偏瘦",
+      "portrait": "assets/portraits/npc/niupi.webp",
+      "portraitPosition": "50% 18%"
+    },
+    {
+      "id": "zhangpi",
+      "name": "林主任",
+      "gender": "male",
+      "age": "48–58",
+      "body": "标准",
+      "portrait": "assets/portraits/npc/zhangpi.webp",
+      "portraitPosition": "50% 18%"
     }
-    var makeupLabel=gender==="male"?"气质/修饰":"妆容/气质";
-    root.innerHTML='<div class="appearance-layout"><div class="appearance-preview">'
-      +avatarSVG1478(ap,gender,false)
-      +'<div class="appearance-caption">'+svgEscape((gender==="female"?"女":gender==="male"?"男":"中性"))+' · '+svgEscape((window.AGE_OPTIONS&&AGE_OPTIONS[window.PLAYER_AGE]?AGE_OPTIONS[window.PLAYER_AGE].label:""))+'</div></div>'
-      +'<div class="appearance-controls"><div class="sec-title" style="margin-top:0">外观预设</div><div class="appearance-preset-grid">'
-      +APPEARANCE_PRESETS.map(function(p){return '<button class="appearance-preset '+(ap.preset===p.id?'selected':'')+'" onclick="applyAppearancePreset1478(\''+p.id+'\')">'+p.name+'</button>';}).join("")
-      +'</div><div class="appearance-group"><b>体型</b><div class="ng-wrap">'+chips("body")+'</div></div>'
-      +'<div class="appearance-group"><b>发型</b><div class="ng-wrap">'+chips("hair")+'</div></div>'
-      +'<div class="appearance-group"><b>脸型</b><div class="ng-wrap">'+chips("face")+'</div></div>'
-      +'<div class="appearance-group"><b>'+makeupLabel+'</b><div class="ng-wrap">'+chips("makeup")+'</div></div>'
-      +'<div class="appearance-group"><b>发色</b><div class="ng-wrap">'+chips("hairColor")+'</div></div>'
-      +'<div class="appearance-group"><b>服装</b><div class="ng-wrap">'+chips("outfit")+'</div></div>'
-      +'<div class="creator-note">预设只负责快速组合。你可以在预设基础上逐项修改；这些选择不改变能力数值，只改变人物外观和对话头像。</div></div></div>';
-  }
-  window.renderAppearanceCreator1478=renderAppearanceCreator;
-
-  window.applyAppearancePreset1478=function(id){
-    var p=APPEARANCE_PRESETS.find(function(x){return x.id===id;});if(!p)return;
-    window.PLAYER_APPEARANCE_DRAFT=Object.assign({preset:id},p.a);
-    try{localStorage.setItem("dragon_appearance_1478",JSON.stringify(window.PLAYER_APPEARANCE_DRAFT));}catch(e){}
-    renderAppearanceCreator();
-  };
-  window.setAppearance1478=function(group,key){
-    if(!APPEARANCE_OPTIONS[group])return;
-    window.PLAYER_APPEARANCE_DRAFT[group]=key;
-    window.PLAYER_APPEARANCE_DRAFT.preset="custom";
-    try{localStorage.setItem("dragon_appearance_1478",JSON.stringify(window.PLAYER_APPEARANCE_DRAFT));}catch(e){}
-    renderAppearanceCreator();
-  };
-
-  function mountAppearanceCreator(){
-    var root=document.getElementById("character-creator");if(!root||document.getElementById("appearance-creator-1478"))return;
-    var box=document.createElement("div");box.id="appearance-creator-1478";box.className="appearance-creator";
-    root.insertBefore(box,root.firstChild);
-    renderAppearanceCreator();
-  }
-
-  try{
-    var saved=JSON.parse(localStorage.getItem("dragon_appearance_1478")||"null");
-    if(saved)window.PLAYER_APPEARANCE_DRAFT=Object.assign({},DEFAULT_APPEARANCE,saved);
-  }catch(e){}
-  mountAppearanceCreator();
-
-  /* The life-builder re-renders its whole root. Re-mount appearance after every rebuild. */
-  if(typeof renderLifeBuilder==="function"){
-    var oldRenderLifeAppearance=renderLifeBuilder;
-    renderLifeBuilder=function(){
-      oldRenderLifeAppearance();
-      mountAppearanceCreator();
-    };
-    window.renderLifeBuilder=renderLifeBuilder;
-  }
-
-  /* Re-render appearance after gender/age changes. */
-  if(typeof setLifeGender==="function"){
-    var oldGenderAppearance=setLifeGender;
-    setLifeGender=function(g){oldGenderAppearance(g);setTimeout(renderAppearanceCreator,0);};
-    window.setLifeGender=setLifeGender;
-  }
-  if(typeof setPlayerAge==="function"){
-    var oldAgeAppearance=setPlayerAge;
-    setPlayerAge=function(a){oldAgeAppearance(a);setTimeout(renderAppearanceCreator,0);};
-    window.setPlayerAge=setPlayerAge;
-  }
-
-  /* Persist into the canonical player object after all earlier creator wrappers finish. */
-  var oldStartAppearance=startGame;
-  startGame=function(){
-    oldStartAppearance();
-    if(S&&S.player){
-      S.player.appearance=Object.assign({},window.PLAYER_APPEARANCE_DRAFT);
-      S.player.appearance.gender=S.player.gender;
-      S.player.appearance.age=S.player.age;
+  ],
+  "player": [
+    {
+      "id": "f_g1_a",
+      "gender": "female",
+      "age": "g1",
+      "name": "专业干练",
+      "body": 0,
+      "hair": 0,
+      "face": 0,
+      "makeup": 0,
+      "hairColor": 0,
+      "outfit": 0,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g1_a.webp"
+    },
+    {
+      "id": "f_g1_b",
+      "gender": "female",
+      "age": "g1",
+      "name": "温和协调",
+      "body": 1,
+      "hair": 1,
+      "face": 1,
+      "makeup": 1,
+      "hairColor": 0,
+      "outfit": 1,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g1_b.webp"
+    },
+    {
+      "id": "f_g1_c",
+      "gender": "female",
+      "age": "g1",
+      "name": "学术沉稳",
+      "body": 2,
+      "hair": 2,
+      "face": 2,
+      "makeup": 2,
+      "hairColor": 0,
+      "outfit": 2,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g1_c.webp"
+    },
+    {
+      "id": "f_g2_a",
+      "gender": "female",
+      "age": "g2",
+      "name": "专业干练",
+      "body": 3,
+      "hair": 3,
+      "face": 3,
+      "makeup": 3,
+      "hairColor": 0,
+      "outfit": 3,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g2_a.webp"
+    },
+    {
+      "id": "f_g2_b",
+      "gender": "female",
+      "age": "g2",
+      "name": "温和协调",
+      "body": 4,
+      "hair": 4,
+      "face": 4,
+      "makeup": 4,
+      "hairColor": 0,
+      "outfit": 4,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g2_b.webp"
+    },
+    {
+      "id": "f_g2_c",
+      "gender": "female",
+      "age": "g2",
+      "name": "学术沉稳",
+      "body": 5,
+      "hair": 5,
+      "face": 5,
+      "makeup": 5,
+      "hairColor": 0,
+      "outfit": 5,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g2_c.webp"
+    },
+    {
+      "id": "f_g3_a",
+      "gender": "female",
+      "age": "g3",
+      "name": "专业干练",
+      "body": 6,
+      "hair": 6,
+      "face": 6,
+      "makeup": 6,
+      "hairColor": 0,
+      "outfit": 6,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g3_a.webp"
+    },
+    {
+      "id": "f_g3_b",
+      "gender": "female",
+      "age": "g3",
+      "name": "温和协调",
+      "body": 7,
+      "hair": 7,
+      "face": 7,
+      "makeup": 7,
+      "hairColor": 0,
+      "outfit": 7,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g3_b.webp"
+    },
+    {
+      "id": "f_g3_c",
+      "gender": "female",
+      "age": "g3",
+      "name": "学术沉稳",
+      "body": 8,
+      "hair": 8,
+      "face": 8,
+      "makeup": 8,
+      "hairColor": 0,
+      "outfit": 8,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g3_c.webp"
+    },
+    {
+      "id": "f_g4_a",
+      "gender": "female",
+      "age": "g4",
+      "name": "专业干练",
+      "body": 9,
+      "hair": 9,
+      "face": 9,
+      "makeup": 9,
+      "hairColor": 0,
+      "outfit": 9,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g4_a.webp"
+    },
+    {
+      "id": "f_g4_b",
+      "gender": "female",
+      "age": "g4",
+      "name": "温和协调",
+      "body": 0,
+      "hair": 0,
+      "face": 0,
+      "makeup": 0,
+      "hairColor": 0,
+      "outfit": 0,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g4_b.webp"
+    },
+    {
+      "id": "f_g4_c",
+      "gender": "female",
+      "age": "g4",
+      "name": "学术沉稳",
+      "body": 1,
+      "hair": 1,
+      "face": 1,
+      "makeup": 1,
+      "hairColor": 0,
+      "outfit": 1,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g4_c.webp"
+    },
+    {
+      "id": "f_g5_a",
+      "gender": "female",
+      "age": "g5",
+      "name": "专业干练",
+      "body": 2,
+      "hair": 2,
+      "face": 2,
+      "makeup": 2,
+      "hairColor": 0,
+      "outfit": 2,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g5_a.webp"
+    },
+    {
+      "id": "f_g5_b",
+      "gender": "female",
+      "age": "g5",
+      "name": "温和协调",
+      "body": 3,
+      "hair": 3,
+      "face": 3,
+      "makeup": 3,
+      "hairColor": 0,
+      "outfit": 3,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g5_b.webp"
+    },
+    {
+      "id": "f_g5_c",
+      "gender": "female",
+      "age": "g5",
+      "name": "学术沉稳",
+      "body": 4,
+      "hair": 4,
+      "face": 4,
+      "makeup": 4,
+      "hairColor": 0,
+      "outfit": 4,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/f_g5_c.webp"
+    },
+    {
+      "id": "m_g1_a",
+      "gender": "male",
+      "age": "g1",
+      "name": "专业干练",
+      "body": 0,
+      "hair": 0,
+      "face": 3,
+      "makeup": 0,
+      "hairColor": 0,
+      "outfit": 0,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g1_a.webp"
+    },
+    {
+      "id": "m_g1_b",
+      "gender": "male",
+      "age": "g1",
+      "name": "温和协调",
+      "body": 1,
+      "hair": 1,
+      "face": 4,
+      "makeup": 1,
+      "hairColor": 0,
+      "outfit": 1,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g1_b.webp"
+    },
+    {
+      "id": "m_g1_c",
+      "gender": "male",
+      "age": "g1",
+      "name": "学术沉稳",
+      "body": 2,
+      "hair": 2,
+      "face": 5,
+      "makeup": 2,
+      "hairColor": 0,
+      "outfit": 2,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g1_c.webp"
+    },
+    {
+      "id": "m_g2_a",
+      "gender": "male",
+      "age": "g2",
+      "name": "专业干练",
+      "body": 3,
+      "hair": 3,
+      "face": 6,
+      "makeup": 3,
+      "hairColor": 0,
+      "outfit": 3,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g2_a.webp"
+    },
+    {
+      "id": "m_g2_b",
+      "gender": "male",
+      "age": "g2",
+      "name": "温和协调",
+      "body": 4,
+      "hair": 4,
+      "face": 7,
+      "makeup": 4,
+      "hairColor": 0,
+      "outfit": 4,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g2_b.webp"
+    },
+    {
+      "id": "m_g2_c",
+      "gender": "male",
+      "age": "g2",
+      "name": "学术沉稳",
+      "body": 5,
+      "hair": 5,
+      "face": 8,
+      "makeup": 5,
+      "hairColor": 0,
+      "outfit": 5,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g2_c.webp"
+    },
+    {
+      "id": "m_g3_a",
+      "gender": "male",
+      "age": "g3",
+      "name": "专业干练",
+      "body": 6,
+      "hair": 6,
+      "face": 9,
+      "makeup": 6,
+      "hairColor": 0,
+      "outfit": 6,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g3_a.webp"
+    },
+    {
+      "id": "m_g3_b",
+      "gender": "male",
+      "age": "g3",
+      "name": "温和协调",
+      "body": 7,
+      "hair": 7,
+      "face": 0,
+      "makeup": 7,
+      "hairColor": 0,
+      "outfit": 7,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g3_b.webp"
+    },
+    {
+      "id": "m_g3_c",
+      "gender": "male",
+      "age": "g3",
+      "name": "学术沉稳",
+      "body": 8,
+      "hair": 8,
+      "face": 1,
+      "makeup": 8,
+      "hairColor": 0,
+      "outfit": 8,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g3_c.webp"
+    },
+    {
+      "id": "m_g4_a",
+      "gender": "male",
+      "age": "g4",
+      "name": "专业干练",
+      "body": 9,
+      "hair": 9,
+      "face": 2,
+      "makeup": 9,
+      "hairColor": 0,
+      "outfit": 9,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g4_a.webp"
+    },
+    {
+      "id": "m_g4_b",
+      "gender": "male",
+      "age": "g4",
+      "name": "温和协调",
+      "body": 0,
+      "hair": 0,
+      "face": 3,
+      "makeup": 0,
+      "hairColor": 0,
+      "outfit": 0,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g4_b.webp"
+    },
+    {
+      "id": "m_g4_c",
+      "gender": "male",
+      "age": "g4",
+      "name": "学术沉稳",
+      "body": 1,
+      "hair": 1,
+      "face": 4,
+      "makeup": 1,
+      "hairColor": 0,
+      "outfit": 1,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g4_c.webp"
+    },
+    {
+      "id": "m_g5_a",
+      "gender": "male",
+      "age": "g5",
+      "name": "专业干练",
+      "body": 2,
+      "hair": 2,
+      "face": 5,
+      "makeup": 2,
+      "hairColor": 0,
+      "outfit": 2,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g5_a.webp"
+    },
+    {
+      "id": "m_g5_b",
+      "gender": "male",
+      "age": "g5",
+      "name": "温和协调",
+      "body": 3,
+      "hair": 3,
+      "face": 6,
+      "makeup": 3,
+      "hairColor": 0,
+      "outfit": 3,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g5_b.webp"
+    },
+    {
+      "id": "m_g5_c",
+      "gender": "male",
+      "age": "g5",
+      "name": "学术沉稳",
+      "body": 4,
+      "hair": 4,
+      "face": 7,
+      "makeup": 4,
+      "hairColor": 0,
+      "outfit": 4,
+      "accessory": 0,
+      "expression": 0,
+      "pose": 0,
+      "portrait": "assets/portraits/player/m_g5_c.webp"
     }
+  ]
+}
+;
+  const GEOMETRY = {"accessory_1":{"bounds":[152,247,465,157]},"accessory_2":{"bounds":[153,257,464,137]},"accessory_3":{"bounds":[203,365,378,108]},"accessory_4":{"bounds":[213,308,342,292]},"accessory_5":{"bounds":[124,0,521,979]},"accessory_6":{"bounds":[0,39,768,626]},"accessory_7":{"bounds":[396,179,296,171]},"accessory_8":{"bounds":[217,210,406,716]},"accessory_9":{"bounds":[0,389,768,635]},"hair_female_0":{"bounds":[25,85,722,789],"hole":[314,266,155]},"hair_female_1":{"bounds":[46,102,684,692],"hole":[321,274,174]},"hair_female_2":{"bounds":[57,74,664,855],"hole":[384,88,0]},"hair_female_3":{"bounds":[22,54,725,787],"hole":[337,310,148]},"hair_female_4":{"bounds":[22,32,726,976],"hole":[314,190,154]},"hair_female_5":{"bounds":[127,31,606,975],"hole":[287,212,145]},"hair_female_6":{"bounds":[141,17,610,1000],"hole":[253,283,154]},"hair_female_7":{"bounds":[116,44,545,932],"hole":[326,357,140]},"hair_female_8":{"bounds":[118,129,531,608],"hole":[275,318,233]},"hair_female_9":{"bounds":[20,56,722,690],"hole":[315,271,177]},"hair_male_0":{"bounds":[79,72,615,577],"hole":[310,367,251]},"hair_male_1":{"bounds":[86,113,602,543],"hole":[307,342,232]},"hair_male_2":{"bounds":[56,87,654,728],"hole":[384,102,0]},"hair_male_3":{"bounds":[53,103,675,596],"hole":[384,106,0]},"hair_male_4":{"bounds":[54,85,667,580],"hole":[288,348,242]},"hair_male_5":{"bounds":[80,59,614,779],"hole":[366,270,189]},"hair_male_6":{"bounds":[136,6,605,1017],"hole":[261,241,186]},"hair_male_7":{"bounds":[79,52,611,792],"hole":[243,400,282]},"hair_male_8":{"bounds":[38,108,689,618],"hole":[201,356,374]},"hair_male_9":{"bounds":[89,66,598,531],"hole":[280,299,240]},"outfit_female_0":{"bounds":[52,409,663,615]},"outfit_female_1":{"bounds":[78,403,614,621]},"outfit_female_2":{"bounds":[57,367,657,657]},"outfit_female_3":{"bounds":[102,416,564,602]},"outfit_female_4":{"bounds":[92,427,587,597]},"outfit_female_5":{"bounds":[94,401,581,612]},"outfit_female_6":{"bounds":[86,415,596,609]},"outfit_female_7":{"bounds":[85,405,598,619]},"outfit_female_8":{"bounds":[82,413,606,611]},"outfit_female_9":{"bounds":[75,433,615,591]},"outfit_male_0":{"bounds":[91,393,586,629]},"outfit_male_1":{"bounds":[91,418,587,606]},"outfit_male_2":{"bounds":[117,444,535,580]},"outfit_male_3":{"bounds":[63,381,641,643]},"outfit_male_4":{"bounds":[114,387,540,637]},"outfit_male_5":{"bounds":[109,405,550,609]},"outfit_male_6":{"bounds":[93,408,582,616]},"outfit_male_7":{"bounds":[87,401,595,610]},"outfit_male_8":{"bounds":[86,375,595,649]},"outfit_male_9":{"bounds":[87,402,594,615]},"pose_2":{"bounds":[24,399,723,625]},"pose_3":{"bounds":[0,469,768,555]},"pose_4":{"bounds":[258,296,510,728]},"pose_5":{"bounds":[0,465,767,492]},"caolan":{},"ceo":{},"cso":{},"guyu":{},"heina":{},"houpi":{},"jialin":{},"kzong":{},"linan":{},"miaomiao":{},"mingye":{},"niupi":{},"parker":{},"pvp":{},"ruidong":{},"weilai":{},"wuzong":{},"xianren":{},"xiaoen":{},"xiaoyuan":{},"yangyang":{},"yijian":{},"zhangpi":{},"zhongshi":{},"zhuzong":{},"zihan":{},"zouting":{},"f_g1_a":{"face":[289,133,192,192]},"f_g1_b":{"face":[281,131,208,208]},"f_g1_c":{"face":[288,137,194,194]},"f_g2_a":{"face":[283,134,203,203]},"f_g2_b":{"face":[286,135,207,207]},"f_g2_c":{"face":[277,158,205,205]},"f_g3_a":{"face":[264,134,232,232]},"f_g3_b":{"face":[267,126,223,223]},"f_g3_c":{"face":[265,105,231,231]},"f_g4_a":{"face":[292,131,196,196]},"f_g4_b":{"face":[261,122,227,227]},"f_g4_c":{"face":[275,118,207,207]},"f_g5_a":{"face":[287,129,195,195]},"f_g5_b":{"face":[279,130,209,209]},"f_g5_c":{"face":[278,133,212,212]},"m_g1_a":{"face":[289,133,191,191]},"m_g1_b":{"face":[302,129,200,200]},"m_g1_c":{"face":[297,126,190,190]},"m_g2_a":{"face":[269,125,194,194]},"m_g2_b":{"face":[278,128,203,203]},"m_g2_c":{"face":[289,99,186,186]},"m_g3_a":{"face":[280,131,203,203]},"m_g3_b":{"face":[288,129,197,197]},"m_g3_c":{"face":[274,135,211,211]},"m_g4_a":{"face":[277,155,202,202]},"m_g4_b":{"face":[282,110,203,203]},"m_g4_c":{"face":[295,141,192,192]},"m_g5_a":{"face":[287,129,193,193]},"m_g5_b":{"face":[270,116,214,214]},"m_g5_c":{"face":[280,147,206,206]}};
+  const copy = x => JSON.parse(JSON.stringify(x));
+  const html = x => String(x == null ? '' : x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const labels = {
+    body:['纤瘦','标准','匀称','微壮','圆润','高挑','娇小','肩宽','柔和','久坐型'],
+    hair:['短发','侧分','中长发','层次短发','微卷','低马尾','高马尾','盘发','后梳','自然蓬松'],
+    face:['鹅蛋脸','圆脸','方脸','长脸','窄脸','菱形脸','心形脸','方圆脸','轮廓分明','宽下颌'],
+    makeup:['素净自然','通勤淡妆','知性优雅','甜美柔和','冷感沉稳','清透自然','正式职场','疲惫感','亲和感','利落干练'],
+    hairColor:['纯黑','黑棕','深棕','栗棕','冷棕','浅棕','灰黑','少量白发','亚麻灰','酒红棕'],
+    outfit:['医学经理','商务休闲','学术型','高管风','正式西装','极简通勤','中层管理','年轻专业','会议日','实验室通勤'],
+    accessory:['无','细框眼镜','深色眼镜','简约耳饰','珍珠耳饰','工牌','项链','发夹','丝巾','腕表'],
+    expression:['默认','微笑','冷静','自信','思考','疲惫'],
+    pose:['正面','轻侧身','抱文件','拿平板','托腮','看电脑']
   };
-
-  /* Player side panel portrait. */
-  function refreshPlayerAvatar1478(){
-    if(!S||!S.player)return;
-    var el=document.querySelector(".pm-avatar");if(!el)return;
-    el.innerHTML=avatarSVG1478(S.player.appearance||window.PLAYER_APPEARANCE_DRAFT,S.player.gender,true);
-    el.classList.add("pm-avatar-art");
+  const titles={body:'体型',hair:'发型',face:'脸型',makeup:'妆容 / 气质',hairColor:'发色',outfit:'服装',accessory:'配饰',expression:'表情',pose:'姿态'};
+  const names=['基本信息','外观形象','初始属性','人生词条','确认角色'];
+  const npcByName=Object.fromEntries(DATA.npc.map(n=>[n.name,n]));
+  const presets=DATA.player;
+  const imageCache=new Map();
+  function loadImage(src){
+    if(!imageCache.has(src)) imageCache.set(src,new Promise((resolve,reject)=>{
+      const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>{imageCache.delete(src);reject(new Error('图片加载失败：'+src));};im.src=src;
+    }));
+    return imageCache.get(src);
   }
-  var oldLifePanelAppearance=window.renderLifeSimPanels;
-  if(typeof oldLifePanelAppearance==="function"){
-    window.renderLifeSimPanels=function(){oldLifePanelAppearance();refreshPlayerAvatar1478();};
+  function imageTag(src,cls,alt,position){return '<img class="'+html(cls)+'" src="'+html(src)+'" alt="'+html(alt)+'" style="object-position:'+html(position||'50% 18%')+'" loading="lazy" decoding="async">';}
+  function normalizeAppearance(ap,identity){
+    identity=identity||{};ap=ap||{};
+    const gender=['male','female'].includes(ap.gender)?ap.gender:(identity.gender==='female'?'female':'male');
+    const age=AGE_OPTIONS[ap.age]?ap.age:(AGE_OPTIONS[identity.age]?identity.age:'g3');
+    const p=presets.find(p=>p.id===(ap.basePreset||identity.portraitPreset)&&p.gender===gender&&p.age===age)||presets.find(p=>p.gender===gender&&p.age===age);
+    const out={version:2,gender,age,basePreset:p.id};
+    Object.keys(labels).forEach(k=>{out[k]=Number.isInteger(ap[k])&&ap[k]>=0&&ap[k]<labels[k].length?ap[k]:p[k];});
+    // Old sheet coordinates are deliberately discarded; identity survives migration.
+    if(typeof ap.portraitURL==='string'&&(ap.portraitURL.startsWith('data:image/webp;base64,')||ap.portraitURL===p.portrait))out.portraitURL=ap.portraitURL;
+    return out;
   }
-
-  /* Dialogue portrait infrastructure. NPCs use stable generated visual presets now; replacing
-     any character with a final image later only requires setting NPC_PORTRAIT_URLS[name]. */
-  window.NPC_PORTRAIT_URLS=window.NPC_PORTRAIT_URLS||{};
-  var NPC_VISUALS_1478={
-    "钟时":{g:"female",p:"tired",h:"medium",f:"softsquare",c:"naturalblack",o:"medical",b:"round"},
-    "老板":{g:"male",p:"executive",h:"side",f:"narrow",c:"grayblack",o:"executive",b:"slim"},
-    "二老板":{g:"male",p:"academic",h:"short",f:"long",c:"salt",o:"academic",b:"slim"},
-    "小圆":{g:"female",p:"warm",h:"medium",f:"oval",c:"naturalblack",o:"casual",b:"standard"},
-    "邹婷":{g:"female",p:"soft",h:"wave",f:"round",c:"darkbrown",o:"meeting",b:"soft"},
-    "加琳":{g:"female",p:"cool",h:"medium",f:"defined",c:"black",o:"charcoal",b:"balanced"},
-    "PVP":{g:"male",p:"soft",h:"natural",f:"oval",c:"black",o:"medical",b:"slim"},
-    "明夜":{g:"male",p:"sharp",h:"layered",f:"narrow",c:"black",o:"youngpro",b:"slim"},
-    "则韩":{g:"male",p:"natural",h:"side",f:"oval",c:"black",o:"navy",b:"standard"},
-    "肖恩":{g:"female",p:"cool",h:"pony",f:"oval",c:"darkbrown",o:"charcoal",b:"balanced"},
-    "一建":{g:"female",p:"office",h:"side",f:"defined",c:"naturalblack",o:"navy",b:"standard"},
-    "苏苏":{g:"female",p:"natural",h:"side",f:"long",c:"darkbrown",o:"minimal",b:"slim"},
-    "杨杨":{g:"female",p:"light",h:"pony",f:"heart",c:"darkbrown",o:"youngpro",b:"petite"},
-    "琳琳":{g:"female",p:"warm",h:"medium",f:"round",c:"darkbrown",o:"casual",b:"standard"},
-    "武总":{g:"male",p:"executive",h:"slick",f:"square",c:"grayblack",o:"executive",b:"broad"},
-    "贤人":{g:"male",p:"warm",h:"side",f:"oval",c:"naturalblack",o:"meeting",b:"standard"},
-    "曹兰":{g:"male",p:"sharp",h:"short",f:"defined",c:"naturalblack",o:"navy",b:"standard"},
-    "谷雨":{g:"female",p:"formal",h:"side",f:"narrow",c:"coolbrown",o:"executive",b:"slim"},
-    "瑞冬":{g:"female",p:"tired",h:"pony",f:"oval",c:"naturalblack",o:"medical",b:"standard"},
-    "Parker":{g:"male",p:"warm",h:"slick",f:"defined",c:"darkbrown",o:"youngpro",b:"balanced"},
-    "朱粽":{g:"female",p:"office",h:"medium",f:"softsquare",c:"naturalblack",o:"meeting",b:"standard"},
-    "黑娜":{g:"female",p:"formal",h:"medium",f:"defined",c:"naturalblack",o:"executive",b:"balanced"},
-    "K总":{g:"female",p:"natural",h:"short",f:"square",c:"grayblack",o:"classic",b:"standard"},
-    "林丹":{g:"female",p:"sharp",h:"highpony",f:"heart",c:"chestnut",o:"youngpro",b:"petite"},
-    "MK主任":{g:"male",p:"academic",h:"side",f:"defined",c:"salt",o:"academic",b:"standard"},
-    "N院长":{g:"male",p:"academic",h:"short",f:"long",c:"silvermix",o:"classic",b:"slim"},
-    "林主任":{g:"male",p:"natural",h:"side",f:"widejaw",c:"grayblack",o:"meeting",b:"standard"}
+  window.PortraitResolver={
+    data:DATA, normalizeAppearance,
+    npc(name,cls){const n=npcByName[name];return n?imageTag(n.portrait,cls||'npc-photo',name+'立绘',n.portraitPosition):'<span class="portrait-initial">'+html(String(name||'人').slice(0,2))+'</span>';},
+    player(player,cls){const a=normalizeAppearance(player&&player.appearance,player);const p=presets.find(p=>p.id===a.basePreset);return imageTag(a.portraitURL||p.portrait,cls||'player-photo','主角立绘');},
+    url(name){return npcByName[name]&&npcByName[name].portrait;}
   };
-  function npcAvatar1478(name){
-    var url=window.NPC_PORTRAIT_URLS[name];
-    if(url)return '<img class="dialogue-portrait-img" src="'+svgEscape(url)+'" alt="">';
-    var v=NPC_VISUALS_1478[name]||{g:"unspecified",p:"natural",h:"short",f:"oval",c:"black",o:"navy",b:"standard"};
-    var ap={body:v.b,hair:v.h,face:v.f,makeup:v.p,hairColor:v.c,outfit:v.o};
-    return avatarSVG1478(ap,v.g,true);
-  }
-  window.npcAvatar1478=npcAvatar1478;
+  window.NPC_PORTRAIT_URLS=Object.fromEntries(DATA.npc.map(n=>[n.name,n.portrait]));
+  DATA.npc.forEach(n=>{if(NPCs[n.id])Object.assign(NPCs[n.id],{gender:n.gender,age:n.age,body:n.body,portrait:n.portrait,portraitPosition:n.portraitPosition});if(NPC_BIOS[n.id])Object.assign(NPC_BIOS[n.id],{gender:n.gender,age:n.age,body:n.body});});
+  // The canonical public text and the character bible carry the same final identities.
+  NPC_BIOS.xiaoen.bio='男性，42–45岁，微胖。'+NPC_BIOS.xiaoen.bio;
+  NPC_BIOS.zihan.bio='男性，42–45岁，强壮体型。'+NPC_BIOS.zihan.bio;
+  NPC_BIOS.yangyang.bio='女性，28–34岁。'+NPC_BIOS.yangyang.bio.replace('三十多岁','三十岁上下');
+  NPC_BIOS.xiaoyuan.bio=NPC_BIOS.xiaoyuan.bio.replace(/他/g,'她');
+  function castCard(n,b,visual){return '<article class="np portrait-np '+(n.boss?'boss':'')+'">'+PortraitResolver.npc(n.name,'np-portrait')+'<div class="np-copy"><div class="n">'+html(n.name)+'</div><div class="r">'+html(n.role)+'</div><div class="portrait-meta">'+(visual.gender==='female'?'女':'男')+' · '+html(visual.age)+'岁 · '+html(visual.body)+'</div><div class="q">「'+html(n.quote||'在场和领导项目不是同一件事。')+'」</div><details class="bio"><summary>动机与小传 ▾</summary><div class="bio-row"><em>想要</em><span>'+html(b.want||'维持项目中的影响力')+'</span></div><div class="bio-row"><em>害怕</em><span>'+html(b.fear||'失去决策位置')+'</span></div><div class="bio-body">'+html(b.bio||VP_RESUME.summary)+'</div></details></div></article>';}
+  buildCast=function(){const root=document.getElementById('cast-wrap');if(!root)return;root.innerHTML='<div class="sec-title">📇 人物志 · 27 位关键人物</div><div class="intro-hint">立绘展示公开的职场形象。点开卡片，阅读人物的小传。</div><div class="cast">'+castCard({name:'钟时',role:'Clinical Development VP',boss:true},{},npcByName['钟时'])+Object.keys(NPCs).map(k=>castCard(NPCs[k],NPC_BIOS[k]||{},npcByName[NPCs[k].name])).join('')+'</div>';};
+  const oldResume=bossResumeHTML;
+  bossResumeHTML=function(){return '<div class="vp-dossier-layout">'+PortraitResolver.npc('钟时','vp-portrait-final')+'<div>'+oldResume()+'</div></div>';};
+  const oldVP=renderVP;
+  renderVP=function(){oldVP();const el=document.getElementById('vp-card');if(el)el.innerHTML='<div class="vp-dossier-layout">'+PortraitResolver.npc('钟时','vp-portrait-final')+'<div>'+el.innerHTML+'</div></div>';};
 
-  /* Upgrade existing dialogue renderer without touching event data. */
-  function decorateDialogue1478(){
-    Array.from(document.querySelectorAll(".dialogue-row")).forEach(function(row){
-      var n=row.querySelector(".dialogue-name"),face=row.querySelector(".dialogue-face");
-      if(n&&face&&!face.classList.contains("dialogue-face-art")){
-        face.innerHTML=npcAvatar1478(n.textContent.trim());
-        face.classList.add("dialogue-face-art");
-      }
-    });
+  class Creator {
+    constructor(){this.step=1;this.draft={version:2,gender:null,age:null,basePreset:null};this.confirmed=null;this.revision=0;this.previewURL=null;this.busy=false;this.error='';this.vault=null;}
+    ready(){return !!(this.draft.gender&&this.draft.age&&this.draft.basePreset);}
+    preset(){return presets.find(p=>p.id===this.draft.basePreset);}
+    pool(){return presets.filter(p=>p.gender===this.draft.gender&&p.age===this.draft.age);}
+    install(){
+      const screen=document.getElementById('creator-screen');if(!screen)return;
+      const ng=document.getElementById('ng-panel'),df=document.querySelector('.difficulty-wrap'),char=document.getElementById('character-creator');
+      screen.innerHTML='<div id="creator-v2-root"></div><div id="creator-v2-vault" hidden></div>';
+      this.vault=document.getElementById('creator-v2-vault');
+      if(this.vault){[ng,df,char].filter(Boolean).forEach(n=>this.vault.appendChild(n));}
+      this.render();
+    }
+    open(){showScreen('creator-screen');this.step=1;this.render();}
+    go(n){this.step=Math.max(1,Math.min(5,n));this.render();window.scrollTo({top:0,behavior:'smooth'});}
+    identity(k,value){
+      if(k==='gender'&&!['male','female'].includes(value)||k==='age'&&!AGE_OPTIONS[value])return;
+      if(this.draft[k]!==value){this.draft[k]=value;this.draft.basePreset=null;this.previewURL=null;this.confirmed=null;this.revision++;}
+      if(k==='gender'){LIFE_DRAFT.gender=value;localStorage.setItem('dragon_gender',value);}else{PLAYER_AGE=value;localStorage.setItem('dragon_age',value);trimUnavailableLifeStages();}
+      this.render();
+    }
+    select(id){const p=this.pool().find(p=>p.id===id);if(!p)return;this.draft=normalizeAppearance(p,p);this.draft.basePreset=id;this.confirmed=null;this.updateCharacterPreview();this.render();}
+    detail(k,i){if(!this.ready()||!labels[k]||!Number.isInteger(i)||i<0||i>=labels[k].length)return;this.draft[k]=i;this.confirmed=null;this.updateCharacterPreview();this.render();}
+    reset(){if(this.preset())this.select(this.preset().id);}
+    async confirm(){
+      if(!this.ready()){this.error='先选择性别、年龄和人物模板。';this.go(2);return false;}
+      await this.pending;
+      if(this.busy||this.error||!this.previewURL)return false;
+      this.confirmed=copy({...this.draft,portraitURL:this.previewURL});
+      try{localStorage.setItem('dragon_creator_v2_confirmed',JSON.stringify(this.confirmed));}catch(e){this.error='无法保存形象，请检查浏览器存储空间。';this.render();return false;}
+      this.go(3);return true;
+    }
+    async updateCharacterPreview(){
+      const revision=++this.revision,a=copy(this.draft),p=this.preset();this.error='';this.busy=true;
+      this.pending=(async()=>{
+        try{
+          const unchanged=Object.keys(labels).every(k=>a[k]===p[k]);
+          await loadImage(p.portrait);
+          const url=unchanged?p.portrait:await composeAppearance(a);
+          if(revision!==this.revision)return;
+          this.previewURL=url;this.busy=false;this.renderPreview();
+        }catch(e){if(revision!==this.revision)return;this.busy=false;this.previewURL=null;this.error=e.message;this.renderPreview();}
+      })();
+      return this.pending;
+    }
+    identityHTML(){return '<div class="cc-identity"><div><b>性别</b><div class="cc-segment">'+['female','male'].map(g=>'<button data-gender="'+g+'" aria-pressed="'+(g===this.draft.gender)+'" class="'+(g===this.draft.gender?'selected':'')+'" onclick="CharacterCreatorV2.identity(\'gender\',\''+g+'\')">'+(g==='female'?'♀ 女性':'♂ 男性')+'</button>').join('')+'</div></div><div><b>年龄</b><div class="cc-segment">'+Object.keys(AGE_OPTIONS).map(k=>'<button data-age="'+k+'" aria-pressed="'+(k===this.draft.age)+'" class="'+(k===this.draft.age?'selected':'')+'" onclick="CharacterCreatorV2.identity(\'age\',\''+k+'\')">'+AGE_OPTIONS[k].label.split(' · ')[0]+'岁</button>').join('')+'</div></div></div>';}
+    thumb(k,i){
+      const g=this.draft.gender||'female';
+      if(k==='hair'||k==='outfit')return '<img class="cc-thumb cc-'+k+'" src="assets/portraits/thumbs/'+k+'_'+g+'_'+i+'.webp" alt="'+html(labels[k][i])+'" loading="lazy">';
+      if(k==='hairColor')return '<img class="cc-thumb cc-hairColor color-'+i+'" src="assets/portraits/thumbs/hair_'+g+'_1.webp" alt="'+html(labels[k][i])+'" loading="lazy">';
+      if(k==='accessory')return i?'<img class="cc-thumb cc-accessory" src="assets/portraits/thumbs/accessory_'+i+'.webp" alt="'+html(labels[k][i])+'" loading="lazy">':'<span class="cc-no-accessory">○</span>';
+      if(k==='pose'&&i>=2)return '<img class="cc-thumb cc-pose" src="assets/portraits/thumbs/pose_'+i+'.webp" alt="'+html(labels[k][i])+'" loading="lazy">';
+      const p=presets.find(p=>p.gender===g&&p[k]===i)||this.preset()||presets.find(p=>p.gender===g);
+      return '<img class="cc-thumb cc-'+k+'" src="'+((k==='face'||k==='makeup'||k==='expression')?'assets/portraits/thumbs/'+p.id+'.webp':p.portrait)+'" alt="'+html(labels[k][i])+'" loading="lazy">';
+    }
+    optionsHTML(k){return '<section class="cc-detail-group"><h3>'+titles[k]+'</h3><div class="cc-options">'+labels[k].map((label,i)=>'<button data-group="'+k+'" data-value="'+i+'" type="button" aria-pressed="'+(this.draft[k]===i)+'" class="cc-option '+(this.draft[k]===i?'selected':'')+'" '+(!this.ready()?'disabled':'')+' onclick="CharacterCreatorV2.detail(\''+k+'\','+i+')">'+this.thumb(k,i)+'<span>'+html(label)+'</span></button>').join('')+'</div></section>';}
+    mainHTML(){
+      const x=lifeSummary();
+      if(this.step===1)return '<h1>基本信息</h1><p class="cc-subtitle">先决定你是谁，再选择属于你的职场形象。</p>'+this.identityHTML()+'<div class="cc-basic-note"><b>你的下一段人生，从这里开始。</b><p>年龄决定可选择的人生阶段；经历与能力决定你如何应对办公室里的每一次选择。</p></div><button class="cc-primary" onclick="CharacterCreatorV2.go(2)">下一步：外观形象 →</button>';
+      if(this.step===2)return '<h1>外观形象</h1><p class="cc-subtitle">选择模板，定制你的职场形象。</p>'+this.identityHTML()+'<h2><span>1</span> 选择人物模板</h2><div class="cc-templates">'+(this.pool().length?this.pool().map((p,i)=>'<button data-preset="'+p.id+'" aria-pressed="'+(p.id===this.draft.basePreset)+'" class="cc-template '+(p.id===this.draft.basePreset?'selected':'')+'" onclick="CharacterCreatorV2.select(\''+p.id+'\')">'+imageTag(p.portrait,'cc-template-photo',p.name)+'<b>0'+(i+1)+'　'+p.name+'</b><small>'+labels.outfit[p.outfit]+'</small></button>').join(''):'<div class="cc-placeholder">请选择性别和年龄，显示对应的三个人物模板。</div>')+'</div><h2><span>2</span> 细节定制 <button class="cc-reset" onclick="CharacterCreatorV2.reset()">重置细节</button></h2><div class="cc-details">'+Object.keys(labels).map(k=>this.optionsHTML(k)).join('')+'</div>';
+      if(this.step===3)return '<h1>初始属性</h1><p class="cc-subtitle">能力来自你的人生经历，也可以投入多周目资源。</p><div class="cc-stats">'+['professional','social','charm','management','insight','fitness'].map(k=>'<div><span>'+skillName(k)+'</span><b>'+x.skills[k]+'</b><i style="width:'+x.skills[k]+'%"></i></div>').join('')+'<div><span>体力上限</span><b>'+x.body.maxStamina+'</b></div><div><span>心力韧性</span><b>'+x.heart.resilience+'</b></div></div><div id="cc-ng-slot"></div>'+this.footer(2,4);
+      if(this.step===4)return '<h1>人生词条</h1><p class="cc-subtitle">把有限时间投入经历，拼出属于你的优势。</p><div id="cc-life-slot">'+lifeBuilderHTML()+'</div>'+this.footer(3,5);
+      const traits=derivedTraits(x);return '<h1>确认角色</h1><p class="cc-subtitle">检查你的档案，然后走进 Dragon Office。</p><div class="cc-confirm-card"><h2>'+html(this.preset()?this.preset().name:'尚未选择形象')+'</h2><p>'+(this.draft.gender==='female'?'女性':this.draft.gender==='male'?'男性':'未选择性别')+' · '+(this.draft.age?AGE_OPTIONS[this.draft.age].label:'未选择年龄')+'</p><div class="cc-stats">'+['professional','social','management','insight','fitness'].map(k=>'<div><span>'+skillName(k)+'</span><b>'+x.skills[k]+'</b></div>').join('')+'</div><h3>当前词条</h3><div class="trait-row">'+(traits.length?traits.map(t=>'<span class="trait '+t.rarity+'">'+html(t.name)+'</span>').join(''):'<span>尚未形成特殊词条</span>')+'</div><div id="cc-difficulty-slot"></div><p class="cc-status">'+(this.confirmed?'形象已确认，入职后将随存档保存。':'请先在右侧确认形象。')+'</p><button class="cc-primary" '+(!this.confirmed?'disabled':'')+' onclick="startGame()">签字入职 →</button></div>'+this.footer(4,null);
+    }
+    footer(prev,next){return '<div class="cc-footer"><button onclick="CharacterCreatorV2.go('+prev+')">← 上一步</button>'+(next?'<button class="cc-primary" onclick="CharacterCreatorV2.go('+next+')">下一步 →</button>':'<button onclick="backTitle()">返回首页</button>')+'</div>';}
+    previewHTML(){return '<h2>形象预览</h2><div id="cc-preview-image" class="cc-preview-frame">'+(this.previewURL?imageTag(this.previewURL,'cc-preview-photo','主角形象预览'):'<div class="cc-placeholder">'+(this.busy?'正在更新形象…':'选择性别 → 年龄 → 模板<br>显示完整立绘')+'</div>')+'</div><p id="cc-preview-status" class="cc-status" role="status">'+html(this.error||(this.busy?'正在更新形象…':this.confirmed?'形象已确认':'所有细节会实时更新预览'))+'</p><div class="cc-info"><h3>形象信息</h3><dl><dt>性别</dt><dd>'+(this.draft.gender==='female'?'女性':this.draft.gender==='male'?'男性':'待选择')+'</dd><dt>年龄</dt><dd>'+(this.draft.age?AGE_OPTIONS[this.draft.age].label.split(' · ')[0]+'岁':'待选择')+'</dd>'+Object.keys(labels).map(k=>'<dt>'+titles[k]+'</dt><dd>'+html(this.ready()?labels[k][this.draft[k]]:'—')+'</dd>').join('')+'</dl></div><button id="cc-confirm-look" class="cc-primary" '+(!this.ready()||this.busy||this.error?'disabled':'')+' onclick="CharacterCreatorV2.confirm()">确认形象 →</button>';
+    }
+    renderPreview(){const el=document.querySelector('.cc-preview');if(el)el.innerHTML=this.previewHTML();}
+    render(){
+      const root=document.getElementById('creator-v2-root');if(!root)return;
+      // Move persistent controls out before rebuilding; switching steps never destroys them.
+      if(this.vault){['ng-panel'].forEach(id=>{const n=document.getElementById(id);if(n)this.vault.appendChild(n);});const d=document.querySelector('.difficulty-wrap');if(d)this.vault.appendChild(d);}
+      root.innerHTML='<div class="cc-shell"><nav class="cc-nav"><div class="cc-brand">PROJECT<b>DRAGON OFFICE</b><small>临床开发 · 生存法则</small></div>'+names.map((name,i)=>'<button data-step="'+(i+1)+'" class="'+(this.step===i+1?'active':'')+'" aria-current="'+(this.step===i+1?'step':'false')+'" onclick="CharacterCreatorV2.go('+(i+1)+')"><span>'+(i+1)+'</span><b>'+name+'</b></button>').join('')+'<button class="cc-back" onclick="backTitle()">← 返回首页</button><p>Science<br>People<br>A Better Tomorrow.</p></nav><main class="cc-main">'+this.mainHTML()+'</main><aside class="cc-preview">'+this.previewHTML()+'</aside></div>';
+      if(this.step===3){const n=document.getElementById('ng-panel'),slot=document.getElementById('cc-ng-slot');if(n&&slot){slot.appendChild(n);n.style.display='block';renderNGPanel();}}
+      if(this.step===5){const d=document.querySelector('.difficulty-wrap'),slot=document.getElementById('cc-difficulty-slot');if(d&&slot){slot.appendChild(d);d.style.display='block';}}
+    }
   }
-  window.decorateDialogue1478=decorateDialogue1478;
+  window.CharacterCreatorV2=new Creator();
+  window.openCreatorScreen=()=>CharacterCreatorV2.open();
+  renderLifeBuilder=()=>CharacterCreatorV2.render();window.renderLifeBuilder=renderLifeBuilder;
+  setLifeGender=g=>CharacterCreatorV2.identity('gender',g);window.setLifeGender=setLifeGender;
+  window.setPlayerAge=a=>CharacterCreatorV2.identity('age',a);
+  CharacterCreatorV2.install();
 
-  /* Existing chapter/event renderers keep private references to the old dialogue builder.
-     Decorate the DOM after each render so every dialogue path receives a portrait. */
-  if(typeof renderChapter==="function"){
-    var oldRenderChapterAppearance=renderChapter;
-    renderChapter=function(){oldRenderChapterAppearance();decorateDialogue1478();refreshPlayerAvatar1478();};
-    window.renderChapter=renderChapter;
+  async function composeAppearance(a){
+    const p=presets.find(p=>p.id===a.basePreset),W=768,H=1024;
+    const ids=['hair_'+a.gender+'_'+a.hair,'outfit_'+a.gender+'_'+a.outfit];
+    if(a.accessory)ids.push('accessory_'+a.accessory);if(a.pose>=2)ids.push('pose_'+a.pose);
+    const imgs=await Promise.all([p.portrait,...ids.map(id=>'assets/portraits/layers/'+id+'.webp')].map(loadImage));
+    const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');
+    const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#d6d0c7');bg.addColorStop(1,'#858b8d');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+    const [sx,sy,sw,sh]=GEOMETRY[p.id].face;
+    const faceScale=[[1,1],[1.08,.97],[1.03,.99],[.94,1.05],[.92,1],[.97,1.01],[1.01,.99],[1.04,1],[.98,1],[1.08,1]][a.face];
+    const fw=W*.30*faceScale[0],fh=H*.225*faceScale[1],fx=(W-fw)/2,fy=H*.205;
+    const skin=imgs[0],scale=fw/sw;
+    const sample=document.createElement("canvas");sample.width=1;sample.height=1;const sc=sample.getContext("2d");sc.drawImage(skin,sx+sw*.65,sy+sh*.60,3,3,0,0,1,1);const tone=sc.getImageData(0,0,1,1).data;const neck=ctx.createLinearGradient(0,fy+fh*.8,0,fy+fh*1.55);neck.addColorStop(0,"rgb("+tone[0]+","+tone[1]+","+tone[2]+")");neck.addColorStop(1,"rgb("+Math.min(255,tone[0]+12)+","+Math.min(255,tone[1]+9)+","+Math.min(255,tone[2]+7)+")");ctx.fillStyle=neck;ctx.fillRect(W/2-fw*.22,fy+fh*.83,fw*.44,fh*.72);
+    ctx.save();ctx.beginPath();ctx.ellipse(W/2,fy+fh*.53,fw*.48,fh*.60,0,0,Math.PI*2);ctx.clip();
+    ctx.drawImage(skin,fx-sx*scale,fy-sy*scale,skin.width*scale,skin.height*scale);ctx.restore();
+    const bodyScale=[.84,1,1.02,1.10,1.15,.94,.9,1.18,1.07,1.12][a.body];
+    function layer(im,id,x,y,w,h){const b=GEOMETRY[id].bounds;ctx.drawImage(im,...b,x,y,w,h);}
+    const clothingWidth=W*.92*bodyScale, clothingTop=fy+fh+H*.033;
+    ctx.save();if(a.pose===1){ctx.translate(W*.5,H*.5);ctx.transform(1,.025,-.045,1,0,0);ctx.translate(-W*.5,-H*.5);}
+    layer(imgs[2],ids[1],(W-clothingWidth)/2,clothingTop,clothingWidth,H-clothingTop+40);ctx.restore();
+    const hair=document.createElement('canvas');hair.width=W;hair.height=H;const hc=hair.getContext('2d');
+    const hole=GEOMETRY[ids[0]].hole,hs=Math.min(fw*.90/Math.max(90,hole[2]),fw*1.55/GEOMETRY[ids[0]].bounds[2]);
+    hc.drawImage(imgs[1],W/2-(hole[0]+hole[2]/2)*hs,fy+fh*.06-hole[1]*hs,W*hs,H*hs);
+    if(a.hairColor){hc.globalCompositeOperation='source-atop';hc.fillStyle=['#171411','#2d211c','#443025','#633e2c','#50443d','#95705a','#55534e','#85837c','#b5afa4','#643333'][a.hairColor];hc.globalAlpha=.57;hc.fillRect(0,0,W,H);}ctx.drawImage(hair,0,0);
+    if(a.makeup){ctx.save();ctx.beginPath();ctx.ellipse(W/2,fy+fh*.55,fw*.39,fh*.45,0,0,Math.PI*2);ctx.clip();ctx.globalCompositeOperation='soft-light';ctx.globalAlpha=[0,.09,.1,.12,.07,.06,.08,.16,.1,.09][a.makeup];ctx.fillStyle=['#e6ac9c','#e5b49d','#d4a6a2','#e3a6b2','#789397','#e6ccb8','#b9a5aa','#725969','#e3bd98','#ad8f80'][a.makeup];ctx.fillRect(fx,fy,fw,fh);ctx.restore();}
+    if(a.expression){const snap=document.createElement('canvas');snap.width=W;snap.height=H;snap.getContext('2d').drawImage(canvas,0,0);const x=fx+fw*.30,y=fy+fh*.70,w=fw*.40,h=fh*.12;for(let i=0;i<w;i+=2){const t=(i/w-.5)*2,dy=[0,-5,1,-3,2,3][a.expression]*(t*t-.25);ctx.drawImage(snap,x+i,y,2,h,x+i,y+dy,2,h);}if(a.expression===5){ctx.fillStyle='#73565c';ctx.globalAlpha=.13;ctx.fillRect(fx+fw*.2,fy+fh*.44,fw*.6,fh*.025);ctx.globalAlpha=1;}}
+    let ix=3;if(a.accessory){let rect;switch(a.accessory){case 1:case 2:rect=[fx+fw*.02,fy+fh*.33,fw*.96,fh*.20];break;case 3:case 4:rect=[fx-fw*.08,fy+fh*.51,fw*1.16,fh*.32];break;case 5:rect=[W*.39,clothingTop,W*.22,H*.31];break;case 6:rect=[W*.40,clothingTop-H*.012,W*.20,H*.13];break;case 7:rect=[fx+fw*.78,fy-fh*.07,fw*.22,fh*.10];break;case 8:rect=[W*.34,clothingTop-H*.04,W*.32,H*.16];break;default:rect=[W*.66,H*.83,W*.10,H*.09];}layer(imgs[ix++],'accessory_'+a.accessory,...rect);}
+    if(a.pose>=2){const rect=a.pose===4?[W*.53,fy+fh*.80,W*.18,H*.28]:[W*.22,H*.65,W*.56,H*.34];layer(imgs[ix],'pose_'+a.pose,...rect);}
+    return canvas.toDataURL('image/webp',.88);
   }
-  if(typeof renderEventFromObj==="function"){
-    var oldRenderEventAppearance=renderEventFromObj;
-    renderEventFromObj=function(){oldRenderEventAppearance();decorateDialogue1478();};
-    window.renderEventFromObj=renderEventFromObj;
+  window.composeAppearance=composeAppearance;
+  function refreshPortraits(){
+    if(S&&S.player){S.player.appearance=normalizeAppearance(S.player.appearance,S.player);const el=document.querySelector('.pm-avatar');if(el){el.innerHTML=PortraitResolver.player(S.player,'pm-player-photo');el.classList.add('pm-avatar-photo');}}
+    document.querySelectorAll('.dialogue-row').forEach(row=>{const n=row.querySelector('.dialogue-name'),f=row.querySelector('.dialogue-face');if(n&&f)f.innerHTML=PortraitResolver.npc(n.textContent.trim(),'dialogue-portrait-img');});
   }
-  if(typeof renderHUD==="function"){
-    var oldHUDAppearance=renderHUD;
-    renderHUD=function(){oldHUDAppearance();refreshPlayerAvatar1478();decorateDialogue1478();};
-    window.renderHUD=renderHUD;
-  }
-
-  var style=document.createElement("style");
-  style.textContent=
-    '.appearance-creator{border-bottom:1px dashed var(--line);padding-bottom:16px;margin-bottom:16px}.appearance-layout{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;align-items:start}'
-   +'.appearance-preview{position:sticky;top:12px;text-align:center;background:#eee9e4;border:1px solid var(--line);border-radius:14px;padding:10px}.appearance-preview svg{max-width:100%;height:auto}.appearance-caption{font-size:12px;color:var(--dim);margin-top:4px}'
-   +'.appearance-preset-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.appearance-preset{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:8px;padding:8px 6px;font-size:11.5px;cursor:pointer}.appearance-preset.selected{border-color:var(--accent);color:var(--accent)}'
-   +'.appearance-group{border-top:1px dashed var(--line);padding-top:9px;margin-top:9px}.appearance-group>b{display:block;font-size:12px;color:var(--dim);margin-bottom:6px}'
-   +'.pm-avatar-art{overflow:hidden;background:#d9d7d5!important;padding:0!important}.pm-avatar-art svg{width:100%;height:100%;display:block;object-fit:cover}'
-   +'.dialogue-face-art{overflow:hidden;padding:0!important;background:#d9d7d5!important;border-radius:12px!important}.dialogue-face-art svg,.dialogue-portrait-img{width:100%;height:100%;object-fit:cover;display:block}'
-   +'@media(max-width:700px){.appearance-layout{grid-template-columns:1fr}.appearance-preview{position:static}.appearance-preview svg{width:150px}.appearance-preset-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}';
-  document.head.appendChild(style);
+  const hud=renderHUD;renderHUD=function(){hud();refreshPortraits();const n=document.getElementById('npcs');if(n)n.insertAdjacentHTML('beforeend','<button class="npc-chip" onclick="saveGameV2()">保存进度</button><button class="npc-chip" onclick="loadGameV2()">读取进度</button>');};
+  const chapter=renderChapter;renderChapter=function(){chapter();refreshPortraits();};
+  const event=renderEventFromObj;renderEventFromObj=function(){event.apply(this,arguments);refreshPortraits();};
+  const start=startGame;startGame=function(){
+    // VM regression harnesses have no DOM; UI starts require an explicitly confirmed image.
+    if(document.documentElement&&!CharacterCreatorV2.confirmed){CharacterCreatorV2.error='请先确认形象。';CharacterCreatorV2.go(2);return false;}
+    projectBattleState=null;duelState=null;groundingState=null;window._evObj=null;window._romEv=null;window._homeEv=null;window._lovePending=null;window._inRest=false;window._inLog=false;window._inResult=false;
+    start.apply(this,arguments);
+    if(S&&S.player){S.player.appearance=copy(CharacterCreatorV2.confirmed||normalizeAppearance({},S.player));S.player.portraitPreset=S.player.appearance.basePreset;renderHUD();renderChapter();}
+    return true;
+  };
+  window.renderHUD=renderHUD;window.renderChapter=renderChapter;window.startGame=startGame;
+  window.saveGameV2=function(){
+    if(!S||!S.player)return false;
+    if(window._sceneMode!=='chapter'||projectBattleState||window._evObj){toast('完成当前互动，回到章节选项后即可保存进度。','down');return false;}
+    const payload={version:2,time:Date.now(),state:S,flags,usedEvents,usedHeina,chapterIdx,chapterIds:runChapters.map(c=>c.id),loveMeta:LOVE_META};
+    try{localStorage.setItem('dragon_save_v2',JSON.stringify(payload));toast('进度与形象已保存。','up');return true;}catch(e){toast('保存失败：浏览器存储空间不足。','down');return false;}
+  };
+  window.loadGameV2=function(){
+    let data;try{data=JSON.parse(localStorage.getItem('dragon_save_v2')||'null');}catch(e){toast('存档无法读取。','down');return false;}
+    if(!data||data.version!==2||!data.state||!data.state.player||!Array.isArray(data.chapterIds)||!Number.isInteger(data.chapterIdx)||data.chapterIdx<0||data.chapterIdx>=data.chapterIds.length){toast('没有可读取的有效存档。','down');return false;}
+    const timeline=buildDevelopmentTimeline(),chapters=data.chapterIds.map(id=>timeline.find(c=>c.id===id)||V11_CHAPTERS.find(c=>c.id===id));
+    if(chapters.some(c=>!c)){toast('存档章节与当前版本不兼容。','down');return false;}
+    S=copy(data.state);flags=copy(data.flags||{});usedEvents=copy(data.usedEvents||[]);usedHeina=copy(data.usedHeina||[]);chapterIdx=data.chapterIdx;runChapters=chapters;
+    Object.keys(data.loveMeta||{}).forEach(k=>{if(LOVE_META[k])Object.assign(LOVE_META[k],data.loveMeta[k]);});
+    S.player.appearance=normalizeAppearance(S.player.appearance,S.player);
+    projectBattleState=null;duelState=null;groundingState=null;window._romEv=null;window._homeEv=null;window._lovePending=null;window._evObj=null;window._privateChat=null;window._inRest=false;window._inLog=false;window._inResult=false;
+    CharacterCreatorV2.confirmed=copy(S.player.appearance);CharacterCreatorV2.draft=copy(S.player.appearance);CharacterCreatorV2.previewURL=S.player.appearance.portraitURL||presets.find(p=>p.id===S.player.appearance.basePreset).portrait;
+    LIFE_DRAFT.gender=S.player.gender;PLAYER_AGE=S.player.age;selectedDifficulty=S.difficulty||'normal';
+    showScreen('game-screen');renderHUD();renderChapter();toast('已读取进度与主角形象。','up');return true;
+  };
+  const title=document.querySelector('#title-screen .subtitle');if(title)title.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · CharacterCreatorV2 · Demo v16.0.0';
+  const titleActions=document.querySelector('#title-screen');if(titleActions)titleActions.insertAdjacentHTML('beforeend','<button class="btn" onclick="loadGameV2()">读取进度</button>');
 })();
-/* =====================  v14.8 APPEARANCE END  ===================== */
+/* ===================== CharacterCreatorV2 END ===================== */
 
 
-/* =====================  v15.0 · EXPANDED PORTRAIT PRESET LIBRARY  ===================== */
-(function(){
-  const SRC=[
-    {id:"f1",gender:"female",sprite:0},{id:"f2",gender:"female",sprite:1},{id:"f3",gender:"female",sprite:2},{id:"f4",gender:"female",sprite:3},{id:"f5",gender:"female",sprite:4},
-    {id:"m1",gender:"male",sprite:5},{id:"m2",gender:"male",sprite:6},{id:"m3",gender:"male",sprite:7},{id:"m4",gender:"male",sprite:8},{id:"m5",gender:"male",sprite:9}
-  ];
-  const P=[
-    // female · 3 per age band
-    ["f_g1_a","female","g1","职场新人","f1","偏瘦","简洁短发","鹅蛋脸","清爽淡妆","自然黑","年轻专业",1.00,1.00,1.02,1.00,0,0],
-    ["f_g1_b","female","g1","活力研究员","f2","匀称","低马尾","圆脸","自然妆","深棕","医学研发",1.03,1.05,1.00,1.04,-2,0],
-    ["f_g1_c","female","g1","冷静数据派","f3","标准","侧分短发","窄脸","冷感淡妆","黑棕","极简通勤",0.98,.94,1.06,1.06,2,-1],
 
-    ["f_g2_a","female","g2","亲和协调","f2","标准","低马尾","圆润脸型","通勤妆","深棕","商务通勤",1.02,1.03,1.00,1.00,0,0],
-    ["f_g2_b","female","g2","干练医学经理","f1","匀称","侧分中发","鹅蛋脸","干练妆","自然黑","医学经理",.99,.96,1.06,1.05,1,0],
-    ["f_g2_c","female","g2","专业学术","f4","偏瘦","自然中发","长脸","自然妆","黑棕","学术型",1.01,.92,1.03,1.02,-1,0],
 
-    ["f_g3_a","female","g3","沉稳项目经理","f3","匀称","中长发","方圆脸","干练通勤","自然黑","医学经理",1.00,1.00,1.04,1.03,0,0],
-    ["f_g3_b","female","g3","高压执行派","f4","标准","利落侧分","轮廓分明","冷静妆","深棕","正式西装",.96,.93,1.09,1.05,2,0],
-    ["f_g3_c","female","g3","温和管理者","f2","柔和","低马尾","圆脸","温和妆","栗棕","中层管理",1.05,1.04,.98,1.00,-2,0],
 
-    ["f_g4_a","female","g4","成熟管理者","f4","标准","侧分中长发","轮廓分明","正式淡妆","深棕","正式西装",.98,.96,1.07,1.03,1,0],
-    ["f_g4_b","female","g4","业务型负责人","f5","圆润","成熟短发","方圆脸","精致通勤","自然黑","高管通勤",1.03,1.00,1.04,1.02,-1,0],
-    ["f_g4_c","female","g4","资深专家","f3","偏瘦","简洁中发","窄脸","自然妆","灰黑","学术正式",.97,.88,1.08,1.05,1,-1],
 
-    ["f_g5_a","female","g5","资深研发","f5","柔和","成熟短发","方圆脸","自然","黑棕","高管通勤",.98,.90,1.08,1.04,0,0],
-    ["f_g5_b","female","g5","稳健高管","f4","标准","侧分短发","方脸","正式淡妆","灰黑","深色西装",.95,.86,1.10,1.06,1,-1],
-    ["f_g5_c","female","g5","学术型高管","f3","偏瘦","简洁中发","长脸","素净","少量白发","学术西装",1.00,.80,1.08,1.05,-1,0],
-
-    // male · 3 per age band
-    ["m_g1_a","male","g1","年轻专业","m1","偏瘦","自然短发","窄脸","清爽","自然黑","年轻专业",1.02,1.00,1.02,1.00,0,0],
-    ["m_g1_b","male","g1","理工新人","m3","标准","短碎发","鹅蛋脸","自然","自然黑","商务休闲",1.04,.96,1.03,1.03,-1,0],
-    ["m_g1_c","male","g1","学术新人","m2","偏瘦","侧分短发","长脸","温和","黑棕","学术型",1.00,.91,1.05,1.03,1,0],
-
-    ["m_g2_a","male","g2","温和学者","m2","标准","层次短发","鹅蛋脸","温和","自然黑","商务西装",1.01,.96,1.02,1.00,0,0],
-    ["m_g2_b","male","g2","执行型经理","m3","匀称","自然短发","轮廓分明","干练","自然黑","深色西装",.98,1.00,1.07,1.04,1,0],
-    ["m_g2_c","male","g2","项目协调","m1","标准","商务短发","窄脸","亲和","黑棕","商务休闲",1.05,1.02,.98,1.00,-1,0],
-
-    ["m_g3_a","male","g3","干练研发","m3","匀称","商务短发","轮廓分明","自然","自然黑","深色西装",.99,.98,1.06,1.03,0,0],
-    ["m_g3_b","male","g3","成熟项目负责人","m4","标准","侧分短发","方脸","稳重","黑棕","商务西装",.97,.92,1.08,1.05,1,0],
-    ["m_g3_c","male","g3","技术专家","m2","偏瘦","自然短发","长脸","学术","自然黑","学术西装",1.01,.89,1.05,1.02,-1,0],
-
-    ["m_g4_a","male","g4","成熟负责人","m4","标准","侧分短发","方脸","稳重","黑棕","商务西装",.97,.91,1.09,1.05,0,0],
-    ["m_g4_b","male","g4","强势执行者","m3","微壮","后梳短发","轮廓分明","冷静","自然黑","高管风",.95,.95,1.12,1.07,2,0],
-    ["m_g4_c","male","g4","温和管理者","m2","标准","自然短发","鹅蛋脸","温和","灰黑","中层管理",1.04,.89,1.01,1.00,-2,0],
-
-    ["m_g5_a","male","g5","资深管理者","m5","标准","成熟短发","长脸","沉稳","灰黑","高管西装",.96,.84,1.10,1.05,0,0],
-    ["m_g5_b","male","g5","资深科学家","m4","偏瘦","侧分短发","窄长脸","学术","少量白发","学术正式",1.00,.78,1.07,1.03,-1,0],
-    ["m_g5_c","male","g5","业务高管","m5","微壮","成熟短发","方脸","正式","灰黑","高管通勤",.94,.86,1.12,1.08,2,0]
-  ].map(function(x){return{
-    id:x[0],gender:x[1],age:x[2],name:x[3],src:x[4],
-    body:x[5],hair:x[6],face:x[7],makeup:x[8],hairColor:x[9],outfit:x[10],
-    bright:x[11],sat:x[12],contrast:x[13],zoom:x[14],dx:x[15],dy:x[16]
-  };});
-  window.PLAYER_PORTRAIT_PRESETS=P;
-
-  function srcOf(p){return SRC.find(function(x){return x.id===p.src;})||SRC[0];}
-  function spritePos(p){
-    var idx=srcOf(p).sprite,col=idx%5,row=Math.floor(idx/5);
-    return {x:[0,25,50,75,100][col],y:row?100:0};
-  }
-  function portraitStyle(p){
-    var pos=spritePos(p);
-    return 'background-image:url(assets/player_preset_sheet.jpg);'
-      +'background-size:'+(500*(p.zoom||1))+'% '+(200*(p.zoom||1))+'%;'
-      +'background-position:calc('+pos.x+'% + '+(p.dx||0)+'px) calc('+pos.y+'% + '+(p.dy||0)+'px);'
-      +'filter:brightness('+(p.bright||1)+') saturate('+(p.sat||1)+') contrast('+(p.contrast||1)+');';
-  }
-  function portraitDiv(p,cls){return '<div class="'+(cls||'player-photo')+'" style="'+portraitStyle(p)+'"></div>';}
-  window.playerPortraitDiv1479=function(id,cls){return portraitDiv(P.find(function(x){return x.id===id;})||P[0],cls);};
-
-  function currentGender(){return (window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified";}
-  function currentAge(){return window.PLAYER_AGE||"g3";}
-  function pool(){
-    var g=currentGender(),a=currentAge();
-    var arr=P.filter(function(p){return g==="unspecified"||p.gender===g;});
-    return arr.sort(function(x,y){
-      return (x.age===a?0:1)-(y.age===a?0:1);
-    });
-  }
-  function findPreset(id){return P.find(function(p){return p.id===id;})||pool()[0]||P[0];}
-  function recommended(){return pool().find(function(p){return p.age===currentAge();})||pool()[0]||P[0];}
-
-  try{
-    var saved=localStorage.getItem("dragon_player_portrait_1479");
-    window.PLAYER_PORTRAIT_PRESET=P.some(function(p){return p.id===saved;})?saved:recommended().id;
-  }catch(e){window.PLAYER_PORTRAIT_PRESET=recommended().id;}
-
-  function persist(p){
-    window.PLAYER_PORTRAIT_PRESET=p.id;
-    window.PLAYER_APPEARANCE_DRAFT={
-      preset:p.id,portraitPreset:p.id,body:p.body,hair:p.hair,face:p.face,
-      makeup:p.makeup,hairColor:p.hairColor,outfit:p.outfit
-    };
-    try{
-      localStorage.setItem("dragon_player_portrait_1479",p.id);
-      localStorage.setItem("dragon_appearance_1478",JSON.stringify(window.PLAYER_APPEARANCE_DRAFT));
-    }catch(e){}
-  }
-  window.selectPortraitPreset1479=function(id){persist(findPreset(id));renderPortraitCreator150();};
-  window.randomPortrait150=function(){
-    var arr=pool().filter(function(p){return p.age===currentAge();});
-    if(!arr.length)arr=pool();
-    persist(arr[Math.floor(Math.random()*arr.length)]);
-    renderPortraitCreator150();
-  };
-
-  function ageLabel(a){
-    var m={g1:"22–24",g2:"25–29",g3:"30–34",g4:"35–39",g5:"40+"};
-    return m[a]||a;
-  }
-  function renderPortraitCreator150(){
-    var root=document.getElementById("appearance-creator-1478");if(!root)return;
-    var arr=pool(),selected=findPreset(window.PLAYER_PORTRAIT_PRESET);
-    if(currentGender()!=="unspecified"&&selected.gender!==currentGender()){selected=recommended();persist(selected);}
-    root.innerHTML='<div class="portrait-builder v150">'
-      +'<div class="portrait-main">'+portraitDiv(selected,"portrait-main-photo")
-      +'<div class="portrait-main-name">'+selected.name+'</div>'
-      +'<div class="portrait-age-tag">'+ageLabel(selected.age)+' · '+(selected.gender==="female"?"女":"男")+'</div>'
-      +'<div class="portrait-main-meta">'+selected.body+' · '+selected.hair+' · '+selected.face+'</div>'
-      +'<div class="portrait-main-meta">'+selected.makeup+' · '+selected.hairColor+' · '+selected.outfit+'</div>'
-      +'<button type="button" class="btn portrait-random" onclick="randomPortrait150()">🎲 随机同年龄形象</button></div>'
-      +'<div class="portrait-library"><div class="sec-title" style="margin-top:0">写实立绘预设 · '+arr.length+' 个</div>'
-      +'<div class="creator-note">当前年龄优先显示。每个年龄段提供 3 种不同职业气质；外观只影响代入感，不改变数值。</div>'
-      +'<div class="portrait-grid v150-grid">'+arr.map(function(p){
-        var rec=p.age===currentAge();
-        return '<button type="button" class="portrait-card '+(selected.id===p.id?'selected':'')+(rec?' recommended':'')+'" onclick="selectPortraitPreset1479(\''+p.id+'\')">'
-          +portraitDiv(p,"portrait-card-photo")
-          +'<span class="portrait-card-title">'+p.name+(rec?' <em>'+ageLabel(p.age)+'</em>':'')+'</span>'
-          +'<span class="portrait-card-meta">'+p.body+' · '+p.hair+'<br>'+p.face+' · '+p.outfit+'</span></button>';
-      }).join('')+'</div></div></div>';
-  }
-  window.renderPortraitCreator1479=renderPortraitCreator150;
-  window.renderPortraitCreator150=renderPortraitCreator150;
-
-  function mount(){
-    var root=document.getElementById("character-creator");if(!root)return;
-    var box=document.getElementById("appearance-creator-1478");
-    if(!box){box=document.createElement("div");box.id="appearance-creator-1478";box.className="appearance-creator";root.insertBefore(box,root.firstChild);}
-    renderPortraitCreator150();
-  }
-
-  var oldLife=window.renderLifeBuilder||renderLifeBuilder;
-  renderLifeBuilder=function(){oldLife();mount();};
-  window.renderLifeBuilder=renderLifeBuilder;
-
-  var oldGender=window.setLifeGender||setLifeGender;
-  setLifeGender=function(g){
-    oldGender(g);
-    var p=P.find(function(x){return x.gender===g&&x.age===currentAge();});
-    if(p)persist(p);
-    setTimeout(mount,0);
-  };
-  window.setLifeGender=setLifeGender;
-
-  var oldAge=window.setPlayerAge||setPlayerAge;
-  setPlayerAge=function(a){
-    oldAge(a);
-    var g=currentGender(),p=P.find(function(x){return x.gender===g&&x.age===a;});
-    if(p)persist(p);
-    setTimeout(mount,0);
-  };
-  window.setPlayerAge=setPlayerAge;
-
-  var oldStart=startGame;
-  startGame=function(){
-    oldStart();
-    if(S&&S.player){
-      var p=findPreset(window.PLAYER_PORTRAIT_PRESET);
-      S.player.portraitPreset=p.id;
-      S.player.appearance=Object.assign({},S.player.appearance||{},{
-        portraitPreset:p.id,preset:p.id,body:p.body,hair:p.hair,face:p.face,
-        makeup:p.makeup,hairColor:p.hairColor,outfit:p.outfit
-      });
-    }
-  };
-
-  function refresh(){
-    if(!S||!S.player)return;
-    var el=document.querySelector(".pm-avatar");if(!el)return;
-    var p=findPreset(S.player.portraitPreset||window.PLAYER_PORTRAIT_PRESET);
-    el.innerHTML=portraitDiv(p,"pm-player-photo");
-    el.classList.add("pm-avatar-art","pm-avatar-photo");
-  }
-  var oldHUD=renderHUD;
-  renderHUD=function(){oldHUD();refresh();};
-  window.renderHUD=renderHUD;
-
-  setTimeout(mount,0);
-
-  var style=document.createElement("style");
-  style.textContent=
-    '.portrait-builder.v150{grid-template-columns:250px minmax(0,1fr)}'
-   +'.portrait-age-tag{display:inline-block;margin:5px auto 2px;padding:2px 8px;border:1px solid #d8baa0;border-radius:99px;font-size:10px;color:#8b7060;background:#fff8f1}'
-   +'.portrait-random{margin-top:10px;width:100%;font-size:11px}'
-   +'.v150-grid{grid-template-columns:repeat(5,minmax(0,1fr))}'
-   +'.portrait-card.recommended{order:-1}.portrait-card.recommended:not(.selected){border-color:#cfb28f}'
-   +'.portrait-card-photo,.portrait-main-photo,.pm-player-photo{background-repeat:no-repeat;background-color:#d9d7d5}'
-   +'@media(max-width:1100px){.v150-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}'
-   +'@media(max-width:800px){.v150-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}'
-   +'@media(max-width:650px){.portrait-builder.v150{grid-template-columns:1fr}.v150-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}';
-  document.head.appendChild(style);
-})();
-/* =====================  v15.0 EXPANDED PORTRAIT LIBRARY END  ===================== */
-
-
-/* =====================  v15.1 · STAGED PORTRAIT REVEAL / PERSONAL DETAILS  ===================== */
-(function(){
-  const DETAIL_OPTIONS={
-    accessory:[
-      ["none","无配饰"],["thin_glasses","细框眼镜"],["dark_glasses","深色眼镜"],["earring","简约耳饰"],["watch","腕表"],
-      ["lanyard","工牌挂绳"],["folder","文件夹"],["tablet","平板"],["scarf","丝巾/领巾"],["pin","简约胸针"]
-    ],
-    expression:[
-      ["neutral","默认"],["soft","轻微微笑"],["serious","严肃"],["thinking","思考"],["tired","疲惫"]
-    ],
-    pose:[
-      ["front","正面站姿"],["threequarter","轻微侧身"],["folder","抱文件"],["tablet","拿平板"],["arms","自然抱臂"]
-    ]
-  };
-  window.PLAYER_DETAIL_OPTIONS=DETAIL_OPTIONS;
-  window.PLAYER_PORTRAIT_DETAIL={accessory:"none",expression:"neutral",pose:"front"};
-
-  /* Explicit choice-state. Defaults elsewhere in the creator no longer count as a deliberate appearance choice. */
-  var savedState=null;
-  try{savedState=JSON.parse(localStorage.getItem("dragon_portrait_choice_state_151")||"null");}catch(e){}
-  window.PLAYER_PORTRAIT_CHOICE_STATE=savedState||{
-    genderChosen:false,
-    ageChosen:false,
-    presetChosen:false
-  };
-  try{
-    var d=JSON.parse(localStorage.getItem("dragon_portrait_detail_151")||"null");
-    if(d)window.PLAYER_PORTRAIT_DETAIL=Object.assign({},window.PLAYER_PORTRAIT_DETAIL,d);
-  }catch(e){}
-
-  function saveChoiceState151(){
-    try{
-      localStorage.setItem("dragon_portrait_choice_state_151",JSON.stringify(window.PLAYER_PORTRAIT_CHOICE_STATE));
-      localStorage.setItem("dragon_portrait_detail_151",JSON.stringify(window.PLAYER_PORTRAIT_DETAIL));
-    }catch(e){}
-  }
-
-  function choiceReady151(){
-    var st=window.PLAYER_PORTRAIT_CHOICE_STATE;
-    return !!(st.genderChosen&&st.ageChosen&&st.presetChosen);
-  }
-  window.playerPortraitReady151=choiceReady151;
-
-  function resetPreset151(){
-    window.PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=false;
-    try{localStorage.removeItem("dragon_player_portrait_1479");}catch(e){}
-    saveChoiceState151();
-  }
-
-  function selectedPreset151(){
-    var list=window.PLAYER_PORTRAIT_PRESETS||[];
-    return list.find(function(p){return p.id===window.PLAYER_PORTRAIT_PRESET;})||null;
-  }
-
-  function detailLabel151(group,key){
-    var row=(DETAIL_OPTIONS[group]||[]).find(function(x){return x[0]===key;});
-    return row?row[1]:"";
-  }
-
-  function silhouette151(){
-    return '<div class="portrait-placeholder">'
-      +'<div class="portrait-silhouette-head"></div><div class="portrait-silhouette-body"></div>'
-      +'<b>你的形象尚未生成</b>'
-      +'<span>请依次选择性别、年龄和人物模板。</span></div>';
-  }
-
-  window.setPortraitDetail151=function(group,key){
-    if(!DETAIL_OPTIONS[group])return;
-    window.PLAYER_PORTRAIT_DETAIL[group]=key;
-    saveChoiceState151();
-    if(window.renderPortraitCreator151)window.renderPortraitCreator151();
-  };
-
-  function detailChips151(group){
-    var cur=window.PLAYER_PORTRAIT_DETAIL[group];
-    return (DETAIL_OPTIONS[group]||[]).map(function(x){
-      return '<button type="button" class="creator-chip '+(cur===x[0]?'selected':'')+'" onclick="setPortraitDetail151(\''+group+'\',\''+x[0]+'\')">'+x[1]+'</button>';
-    }).join('');
-  }
-
-  function render151(){
-    var root=document.getElementById("appearance-creator-1478");if(!root)return;
-    var st=window.PLAYER_PORTRAIT_CHOICE_STATE;
-    var g=(window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified";
-    var a=window.PLAYER_AGE||"g3";
-    var list=(window.PLAYER_PORTRAIT_PRESETS||[]).filter(function(p){return g==="unspecified"||p.gender===g;});
-    list.sort(function(x,y){return (x.age===a?0:1)-(y.age===a?0:1);});
-
-    var p=selectedPreset151();
-    var ready=choiceReady151()&&p;
-
-    var gate='<div class="portrait-gate">'
-      +'<div class="portrait-step '+(st.genderChosen?'done':'active')+'"><b>1</b><span>性别</span></div>'
-      +'<div class="portrait-step '+(st.ageChosen?'done':st.genderChosen?'active':'')+'"><b>2</b><span>年龄</span></div>'
-      +'<div class="portrait-step '+(st.presetChosen?'done':st.genderChosen&&st.ageChosen?'active':'')+'"><b>3</b><span>人物模板</span></div>'
-      +'</div>';
-
-    var left='<div class="portrait-main v151-main">'
-      +(ready?window.playerPortraitDiv1479(p.id,"portrait-main-photo"):silhouette151())
-      +(ready?'<div class="portrait-main-name">'+p.name+'</div>'
-        +'<div class="portrait-age-tag">'+(p.age||'')+' · '+(p.gender==="female"?"女":"男")+'</div>'
-        +'<div class="portrait-main-meta">'+p.body+' · '+p.hair+' · '+p.face+'</div>'
-        +'<div class="portrait-main-meta">'+p.makeup+' · '+p.hairColor+' · '+p.outfit+'</div>'
-        +'<div class="portrait-detail-summary">'
-        +detailLabel151("accessory",PLAYER_PORTRAIT_DETAIL.accessory)+' · '
-        +detailLabel151("expression",PLAYER_PORTRAIT_DETAIL.expression)+' · '
-        +detailLabel151("pose",PLAYER_PORTRAIT_DETAIL.pose)+'</div>'
-        :'')
-      +'</div>';
-
-    var library='';
-    if(!st.genderChosen){
-      library='<div class="portrait-lock-message"><b>先选择性别</b><span>不会提前生成默认人物。</span></div>';
-    }else if(!st.ageChosen){
-      library='<div class="portrait-lock-message"><b>再选择年龄</b><span>年龄会决定推荐的人物模板。</span></div>';
-    }else{
-      library='<div class="portrait-library"><div class="sec-title" style="margin-top:0">选择人物模板</div>'
-        +'<div class="creator-note">点击一个模板后，主角立绘才正式出现。切换性别或年龄会清空这一步。</div>'
-        +'<div class="portrait-grid v150-grid">'
-        +list.map(function(x){
-          var rec=x.age===a;
-          return '<button type="button" class="portrait-card '+(st.presetChosen&&p&&p.id===x.id?'selected':'')+(rec?' recommended':'')+'" onclick="selectPortraitPreset151(\''+x.id+'\')">'
-            +window.playerPortraitDiv1479(x.id,"portrait-card-photo")
-            +'<span class="portrait-card-title">'+x.name+(rec?' <em>当前年龄</em>':'')+'</span>'
-            +'<span class="portrait-card-meta">'+x.body+' · '+x.hair+'<br>'+x.face+' · '+x.outfit+'</span></button>';
-        }).join('')+'</div>'
-        +(ready?'<div class="portrait-detail-panel">'
-          +'<div class="sec-title">配饰</div><div class="ng-wrap">'+detailChips151("accessory")+'</div>'
-          +'<div class="sec-title">表情</div><div class="ng-wrap">'+detailChips151("expression")+'</div>'
-          +'<div class="sec-title">姿态</div><div class="ng-wrap">'+detailChips151("pose")+'</div>'
-          +'<div class="creator-note">这些选项已进入存档结构。后续替换成独立立绘变体时，不需要重做人物数据。</div>'
-          +'</div>':'')
-        +'</div>';
-    }
-
-    root.innerHTML=gate+'<div class="portrait-builder v150 v151">'+left+library+'</div>';
-  }
-  window.renderPortraitCreator151=render151;
-
-  window.selectPortraitPreset151=function(id){
-    var p=(window.PLAYER_PORTRAIT_PRESETS||[]).find(function(x){return x.id===id;});
-    if(!p)return;
-    window.PLAYER_PORTRAIT_PRESET=id;
-    window.PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=true;
-    window.PLAYER_APPEARANCE_DRAFT={
-      preset:id,portraitPreset:id,body:p.body,hair:p.hair,face:p.face,
-      makeup:p.makeup,hairColor:p.hairColor,outfit:p.outfit
-    };
-    try{
-      localStorage.setItem("dragon_player_portrait_1479",id);
-      localStorage.setItem("dragon_appearance_1478",JSON.stringify(window.PLAYER_APPEARANCE_DRAFT));
-    }catch(e){}
-    saveChoiceState151();
-    render151();
-  };
-
-  /* Override the older selector so all portrait-card clicks go through the staged flow. */
-  window.selectPortraitPreset1479=window.selectPortraitPreset151;
-
-  /* Active gender/age selections are the gates. Changing either invalidates the current portrait. */
-  var oldGender151=window.setLifeGender||setLifeGender;
-  setLifeGender=function(g){
-    oldGender151(g);
-    window.PLAYER_PORTRAIT_CHOICE_STATE.genderChosen=true;
-    resetPreset151();
-    setTimeout(render151,0);
-  };
-  window.setLifeGender=setLifeGender;
-
-  var oldAge151=window.setPlayerAge||setPlayerAge;
-  setPlayerAge=function(a){
-    oldAge151(a);
-    window.PLAYER_PORTRAIT_CHOICE_STATE.ageChosen=true;
-    resetPreset151();
-    setTimeout(render151,0);
-  };
-  window.setPlayerAge=setPlayerAge;
-
-  var oldRenderLife151=window.renderLifeBuilder||renderLifeBuilder;
-  renderLifeBuilder=function(){
-    oldRenderLife151();
-    setTimeout(render151,0);
-  };
-  window.renderLifeBuilder=renderLifeBuilder;
-
-  var oldStart151=startGame;
-  startGame=function(){
-    if(!choiceReady151()){
-      toast("请先完成性别、年龄和主角形象选择","down");
-      var el=document.getElementById("appearance-creator-1478");
-      if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
-      return;
-    }
-    oldStart151();
-    if(S&&S.player){
-      S.player.portraitDetail=Object.assign({},window.PLAYER_PORTRAIT_DETAIL);
-      S.player.portraitPreset=window.PLAYER_PORTRAIT_PRESET;
-    }
-  };
-
-  var style=document.createElement("style");
-  style.textContent=
-    '.portrait-gate{display:flex;gap:8px;margin:0 0 12px;padding:9px;background:#f2ede7;border:1px solid #dfc6ad;border-radius:10px}'
-   +'.portrait-step{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:7px;color:#998578;font-size:11px}.portrait-step b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#ddd2c8;color:#fff}'
-   +'.portrait-step.active{color:#73584a;background:#fff9f2}.portrait-step.active b{background:#bd6b75}.portrait-step.done{color:#5f6f61}.portrait-step.done b{background:#718675}'
-   +'.portrait-placeholder{aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#e8e3de,#d8d1cb);border-radius:10px;color:#8d796d;position:relative;overflow:hidden}'
-   +'.portrait-silhouette-head{width:76px;height:88px;border-radius:50%;background:#b9b0aa;margin-bottom:-2px}.portrait-silhouette-body{width:150px;height:120px;border-radius:70px 70px 0 0;background:#b9b0aa;margin-bottom:18px}.portrait-placeholder b{font-size:13px}.portrait-placeholder span{font-size:10.5px;margin-top:4px}'
-   +'.portrait-lock-message{min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:1px dashed #d9bea1;border-radius:12px;color:#8d796d;background:#fffaf5}.portrait-lock-message b{font-size:15px;margin-bottom:4px}.portrait-lock-message span{font-size:11px}'
-   +'.portrait-detail-panel{margin-top:16px;padding-top:12px;border-top:1px dashed #ddc5ad}.portrait-detail-summary{font-size:10.5px;color:#9b786b;margin-top:6px}'
-   +'.v151 .portrait-main-photo{transition:filter .25s ease,transform .25s ease}'
-   +'.v151-main{min-height:340px}'
-   +'@media(max-width:650px){.portrait-gate{overflow:auto}.portrait-step{white-space:nowrap}}';
-  document.head.appendChild(style);
-
-  setTimeout(render151,0);
-})();
-/* =====================  v15.1 STAGED PORTRAIT END  ===================== */
-
-
-/* =====================  v15.2 · COMPLETE PORTRAIT INTEGRATION  ===================== */
-(function(){
-  /* v15.2.1 hotfix:
-     the originally uploaded NPC sheet was truncated in GitHub and only its first row
-     decodes reliably. Keep every portrait on a guaranteed-valid first-row slot until
-     the full binary sheet is replaced. */
-  const NPC_INDEX={
-    "钟时":2,
-    "老板":5,
-    "二老板":4,
-    "小圆":3,
-    "邹婷":2,
-    "加琳":3,
-    "PVP":0,
-    "明夜":0,
-    "则韩":5,
-    "肖恩":1,
-    "一建":3,
-    "苏苏":2,
-    "杨杨":1,
-    "琳琳":2,
-    "武总":5,
-    "贤人":0,
-    "曹兰":0,
-    "谷雨":3,
-    "瑞冬":1,
-    "Parker":5,
-    "朱粽":1,
-    "黑娜":3,
-    "MK主任":4,
-    "N院长":4,
-    "林主任":5,
-    "K总":2,
-    "林丹":1
-  };
-  window.NPC_PORTRAIT_INDEX=NPC_INDEX;
-
-  function spriteStyle152(asset,index,cols,rows){
-    cols=cols||6;rows=rows||5;
-    var col=index%cols,row=Math.floor(index/cols);
-    /* npc asset hotfix: only use the first decoded row of the current repository image */
-    if(asset.indexOf('npc_portraits_sheet.jpg')>=0){
-      var nx=cols===1?0:(col/(cols-1))*100;
-      return 'background-image:url('+asset+');background-size:'+(cols*100)+'% auto;background-position:'+nx+'% 0%;background-repeat:no-repeat;background-color:#d8d5d2;';
-    }
-    var x=cols===1?0:(col/(cols-1))*100;
-    var y=rows===1?0:(row/(rows-1))*100;
-    return 'background-image:url('+asset+');background-size:'+(cols*100)+'% '+(rows*100)+'%;background-position:'+x+'% '+y+'%;background-repeat:no-repeat;background-color:#d8d5d2;';
-  }
-
-  function npcPortrait152(name,cls){
-    var idx=NPC_INDEX[name];
-    if(idx==null){
-      /* speaker aliases and fallbacks */
-      if(name==="我"||name==="你"||name==="玩家"){
-        var pid=(S&&S.player&&S.player.portraitPreset)||window.PLAYER_PORTRAIT_PRESET;
-        return playerPortrait152(pid,cls||"dialogue-portrait-real");
-      }
-      idx=18;
-    }
-    return '<div class="'+(cls||'npc-portrait-real')+'" style="'+spriteStyle152('assets/npc_portraits_sheet.jpg',idx,6,5)+'"></div>';
-  }
-  window.npcPortrait152=npcPortrait152;
-  window.npcAvatar1478=function(name){return npcPortrait152(name,"dialogue-portrait-real");};
-
-  function playerPresetIndex152(id){
-    var list=window.PLAYER_PORTRAIT_PRESETS||[];
-    var i=list.findIndex(function(x){return x.id===id;});
-    return i<0?0:i;
-  }
-  function detailClass152(){
-    var d=window.PLAYER_PORTRAIT_DETAIL||{};
-    return ' expr-'+(d.expression||'neutral')+' pose-'+(d.pose||'front')+' acc-'+(d.accessory||'none');
-  }
-  function accessoryMarkup152(){
-    var a=(window.PLAYER_PORTRAIT_DETAIL||{}).accessory||"none";
-    if(a==="none")return "";
-    return '<span class="portrait-accessory '+a+'"></span>';
-  }
-  function playerPortrait152(id,cls){
-    var idx=playerPresetIndex152(id);
-    var c=(cls||"player-photo")+' portrait-real '+detailClass152();
-    return '<div class="'+c+'" style="'+spriteStyle152('assets/player_portraits_30.jpg',idx,6,5)+'">'+accessoryMarkup152()+'</div>';
-  }
-  window.playerPortrait152=playerPortrait152;
-  window.playerPortraitDiv1479=playerPortrait152;
-
-  /* Re-render the staged creator with the real 30-slot portrait sheet. */
-  if(window.renderPortraitCreator151)setTimeout(window.renderPortraitCreator151,0);
-
-  /* Portraits in every dialogue path. */
-  window.decorateDialogue1478=function(){
-    Array.from(document.querySelectorAll(".dialogue-row")).forEach(function(row){
-      var n=row.querySelector(".dialogue-name"),face=row.querySelector(".dialogue-face");
-      if(n&&face){
-        face.innerHTML=npcPortrait152(n.textContent.trim(),"dialogue-portrait-real");
-        face.classList.add("dialogue-face-art","dialogue-face-final");
-      }
-    });
-  };
-
-  /* Character bible: portraits are now part of the cast cards. */
-  buildCast=function(){
-    const wrap=document.getElementById('cast-wrap');if(!wrap)return;
-    const head='<div class="sec-title">📇 人物志 · '+Object.keys(NPCs).length+' 位关键人物（入职前建议翻一遍）</div>'
-      +'<div class="intro-hint">每个人都<b>想要</b>一件东西，也都<b>害怕</b>一件东西。立绘展示人物的公开职场形象，真正的性格仍需在事件里验证。</div>';
-    const cards=Object.keys(NPCs).map(function(k){
-      const n=NPCs[k],b=NPC_BIOS[k]||{};
-      const bio='<details class="bio"><summary>动机与小传 ▾</summary>'
-        +'<div class="bio-row"><em>想要</em><span>'+(b.want||'—')+'</span></div>'
-        +'<div class="bio-row"><em>害怕</em><span>'+(b.fear||'—')+'</span></div>'
-        +'<div class="bio-body">'+(b.bio||'')+'</div></details>';
-      return '<div class="np portrait-np '+(n.boss?'boss':'')+'">'
-        +npcPortrait152(n.name,"np-portrait")
-        +'<div class="np-copy"><div class="n">'+n.name+'</div><div class="r">'+n.role+'</div>'
-        +'<div class="q">「'+n.quote+'」</div>'+bio+'</div></div>';
-    }).join('');
-    wrap.innerHTML=head+'<div class="cast">'+cards+'</div>';
-  };
-  window.buildCast=buildCast;
-
-  /* Zhong Shi dossier and public resume use the same canonical portrait. */
-  renderVP=function(){
-    const el=document.getElementById('vp-card');if(!el)return;
-    const r=VP_RESUME;
-    el.innerHTML='<div class="vp-dossier-layout">'+npcPortrait152("钟时","vp-portrait-final")
-      +'<div class="vp-dossier-copy">'
-      +'<div class="vp-head"><span class="nm">'+r.name+'</span><span class="tt">'+r.title+'</span></div>'
-      +'<div class="vp-meta">'+r.meta+'</div><div class="vp-sum">'+r.summary+'</div>'
-      +r.career.map(function(c){return '<div class="resume-row"><span class="yr">'+c.yr+'</span><span class="og">'+c.og+'</span><span class="rl">'+c.rl+'</span></div>';}).join('')
-      +'<div class="vp-meta" style="margin:12px 0 8px">教育背景：'+r.edu.join(' · ')+'</div>'
-      +'<div class="tags">'+r.tags.map(function(t){return '<span>'+t+'</span>';}).join('')+'</div></div></div>';
-  };
-  window.renderVP=renderVP;
-
-  bossResumeHTML=function(){
-    const r=VP_RESUME;
-    return '<div class="boss-dossier-card"><div class="vp-dossier-layout">'+npcPortrait152("钟时","vp-portrait-final")
-      +'<div class="vp-dossier-copy"><div class="vp-head"><span class="nm">'+r.name+'</span><span class="tt">'+r.title+'</span></div>'
-      +'<div class="vp-meta">'+r.meta+'</div><div class="vp-sum">'+r.summary+'</div>'
-      +r.career.map(function(c){return '<div class="resume-row"><span class="yr">'+c.yr+'</span><span class="og">'+c.og+'</span><span class="rl">'+c.rl+'</span></div>';}).join('')
-      +'<div class="vp-meta" style="margin:12px 0 8px">教育背景：'+r.edu.join(' · ')+'</div>'
-      +'<div class="tags">'+r.tags.map(function(t){return '<span>'+t+'</span>';}).join('')+'</div></div></div></div>';
-  };
-  window.bossResumeHTML=bossResumeHTML;
-
-  /* Player side-panel avatar always follows the confirmed portrait + details. */
-  function refreshPlayerPortrait152(){
-    if(!S||!S.player||!window.playerPortraitReady151||!window.playerPortraitReady151())return;
-    var el=document.querySelector(".pm-avatar");if(!el)return;
-    var id=S.player.portraitPreset||window.PLAYER_PORTRAIT_PRESET;
-    el.innerHTML=playerPortrait152(id,"pm-player-photo");
-    el.classList.add("pm-avatar-art","pm-avatar-photo");
-  }
-  var oldHUD152=renderHUD;
-  renderHUD=function(){oldHUD152();refreshPlayerPortrait152();if(window.decorateDialogue1478)window.decorateDialogue1478();};
-  window.renderHUD=renderHUD;
-
-  var oldStart152=startGame;
-  startGame=function(){
-    oldStart152();
-    if(S&&S.player&&window.playerPortraitReady151&&window.playerPortraitReady151()){
-      S.player.portraitDetail=Object.assign({},window.PLAYER_PORTRAIT_DETAIL||{});
-      refreshPlayerPortrait152();
-    }
-  };
-
-  var style=document.createElement("style");
-  style.textContent=
-    '.npc-portrait-real,.dialogue-portrait-real,.np-portrait,.vp-portrait-final,.portrait-real{position:relative;overflow:hidden;background-color:#d8d5d2;background-repeat:no-repeat}'
-   +'.dialogue-portrait-real{width:100%;height:100%;border-radius:10px}'
-   +'.portrait-np{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:start}.np-portrait{width:92px;aspect-ratio:3/4;border-radius:9px;border:1px solid #d9c1aa}.np-copy{min-width:0}'
-   +'.vp-dossier-layout{display:grid;grid-template-columns:180px minmax(0,1fr);gap:18px;align-items:start}.vp-portrait-final{width:180px;aspect-ratio:3/4;border-radius:12px;border:1px solid #d8b694;box-shadow:0 6px 18px rgba(92,69,51,.10)}'
-   +'.portrait-real.expr-soft{filter:brightness(1.04) saturate(1.04)}.portrait-real.expr-serious{filter:contrast(1.08) brightness(.96)}.portrait-real.expr-thinking{filter:contrast(1.04) saturate(.92)}.portrait-real.expr-tired{filter:brightness(.92) saturate(.82)}'
-   +'.portrait-real.pose-threequarter{background-position-x:56%!important}.portrait-real.pose-folder{background-position-y:48%!important}.portrait-real.pose-tablet{background-position-y:52%!important}.portrait-real.pose-arms{transform:scale(1.025)}'
-   +'.portrait-accessory{position:absolute;pointer-events:none;z-index:2}.portrait-accessory.thin_glasses,.portrait-accessory.dark_glasses{left:25%;top:28%;width:50%;height:14%;border-top:2px solid rgba(50,45,42,.72)}'
-   +'.portrait-accessory.thin_glasses:before,.portrait-accessory.thin_glasses:after,.portrait-accessory.dark_glasses:before,.portrait-accessory.dark_glasses:after{content:"";position:absolute;top:0;width:34%;height:75%;border:2px solid rgba(55,50,46,.72);border-radius:45%}.portrait-accessory.thin_glasses:before,.portrait-accessory.dark_glasses:before{left:2%}.portrait-accessory.thin_glasses:after,.portrait-accessory.dark_glasses:after{right:2%}.portrait-accessory.dark_glasses:before,.portrait-accessory.dark_glasses:after{background:rgba(40,40,45,.22)}'
-   +'.portrait-accessory.earring{right:27%;top:42%;width:6px;height:9px;border:1px solid #b7945e;border-radius:50%}.portrait-accessory.pin{right:25%;top:66%;width:7px;height:7px;border-radius:50%;background:#b7945e}.portrait-accessory.lanyard{left:49%;top:55%;height:35%;border-left:2px solid rgba(38,52,72,.55);transform:rotate(5deg)}'
-   +'.portrait-accessory.folder,.portrait-accessory.tablet{right:5%;bottom:2%;width:32%;height:28%;border-radius:4px;background:rgba(55,57,62,.86);transform:rotate(-8deg);box-shadow:0 0 0 1px rgba(255,255,255,.25)}.portrait-accessory.tablet{background:rgba(28,31,37,.92);transform:rotate(5deg)}'
-   +'.portrait-accessory.scarf{left:43%;top:56%;width:22%;height:12%;background:rgba(128,84,78,.65);clip-path:polygon(0 0,100% 0,55% 100%)}.portrait-accessory.watch{right:14%;bottom:16%;width:10px;height:10px;border:2px solid #8a7764;border-radius:50%}'
-   +'@media(max-width:720px){.portrait-np{grid-template-columns:72px minmax(0,1fr)}.np-portrait{width:72px}.vp-dossier-layout{grid-template-columns:1fr}.vp-portrait-final{width:160px;margin:0 auto}}';
-  document.head.appendChild(style);
-})();
-/* =====================  v15.2 COMPLETE PORTRAITS END  ===================== */
-
-
-/* =====================  v15.3 · CREATOR WORKBENCH UI / BUGFIX  ===================== */
-(function(){
-  /* ------------------------------------------------------------------
-     Creator v15.3 intentionally becomes the single UI owner.
-     Older creator/portrait modules still provide data and save compatibility,
-     but no longer determine the visible layout.
-  ------------------------------------------------------------------ */
-  window.CREATOR_STEP=1;
-
-  const V153_DETAIL={
-    body:["纤瘦","标准","匀称","微壮","圆润","高挑","娇小","肩宽","柔和","久坐型"],
-    hair:["短发","侧分","中长发","层次短发","微卷","低马尾","高马尾","盘发","后梳","自然蓬松"],
-    face:["鹅蛋脸","圆脸","方脸","长脸","窄脸","菱形脸","心形脸","方圆脸","轮廓分明","宽下颌"],
-    makeup:["素净自然","通勤淡妆","知性优雅","甜美柔和","冷感高级","清透裸妆","正式职场","疲惫感","亲和感","利落干练"],
-    hairColor:["纯黑","黑棕","深棕","栗棕","冷棕","浅棕","灰黑","少量白发","亚麻灰","酒红棕"],
-    outfit:["医学经理","商务休闲","学术风","高管风","正式西装","极简通勤","中层管理","年轻专业","会议日","实验室通勤"]
-  };
-  window.V153_DETAIL=V153_DETAIL;
-  window.V153_CUSTOM=window.V153_CUSTOM||{
-    body:2,hair:2,face:0,makeup:1,hairColor:1,outfit:0
-  };
-
-  function ageLabel153(k){
-    return (window.AGE_OPTIONS&&AGE_OPTIONS[k]&&AGE_OPTIONS[k].label)||({g1:"22–24岁",g2:"25–29岁",g3:"30–34岁",g4:"35–39岁",g5:"40+岁"})[k]||k;
-  }
-  function gender153(){return (window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"male";}
-  function age153(){return window.PLAYER_AGE||"g3";}
-
-  /* Use the older 5x2 asset which is complete in the repository.
-     The later 30-slot file is currently truncated, which caused the empty preview bug. */
-  function basePortraitIndex153(g,a){
-    var ai={g1:0,g2:1,g3:2,g4:3,g5:4}[a]; if(ai==null)ai=2;
-    return (g==="female"?0:5)+ai;
-  }
-  function portraitForPreset153(p,cls,withDetail){
-    p=p||currentPreset153()||{};
-    var g=p.gender||gender153(),a=p.age||age153(),idx=basePortraitIndex153(g,a),col=idx%5,row=Math.floor(idx/5);
-    var x=(col/4)*100,y=row?100:0;
-    var same=(window.PLAYER_PORTRAIT_PRESETS||[]).filter(function(z){return z.gender===g&&z.age===a;});
-    var variant=Math.max(0,same.findIndex(function(z){return z.id===p.id;}));
-    var bright=[1,1.03,.97][variant%3],sat=[1,.96,1.05][variant%3],cont=[1.03,1.07,1][variant%3];
-    var detail=window.PLAYER_PORTRAIT_DETAIL||{};
-    var accessory=(withDetail&&typeof accessoryMarkup152==="function")?accessoryMarkup152():"";
-    return '<div class="'+(cls||"creator153-photo")+' portrait-real '+(withDetail?'expr-'+(detail.expression||"neutral")+' pose-'+(detail.pose||"front"):'')+'"'
-      +' style="background-image:url(assets/player_preset_sheet.jpg);background-size:500% 200%;background-position:'+x+'% '+y+'%;'
-      +'filter:brightness('+bright+') saturate('+sat+') contrast('+cont+');background-repeat:no-repeat;background-color:#d9d7d5;">'
-      +accessory+'</div>';
-  }
-  function portrait153(cls){return portraitForPreset153(currentPreset153(),cls,true);}
-  window.playerPortrait153=portrait153;
-  window.playerPortraitForPreset153=portraitForPreset153;
-
-  function currentPreset153(){
-    var list=window.PLAYER_PORTRAIT_PRESETS||[];
-    return list.find(function(x){return x.id===window.PLAYER_PORTRAIT_PRESET;})||list.find(function(x){return x.gender===gender153()&&x.age===age153();})||list[0];
-  }
-
-  function presets153(){
-    var list=(window.PLAYER_PORTRAIT_PRESETS||[]).filter(function(p){return p.gender===gender153();});
-    var a=age153();
-    list.sort(function(x,y){return (x.age===a?0:1)-(y.age===a?0:1);});
-    return list.slice(0,5);
-  }
-
-  function syncCustomFromPreset153(p){
-    if(!p)return;
-    function find(group,val){
-      var arr=V153_DETAIL[group]||[];
-      var i=arr.findIndex(function(x){return String(val||"").indexOf(x.replace("脸",""))>=0||x.indexOf(String(val||""))>=0;});
-      return i>=0?i:window.V153_CUSTOM[group]||0;
-    }
-    V153_CUSTOM.body=find("body",p.body);
-    V153_CUSTOM.hair=find("hair",p.hair);
-    V153_CUSTOM.face=find("face",p.face);
-    V153_CUSTOM.makeup=find("makeup",p.makeup);
-    V153_CUSTOM.hairColor=find("hairColor",p.hairColor);
-    V153_CUSTOM.outfit=find("outfit",p.outfit);
-  }
-
-  window.creator153SelectPreset=function(id){
-    if(window.selectPortraitPreset151)window.selectPortraitPreset151(id);
-    else window.PLAYER_PORTRAIT_PRESET=id;
-    var p=currentPreset153(); syncCustomFromPreset153(p);
-    if(window.PLAYER_PORTRAIT_CHOICE_STATE)window.PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=true;
-    renderCreator153();
-  };
-  window.creator153Detail=function(group,i){
-    if(!V153_DETAIL[group])return;
-    V153_CUSTOM[group]=Number(i)||0;
-    var p=currentPreset153();
-    if(p){
-      p.body=V153_DETAIL.body[V153_CUSTOM.body];
-      p.hair=V153_DETAIL.hair[V153_CUSTOM.hair];
-      p.face=V153_DETAIL.face[V153_CUSTOM.face];
-      p.makeup=V153_DETAIL.makeup[V153_CUSTOM.makeup];
-      p.hairColor=V153_DETAIL.hairColor[V153_CUSTOM.hairColor];
-      p.outfit=V153_DETAIL.outfit[V153_CUSTOM.outfit];
-    }
-    try{localStorage.setItem("dragon_creator_custom_153",JSON.stringify(V153_CUSTOM));}catch(e){}
-    renderCreator153();
-  };
-
-  try{
-    var saved=JSON.parse(localStorage.getItem("dragon_creator_custom_153")||"null");
-    if(saved)window.V153_CUSTOM=Object.assign(window.V153_CUSTOM,saved);
-  }catch(e){}
-
-  function detailStrip153(group,title){
-    var arr=V153_DETAIL[group]||[],cur=V153_CUSTOM[group]||0;
-    return '<div class="c153-option-row"><div class="c153-option-title">'+title+'</div><div class="c153-option-strip">'
-      +arr.map(function(x,i){
-        return '<button type="button" class="c153-mini '+(i===cur?'selected':'')+'" onclick="creator153Detail(\''+group+'\','+i+')">'
-          +'<span class="c153-mini-preview '+group+' p'+i+'"></span><span>'+(i+1)+' '+x+'</span></button>';
-      }).join('')+'</div></div>';
-  }
-
-  function nav153(){
-    var items=[
-      ["基本信息","性别 · 年龄 · 背景"],
-      ["外观形象","打造你的职场形象"],
-      ["初始属性","能力 · 性格 · 资源"],
-      ["人生词条","选择你的优势"],
-      ["确认角色","开始你的故事"]
-    ];
-    return '<aside class="c153-nav"><div class="c153-brand">PROJECT<br><b>DRAGON OFFICE</b><small>临床开发 · 生存法则</small></div>'
-      +items.map(function(x,i){
-        var n=i+1;
-        return '<button class="c153-nav-item '+(CREATOR_STEP===n?'active':'')+'" onclick="creator153Step('+n+')">'
-          +'<span class="c153-nav-num">'+n+'</span><span><b>'+x[0]+'</b><small>'+x[1]+'</small></span></button>';
-      }).join('')
-      +'<div class="c153-motto">Science<br>People<br>A Better Tomorrow.</div></aside>';
-  }
-
-  function baseStep153(){
-    return '<section class="c153-panel c153-basic"><div class="c153-page-title">基本信息 <span>先决定你是谁</span></div>'
-      +'<div class="c153-basic-card"><h3>性别</h3><div class="c153-segment">'
-      +["female","male"].map(function(g){return '<button class="'+(gender153()===g?'selected':'')+'" onclick="creator153Gender(\''+g+'\')">'+(g==="female"?"♀ 女性":"♂ 男性")+'</button>';}).join('')
-      +'</div><h3>年龄</h3><div class="c153-segment">'
-      +Object.keys(AGE_OPTIONS).map(function(k){return '<button class="'+(age153()===k?'selected':'')+'" onclick="creator153Age(\''+k+'\')">'+ageLabel153(k)+'</button>';}).join('')
-      +'</div><div class="c153-basic-summary"><b>当前身份</b><span>'+(gender153()==="female"?"女性":"男性")+' · '+ageLabel153(age153())+'</span>'
-      +'<p>年龄会影响可选择的人生阶段；性别只影响人物外观，不改变能力。</p></div>'
-      +'<button class="c153-next" onclick="creator153Step(2)">下一步：外观形象 →</button></div></section>';
-  }
-
-  function appearanceStep153(){
-    var list=presets153(),p=currentPreset153(),ready=window.playerPortraitReady151?window.playerPortraitReady151():!!p;
-    return '<section class="c153-panel c153-appearance"><div class="c153-center">'
-      +'<div class="c153-page-title">外观形象 <span>选择各项特征，系统将为你生成专属的职场立绘形象</span></div>'
-      +'<div class="c153-top-select"><div><b>性别</b><div class="c153-segment compact">'
-      +["female","male"].map(function(g){return '<button class="'+(gender153()===g?'selected':'')+'" onclick="creator153Gender(\''+g+'\')">'+(g==="female"?"♀ 女性":"♂ 男性")+'</button>';}).join('')
-      +'</div></div><div><b>年龄</b><div class="c153-segment compact">'
-      +Object.keys(AGE_OPTIONS).map(function(k){return '<button class="'+(age153()===k?'selected':'')+'" onclick="creator153Age(\''+k+'\')">'+ageLabel153(k)+'</button>';}).join('')
-      +'</div></div></div>'
-      +'<div class="c153-block"><div class="c153-block-head"><b>1　选择整体形象模板</b><span>每个模板包含完整的立绘风格，之后可在下方微调</span></div>'
-      +'<div class="c153-template-row">'+list.map(function(x,i){
-        return '<button class="c153-template '+(p&&p.id===x.id?'selected':'')+'" onclick="creator153SelectPreset(\''+x.id+'\')">'
-          +portraitForPreset153(x,"c153-template-photo",false)+'<span><b>0'+(i+1)+'　'+x.name+'</b><small>'+x.outfit+'</small></span></button>';
-      }).join('')+'</div></div>'
-      +'<div class="c153-block detail"><div class="c153-block-head"><b>2　细节定制</b><span>点击选项微调形象标签与展示风格</span></div>'
-      +detailStrip153("body","体型")+detailStrip153("hair","发型")+detailStrip153("face","脸型")
-      +detailStrip153("makeup","妆容 / 气质")+detailStrip153("hairColor","发色")+detailStrip153("outfit","服装")
-      +'<div class="c153-option-row"><div class="c153-option-title">配饰</div><div class="c153-chip-row">'
-      +(window.PLAYER_DETAIL_OPTIONS?PLAYER_DETAIL_OPTIONS.accessory.map(function(x){return '<button class="'+((PLAYER_PORTRAIT_DETAIL||{}).accessory===x[0]?'selected':'')+'" onclick="setPortraitDetail151(\'accessory\',\''+x[0]+'\');renderCreator153()">'+x[1]+'</button>';}).join(''):'')
-      +'</div></div><div class="c153-option-row"><div class="c153-option-title">表情</div><div class="c153-chip-row">'
-      +(window.PLAYER_DETAIL_OPTIONS?PLAYER_DETAIL_OPTIONS.expression.map(function(x){return '<button class="'+((PLAYER_PORTRAIT_DETAIL||{}).expression===x[0]?'selected':'')+'" onclick="setPortraitDetail151(\'expression\',\''+x[0]+'\');renderCreator153()">'+x[1]+'</button>';}).join(''):'')
-      +'</div></div><div class="c153-option-row"><div class="c153-option-title">姿态</div><div class="c153-chip-row">'
-      +(window.PLAYER_DETAIL_OPTIONS?PLAYER_DETAIL_OPTIONS.pose.map(function(x){return '<button class="'+((PLAYER_PORTRAIT_DETAIL||{}).pose===x[0]?'selected':'')+'" onclick="setPortraitDetail151(\'pose\',\''+x[0]+'\');renderCreator153()">'+x[1]+'</button>';}).join(''):'')
-      +'</div></div></div></div>'
-      +'<aside class="c153-preview"><div class="c153-preview-title">形象预览</div>'
-      +(ready?portrait153("c153-preview-photo"):'<div class="c153-preview-empty">完成性别、年龄和人物模板选择后显示立绘</div>')
-      +'<div class="c153-info"><b>形象信息</b><div class="c153-info-grid">'
-      +'<span>性别</span><strong>'+(gender153()==="female"?"女性":"男性")+'</strong><span>年龄</span><strong>'+ageLabel153(age153())+'</strong>'
-      +'<span>体型</span><strong>'+V153_DETAIL.body[V153_CUSTOM.body]+'</strong><span>发型</span><strong>'+V153_DETAIL.hair[V153_CUSTOM.hair]+'</strong>'
-      +'<span>脸型</span><strong>'+V153_DETAIL.face[V153_CUSTOM.face]+'</strong><span>发色</span><strong>'+V153_DETAIL.hairColor[V153_CUSTOM.hairColor]+'</strong>'
-      +'<span>妆容</span><strong>'+V153_DETAIL.makeup[V153_CUSTOM.makeup]+'</strong><span>服装</span><strong>'+V153_DETAIL.outfit[V153_CUSTOM.outfit]+'</strong>'
-      +'</div></div><button class="c153-confirm" onclick="creator153Step(3)">确认形象　→</button></aside></section>';
-  }
-
-  function statStep153(){
-    var x=lifeSummary(),keys=["professional","social","charm","management","insight","fitness"];
-    return '<section class="c153-panel"><div class="c153-page-title">初始属性 <span>能力、身心和多周目资源</span></div>'
-      +'<div class="c153-stat-grid">'+keys.map(function(k){return '<div><span>'+skillName(k)+'</span><b>'+x.skills[k]+'</b><i style="width:'+x.skills[k]+'%"></i></div>';}).join('')
-      +'<div><span>体力上限</span><b>'+x.body.maxStamina+'</b><i style="width:'+x.body.maxStamina+'%"></i></div>'
-      +'<div><span>心力韧性</span><b>'+x.heart.resilience+'</b><i style="width:'+x.heart.resilience+'%"></i></div></div>'
-      +'<div id="c153-ng-slot" class="c153-subpanel"></div><div class="c153-footer-nav"><button onclick="creator153Step(2)">← 返回外观</button><button onclick="creator153Step(4)">下一步：人生词条 →</button></div></section>';
-  }
-
-  function lifeStep153(){
-    return '<section class="c153-panel"><div class="c153-page-title">人生词条 <span>经历不是装饰，它会改变你能做什么</span></div>'
-      +'<div id="c153-life-slot" class="c153-life"></div><div class="c153-footer-nav"><button onclick="creator153Step(3)">← 返回属性</button><button onclick="creator153Step(5)">下一步：确认角色 →</button></div></section>';
-  }
-
-  function confirmStep153(){
-    var x=lifeSummary(),traits=derivedTraits(x),p=currentPreset153();
-    return '<section class="c153-panel c153-confirm-page"><div class="c153-page-title">确认角色 <span>这是你走进 Dragon Office 的样子</span></div>'
-      +'<div class="c153-confirm-grid"><div class="c153-confirm-portrait">'+portrait153("c153-confirm-photo")+'</div>'
-      +'<div class="c153-confirm-data"><h2>'+(p?p.name:"你的角色")+'</h2><p>'+(gender153()==="female"?"女性":"男性")+' · '+ageLabel153(age153())+'</p>'
-      +'<div class="c153-confirm-stats">'+["professional","social","management","insight","fitness"].map(function(k){return '<span>'+skillName(k)+' <b>'+x.skills[k]+'</b></span>';}).join('')+'</div>'
-      +'<h3>当前词条</h3><div class="trait-row">'+(traits.length?traits.map(function(t){return '<span class="trait '+t.rarity+'">'+t.name+'</span>';}).join(''):'<span class="creator-note">尚未形成特殊词条</span>')+'</div>'
-      +'<div id="c153-difficulty-slot" class="c153-subpanel"></div>'
-      +'<div class="c153-final-actions"><button onclick="backTitle()">返回首页</button><button class="primary" onclick="startGame()">签字入职　→</button></div></div></div></section>';
-  }
-
-  function renderCreator153(){
-    var screen=document.getElementById("creator-screen");if(!screen)return;
-    var shell=screen.querySelector(".c153-shell");if(!shell)return;
-    var main=shell.querySelector(".c153-main");
-    var html=CREATOR_STEP===1?baseStep153():CREATOR_STEP===2?appearanceStep153():CREATOR_STEP===3?statStep153():CREATOR_STEP===4?lifeStep153():confirmStep153();
-    main.innerHTML=html;
-
-    if(CREATOR_STEP===3){
-      var ng=document.getElementById("ng-panel"),slot=document.getElementById("c153-ng-slot");
-      if(ng&&slot){slot.appendChild(ng);ng.style.display="block";renderNGPanel();}
-    }
-    if(CREATOR_STEP===4){
-      var slot2=document.getElementById("c153-life-slot");
-      if(slot2)slot2.innerHTML=lifeBuilderHTML();
-    }
-    if(CREATOR_STEP===5){
-      var df=document.querySelector(".difficulty-wrap"),slot3=document.getElementById("c153-difficulty-slot");
-      if(df&&slot3){slot3.appendChild(df);df.style.display="block";}
-    }
-  }
-  window.renderCreator153=renderCreator153;
-
-  window.creator153Step=function(n){CREATOR_STEP=Math.max(1,Math.min(5,n));renderCreator153();window.scrollTo({top:0,behavior:"smooth"});};
-  window.creator153Gender=function(g){
-    if(window.setLifeGender)window.setLifeGender(g); else LIFE_DRAFT.gender=g;
-    if(window.PLAYER_PORTRAIT_CHOICE_STATE){PLAYER_PORTRAIT_CHOICE_STATE.genderChosen=true;PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=false;}
-    renderCreator153();
-  };
-  window.creator153Age=function(a){
-    if(window.setPlayerAge)window.setPlayerAge(a); else window.PLAYER_AGE=a;
-    if(window.PLAYER_PORTRAIT_CHOICE_STATE){PLAYER_PORTRAIT_CHOICE_STATE.ageChosen=true;PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=false;}
-    renderCreator153();
-  };
-
-  /* Rebuild creator-screen once. Existing persistent nodes are moved into step slots when needed. */
-  function install153(){
-    var screen=document.getElementById("creator-screen");if(!screen)return;
-    var oldChar=document.getElementById("character-creator");
-    if(oldChar){oldChar.style.display="none";screen.appendChild(oldChar);}
-    var ng=document.getElementById("ng-panel");if(ng){ng.style.display="none";screen.appendChild(ng);}
-    var df=document.querySelector(".difficulty-wrap");if(df){df.style.display="none";screen.appendChild(df);}
-    screen.innerHTML='<div class="c153-shell">'+nav153()+'<main class="c153-main"></main></div>';
-    /* hidden persistence hosts for nodes that external legacy code still expects */
-    var vault=document.createElement("div");vault.id="c153-vault";vault.style.display="none";screen.appendChild(vault);
-    if(oldChar)vault.appendChild(oldChar);
-    if(ng)vault.appendChild(ng);
-    if(df)vault.appendChild(df);
-    renderCreator153();
-  }
-
-  window.openCreatorScreen=function(){
-    showScreen("creator-screen");
-    CREATOR_STEP=1;
-    renderCreator153();
-  };
-
-  /* Old life/portrait re-render calls must refresh the active creator instead of overwriting its UI. */
-  var legacyRenderLife153=window.renderLifeBuilder;
-  window.renderLifeBuilder=function(){
-    if(CREATOR_STEP===4&&document.getElementById("c153-life-slot")){
-      document.getElementById("c153-life-slot").innerHTML=lifeBuilderHTML();
-    }
-    if(document.getElementById("creator-screen")&&document.getElementById("creator-screen").classList.contains("active"))renderCreator153();
-  };
-  renderLifeBuilder=window.renderLifeBuilder;
-
-  window.renderPortraitCreator151=function(){if(CREATOR_STEP===2)renderCreator153();};
-  window.renderPortraitCreator1479=window.renderPortraitCreator151;
-  window.renderPortraitCreator150=window.renderPortraitCreator151;
-
-  var st=document.createElement("style");
-  st.textContent=
-   '#creator-screen{padding:0!important;max-width:none!important;text-align:left!important;background:#0f1724;min-height:100vh;color:#1a2a3d}'
-  +'.c153-shell{min-height:100vh;display:grid;grid-template-columns:228px minmax(0,1fr);background:linear-gradient(90deg,#101a28 0 228px,#f5f1e9 228px)}'
-  +'.c153-nav{position:sticky;top:0;height:100vh;background:linear-gradient(180deg,#0e1724,#121b29);color:#eef3f7;padding:24px 0;box-sizing:border-box}.c153-brand{padding:0 22px 24px;font-family:Georgia,serif;font-size:11px;letter-spacing:2px;color:#aeb8c6;border-bottom:1px solid rgba(255,255,255,.08)}.c153-brand b{display:block;font-size:24px;letter-spacing:.5px;color:#e7edf3;margin:2px 0}.c153-brand small{font-family:inherit;font-size:10px;letter-spacing:2px;color:#7e8a99}'
-  +'.c153-nav-item{width:100%;display:grid;grid-template-columns:52px 1fr;gap:0;align-items:center;border:0;background:transparent;color:#c5cfda;text-align:left;padding:14px 14px;cursor:pointer;border-left:4px solid transparent}.c153-nav-item.active{background:linear-gradient(90deg,rgba(19,108,188,.42),rgba(18,30,46,.3));border-left-color:#39b8ff;color:white}.c153-nav-num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#aeb8c6;color:#142031;font-weight:800;font-size:18px}.c153-nav-item.active .c153-nav-num{background:#f2f5f8;box-shadow:0 0 18px rgba(74,180,255,.7)}.c153-nav-item b{display:block;font-size:15px}.c153-nav-item small{display:block;color:#8090a3;font-size:10px;margin-top:3px}.c153-nav-item.active small{color:#a9c2da}.c153-motto{position:absolute;bottom:26px;left:22px;font:italic 12px Georgia;color:#607083;line-height:1.5}'
-  +'.c153-main{min-width:0;background:radial-gradient(circle at 70% -10%,#fff,#f7f3ec 42%,#f1ece3 100%);min-height:100vh}.c153-panel{padding:24px 28px 40px;max-width:1500px;margin:0 auto;box-sizing:border-box}.c153-page-title{font:700 28px Georgia;color:#102646;margin-bottom:16px}.c153-page-title span{font:400 12px system-ui;color:#7b7b78;margin-left:12px}'
-  +'.c153-basic-card{max-width:850px;background:rgba(255,255,255,.78);border:1px solid #d9d2c6;border-radius:12px;padding:24px;box-shadow:0 12px 40px rgba(35,42,50,.08)}.c153-basic-card h3{margin:18px 0 8px;color:#26364d}.c153-segment{display:flex;gap:2px;background:#dedbd5;border-radius:7px;padding:2px;width:max-content;max-width:100%;flex-wrap:wrap}.c153-segment button{border:0;background:transparent;color:#25354a;padding:10px 24px;border-radius:6px;cursor:pointer;font-weight:600}.c153-segment button.selected{background:#10284a;color:#fff;box-shadow:0 2px 8px rgba(16,40,74,.25)}.c153-segment.compact button{padding:8px 18px;font-size:12px}.c153-basic-summary{margin-top:22px;border-top:1px solid #ddd6cc;padding-top:16px;color:#5b6673}.c153-basic-summary b,.c153-basic-summary span{display:block}.c153-basic-summary span{font-size:18px;color:#17283e;margin-top:4px}.c153-basic-summary p{font-size:12px}.c153-next,.c153-confirm{margin-top:22px;border:1px solid #18558d;background:#10375f;color:white;border-radius:7px;padding:12px 24px;font-weight:700;cursor:pointer}'
-  +'.c153-appearance{display:grid;grid-template-columns:minmax(650px,1fr) 360px;gap:18px;padding:0;max-width:none}.c153-center{padding:20px 20px 40px 22px;min-width:0}.c153-preview{background:linear-gradient(180deg,#292725,#161b22);color:#fff;min-height:100vh;padding:16px;box-sizing:border-box;position:sticky;top:0;align-self:start}.c153-preview-title{font:700 16px Georgia;margin-bottom:9px}.c153-preview-photo{width:100%;height:48vh;min-height:390px;border-radius:6px;background-size:500% 200%!important;box-shadow:inset 0 -80px 80px rgba(0,0,0,.25)}.c153-preview-empty{height:48vh;min-height:390px;display:grid;place-items:center;text-align:center;color:#8d9aa7;border:1px dashed #52606f;border-radius:6px;padding:24px}'
-  +'.c153-top-select{display:flex;gap:18px;background:rgba(255,255,255,.65);border:1px solid #ddd5ca;border-radius:8px;padding:10px 12px;margin-bottom:12px;flex-wrap:wrap}.c153-top-select>div{display:flex;align-items:center;gap:9px}.c153-top-select b{font-size:12px}.c153-block{border-top:1px solid #ddd4c8;padding-top:10px;margin-top:8px}.c153-block-head{display:flex;gap:14px;align-items:baseline;margin-bottom:8px}.c153-block-head b{color:#182c45;font-size:13px}.c153-block-head span{font-size:10px;color:#777d82}'
-  +'.c153-template-row{display:grid;grid-template-columns:repeat(5,minmax(110px,1fr));gap:7px}.c153-template{border:1px solid #d7d0c6;border-radius:6px;padding:4px;background:#faf8f4;cursor:pointer;text-align:left;color:#25354a;min-width:0}.c153-template.selected{border:2px solid #2d75b9;box-shadow:0 0 0 2px rgba(45,117,185,.15)}.c153-template-photo{width:100%;aspect-ratio:1.55/1;background-size:500% 200%!important;border-radius:3px}.c153-template span{display:block;padding:5px 2px 2px}.c153-template b{font-size:10px;display:block}.c153-template small{font-size:9px;color:#737a80}'
-  +'.c153-option-row{display:grid;grid-template-columns:90px minmax(0,1fr);gap:8px;border-top:1px solid #e1dbd2;padding:8px 0}.c153-option-title{font-weight:800;color:#25354a;font-size:12px;padding-top:7px}.c153-option-strip{display:grid;grid-template-columns:repeat(10,minmax(52px,1fr));gap:5px}.c153-mini{border:1px solid #d8d0c6;background:#fbfaf8;border-radius:4px;padding:2px;min-width:0;cursor:pointer;color:#4d5660}.c153-mini.selected{border:2px solid #2b72b5}.c153-mini-preview{display:block;height:34px;border-radius:2px;background:linear-gradient(135deg,#d8c1ae,#6c5548)}.c153-mini span:last-child{display:block;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:2px}.c153-mini.hairColor .c153-mini-preview{}'
-  +'.c153-mini-preview.body{background:linear-gradient(90deg,#262c34,#d7d9da)}.c153-mini-preview.hair{background:linear-gradient(140deg,#171515,#594639)}.c153-mini-preview.face{background:radial-gradient(ellipse at center,#e7b99d 42%,#ad7860 43%,#eee 45%)}.c153-mini-preview.makeup{background:linear-gradient(135deg,#ebc0b0,#aa6871)}.c153-mini-preview.hairColor.p0{background:#111}.c153-mini-preview.hairColor.p1{background:#29201d}.c153-mini-preview.hairColor.p2{background:#4a3329}.c153-mini-preview.hairColor.p3{background:#704532}.c153-mini-preview.hairColor.p4{background:#5a4b45}.c153-mini-preview.hairColor.p5{background:#99755c}.c153-mini-preview.hairColor.p6{background:#555}.c153-mini-preview.hairColor.p7{background:#777}.c153-mini-preview.hairColor.p8{background:#aaa}.c153-mini-preview.hairColor.p9{background:#633a3b}.c153-mini-preview.outfit{background:linear-gradient(135deg,#182233 52%,#e9e3dd 53%)}'
-  +'.c153-chip-row{display:flex;gap:6px;flex-wrap:wrap}.c153-chip-row button{border:1px solid #cfc7bc;background:#faf8f5;border-radius:16px;padding:6px 10px;font-size:10px;cursor:pointer}.c153-chip-row button.selected{background:#172e50;color:#fff;border-color:#172e50}'
-  +'.c153-info{margin-top:12px;background:rgba(7,14,23,.68);border:1px solid rgba(255,255,255,.16);padding:12px;border-radius:6px}.c153-info>b{display:block;margin-bottom:8px}.c153-info-grid{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:7px 10px;font-size:10px}.c153-info-grid span{color:#9ca8b4}.c153-info-grid strong{font-weight:600}.c153-confirm{width:100%;background:linear-gradient(90deg,#0d3a67,#12548d);font-size:14px}'
-  +'.c153-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:900px}.c153-stat-grid>div{background:#fff;border:1px solid #ddd6cc;border-radius:8px;padding:12px;position:relative;overflow:hidden}.c153-stat-grid span{font-size:12px;color:#66717b}.c153-stat-grid b{float:right;color:#132d4f}.c153-stat-grid i{position:absolute;left:0;bottom:0;height:3px;background:#2d78b9}.c153-subpanel{max-width:1000px;margin-top:18px}.c153-subpanel .creator-wrap{max-width:none;margin:0}.c153-footer-nav{display:flex;justify-content:space-between;margin-top:22px}.c153-footer-nav button,.c153-final-actions button{border:1px solid #a9b0b5;background:#fff;border-radius:6px;padding:10px 18px;cursor:pointer}.c153-footer-nav button:last-child,.c153-final-actions .primary{background:#123b67;color:#fff;border-color:#123b67}'
-  +'.c153-life{max-width:1100px}.c153-life .creator-row:first-child,.c153-life .creator-row:nth-child(2){display:none}.c153-confirm-grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;max-width:980px}.c153-confirm-photo{width:300px;aspect-ratio:3/4;border-radius:10px;background-size:500% 200%!important}.c153-confirm-data{background:rgba(255,255,255,.78);border:1px solid #ddd6cc;border-radius:10px;padding:22px}.c153-confirm-data h2{margin:0;color:#152c4a}.c153-confirm-data>p{color:#737b84}.c153-confirm-stats{display:flex;flex-wrap:wrap;gap:7px}.c153-confirm-stats span{background:#eef1f4;border-radius:14px;padding:5px 9px;font-size:11px}.c153-final-actions{display:flex;justify-content:space-between;margin-top:18px}'
-  +'@media(max-width:1100px){.c153-shell{grid-template-columns:185px minmax(0,1fr);background:linear-gradient(90deg,#101a28 0 185px,#f5f1e9 185px)}.c153-appearance{grid-template-columns:minmax(0,1fr) 300px}.c153-template-row{grid-template-columns:repeat(3,minmax(100px,1fr))}.c153-option-strip{grid-template-columns:repeat(5,minmax(56px,1fr))}}'
-  +'@media(max-width:780px){.c153-shell{display:block;background:#f5f1e9}.c153-nav{position:static;height:auto;padding:10px;display:flex;overflow:auto;gap:5px}.c153-brand,.c153-motto{display:none}.c153-nav-item{width:auto;min-width:130px;padding:8px;border-left:0;border-bottom:3px solid transparent;grid-template-columns:30px 1fr}.c153-nav-item.active{border-bottom-color:#39b8ff}.c153-nav-num{width:26px;height:26px;font-size:12px}.c153-appearance{display:block}.c153-preview{position:static;min-height:0}.c153-preview-photo,.c153-preview-empty{height:430px;min-height:0;max-width:330px;margin:auto}.c153-option-row{grid-template-columns:1fr}.c153-option-strip{grid-template-columns:repeat(5,minmax(50px,1fr))}.c153-confirm-grid{grid-template-columns:1fr}.c153-confirm-photo{width:min(280px,100%);margin:auto}}';
-  document.head.appendChild(st);
-
-  install153();
-  var sub=document.querySelector("#title-screen .subtitle");
-  if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Creator Workbench · Demo v15.3";
-})();
-/* =====================  v15.3 CREATOR WORKBENCH END  ===================== */
 
 /* =====================  v14.7 END  ===================== */
 

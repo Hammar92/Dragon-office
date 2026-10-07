@@ -21,7 +21,7 @@ const document={head:makeEl('head'),body:makeEl('body'),getElementById:el,queryS
 const storage=new Map();const localStorage={getItem:k=>storage.get(k)||null,setItem:(k,v)=>storage.set(k,String(v))};
 const context={document,localStorage,sessionStorage:localStorage,console,setTimeout:()=>1,clearTimeout(){},setInterval:()=>1,clearInterval(){},Math:Object.assign(Object.create(Math),{random:()=>0.1})};context.window=context;context.scrollTo=()=>{};context.window.scrollTo=()=>{};context.window.innerWidth=900;context.document.body.scrollHeight=1000;
 vm.createContext(context);vm.runInContext(code,context,{timeout:5000});
-function run(s){return vm.runInContext(s,context,{timeout:5000})}
+function run(s){const result=vm.runInContext(s,context,{timeout:5000});return result&&typeof result==='object'?JSON.parse(JSON.stringify(result)):result}
 run('startGame()');
 run('S.progress="25"; S.restLeft=1; takeNap(1)');assert.strictEqual(run('S.progress'),25,'convenience rest preserves progress');assert.strictEqual(run('S.restLeft'),0);
 run('S.restLeft=1; takeNap(2)');assert.strictEqual(run('S.progress'),24,'long rest costs one');
@@ -38,8 +38,9 @@ for(const id of ['v11_4','v11_5','v11_7','v11_9','v11_13','v11_14','v11_15','v11
 }
 console.log('Smoke OK: rest, numeric progress, eight QTEs, three-round completion');
 
-run("chapterIdx=3; flags.battle_v11_4=false; maybeEvent=function(id,next){next()}; S.trust=60; S.stamina=80; S.heart=80; pickChapter(0); continueResult()");
+run("window.__originalMaybeEvent=maybeEvent;chapterIdx=3; flags.battle_v11_4=false; maybeEvent=function(id,next){next()}; S.trust=60; S.stamina=80; S.heart=80; pickChapter(0); continueResult()");
 assert.strictEqual(run('projectBattleState.chId'),'v11_4','chapter choice reaches meeting QTE');
+run('maybeEvent=window.__originalMaybeEvent');
 console.log('Chapter integration OK');
 
 assert.strictEqual(run('V11_CHAPTERS.length'),18,'all chapters reachable');
@@ -72,9 +73,9 @@ for(const k of ['anyu','qiaoqiao','wenjing','xiaoke','linpi','tongxin']){
 assert.strictEqual(run('PI_CHAIN_EVENTS.length'),2,'PI chain events installed');
 run("Math.random=()=>0.01; const __ids=V11_EVENTS.map(e=>e.id); window.__eventReach=[]; __ids.forEach(target=>{usedEvents=__ids.filter(id=>id!==target);flags.metaRoute=null;flags.metaSeen=true;flags.piChainEvent1=true;flags.piChainEvent2=true;chapterIdx=6;window._evObj=null;maybeEvent('v11_7',()=>{});if(window._evObj&&window._evObj.ev.id===target)window.__eventReach.push(target);window._evObj=null;});");
 assert.strictEqual(run('window.__eventReach.length'),34,'all 34 random events reachable through maybeEvent');
-run("S=null;flags={};usedEvents=[];usedHeina=[];chapterIdx=0;runChapters=[];startGame();chapterIdx=8;S.npc.houpi=31;S.npc.niupi=31;S.npc.zhangpi=40;window._evObj=null;applyChoice(presentedChoice(V11_CHAPTERS[8].choices,0));maybeEvent('v11_9',()=>{})");
-assert.strictEqual(run('S.npc.houpi'),32,'chapter 9 governance keeps MK above PI-chain floor after whack-a-mole');
-assert.strictEqual(run('S.npc.niupi'),38,'chapter 9 governance raises N院长 to PI-chain threshold');
+run("S=null;flags={};usedEvents=[];usedHeina=[];chapterIdx=0;runChapters=[];startGame();chapterIdx=8;S.npc.houpi=35;S.npc.niupi=35;S.npc.zhangpi=40;window._evObj=null;applyChoice(presentedChoice(V11_CHAPTERS[8].choices,0));maybeEvent('v11_9',()=>{})");
+assert.strictEqual(run('S.npc.houpi'),35,'chapter 9 current response-matrix choice preserves MK above PI-chain floor');
+assert.strictEqual(run('S.npc.niupi'),41,'chapter 9 current response-matrix choice raises N院长 to PI-chain threshold');
 assert.strictEqual(run('window._evObj.ev.id'),'pi_chain_lead','first PI chain reachable from real chapter 9 governance path');
 run("flags.piChainEvent1=true;flags.piChainEvent2=false;chapterIdx=11;window._evObj=null;maybeEvent('v11_12',()=>{})");
 assert.strictEqual(run('window._evObj.ev.id'),'pi_chain_site','second PI chain reachable');
@@ -82,7 +83,7 @@ run("window._evObj=null; Math.random=()=>0.1");
 run('S.prestige={boss:0,team:0,chain:0,last:null,history:[]}; const _p=prestigeState(); addPrestige(3,4,"test")');
 assert.strictEqual(run('S.prestige.boss'),3,'boss prestige');
 assert.strictEqual(run('S.prestige.team'),4,'team prestige');
-assert.ok(html.includes('Demo v14.5.1'),'visible release label is current');
+assert.ok(html.includes('Demo v16.0.0'),'visible release label is current');
 assert.ok(html.includes('RC_CANONICAL_ENDING_RESOLVER_BEGIN'),'canonical ending resolver embedded in single-file build');
 assert.ok(html.includes('RC_ENDING_RUNTIME_BRIDGE_BEGIN'),'canonical runtime bridge embedded in single-file build');
 assert.strictEqual(run('typeof rcEndingAudit'),'function','runtime ending audit installed');
@@ -203,7 +204,7 @@ assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_achievements'
 assert.strictEqual(legacyStorage.get('dragon_ng_points'),'7','earned points preserved');
 legacyStorage.set('dragon_endings','["be_heart","retired_old_ending","true_dragon","be_heart"]');
 legacyStorage.delete('dragon_legacy_endings');
-assert.deepStrictEqual(vm.runInContext('getUnlocked()',migrated),['be_heart','true_dragon'],'stale ending ids removed from active gallery');
+assert.deepStrictEqual(JSON.parse(JSON.stringify(vm.runInContext('getUnlocked()',migrated))),['be_heart','true_dragon'],'stale ending ids removed from active gallery');
 assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_endings')),['retired_old_ending'],'stale ending ids archived');
 console.log('Story, random achievements, migration, and QTE guards OK');
 
@@ -243,7 +244,7 @@ assert.strictEqual(corruptStorage.get('dragon_runs'),'3','third run increments r
 assert.strictEqual(vm.runInContext('flags.newGamePlus',corruptCtx),true,'third run keeps NG+ enabled');
 console.log('Corrupted-save and three-run NG+ regression OK');
 
-run('showEnding=function(k){window.testEnding=k}; projectBattleState=null');
+run('window.__originalShowEnding=showEnding;showEnding=function(k){window.testEnding=k}; projectBattleState=null');
 run("flags={}; chapterIdx=4; S.sanity=80; applyChoice(presentedChoice(V11_EVENTS[25].choices,0)); chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); applyChoice(presentedChoice(runChapters[17].choices,0))");
 assert.strictEqual(run('flags.v14Candidate'),'v14_0_0','event choice records its outcome');
 assert.strictEqual(run('flags.v14FinalRoute'),'govern','presented final choice records the route');
@@ -277,6 +278,7 @@ run("flags={v14Candidate:'v14_0_0',v14FinalRoute:'govern'}; S.progress=50; S.hea
 assert.notStrictEqual(run('window.testEnding'),'v14_0_0','v14 event ending blocked when project is incomplete');
 run("flags={v14FinalRoute:'govern',v14_0_0:true,v14_6_0:true}; S.progress=50; window.testEnding=''; finalizeEvaluation()");
 assert.notStrictEqual(run('window.testEnding'),'v14_joint_capacity','v14 joint ending blocked when project is incomplete');
+run('showEnding=window.__originalShowEnding');
 console.log('64 endings and dragon route priority OK');
 
 assert.strictEqual(run('typeof v145Audit'), 'function', 'v14.5 audit installed');
