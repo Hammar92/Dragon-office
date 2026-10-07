@@ -321,7 +321,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v15.1</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v15.2</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -9303,6 +9303,160 @@ renderLifeBuilder();
   setTimeout(render151,0);
 })();
 /* =====================  v15.1 STAGED PORTRAIT END  ===================== */
+
+
+/* =====================  v15.2 · COMPLETE PORTRAIT INTEGRATION  ===================== */
+(function(){
+  const NPC_INDEX={
+    "钟时":26,"老板":12,"二老板":4,"小圆":25,"邹婷":14,"加琳":6,"PVP":17,
+    "明夜":21,"则韩":22,"肖恩":0,"一建":23,"苏苏":11,"杨杨":16,"琳琳":9,
+    "武总":13,"贤人":7,"曹兰":8,"谷雨":24,"瑞冬":2,"Parker":10,"朱粽":15,
+    "黑娜":19,"MK主任":20,"N院长":27,"林主任":5,"K总":3,"林丹":26
+  };
+  window.NPC_PORTRAIT_INDEX=NPC_INDEX;
+
+  function spriteStyle152(asset,index,cols,rows){
+    cols=cols||6;rows=rows||5;
+    var col=index%cols,row=Math.floor(index/cols);
+    var x=cols===1?0:(col/(cols-1))*100;
+    var y=rows===1?0:(row/(rows-1))*100;
+    return 'background-image:url('+asset+');background-size:'+(cols*100)+'% '+(rows*100)+'%;background-position:'+x+'% '+y+'%;background-repeat:no-repeat;background-color:#d8d5d2;';
+  }
+
+  function npcPortrait152(name,cls){
+    var idx=NPC_INDEX[name];
+    if(idx==null){
+      /* speaker aliases and fallbacks */
+      if(name==="我"||name==="你"||name==="玩家"){
+        var pid=(S&&S.player&&S.player.portraitPreset)||window.PLAYER_PORTRAIT_PRESET;
+        return playerPortrait152(pid,cls||"dialogue-portrait-real");
+      }
+      idx=18;
+    }
+    return '<div class="'+(cls||'npc-portrait-real')+'" style="'+spriteStyle152('assets/npc_portraits_sheet.jpg',idx,6,5)+'"></div>';
+  }
+  window.npcPortrait152=npcPortrait152;
+  window.npcAvatar1478=function(name){return npcPortrait152(name,"dialogue-portrait-real");};
+
+  function playerPresetIndex152(id){
+    var list=window.PLAYER_PORTRAIT_PRESETS||[];
+    var i=list.findIndex(function(x){return x.id===id;});
+    return i<0?0:i;
+  }
+  function detailClass152(){
+    var d=window.PLAYER_PORTRAIT_DETAIL||{};
+    return ' expr-'+(d.expression||'neutral')+' pose-'+(d.pose||'front')+' acc-'+(d.accessory||'none');
+  }
+  function accessoryMarkup152(){
+    var a=(window.PLAYER_PORTRAIT_DETAIL||{}).accessory||"none";
+    if(a==="none")return "";
+    return '<span class="portrait-accessory '+a+'"></span>';
+  }
+  function playerPortrait152(id,cls){
+    var idx=playerPresetIndex152(id);
+    var c=(cls||"player-photo")+' portrait-real '+detailClass152();
+    return '<div class="'+c+'" style="'+spriteStyle152('assets/player_portraits_30.jpg',idx,6,5)+'">'+accessoryMarkup152()+'</div>';
+  }
+  window.playerPortrait152=playerPortrait152;
+  window.playerPortraitDiv1479=playerPortrait152;
+
+  /* Re-render the staged creator with the real 30-slot portrait sheet. */
+  if(window.renderPortraitCreator151)setTimeout(window.renderPortraitCreator151,0);
+
+  /* Portraits in every dialogue path. */
+  window.decorateDialogue1478=function(){
+    Array.from(document.querySelectorAll(".dialogue-row")).forEach(function(row){
+      var n=row.querySelector(".dialogue-name"),face=row.querySelector(".dialogue-face");
+      if(n&&face){
+        face.innerHTML=npcPortrait152(n.textContent.trim(),"dialogue-portrait-real");
+        face.classList.add("dialogue-face-art","dialogue-face-final");
+      }
+    });
+  };
+
+  /* Character bible: portraits are now part of the cast cards. */
+  buildCast=function(){
+    const wrap=document.getElementById('cast-wrap');if(!wrap)return;
+    const head='<div class="sec-title">📇 人物志 · '+Object.keys(NPCs).length+' 位关键人物（入职前建议翻一遍）</div>'
+      +'<div class="intro-hint">每个人都<b>想要</b>一件东西，也都<b>害怕</b>一件东西。立绘展示人物的公开职场形象，真正的性格仍需在事件里验证。</div>';
+    const cards=Object.keys(NPCs).map(function(k){
+      const n=NPCs[k],b=NPC_BIOS[k]||{};
+      const bio='<details class="bio"><summary>动机与小传 ▾</summary>'
+        +'<div class="bio-row"><em>想要</em><span>'+(b.want||'—')+'</span></div>'
+        +'<div class="bio-row"><em>害怕</em><span>'+(b.fear||'—')+'</span></div>'
+        +'<div class="bio-body">'+(b.bio||'')+'</div></details>';
+      return '<div class="np portrait-np '+(n.boss?'boss':'')+'">'
+        +npcPortrait152(n.name,"np-portrait")
+        +'<div class="np-copy"><div class="n">'+n.name+'</div><div class="r">'+n.role+'</div>'
+        +'<div class="q">「'+n.quote+'」</div>'+bio+'</div></div>';
+    }).join('');
+    wrap.innerHTML=head+'<div class="cast">'+cards+'</div>';
+  };
+  window.buildCast=buildCast;
+
+  /* Zhong Shi dossier and public resume use the same canonical portrait. */
+  renderVP=function(){
+    const el=document.getElementById('vp-card');if(!el)return;
+    const r=VP_RESUME;
+    el.innerHTML='<div class="vp-dossier-layout">'+npcPortrait152("钟时","vp-portrait-final")
+      +'<div class="vp-dossier-copy">'
+      +'<div class="vp-head"><span class="nm">'+r.name+'</span><span class="tt">'+r.title+'</span></div>'
+      +'<div class="vp-meta">'+r.meta+'</div><div class="vp-sum">'+r.summary+'</div>'
+      +r.career.map(function(c){return '<div class="resume-row"><span class="yr">'+c.yr+'</span><span class="og">'+c.og+'</span><span class="rl">'+c.rl+'</span></div>';}).join('')
+      +'<div class="vp-meta" style="margin:12px 0 8px">教育背景：'+r.edu.join(' · ')+'</div>'
+      +'<div class="tags">'+r.tags.map(function(t){return '<span>'+t+'</span>';}).join('')+'</div></div></div>';
+  };
+  window.renderVP=renderVP;
+
+  bossResumeHTML=function(){
+    const r=VP_RESUME;
+    return '<div class="boss-dossier-card"><div class="vp-dossier-layout">'+npcPortrait152("钟时","vp-portrait-final")
+      +'<div class="vp-dossier-copy"><div class="vp-head"><span class="nm">'+r.name+'</span><span class="tt">'+r.title+'</span></div>'
+      +'<div class="vp-meta">'+r.meta+'</div><div class="vp-sum">'+r.summary+'</div>'
+      +r.career.map(function(c){return '<div class="resume-row"><span class="yr">'+c.yr+'</span><span class="og">'+c.og+'</span><span class="rl">'+c.rl+'</span></div>';}).join('')
+      +'<div class="vp-meta" style="margin:12px 0 8px">教育背景：'+r.edu.join(' · ')+'</div>'
+      +'<div class="tags">'+r.tags.map(function(t){return '<span>'+t+'</span>';}).join('')+'</div></div></div></div>';
+  };
+  window.bossResumeHTML=bossResumeHTML;
+
+  /* Player side-panel avatar always follows the confirmed portrait + details. */
+  function refreshPlayerPortrait152(){
+    if(!S||!S.player||!window.playerPortraitReady151||!window.playerPortraitReady151())return;
+    var el=document.querySelector(".pm-avatar");if(!el)return;
+    var id=S.player.portraitPreset||window.PLAYER_PORTRAIT_PRESET;
+    el.innerHTML=playerPortrait152(id,"pm-player-photo");
+    el.classList.add("pm-avatar-art","pm-avatar-photo");
+  }
+  var oldHUD152=renderHUD;
+  renderHUD=function(){oldHUD152();refreshPlayerPortrait152();if(window.decorateDialogue1478)window.decorateDialogue1478();};
+  window.renderHUD=renderHUD;
+
+  var oldStart152=startGame;
+  startGame=function(){
+    oldStart152();
+    if(S&&S.player&&window.playerPortraitReady151&&window.playerPortraitReady151()){
+      S.player.portraitDetail=Object.assign({},window.PLAYER_PORTRAIT_DETAIL||{});
+      refreshPlayerPortrait152();
+    }
+  };
+
+  var style=document.createElement("style");
+  style.textContent=
+    '.npc-portrait-real,.dialogue-portrait-real,.np-portrait,.vp-portrait-final,.portrait-real{position:relative;overflow:hidden;background-color:#d8d5d2;background-repeat:no-repeat}'
+   +'.dialogue-portrait-real{width:100%;height:100%;border-radius:10px}'
+   +'.portrait-np{display:grid;grid-template-columns:92px minmax(0,1fr);gap:12px;align-items:start}.np-portrait{width:92px;aspect-ratio:3/4;border-radius:9px;border:1px solid #d9c1aa}.np-copy{min-width:0}'
+   +'.vp-dossier-layout{display:grid;grid-template-columns:180px minmax(0,1fr);gap:18px;align-items:start}.vp-portrait-final{width:180px;aspect-ratio:3/4;border-radius:12px;border:1px solid #d8b694;box-shadow:0 6px 18px rgba(92,69,51,.10)}'
+   +'.portrait-real.expr-soft{filter:brightness(1.04) saturate(1.04)}.portrait-real.expr-serious{filter:contrast(1.08) brightness(.96)}.portrait-real.expr-thinking{filter:contrast(1.04) saturate(.92)}.portrait-real.expr-tired{filter:brightness(.92) saturate(.82)}'
+   +'.portrait-real.pose-threequarter{background-position-x:56%!important}.portrait-real.pose-folder{background-position-y:48%!important}.portrait-real.pose-tablet{background-position-y:52%!important}.portrait-real.pose-arms{transform:scale(1.025)}'
+   +'.portrait-accessory{position:absolute;pointer-events:none;z-index:2}.portrait-accessory.thin_glasses,.portrait-accessory.dark_glasses{left:25%;top:28%;width:50%;height:14%;border-top:2px solid rgba(50,45,42,.72)}'
+   +'.portrait-accessory.thin_glasses:before,.portrait-accessory.thin_glasses:after,.portrait-accessory.dark_glasses:before,.portrait-accessory.dark_glasses:after{content:"";position:absolute;top:0;width:34%;height:75%;border:2px solid rgba(55,50,46,.72);border-radius:45%}.portrait-accessory.thin_glasses:before,.portrait-accessory.dark_glasses:before{left:2%}.portrait-accessory.thin_glasses:after,.portrait-accessory.dark_glasses:after{right:2%}.portrait-accessory.dark_glasses:before,.portrait-accessory.dark_glasses:after{background:rgba(40,40,45,.22)}'
+   +'.portrait-accessory.earring{right:27%;top:42%;width:6px;height:9px;border:1px solid #b7945e;border-radius:50%}.portrait-accessory.pin{right:25%;top:66%;width:7px;height:7px;border-radius:50%;background:#b7945e}.portrait-accessory.lanyard{left:49%;top:55%;height:35%;border-left:2px solid rgba(38,52,72,.55);transform:rotate(5deg)}'
+   +'.portrait-accessory.folder,.portrait-accessory.tablet{right:5%;bottom:2%;width:32%;height:28%;border-radius:4px;background:rgba(55,57,62,.86);transform:rotate(-8deg);box-shadow:0 0 0 1px rgba(255,255,255,.25)}.portrait-accessory.tablet{background:rgba(28,31,37,.92);transform:rotate(5deg)}'
+   +'.portrait-accessory.scarf{left:43%;top:56%;width:22%;height:12%;background:rgba(128,84,78,.65);clip-path:polygon(0 0,100% 0,55% 100%)}.portrait-accessory.watch{right:14%;bottom:16%;width:10px;height:10px;border:2px solid #8a7764;border-radius:50%}'
+   +'@media(max-width:720px){.portrait-np{grid-template-columns:72px minmax(0,1fr)}.np-portrait{width:72px}.vp-dossier-layout{grid-template-columns:1fr}.vp-portrait-final{width:160px;margin:0 auto}}';
+  document.head.appendChild(style);
+})();
+/* =====================  v15.2 COMPLETE PORTRAITS END  ===================== */
 
 /* =====================  v14.7 END  ===================== */
 
