@@ -321,7 +321,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v15.0</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v15.1</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -9084,6 +9084,225 @@ renderLifeBuilder();
   document.head.appendChild(style);
 })();
 /* =====================  v15.0 EXPANDED PORTRAIT LIBRARY END  ===================== */
+
+
+/* =====================  v15.1 · STAGED PORTRAIT REVEAL / PERSONAL DETAILS  ===================== */
+(function(){
+  const DETAIL_OPTIONS={
+    accessory:[
+      ["none","无配饰"],["thin_glasses","细框眼镜"],["dark_glasses","深色眼镜"],["earring","简约耳饰"],["watch","腕表"],
+      ["lanyard","工牌挂绳"],["folder","文件夹"],["tablet","平板"],["scarf","丝巾/领巾"],["pin","简约胸针"]
+    ],
+    expression:[
+      ["neutral","默认"],["soft","轻微微笑"],["serious","严肃"],["thinking","思考"],["tired","疲惫"]
+    ],
+    pose:[
+      ["front","正面站姿"],["threequarter","轻微侧身"],["folder","抱文件"],["tablet","拿平板"],["arms","自然抱臂"]
+    ]
+  };
+  window.PLAYER_DETAIL_OPTIONS=DETAIL_OPTIONS;
+  window.PLAYER_PORTRAIT_DETAIL={accessory:"none",expression:"neutral",pose:"front"};
+
+  /* Explicit choice-state. Defaults elsewhere in the creator no longer count as a deliberate appearance choice. */
+  var savedState=null;
+  try{savedState=JSON.parse(localStorage.getItem("dragon_portrait_choice_state_151")||"null");}catch(e){}
+  window.PLAYER_PORTRAIT_CHOICE_STATE=savedState||{
+    genderChosen:false,
+    ageChosen:false,
+    presetChosen:false
+  };
+  try{
+    var d=JSON.parse(localStorage.getItem("dragon_portrait_detail_151")||"null");
+    if(d)window.PLAYER_PORTRAIT_DETAIL=Object.assign({},window.PLAYER_PORTRAIT_DETAIL,d);
+  }catch(e){}
+
+  function saveChoiceState151(){
+    try{
+      localStorage.setItem("dragon_portrait_choice_state_151",JSON.stringify(window.PLAYER_PORTRAIT_CHOICE_STATE));
+      localStorage.setItem("dragon_portrait_detail_151",JSON.stringify(window.PLAYER_PORTRAIT_DETAIL));
+    }catch(e){}
+  }
+
+  function choiceReady151(){
+    var st=window.PLAYER_PORTRAIT_CHOICE_STATE;
+    return !!(st.genderChosen&&st.ageChosen&&st.presetChosen);
+  }
+  window.playerPortraitReady151=choiceReady151;
+
+  function resetPreset151(){
+    window.PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=false;
+    try{localStorage.removeItem("dragon_player_portrait_1479");}catch(e){}
+    saveChoiceState151();
+  }
+
+  function selectedPreset151(){
+    var list=window.PLAYER_PORTRAIT_PRESETS||[];
+    return list.find(function(p){return p.id===window.PLAYER_PORTRAIT_PRESET;})||null;
+  }
+
+  function detailLabel151(group,key){
+    var row=(DETAIL_OPTIONS[group]||[]).find(function(x){return x[0]===key;});
+    return row?row[1]:"";
+  }
+
+  function silhouette151(){
+    return '<div class="portrait-placeholder">'
+      +'<div class="portrait-silhouette-head"></div><div class="portrait-silhouette-body"></div>'
+      +'<b>你的形象尚未生成</b>'
+      +'<span>请依次选择性别、年龄和人物模板。</span></div>';
+  }
+
+  window.setPortraitDetail151=function(group,key){
+    if(!DETAIL_OPTIONS[group])return;
+    window.PLAYER_PORTRAIT_DETAIL[group]=key;
+    saveChoiceState151();
+    if(window.renderPortraitCreator151)window.renderPortraitCreator151();
+  };
+
+  function detailChips151(group){
+    var cur=window.PLAYER_PORTRAIT_DETAIL[group];
+    return (DETAIL_OPTIONS[group]||[]).map(function(x){
+      return '<button type="button" class="creator-chip '+(cur===x[0]?'selected':'')+'" onclick="setPortraitDetail151(\''+group+'\',\''+x[0]+'\')">'+x[1]+'</button>';
+    }).join('');
+  }
+
+  function render151(){
+    var root=document.getElementById("appearance-creator-1478");if(!root)return;
+    var st=window.PLAYER_PORTRAIT_CHOICE_STATE;
+    var g=(window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified";
+    var a=window.PLAYER_AGE||"g3";
+    var list=(window.PLAYER_PORTRAIT_PRESETS||[]).filter(function(p){return g==="unspecified"||p.gender===g;});
+    list.sort(function(x,y){return (x.age===a?0:1)-(y.age===a?0:1);});
+
+    var p=selectedPreset151();
+    var ready=choiceReady151()&&p;
+
+    var gate='<div class="portrait-gate">'
+      +'<div class="portrait-step '+(st.genderChosen?'done':'active')+'"><b>1</b><span>性别</span></div>'
+      +'<div class="portrait-step '+(st.ageChosen?'done':st.genderChosen?'active':'')+'"><b>2</b><span>年龄</span></div>'
+      +'<div class="portrait-step '+(st.presetChosen?'done':st.genderChosen&&st.ageChosen?'active':'')+'"><b>3</b><span>人物模板</span></div>'
+      +'</div>';
+
+    var left='<div class="portrait-main v151-main">'
+      +(ready?window.playerPortraitDiv1479(p.id,"portrait-main-photo"):silhouette151())
+      +(ready?'<div class="portrait-main-name">'+p.name+'</div>'
+        +'<div class="portrait-age-tag">'+(p.age||'')+' · '+(p.gender==="female"?"女":"男")+'</div>'
+        +'<div class="portrait-main-meta">'+p.body+' · '+p.hair+' · '+p.face+'</div>'
+        +'<div class="portrait-main-meta">'+p.makeup+' · '+p.hairColor+' · '+p.outfit+'</div>'
+        +'<div class="portrait-detail-summary">'
+        +detailLabel151("accessory",PLAYER_PORTRAIT_DETAIL.accessory)+' · '
+        +detailLabel151("expression",PLAYER_PORTRAIT_DETAIL.expression)+' · '
+        +detailLabel151("pose",PLAYER_PORTRAIT_DETAIL.pose)+'</div>'
+        :'')
+      +'</div>';
+
+    var library='';
+    if(!st.genderChosen){
+      library='<div class="portrait-lock-message"><b>先选择性别</b><span>不会提前生成默认人物。</span></div>';
+    }else if(!st.ageChosen){
+      library='<div class="portrait-lock-message"><b>再选择年龄</b><span>年龄会决定推荐的人物模板。</span></div>';
+    }else{
+      library='<div class="portrait-library"><div class="sec-title" style="margin-top:0">选择人物模板</div>'
+        +'<div class="creator-note">点击一个模板后，主角立绘才正式出现。切换性别或年龄会清空这一步。</div>'
+        +'<div class="portrait-grid v150-grid">'
+        +list.map(function(x){
+          var rec=x.age===a;
+          return '<button type="button" class="portrait-card '+(st.presetChosen&&p&&p.id===x.id?'selected':'')+(rec?' recommended':'')+'" onclick="selectPortraitPreset151(\''+x.id+'\')">'
+            +window.playerPortraitDiv1479(x.id,"portrait-card-photo")
+            +'<span class="portrait-card-title">'+x.name+(rec?' <em>当前年龄</em>':'')+'</span>'
+            +'<span class="portrait-card-meta">'+x.body+' · '+x.hair+'<br>'+x.face+' · '+x.outfit+'</span></button>';
+        }).join('')+'</div>'
+        +(ready?'<div class="portrait-detail-panel">'
+          +'<div class="sec-title">配饰</div><div class="ng-wrap">'+detailChips151("accessory")+'</div>'
+          +'<div class="sec-title">表情</div><div class="ng-wrap">'+detailChips151("expression")+'</div>'
+          +'<div class="sec-title">姿态</div><div class="ng-wrap">'+detailChips151("pose")+'</div>'
+          +'<div class="creator-note">这些选项已进入存档结构。后续替换成独立立绘变体时，不需要重做人物数据。</div>'
+          +'</div>':'')
+        +'</div>';
+    }
+
+    root.innerHTML=gate+'<div class="portrait-builder v150 v151">'+left+library+'</div>';
+  }
+  window.renderPortraitCreator151=render151;
+
+  window.selectPortraitPreset151=function(id){
+    var p=(window.PLAYER_PORTRAIT_PRESETS||[]).find(function(x){return x.id===id;});
+    if(!p)return;
+    window.PLAYER_PORTRAIT_PRESET=id;
+    window.PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=true;
+    window.PLAYER_APPEARANCE_DRAFT={
+      preset:id,portraitPreset:id,body:p.body,hair:p.hair,face:p.face,
+      makeup:p.makeup,hairColor:p.hairColor,outfit:p.outfit
+    };
+    try{
+      localStorage.setItem("dragon_player_portrait_1479",id);
+      localStorage.setItem("dragon_appearance_1478",JSON.stringify(window.PLAYER_APPEARANCE_DRAFT));
+    }catch(e){}
+    saveChoiceState151();
+    render151();
+  };
+
+  /* Override the older selector so all portrait-card clicks go through the staged flow. */
+  window.selectPortraitPreset1479=window.selectPortraitPreset151;
+
+  /* Active gender/age selections are the gates. Changing either invalidates the current portrait. */
+  var oldGender151=window.setLifeGender||setLifeGender;
+  setLifeGender=function(g){
+    oldGender151(g);
+    window.PLAYER_PORTRAIT_CHOICE_STATE.genderChosen=true;
+    resetPreset151();
+    setTimeout(render151,0);
+  };
+  window.setLifeGender=setLifeGender;
+
+  var oldAge151=window.setPlayerAge||setPlayerAge;
+  setPlayerAge=function(a){
+    oldAge151(a);
+    window.PLAYER_PORTRAIT_CHOICE_STATE.ageChosen=true;
+    resetPreset151();
+    setTimeout(render151,0);
+  };
+  window.setPlayerAge=setPlayerAge;
+
+  var oldRenderLife151=window.renderLifeBuilder||renderLifeBuilder;
+  renderLifeBuilder=function(){
+    oldRenderLife151();
+    setTimeout(render151,0);
+  };
+  window.renderLifeBuilder=renderLifeBuilder;
+
+  var oldStart151=startGame;
+  startGame=function(){
+    if(!choiceReady151()){
+      toast("请先完成性别、年龄和主角形象选择","down");
+      var el=document.getElementById("appearance-creator-1478");
+      if(el)el.scrollIntoView({behavior:"smooth",block:"start"});
+      return;
+    }
+    oldStart151();
+    if(S&&S.player){
+      S.player.portraitDetail=Object.assign({},window.PLAYER_PORTRAIT_DETAIL);
+      S.player.portraitPreset=window.PLAYER_PORTRAIT_PRESET;
+    }
+  };
+
+  var style=document.createElement("style");
+  style.textContent=
+    '.portrait-gate{display:flex;gap:8px;margin:0 0 12px;padding:9px;background:#f2ede7;border:1px solid #dfc6ad;border-radius:10px}'
+   +'.portrait-step{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:7px;color:#998578;font-size:11px}.portrait-step b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#ddd2c8;color:#fff}'
+   +'.portrait-step.active{color:#73584a;background:#fff9f2}.portrait-step.active b{background:#bd6b75}.portrait-step.done{color:#5f6f61}.portrait-step.done b{background:#718675}'
+   +'.portrait-placeholder{aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,#e8e3de,#d8d1cb);border-radius:10px;color:#8d796d;position:relative;overflow:hidden}'
+   +'.portrait-silhouette-head{width:76px;height:88px;border-radius:50%;background:#b9b0aa;margin-bottom:-2px}.portrait-silhouette-body{width:150px;height:120px;border-radius:70px 70px 0 0;background:#b9b0aa;margin-bottom:18px}.portrait-placeholder b{font-size:13px}.portrait-placeholder span{font-size:10.5px;margin-top:4px}'
+   +'.portrait-lock-message{min-height:280px;display:flex;flex-direction:column;justify-content:center;align-items:center;border:1px dashed #d9bea1;border-radius:12px;color:#8d796d;background:#fffaf5}.portrait-lock-message b{font-size:15px;margin-bottom:4px}.portrait-lock-message span{font-size:11px}'
+   +'.portrait-detail-panel{margin-top:16px;padding-top:12px;border-top:1px dashed #ddc5ad}.portrait-detail-summary{font-size:10.5px;color:#9b786b;margin-top:6px}'
+   +'.v151 .portrait-main-photo{transition:filter .25s ease,transform .25s ease}'
+   +'.v151-main{min-height:340px}'
+   +'@media(max-width:650px){.portrait-gate{overflow:auto}.portrait-step{white-space:nowrap}}';
+  document.head.appendChild(style);
+
+  setTimeout(render151,0);
+})();
+/* =====================  v15.1 STAGED PORTRAIT END  ===================== */
 
 /* =====================  v14.7 END  ===================== */
 
