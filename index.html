@@ -281,6 +281,32 @@
     .choice{font-size:13.5px;padding:11px 12px}
   }
 
+  /* v14.8 UI polish: clearer hierarchy and persistent boss dossier */
+  #game-screen.active{grid-template-columns:236px minmax(520px,1fr) 236px;gap:16px}
+  .hud-row{margin-bottom:4px}
+  #hud .npcs{gap:5px;max-height:76px;overflow:auto;padding-right:2px}
+  .hud-primary-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;padding-top:7px;border-top:1px dashed #ddc5ad}
+  .hud-primary-actions .npc-chip{font-weight:700;border-color:#cfae8c;background:#fff7eb}
+  .boss-dossier-btn{border-color:#c88a8e!important;color:#9d5e64!important}
+  .boss-dossier-card{background:#fffaf3;border:1px solid #d8b694;border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .boss-dossier-card .vp-head{border-bottom-color:#dfc6ad}
+  .boss-dossier-card .resume-row{display:grid;grid-template-columns:105px minmax(150px,.9fr) 1.25fr;gap:12px;border-bottom:1px dotted #e3cfba;padding:7px 0}
+  .boss-dossier-card .resume-row .yr{color:#7b8fb2}
+  .boss-dossier-card .resume-row .og{color:#59483f}
+  .boss-dossier-card .resume-row .rl{color:#856f61}
+  #title-screen .vp-card{box-shadow:0 6px 18px rgba(92,69,51,.10)}
+  #title-screen .vp-card:before{content:"PUBLIC DOSSIER";display:block;font-size:10px;letter-spacing:2px;color:#b06c72;margin-bottom:8px}
+  .pm-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .pm-quick-actions button{border:1px solid #dec2a7;background:#fffaf3;border-radius:7px;padding:7px 5px;font-size:11px;color:#6a5549;cursor:pointer}
+  .pm-quick-actions button:hover{border-color:#c96f79;color:#9d5e64}
+  @media(max-width:1050px){
+    #game-screen.active{grid-template-columns:210px minmax(0,1fr);grid-template-areas:"hud hud" "left main" "right main"}
+    #pm-right-panel{position:static;grid-area:right}
+  }
+  @media(max-width:900px){
+    #game-screen.active{grid-template-columns:1fr;grid-template-areas:"hud" "left" "main" "right"}
+  }
+
 
   .ach-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
   .ach-card{border:1px solid #dec8b3;background:#fffaf3;border-radius:9px;padding:9px 10px;text-align:left}
@@ -314,9 +340,9 @@
     </div>
     <div class="intro-hint">提示：早期信任是资源；真正决定后期位置的，是你做成过什么、谁亲眼看见过，以及关键时刻谁愿意替事实作证。<br><br>建议时长：一局 30–45 分钟。64 个结局，本机存档。</div>
 
-    <div class="sec-title" data-page-node-id="s7QResumeSec01">你的上司 · 公开简历（HR 入职材料 · 第 3 页）</div>
+    <div class="sec-title" data-page-node-id="s7QResumeSec01">你的直属上司 · 钟时公开简历</div>
     <div class="intro-box vp-card" id="vp-card" data-page-node-id="s7QResumeCard01"></div>
-    <div class="intro-hint" data-page-node-id="s7QResumeHint1">上面这页纸，是这家公司愿意摊开给你看的部分。剩下的，你自己在这 18 章里看。</div>
+    <div class="intro-hint" data-page-node-id="s7QResumeHint1">这是HR入职材料中的公开版本。进入游戏后可随时从左侧“钟时档案”重新打开；真正的人物信息仍需通过观察笔记解锁。</div>
 
     <div id="cast-wrap" data-page-node-id="castWrap2026"></div>
     <div class="difficulty-wrap">
@@ -2341,6 +2367,11 @@ function renderHUD(){
     + '<span class="npc-chip" title="本局难度">'+(difficulty().id==='hard'?'🔥':difficulty().id==='story'?'📖':'⚖')+' '+difficulty().name+'</span>'
     + '<span class="npc-chip" style="cursor:pointer;border-color:var(--accent2);color:var(--accent2)" onclick="showRest()" title="恢复体力：午休 / 冲咖啡 / 线上必修课">☕ 喘口气 '+(S.restLeft||0)+'</span>'
     + '<span class="npc-chip intel-chip" onclick="showRelationshipDesk()" title="通过沟通判断别人怎么看你">💬 关系判断</span>'
+    + '<div class="hud-primary-actions">'
+    + '<span class="npc-chip boss-dossier-btn" onclick="showBossDossier()">📄 钟时档案</span>'
+    + '<span class="npc-chip" onclick="showTeam147()">👥 直属团队</span>'
+    + '<span class="npc-chip" onclick="showGrowthShop()">🛍 成长</span>'
+    + '</div>'
     + Object.keys(NPCs).map(function(k){
     const np = NPCs[k];
     return '<span class="npc-chip'+(np.boss?' boss':'')+'" title="'+np.name+' · '+np.role+'">'+np.name+'</span>';
@@ -4077,6 +4108,28 @@ function renderVP(){
     + '<div class="vp-meta" style="margin:12px 0 8px">教育背景：'+r.edu.join(' · ')+'</div>'
     + '<div class="tags">'+r.tags.map(function(t){ return '<span>'+t+'</span>'; }).join('')+'</div>';
 }
+
+function bossResumeHTML(){
+  const r=VP_RESUME;
+  return '<div class="boss-dossier-card">'
+    +'<div class="vp-head"><span class="nm">'+r.name+'</span><span class="tt">'+r.title+'</span></div>'
+    +'<div class="vp-meta">'+r.meta+'</div>'
+    +'<div class="vp-sum">'+r.summary+'</div>'
+    +r.career.map(function(c){return '<div class="resume-row"><span class="yr">'+c.yr+'</span><span class="og">'+c.og+'</span><span class="rl">'+c.rl+'</span></div>';}).join('')
+    +'<div class="vp-meta" style="margin:12px 0 8px">教育背景：'+r.edu.join(' · ')+'</div>'
+    +'<div class="tags">'+r.tags.map(function(t){return '<span>'+t+'</span>';}).join('')+'</div></div>';
+}
+window.showBossDossier=function(){
+  const got=Object.keys((S&&S.intel)||{}).filter(function(k){return S.intel[k];}).length;
+  document.getElementById('scene-area').innerHTML='<div class="scene">'
+    +'<div class="scene-title"><span class="accent">▎</span>钟时 · 上司档案</div>'
+    +'<div class="scene-sub">公开简历 + 你已经亲自确认的观察。公开材料不会替你解释她，观察笔记会。</div>'
+    +bossResumeHTML()
+    +'<div class="pm-section"><h4>你的观察进度 · '+got+'/'+INTEL_TOTAL+'</h4>'
+    +'<div class="creator-note">未解锁内容保持隐藏。这里不是人物设定百科，而是你在工作中逐步拼出的认知。</div></div>'
+    +'<div class="choices"><button class="choice" onclick="showIntel()"><span class="idx">📁</span>查看观察笔记</button>'
+    +'<button class="choice" onclick="backToScene()"><span class="idx">B</span>返回当前场景</button></div></div>';
+};
 
 /* =====================  v10.0 · Character Creation / Coalition Governance  =====================
    这版先把机制接进主循环，不做最终数值平衡。
@@ -6696,7 +6749,13 @@ renderLifeBuilder();
       +'<div class="pm-section"><h4>能力数值</h4><div class="pm-stat-grid">'
       +skills.map(function(x){return '<div class="pm-ability"><span class="k">'+x[0]+'</span><span class="v">'+Math.round(x[1])+'</span></div>';}).join('')
       +'</div></div>'
-      +'<div class="pm-section"><h4>成长</h4><div class="pm-prestige"><div><span>成长点</span><b>'+((S.player&&S.player.skillPoints)||0)+'</b></div><div><span>轮回点</span><b>'+(typeof ngPoints==='function'?ngPoints():0)+'</b></div></div></div>';
+      +'<div class="pm-section"><h4>成长</h4><div class="pm-prestige"><div><span>成长点</span><b>'+((S.player&&S.player.skillPoints)||0)+'</b></div><div><span>轮回点</span><b>'+(typeof ngPoints==='function'?ngPoints():0)+'</b></div></div></div>'
+      +'<div class="pm-section"><h4>常用入口</h4><div class="pm-quick-actions">'
+      +'<button onclick="showBossDossier()">钟时档案</button>'
+      +'<button onclick="showTeam147()">直属团队</button>'
+      +'<button onclick="showIntel()">观察笔记</button>'
+      +'<button onclick="showLog()">工作日志</button>'
+      +'</div></div>';
 
     var p=(typeof prestigeState==='function'?prestigeState():{boss:0,team:0});
     right.innerHTML='<div class="pm-panel-title">本周状态</div><div class="pm-section"><h4>工作</h4>'
