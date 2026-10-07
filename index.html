@@ -321,7 +321,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.8</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v14.9</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -8879,6 +8879,170 @@ renderLifeBuilder();
   document.head.appendChild(style);
 })();
 /* =====================  v14.8 APPEARANCE END  ===================== */
+
+
+/* =====================  v14.9 · PORTRAIT-STYLE PLAYER PRESETS (SCHEME B)  ===================== */
+(function(){
+  const PLAYER_PORTRAIT_PRESETS=[
+    {id:"f_g1",gender:"female",age:"g1",name:"年轻专业",body:"匀称",hair:"简洁短发",face:"柔和鹅蛋脸",makeup:"淡妆",hairColor:"自然黑",outfit:"深色西装"},
+    {id:"f_g2",gender:"female",age:"g2",name:"亲和协调",body:"标准",hair:"低马尾",face:"圆润脸型",makeup:"通勤妆",hairColor:"深棕",outfit:"商务通勤"},
+    {id:"f_g3",gender:"female",age:"g3",name:"沉稳项目经理",body:"匀称",hair:"中长发",face:"方圆脸",makeup:"干练通勤",hairColor:"自然黑",outfit:"医学经理"},
+    {id:"f_g4",gender:"female",age:"g4",name:"成熟管理者",body:"标准",hair:"侧分中长发",face:"轮廓分明",makeup:"正式淡妆",hairColor:"深棕",outfit:"正式西装"},
+    {id:"f_g5",gender:"female",age:"g5",name:"资深研发",body:"柔和",hair:"成熟短发",face:"方圆脸",makeup:"自然",hairColor:"黑棕",outfit:"高管通勤"},
+    {id:"m_g1",gender:"male",age:"g1",name:"年轻专业",body:"偏瘦",hair:"自然短发",face:"窄脸",makeup:"清爽",hairColor:"自然黑",outfit:"深色西装"},
+    {id:"m_g2",gender:"male",age:"g2",name:"温和学者",body:"标准",hair:"层次短发",face:"鹅蛋脸",makeup:"温和",hairColor:"自然黑",outfit:"商务西装"},
+    {id:"m_g3",gender:"male",age:"g3",name:"干练研发",body:"匀称",hair:"商务短发",face:"轮廓分明",makeup:"自然",hairColor:"自然黑",outfit:"深色西装"},
+    {id:"m_g4",gender:"male",age:"g4",name:"成熟项目负责人",body:"标准",hair:"侧分短发",face:"方脸",makeup:"稳重",hairColor:"黑棕",outfit:"商务西装"},
+    {id:"m_g5",gender:"male",age:"g5",name:"资深管理者",body:"标准",hair:"成熟短发",face:"长脸",makeup:"沉稳",hairColor:"灰黑",outfit:"高管西装"}
+  ];
+  window.PLAYER_PORTRAIT_PRESETS=PLAYER_PORTRAIT_PRESETS;
+
+  function portraitPresetById(id){
+    return PLAYER_PORTRAIT_PRESETS.find(function(x){return x.id===id;})||PLAYER_PORTRAIT_PRESETS[2];
+  }
+  function spritePos(id){
+    var p=portraitPresetById(id),idx=PLAYER_PORTRAIT_PRESETS.indexOf(p),col=idx%5,row=Math.floor(idx/5);
+    return {x:[0,25,50,75,100][col],y:row?100:0};
+  }
+  function portraitDiv1479(id,cls){
+    var pos=spritePos(id);
+    return '<div class="'+(cls||'player-photo')+'" style="background-image:url(assets/player_preset_sheet.jpg);background-size:500% 200%;background-position:'+pos.x+'% '+pos.y+'%"></div>';
+  }
+  window.playerPortraitDiv1479=portraitDiv1479;
+
+  function preferredPreset(){
+    var g=(window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified",a=window.PLAYER_AGE||"g3";
+    var same=PLAYER_PORTRAIT_PRESETS.filter(function(p){return p.gender===g&&p.age===a;});
+    if(same.length)return same[0];
+    var byGender=PLAYER_PORTRAIT_PRESETS.filter(function(p){return p.gender===g;});
+    return byGender[0]||PLAYER_PORTRAIT_PRESETS[2];
+  }
+
+  if(!window.PLAYER_PORTRAIT_PRESET){
+    try{window.PLAYER_PORTRAIT_PRESET=localStorage.getItem("dragon_player_portrait_1479")||preferredPreset().id;}catch(e){window.PLAYER_PORTRAIT_PRESET=preferredPreset().id;}
+  }
+
+  window.selectPortraitPreset1479=function(id){
+    var p=portraitPresetById(id);
+    window.PLAYER_PORTRAIT_PRESET=p.id;
+    /* Keep appearance metadata for compatibility with existing saves and later expansions. */
+    window.PLAYER_APPEARANCE_DRAFT={
+      preset:p.id,
+      body:p.body,hair:p.hair,face:p.face,makeup:p.makeup,hairColor:p.hairColor,outfit:p.outfit,
+      portraitPreset:p.id
+    };
+    try{
+      localStorage.setItem("dragon_player_portrait_1479",p.id);
+      localStorage.setItem("dragon_appearance_1478",JSON.stringify(window.PLAYER_APPEARANCE_DRAFT));
+    }catch(e){}
+    renderPortraitCreator1479();
+  };
+
+  function renderPortraitCreator1479(){
+    var root=document.getElementById("appearance-creator-1478");if(!root)return;
+    var gender=(window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified",age=window.PLAYER_AGE||"g3";
+    var pool=PLAYER_PORTRAIT_PRESETS.filter(function(p){return gender==="unspecified"||p.gender===gender;});
+    var selected=portraitPresetById(window.PLAYER_PORTRAIT_PRESET);
+    if(gender!=="unspecified"&&selected.gender!==gender){
+      selected=pool.find(function(p){return p.age===age;})||pool[0];
+      window.PLAYER_PORTRAIT_PRESET=selected.id;
+    }
+    root.innerHTML='<div class="portrait-builder">'
+      +'<div class="portrait-main">'+portraitDiv1479(selected.id,"portrait-main-photo")
+      +'<div class="portrait-main-name">'+selected.name+'</div>'
+      +'<div class="portrait-main-meta">'+selected.body+' · '+selected.hair+' · '+selected.face+' · '+selected.makeup+'</div>'
+      +'<div class="portrait-main-meta">'+selected.hairColor+' · '+selected.outfit+'</div></div>'
+      +'<div class="portrait-library"><div class="sec-title" style="margin-top:0">长相预设 · 第一批</div>'
+      +'<div class="creator-note">这一版改为和NPC立绘一致的写实职场肖像。先选择整体人物模板；后续会在这套模板上继续扩展发型、体型和服装变体。</div>'
+      +'<div class="portrait-grid">'
+      +pool.map(function(p){
+        var recommended=p.age===age;
+        return '<button type="button" class="portrait-card '+(selected.id===p.id?'selected':'')+'" onclick="selectPortraitPreset1479(\''+p.id+'\')">'
+          +portraitDiv1479(p.id,"portrait-card-photo")
+          +'<span class="portrait-card-title">'+p.name+(recommended?' <em>推荐年龄</em>':'')+'</span>'
+          +'<span class="portrait-card-meta">'+p.body+' · '+p.hair+'<br>'+p.face+' · '+p.outfit+'</span></button>';
+      }).join('')
+      +'</div></div></div>';
+  }
+  window.renderPortraitCreator1479=renderPortraitCreator1479;
+
+  function remountPortrait1479(){
+    var root=document.getElementById("character-creator");if(!root)return;
+    var box=document.getElementById("appearance-creator-1478");
+    if(!box){
+      box=document.createElement("div");box.id="appearance-creator-1478";box.className="appearance-creator";
+      root.insertBefore(box,root.firstChild);
+    }
+    renderPortraitCreator1479();
+  }
+
+  var oldLifeBuilder1479=window.renderLifeBuilder||renderLifeBuilder;
+  renderLifeBuilder=function(){
+    oldLifeBuilder1479();
+    remountPortrait1479();
+  };
+  window.renderLifeBuilder=renderLifeBuilder;
+
+  var oldGender1479=window.setLifeGender||setLifeGender;
+  setLifeGender=function(g){
+    oldGender1479(g);
+    var p=PLAYER_PORTRAIT_PRESETS.find(function(x){return x.gender===g&&x.age===(window.PLAYER_AGE||"g3");});
+    if(p)window.PLAYER_PORTRAIT_PRESET=p.id;
+    setTimeout(remountPortrait1479,0);
+  };
+  window.setLifeGender=setLifeGender;
+
+  var oldAge1479=window.setPlayerAge||setPlayerAge;
+  setPlayerAge=function(a){
+    oldAge1479(a);
+    var g=(window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"unspecified";
+    var p=PLAYER_PORTRAIT_PRESETS.find(function(x){return x.gender===g&&x.age===a;});
+    if(p)window.PLAYER_PORTRAIT_PRESET=p.id;
+    setTimeout(remountPortrait1479,0);
+  };
+  window.setPlayerAge=setPlayerAge;
+
+  var oldStart1479=startGame;
+  startGame=function(){
+    oldStart1479();
+    if(S&&S.player){
+      var p=portraitPresetById(window.PLAYER_PORTRAIT_PRESET);
+      S.player.portraitPreset=p.id;
+      S.player.appearance=Object.assign({},S.player.appearance||{},{
+        portraitPreset:p.id,preset:p.id,body:p.body,hair:p.hair,face:p.face,makeup:p.makeup,hairColor:p.hairColor,outfit:p.outfit
+      });
+    }
+  };
+
+  function refreshPlayerPhoto1479(){
+    if(!S||!S.player)return;
+    var el=document.querySelector(".pm-avatar");if(!el)return;
+    var id=S.player.portraitPreset||window.PLAYER_PORTRAIT_PRESET||preferredPreset().id;
+    el.innerHTML=portraitDiv1479(id,"pm-player-photo");
+    el.classList.add("pm-avatar-art","pm-avatar-photo");
+  }
+  var oldHUD1479=renderHUD;
+  renderHUD=function(){oldHUD1479();refreshPlayerPhoto1479();};
+  window.renderHUD=renderHUD;
+
+  /* Replace any earlier SVG preview still present after startup. */
+  setTimeout(remountPortrait1479,0);
+
+  var style=document.createElement("style");
+  style.textContent=
+    '.portrait-builder{display:grid;grid-template-columns:240px minmax(0,1fr);gap:20px;align-items:start;padding-bottom:14px;border-bottom:1px dashed var(--line);margin-bottom:14px}'
+   +'.portrait-main{position:sticky;top:12px;background:#f2ede7;border:1px solid #d9bea1;border-radius:14px;padding:10px;text-align:center;box-shadow:0 8px 24px rgba(75,54,42,.08)}'
+   +'.portrait-main-photo{width:100%;aspect-ratio:3/4;border-radius:10px;background-repeat:no-repeat;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}'
+   +'.portrait-main-name{font-size:17px;font-weight:800;color:#4f4038;margin-top:9px}.portrait-main-meta{font-size:11.5px;color:#887366;line-height:1.55;margin-top:2px}'
+   +'.portrait-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px}.portrait-card{border:1px solid #d9bea1;background:#fffaf3;border-radius:10px;padding:6px;cursor:pointer;color:#58483f;text-align:left;min-width:0}'
+   +'.portrait-card:hover{border-color:#bd6b75;transform:translateY(-1px)}.portrait-card.selected{border:2px solid #bd6b75;background:#fff6f0;box-shadow:0 0 0 2px rgba(189,107,117,.12)}'
+   +'.portrait-card-photo{width:100%;aspect-ratio:3/4;border-radius:7px;background-repeat:no-repeat}.portrait-card-title{display:block;font-weight:800;font-size:11.5px;margin-top:6px;line-height:1.35}.portrait-card-title em{font-style:normal;color:#bd6b75;font-size:9px}'
+   +'.portrait-card-meta{display:block;font-size:9.5px;color:#8c786b;line-height:1.4;margin-top:3px}.pm-player-photo{width:100%;height:100%;background-repeat:no-repeat}'
+   +'@media(max-width:900px){.portrait-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}'
+   +'@media(max-width:650px){.portrait-builder{grid-template-columns:1fr}.portrait-main{position:static;max-width:230px;margin:0 auto}.portrait-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}';
+  document.head.appendChild(style);
+})();
+/* =====================  v14.9 PORTRAIT PRESETS END  ===================== */
 
 /* =====================  v14.7 END  ===================== */
 
