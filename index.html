@@ -7805,6 +7805,10 @@ renderLifeBuilder();
     window._heavyScene=false;
   }
 
+  window.pickDelivery147=pickDelivery147;
+  window.renderCoverageDelivery147=renderCoverageDelivery147;
+  window.COVERAGE_MIN_STAMINA_147=COVERAGE_MIN_STAMINA;
+
   function runCoverage147(next){
     var c=coverageState(),slots=coverageSlots147();
     c.lastSlots=slots;c.lastUsed=0;
@@ -7819,10 +7823,11 @@ renderLifeBuilder();
     var ev=DELIVERY_EVENTS_147.find(function(x){return x.id===cur.eventId;});
     if(!ev){c.current=null;cur.next();return;}
     if(ev.id==="d147_handoff"&&i===0){
-      var tm=teamState147();
-      if((S.power||0)<RECRUIT_POWER){toast("至少需要 "+RECRUIT_POWER+" 权力才能把这项工作真正交出去","down");return;}
+      var tm=window.teamState147?window.teamState147():{members:[]};
+      var rp=window.RECRUIT_POWER_147||35;
+      if((S.power||0)<rp){toast("至少需要 "+rp+" 权力才能把这项工作真正交出去","down");return;}
       if(!tm.members.length){toast("你还没有直属下属。没有人可以接这项工作。","down");return;}
-      openDelegate147();return;
+      window.openDelegate147();return;
     }
     var choice=presentedChoice(ev.choices,i);
     if(choice.lock&&!unlocked(choice))return;
@@ -7915,6 +7920,7 @@ renderLifeBuilder();
 (function(){
   const RECRUIT_POWER=35;
   const TEAM_MAX=3;
+  window.RECRUIT_POWER_147=RECRUIT_POWER;
 
   const STAFF_CANDIDATES_147=[
     {id:"staff_chen",name:"陈澄",role:"Clinical Scientist",tier:1,ask:34,
@@ -8040,7 +8046,7 @@ renderLifeBuilder();
       var c=coverageState(),cur=c.current;
       if(cur){
         var ev=DELIVERY_EVENTS_147.find(function(x){return x.id===cur.eventId;});
-        if(ev){renderCoverageDelivery147(ev,cur.left,cur.next);return;}
+        if(ev){window.renderCoverageDelivery147(ev,cur.left,cur.next);return;}
       }
       renderChapter();
     }:renderChapter;
@@ -8176,7 +8182,7 @@ renderLifeBuilder();
         return '<button class="choice" onclick="delegateTo147('+i+')"><span class="idx">'+(i+1)+'</span>'+m.name+' · '+m.role
           +'<span class="badge">'+hint+'</span></button>';
       }).join('')
-      +'<button class="choice" onclick="renderCoverageDelivery147(window.DELIVERY_EVENTS_147.find(function(x){return x.id===coverageState().current.eventId}),coverageState().current.left,coverageState().current.next)"><span class="idx">B</span>返回</button></div>';
+      +'<button class="choice" onclick="window.renderCoverageDelivery147(window.DELIVERY_EVENTS_147.find(function(x){return x.id===coverageState().current.eventId}),coverageState().current.left,coverageState().current.next)"><span class="idx">B</span>返回</button></div>';
   };
 
   window.delegateTo147=function(i){
@@ -8192,7 +8198,7 @@ renderLifeBuilder();
       S.progress=clamp((S.progress||0)+2);S.merit=clamp((S.merit||0)+3);S.morale=clamp((S.morale||0)+2);
       deltas=[{label:'📦 下属独立交付',kind:'up'},{label:'进度 +2',kind:'up'},{label:'功勋 +3',kind:'up'}];
       showResult(m.name+'独立完成了这项工作。你只做了最终验收，没有重写。\n\n这是第一次这类任务完成以后，你的体力几乎没有变化。',
-        deltas,function(){if(left>0&&coverageSlots147()>0)renderCoverageDelivery147(pickDelivery147(),left,next);else next();});
+        deltas,function(){if(left>0&&window.coverageSlots147()>0)window.renderCoverageDelivery147(window.pickDelivery147(),left,next);else next();});
       return;
     }
 
@@ -8202,7 +8208,7 @@ renderLifeBuilder();
       S.stamina=clamp((S.stamina||0)-cost);S.heart=clamp((S.heart||0)-3);S.progress=clamp((S.progress||0)+1);
       deltas=[{label:'⚡ 最终覆盖 -10',kind:'down'},{label:'❤️ 心力 -3',kind:'down'},{label:'进度 +1',kind:'up'}];
       showResult(m.name+'做出了可用的第一版，但关键判断/边界没有关掉。\n\n你最后还是把电脑拉到自己面前，把它补成能发出去的版本。任务交出去了，责任没有。',
-        deltas,function(){if(left>0&&S.stamina>=COVERAGE_MIN_STAMINA)renderCoverageDelivery147(pickDelivery147(),left,next);else next();});
+        deltas,function(){if(left>0&&S.stamina>=(window.COVERAGE_MIN_STAMINA_147||40))window.renderCoverageDelivery147(window.pickDelivery147(),left,next);else next();});
       return;
     }
 
@@ -8212,7 +8218,7 @@ renderLifeBuilder();
       S.stamina=clamp(S.stamina-18);S.heart=clamp(S.heart-6);S.blame=clamp((S.blame||0)+3);S.progress=clamp((S.progress||0)-1);
       deltas=[{label:'⚡ 紧急返工 -18',kind:'down'},{label:'❤️ 心力 -6',kind:'down'},{label:'背锅风险 +3',kind:'down'},{label:'进度 -1',kind:'down'}];
       showResult(m.name+'交回来的版本无法使用，而且已经接近deadline。\n\n你没有时间再教。你只能自己从头覆盖。弱下属最贵的地方不是工资，是你以为已经交出去的时间。',
-        deltas,function(){if(left>0&&S.stamina>=COVERAGE_MIN_STAMINA)renderCoverageDelivery147(pickDelivery147(),left,next);else next();});
+        deltas,function(){if(left>0&&S.stamina>=(window.COVERAGE_MIN_STAMINA_147||40))window.renderCoverageDelivery147(window.pickDelivery147(),left,next);else next();});
     }else{
       S.heart=clamp(S.heart-8);S.blame=clamp((S.blame||0)+6);S.progress=clamp((S.progress||0)-4);
       deltas=[{label:'❤️ 心力 -8',kind:'down'},{label:'背锅风险 +6',kind:'down'},{label:'进度 -4',kind:'down'}];
@@ -8222,7 +8228,7 @@ renderLifeBuilder();
   };
 
   /* Add delegation to each active coverage event without replacing authored choices. */
-  var oldRenderCoverage147=renderCoverageDelivery147;
+  var oldRenderCoverage147=window.renderCoverageDelivery147;
   renderCoverageDelivery147=function(ev,left,next){
     oldRenderCoverage147(ev,left,next);
     var box=document.querySelector&&document.querySelector("#scene-area .choices");
