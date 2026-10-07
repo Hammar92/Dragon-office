@@ -9525,21 +9525,23 @@ renderLifeBuilder();
     var ai={g1:0,g2:1,g3:2,g4:3,g5:4}[a]; if(ai==null)ai=2;
     return (g==="female"?0:5)+ai;
   }
-  function portrait153(cls){
-    var g=gender153(),a=age153(),idx=basePortraitIndex153(g,a),col=idx%5,row=Math.floor(idx/5);
+  function portraitForPreset153(p,cls,withDetail){
+    p=p||currentPreset153()||{};
+    var g=p.gender||gender153(),a=p.age||age153(),idx=basePortraitIndex153(g,a),col=idx%5,row=Math.floor(idx/5);
     var x=(col/4)*100,y=row?100:0;
-    var p=(window.PLAYER_PORTRAIT_PRESETS||[]).find(function(z){return z.id===window.PLAYER_PORTRAIT_PRESET;});
     var same=(window.PLAYER_PORTRAIT_PRESETS||[]).filter(function(z){return z.gender===g&&z.age===a;});
-    var variant=Math.max(0,same.indexOf(p));
+    var variant=Math.max(0,same.findIndex(function(z){return z.id===p.id;}));
     var bright=[1,1.03,.97][variant%3],sat=[1,.96,1.05][variant%3],cont=[1.03,1.07,1][variant%3];
     var detail=window.PLAYER_PORTRAIT_DETAIL||{};
-    var accessory=typeof accessoryMarkup152==="function"?accessoryMarkup152():"";
-    return '<div class="'+(cls||"creator153-photo")+' portrait-real expr-'+(detail.expression||"neutral")+' pose-'+(detail.pose||"front")+'"'
+    var accessory=(withDetail&&typeof accessoryMarkup152==="function")?accessoryMarkup152():"";
+    return '<div class="'+(cls||"creator153-photo")+' portrait-real '+(withDetail?'expr-'+(detail.expression||"neutral")+' pose-'+(detail.pose||"front"):'')+'"'
       +' style="background-image:url(assets/player_preset_sheet.jpg);background-size:500% 200%;background-position:'+x+'% '+y+'%;'
       +'filter:brightness('+bright+') saturate('+sat+') contrast('+cont+');background-repeat:no-repeat;background-color:#d9d7d5;">'
       +accessory+'</div>';
   }
+  function portrait153(cls){return portraitForPreset153(currentPreset153(),cls,true);}
   window.playerPortrait153=portrait153;
+  window.playerPortraitForPreset153=portraitForPreset153;
 
   function currentPreset153(){
     var list=window.PLAYER_PORTRAIT_PRESETS||[];
@@ -9645,7 +9647,7 @@ renderLifeBuilder();
       +'<div class="c153-block"><div class="c153-block-head"><b>1　选择整体形象模板</b><span>每个模板包含完整的立绘风格，之后可在下方微调</span></div>'
       +'<div class="c153-template-row">'+list.map(function(x,i){
         return '<button class="c153-template '+(p&&p.id===x.id?'selected':'')+'" onclick="creator153SelectPreset(\''+x.id+'\')">'
-          +portrait153("c153-template-photo")+'<span><b>0'+(i+1)+'　'+x.name+'</b><small>'+x.outfit+'</small></span></button>';
+          +portraitForPreset153(x,"c153-template-photo",false)+'<span><b>0'+(i+1)+'　'+x.name+'</b><small>'+x.outfit+'</small></span></button>';
       }).join('')+'</div></div>'
       +'<div class="c153-block detail"><div class="c153-block-head"><b>2　细节定制</b><span>点击选项微调形象标签与展示风格</span></div>'
       +detailStrip153("body","体型")+detailStrip153("hair","发型")+detailStrip153("face","脸型")
