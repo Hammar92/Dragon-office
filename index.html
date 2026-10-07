@@ -321,7 +321,7 @@
 
   <div id="title-screen" class="screen active" data-page-node-id="3Xsze4gYDslUey8XsUPl0f">
     <div class="game-title">药厂生存记<span class="dragon">·</span>临床开发部</div>
-    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v15.2.1</div>
+    <div class="subtitle">SURVIVAL IN CLINICAL DEVELOPMENT · 18章 · 34随机事件 · 108成就 · 64结局 · Demo v15.3</div>
     <div class="intro-box">
       <b>你的任务只有一个：把这款药从 FIH 一路做进 NDA。</b>
       你是 biotech 临床开发部的<b>医学经理</b>。这次项目不再停留在办公室斗法：一期剂量递增、二期概念验证、EOP2、三期确证、Pre-NDA，每一个节点都可能让项目继续，也可能让多年工作归零。
@@ -9489,6 +9489,305 @@ renderLifeBuilder();
   document.head.appendChild(style);
 })();
 /* =====================  v15.2 COMPLETE PORTRAITS END  ===================== */
+
+
+/* =====================  v15.3 · CREATOR WORKBENCH UI / BUGFIX  ===================== */
+(function(){
+  /* ------------------------------------------------------------------
+     Creator v15.3 intentionally becomes the single UI owner.
+     Older creator/portrait modules still provide data and save compatibility,
+     but no longer determine the visible layout.
+  ------------------------------------------------------------------ */
+  window.CREATOR_STEP=1;
+
+  const V153_DETAIL={
+    body:["纤瘦","标准","匀称","微壮","圆润","高挑","娇小","肩宽","柔和","久坐型"],
+    hair:["短发","侧分","中长发","层次短发","微卷","低马尾","高马尾","盘发","后梳","自然蓬松"],
+    face:["鹅蛋脸","圆脸","方脸","长脸","窄脸","菱形脸","心形脸","方圆脸","轮廓分明","宽下颌"],
+    makeup:["素净自然","通勤淡妆","知性优雅","甜美柔和","冷感高级","清透裸妆","正式职场","疲惫感","亲和感","利落干练"],
+    hairColor:["纯黑","黑棕","深棕","栗棕","冷棕","浅棕","灰黑","少量白发","亚麻灰","酒红棕"],
+    outfit:["医学经理","商务休闲","学术风","高管风","正式西装","极简通勤","中层管理","年轻专业","会议日","实验室通勤"]
+  };
+  window.V153_DETAIL=V153_DETAIL;
+  window.V153_CUSTOM=window.V153_CUSTOM||{
+    body:2,hair:2,face:0,makeup:1,hairColor:1,outfit:0
+  };
+
+  function ageLabel153(k){
+    return (window.AGE_OPTIONS&&AGE_OPTIONS[k]&&AGE_OPTIONS[k].label)||({g1:"22–24岁",g2:"25–29岁",g3:"30–34岁",g4:"35–39岁",g5:"40+岁"})[k]||k;
+  }
+  function gender153(){return (window.LIFE_DRAFT&&LIFE_DRAFT.gender)||"male";}
+  function age153(){return window.PLAYER_AGE||"g3";}
+
+  /* Use the older 5x2 asset which is complete in the repository.
+     The later 30-slot file is currently truncated, which caused the empty preview bug. */
+  function basePortraitIndex153(g,a){
+    var ai={g1:0,g2:1,g3:2,g4:3,g5:4}[a]; if(ai==null)ai=2;
+    return (g==="female"?0:5)+ai;
+  }
+  function portrait153(cls){
+    var g=gender153(),a=age153(),idx=basePortraitIndex153(g,a),col=idx%5,row=Math.floor(idx/5);
+    var x=(col/4)*100,y=row?100:0;
+    var p=(window.PLAYER_PORTRAIT_PRESETS||[]).find(function(z){return z.id===window.PLAYER_PORTRAIT_PRESET;});
+    var same=(window.PLAYER_PORTRAIT_PRESETS||[]).filter(function(z){return z.gender===g&&z.age===a;});
+    var variant=Math.max(0,same.indexOf(p));
+    var bright=[1,1.03,.97][variant%3],sat=[1,.96,1.05][variant%3],cont=[1.03,1.07,1][variant%3];
+    var detail=window.PLAYER_PORTRAIT_DETAIL||{};
+    var accessory=typeof accessoryMarkup152==="function"?accessoryMarkup152():"";
+    return '<div class="'+(cls||"creator153-photo")+' portrait-real expr-'+(detail.expression||"neutral")+' pose-'+(detail.pose||"front")+'"'
+      +' style="background-image:url(assets/player_preset_sheet.jpg);background-size:500% 200%;background-position:'+x+'% '+y+'%;'
+      +'filter:brightness('+bright+') saturate('+sat+') contrast('+cont+');background-repeat:no-repeat;background-color:#d9d7d5;">'
+      +accessory+'</div>';
+  }
+  window.playerPortrait153=portrait153;
+
+  function currentPreset153(){
+    var list=window.PLAYER_PORTRAIT_PRESETS||[];
+    return list.find(function(x){return x.id===window.PLAYER_PORTRAIT_PRESET;})||list.find(function(x){return x.gender===gender153()&&x.age===age153();})||list[0];
+  }
+
+  function presets153(){
+    var list=(window.PLAYER_PORTRAIT_PRESETS||[]).filter(function(p){return p.gender===gender153();});
+    var a=age153();
+    list.sort(function(x,y){return (x.age===a?0:1)-(y.age===a?0:1);});
+    return list.slice(0,5);
+  }
+
+  function syncCustomFromPreset153(p){
+    if(!p)return;
+    function find(group,val){
+      var arr=V153_DETAIL[group]||[];
+      var i=arr.findIndex(function(x){return String(val||"").indexOf(x.replace("脸",""))>=0||x.indexOf(String(val||""))>=0;});
+      return i>=0?i:window.V153_CUSTOM[group]||0;
+    }
+    V153_CUSTOM.body=find("body",p.body);
+    V153_CUSTOM.hair=find("hair",p.hair);
+    V153_CUSTOM.face=find("face",p.face);
+    V153_CUSTOM.makeup=find("makeup",p.makeup);
+    V153_CUSTOM.hairColor=find("hairColor",p.hairColor);
+    V153_CUSTOM.outfit=find("outfit",p.outfit);
+  }
+
+  window.creator153SelectPreset=function(id){
+    if(window.selectPortraitPreset151)window.selectPortraitPreset151(id);
+    else window.PLAYER_PORTRAIT_PRESET=id;
+    var p=currentPreset153(); syncCustomFromPreset153(p);
+    if(window.PLAYER_PORTRAIT_CHOICE_STATE)window.PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=true;
+    renderCreator153();
+  };
+  window.creator153Detail=function(group,i){
+    if(!V153_DETAIL[group])return;
+    V153_CUSTOM[group]=Number(i)||0;
+    var p=currentPreset153();
+    if(p){
+      p.body=V153_DETAIL.body[V153_CUSTOM.body];
+      p.hair=V153_DETAIL.hair[V153_CUSTOM.hair];
+      p.face=V153_DETAIL.face[V153_CUSTOM.face];
+      p.makeup=V153_DETAIL.makeup[V153_CUSTOM.makeup];
+      p.hairColor=V153_DETAIL.hairColor[V153_CUSTOM.hairColor];
+      p.outfit=V153_DETAIL.outfit[V153_CUSTOM.outfit];
+    }
+    try{localStorage.setItem("dragon_creator_custom_153",JSON.stringify(V153_CUSTOM));}catch(e){}
+    renderCreator153();
+  };
+
+  try{
+    var saved=JSON.parse(localStorage.getItem("dragon_creator_custom_153")||"null");
+    if(saved)window.V153_CUSTOM=Object.assign(window.V153_CUSTOM,saved);
+  }catch(e){}
+
+  function detailStrip153(group,title){
+    var arr=V153_DETAIL[group]||[],cur=V153_CUSTOM[group]||0;
+    return '<div class="c153-option-row"><div class="c153-option-title">'+title+'</div><div class="c153-option-strip">'
+      +arr.map(function(x,i){
+        return '<button type="button" class="c153-mini '+(i===cur?'selected':'')+'" onclick="creator153Detail(\''+group+'\','+i+')">'
+          +'<span class="c153-mini-preview '+group+' p'+i+'"></span><span>'+(i+1)+' '+x+'</span></button>';
+      }).join('')+'</div></div>';
+  }
+
+  function nav153(){
+    var items=[
+      ["基本信息","性别 · 年龄 · 背景"],
+      ["外观形象","打造你的职场形象"],
+      ["初始属性","能力 · 性格 · 资源"],
+      ["人生词条","选择你的优势"],
+      ["确认角色","开始你的故事"]
+    ];
+    return '<aside class="c153-nav"><div class="c153-brand">PROJECT<br><b>DRAGON OFFICE</b><small>临床开发 · 生存法则</small></div>'
+      +items.map(function(x,i){
+        var n=i+1;
+        return '<button class="c153-nav-item '+(CREATOR_STEP===n?'active':'')+'" onclick="creator153Step('+n+')">'
+          +'<span class="c153-nav-num">'+n+'</span><span><b>'+x[0]+'</b><small>'+x[1]+'</small></span></button>';
+      }).join('')
+      +'<div class="c153-motto">Science<br>People<br>A Better Tomorrow.</div></aside>';
+  }
+
+  function baseStep153(){
+    return '<section class="c153-panel c153-basic"><div class="c153-page-title">基本信息 <span>先决定你是谁</span></div>'
+      +'<div class="c153-basic-card"><h3>性别</h3><div class="c153-segment">'
+      +["female","male"].map(function(g){return '<button class="'+(gender153()===g?'selected':'')+'" onclick="creator153Gender(\''+g+'\')">'+(g==="female"?"♀ 女性":"♂ 男性")+'</button>';}).join('')
+      +'</div><h3>年龄</h3><div class="c153-segment">'
+      +Object.keys(AGE_OPTIONS).map(function(k){return '<button class="'+(age153()===k?'selected':'')+'" onclick="creator153Age(\''+k+'\')">'+ageLabel153(k)+'</button>';}).join('')
+      +'</div><div class="c153-basic-summary"><b>当前身份</b><span>'+(gender153()==="female"?"女性":"男性")+' · '+ageLabel153(age153())+'</span>'
+      +'<p>年龄会影响可选择的人生阶段；性别只影响人物外观，不改变能力。</p></div>'
+      +'<button class="c153-next" onclick="creator153Step(2)">下一步：外观形象 →</button></div></section>';
+  }
+
+  function appearanceStep153(){
+    var list=presets153(),p=currentPreset153(),ready=window.playerPortraitReady151?window.playerPortraitReady151():!!p;
+    return '<section class="c153-panel c153-appearance"><div class="c153-center">'
+      +'<div class="c153-page-title">外观形象 <span>选择各项特征，系统将为你生成专属的职场立绘形象</span></div>'
+      +'<div class="c153-top-select"><div><b>性别</b><div class="c153-segment compact">'
+      +["female","male"].map(function(g){return '<button class="'+(gender153()===g?'selected':'')+'" onclick="creator153Gender(\''+g+'\')">'+(g==="female"?"♀ 女性":"♂ 男性")+'</button>';}).join('')
+      +'</div></div><div><b>年龄</b><div class="c153-segment compact">'
+      +Object.keys(AGE_OPTIONS).map(function(k){return '<button class="'+(age153()===k?'selected':'')+'" onclick="creator153Age(\''+k+'\')">'+ageLabel153(k)+'</button>';}).join('')
+      +'</div></div></div>'
+      +'<div class="c153-block"><div class="c153-block-head"><b>1　选择整体形象模板</b><span>每个模板包含完整的立绘风格，之后可在下方微调</span></div>'
+      +'<div class="c153-template-row">'+list.map(function(x,i){
+        return '<button class="c153-template '+(p&&p.id===x.id?'selected':'')+'" onclick="creator153SelectPreset(\''+x.id+'\')">'
+          +portrait153("c153-template-photo")+'<span><b>0'+(i+1)+'　'+x.name+'</b><small>'+x.outfit+'</small></span></button>';
+      }).join('')+'</div></div>'
+      +'<div class="c153-block detail"><div class="c153-block-head"><b>2　细节定制</b><span>点击选项微调形象标签与展示风格</span></div>'
+      +detailStrip153("body","体型")+detailStrip153("hair","发型")+detailStrip153("face","脸型")
+      +detailStrip153("makeup","妆容 / 气质")+detailStrip153("hairColor","发色")+detailStrip153("outfit","服装")
+      +'<div class="c153-option-row"><div class="c153-option-title">配饰</div><div class="c153-chip-row">'
+      +(window.PLAYER_DETAIL_OPTIONS?PLAYER_DETAIL_OPTIONS.accessory.map(function(x){return '<button class="'+((PLAYER_PORTRAIT_DETAIL||{}).accessory===x[0]?'selected':'')+'" onclick="setPortraitDetail151(\'accessory\',\''+x[0]+'\');renderCreator153()">'+x[1]+'</button>';}).join(''):'')
+      +'</div></div><div class="c153-option-row"><div class="c153-option-title">表情</div><div class="c153-chip-row">'
+      +(window.PLAYER_DETAIL_OPTIONS?PLAYER_DETAIL_OPTIONS.expression.map(function(x){return '<button class="'+((PLAYER_PORTRAIT_DETAIL||{}).expression===x[0]?'selected':'')+'" onclick="setPortraitDetail151(\'expression\',\''+x[0]+'\');renderCreator153()">'+x[1]+'</button>';}).join(''):'')
+      +'</div></div><div class="c153-option-row"><div class="c153-option-title">姿态</div><div class="c153-chip-row">'
+      +(window.PLAYER_DETAIL_OPTIONS?PLAYER_DETAIL_OPTIONS.pose.map(function(x){return '<button class="'+((PLAYER_PORTRAIT_DETAIL||{}).pose===x[0]?'selected':'')+'" onclick="setPortraitDetail151(\'pose\',\''+x[0]+'\');renderCreator153()">'+x[1]+'</button>';}).join(''):'')
+      +'</div></div></div></div>'
+      +'<aside class="c153-preview"><div class="c153-preview-title">形象预览</div>'
+      +(ready?portrait153("c153-preview-photo"):'<div class="c153-preview-empty">完成性别、年龄和人物模板选择后显示立绘</div>')
+      +'<div class="c153-info"><b>形象信息</b><div class="c153-info-grid">'
+      +'<span>性别</span><strong>'+(gender153()==="female"?"女性":"男性")+'</strong><span>年龄</span><strong>'+ageLabel153(age153())+'</strong>'
+      +'<span>体型</span><strong>'+V153_DETAIL.body[V153_CUSTOM.body]+'</strong><span>发型</span><strong>'+V153_DETAIL.hair[V153_CUSTOM.hair]+'</strong>'
+      +'<span>脸型</span><strong>'+V153_DETAIL.face[V153_CUSTOM.face]+'</strong><span>发色</span><strong>'+V153_DETAIL.hairColor[V153_CUSTOM.hairColor]+'</strong>'
+      +'<span>妆容</span><strong>'+V153_DETAIL.makeup[V153_CUSTOM.makeup]+'</strong><span>服装</span><strong>'+V153_DETAIL.outfit[V153_CUSTOM.outfit]+'</strong>'
+      +'</div></div><button class="c153-confirm" onclick="creator153Step(3)">确认形象　→</button></aside></section>';
+  }
+
+  function statStep153(){
+    var x=lifeSummary(),keys=["professional","social","charm","management","insight","fitness"];
+    return '<section class="c153-panel"><div class="c153-page-title">初始属性 <span>能力、身心和多周目资源</span></div>'
+      +'<div class="c153-stat-grid">'+keys.map(function(k){return '<div><span>'+skillName(k)+'</span><b>'+x.skills[k]+'</b><i style="width:'+x.skills[k]+'%"></i></div>';}).join('')
+      +'<div><span>体力上限</span><b>'+x.body.maxStamina+'</b><i style="width:'+x.body.maxStamina+'%"></i></div>'
+      +'<div><span>心力韧性</span><b>'+x.heart.resilience+'</b><i style="width:'+x.heart.resilience+'%"></i></div></div>'
+      +'<div id="c153-ng-slot" class="c153-subpanel"></div><div class="c153-footer-nav"><button onclick="creator153Step(2)">← 返回外观</button><button onclick="creator153Step(4)">下一步：人生词条 →</button></div></section>';
+  }
+
+  function lifeStep153(){
+    return '<section class="c153-panel"><div class="c153-page-title">人生词条 <span>经历不是装饰，它会改变你能做什么</span></div>'
+      +'<div id="c153-life-slot" class="c153-life"></div><div class="c153-footer-nav"><button onclick="creator153Step(3)">← 返回属性</button><button onclick="creator153Step(5)">下一步：确认角色 →</button></div></section>';
+  }
+
+  function confirmStep153(){
+    var x=lifeSummary(),traits=derivedTraits(x),p=currentPreset153();
+    return '<section class="c153-panel c153-confirm-page"><div class="c153-page-title">确认角色 <span>这是你走进 Dragon Office 的样子</span></div>'
+      +'<div class="c153-confirm-grid"><div class="c153-confirm-portrait">'+portrait153("c153-confirm-photo")+'</div>'
+      +'<div class="c153-confirm-data"><h2>'+(p?p.name:"你的角色")+'</h2><p>'+(gender153()==="female"?"女性":"男性")+' · '+ageLabel153(age153())+'</p>'
+      +'<div class="c153-confirm-stats">'+["professional","social","management","insight","fitness"].map(function(k){return '<span>'+skillName(k)+' <b>'+x.skills[k]+'</b></span>';}).join('')+'</div>'
+      +'<h3>当前词条</h3><div class="trait-row">'+(traits.length?traits.map(function(t){return '<span class="trait '+t.rarity+'">'+t.name+'</span>';}).join(''):'<span class="creator-note">尚未形成特殊词条</span>')+'</div>'
+      +'<div id="c153-difficulty-slot" class="c153-subpanel"></div>'
+      +'<div class="c153-final-actions"><button onclick="backTitle()">返回首页</button><button class="primary" onclick="startGame()">签字入职　→</button></div></div></div></section>';
+  }
+
+  function renderCreator153(){
+    var screen=document.getElementById("creator-screen");if(!screen)return;
+    var shell=screen.querySelector(".c153-shell");if(!shell)return;
+    var main=shell.querySelector(".c153-main");
+    var html=CREATOR_STEP===1?baseStep153():CREATOR_STEP===2?appearanceStep153():CREATOR_STEP===3?statStep153():CREATOR_STEP===4?lifeStep153():confirmStep153();
+    main.innerHTML=html;
+
+    if(CREATOR_STEP===3){
+      var ng=document.getElementById("ng-panel"),slot=document.getElementById("c153-ng-slot");
+      if(ng&&slot){slot.appendChild(ng);ng.style.display="block";renderNGPanel();}
+    }
+    if(CREATOR_STEP===4){
+      var slot2=document.getElementById("c153-life-slot");
+      if(slot2)slot2.innerHTML=lifeBuilderHTML();
+    }
+    if(CREATOR_STEP===5){
+      var df=document.querySelector(".difficulty-wrap"),slot3=document.getElementById("c153-difficulty-slot");
+      if(df&&slot3){slot3.appendChild(df);df.style.display="block";}
+    }
+  }
+  window.renderCreator153=renderCreator153;
+
+  window.creator153Step=function(n){CREATOR_STEP=Math.max(1,Math.min(5,n));renderCreator153();window.scrollTo({top:0,behavior:"smooth"});};
+  window.creator153Gender=function(g){
+    if(window.setLifeGender)window.setLifeGender(g); else LIFE_DRAFT.gender=g;
+    if(window.PLAYER_PORTRAIT_CHOICE_STATE){PLAYER_PORTRAIT_CHOICE_STATE.genderChosen=true;PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=false;}
+    renderCreator153();
+  };
+  window.creator153Age=function(a){
+    if(window.setPlayerAge)window.setPlayerAge(a); else window.PLAYER_AGE=a;
+    if(window.PLAYER_PORTRAIT_CHOICE_STATE){PLAYER_PORTRAIT_CHOICE_STATE.ageChosen=true;PLAYER_PORTRAIT_CHOICE_STATE.presetChosen=false;}
+    renderCreator153();
+  };
+
+  /* Rebuild creator-screen once. Existing persistent nodes are moved into step slots when needed. */
+  function install153(){
+    var screen=document.getElementById("creator-screen");if(!screen)return;
+    var oldChar=document.getElementById("character-creator");
+    if(oldChar){oldChar.style.display="none";screen.appendChild(oldChar);}
+    var ng=document.getElementById("ng-panel");if(ng){ng.style.display="none";screen.appendChild(ng);}
+    var df=document.querySelector(".difficulty-wrap");if(df){df.style.display="none";screen.appendChild(df);}
+    screen.innerHTML='<div class="c153-shell">'+nav153()+'<main class="c153-main"></main></div>';
+    /* hidden persistence hosts for nodes that external legacy code still expects */
+    var vault=document.createElement("div");vault.id="c153-vault";vault.style.display="none";screen.appendChild(vault);
+    if(oldChar)vault.appendChild(oldChar);
+    if(ng)vault.appendChild(ng);
+    if(df)vault.appendChild(df);
+    renderCreator153();
+  }
+
+  window.openCreatorScreen=function(){
+    showScreen("creator-screen");
+    CREATOR_STEP=1;
+    renderCreator153();
+  };
+
+  /* Old life/portrait re-render calls must refresh the active creator instead of overwriting its UI. */
+  var legacyRenderLife153=window.renderLifeBuilder;
+  window.renderLifeBuilder=function(){
+    if(CREATOR_STEP===4&&document.getElementById("c153-life-slot")){
+      document.getElementById("c153-life-slot").innerHTML=lifeBuilderHTML();
+    }
+    if(document.getElementById("creator-screen")&&document.getElementById("creator-screen").classList.contains("active"))renderCreator153();
+  };
+  renderLifeBuilder=window.renderLifeBuilder;
+
+  window.renderPortraitCreator151=function(){if(CREATOR_STEP===2)renderCreator153();};
+  window.renderPortraitCreator1479=window.renderPortraitCreator151;
+  window.renderPortraitCreator150=window.renderPortraitCreator151;
+
+  var st=document.createElement("style");
+  st.textContent=
+   '#creator-screen{padding:0!important;max-width:none!important;text-align:left!important;background:#0f1724;min-height:100vh;color:#1a2a3d}'
+  +'.c153-shell{min-height:100vh;display:grid;grid-template-columns:228px minmax(0,1fr);background:linear-gradient(90deg,#101a28 0 228px,#f5f1e9 228px)}'
+  +'.c153-nav{position:sticky;top:0;height:100vh;background:linear-gradient(180deg,#0e1724,#121b29);color:#eef3f7;padding:24px 0;box-sizing:border-box}.c153-brand{padding:0 22px 24px;font-family:Georgia,serif;font-size:11px;letter-spacing:2px;color:#aeb8c6;border-bottom:1px solid rgba(255,255,255,.08)}.c153-brand b{display:block;font-size:24px;letter-spacing:.5px;color:#e7edf3;margin:2px 0}.c153-brand small{font-family:inherit;font-size:10px;letter-spacing:2px;color:#7e8a99}'
+  +'.c153-nav-item{width:100%;display:grid;grid-template-columns:52px 1fr;gap:0;align-items:center;border:0;background:transparent;color:#c5cfda;text-align:left;padding:14px 14px;cursor:pointer;border-left:4px solid transparent}.c153-nav-item.active{background:linear-gradient(90deg,rgba(19,108,188,.42),rgba(18,30,46,.3));border-left-color:#39b8ff;color:white}.c153-nav-num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:#aeb8c6;color:#142031;font-weight:800;font-size:18px}.c153-nav-item.active .c153-nav-num{background:#f2f5f8;box-shadow:0 0 18px rgba(74,180,255,.7)}.c153-nav-item b{display:block;font-size:15px}.c153-nav-item small{display:block;color:#8090a3;font-size:10px;margin-top:3px}.c153-nav-item.active small{color:#a9c2da}.c153-motto{position:absolute;bottom:26px;left:22px;font:italic 12px Georgia;color:#607083;line-height:1.5}'
+  +'.c153-main{min-width:0;background:radial-gradient(circle at 70% -10%,#fff,#f7f3ec 42%,#f1ece3 100%);min-height:100vh}.c153-panel{padding:24px 28px 40px;max-width:1500px;margin:0 auto;box-sizing:border-box}.c153-page-title{font:700 28px Georgia;color:#102646;margin-bottom:16px}.c153-page-title span{font:400 12px system-ui;color:#7b7b78;margin-left:12px}'
+  +'.c153-basic-card{max-width:850px;background:rgba(255,255,255,.78);border:1px solid #d9d2c6;border-radius:12px;padding:24px;box-shadow:0 12px 40px rgba(35,42,50,.08)}.c153-basic-card h3{margin:18px 0 8px;color:#26364d}.c153-segment{display:flex;gap:2px;background:#dedbd5;border-radius:7px;padding:2px;width:max-content;max-width:100%;flex-wrap:wrap}.c153-segment button{border:0;background:transparent;color:#25354a;padding:10px 24px;border-radius:6px;cursor:pointer;font-weight:600}.c153-segment button.selected{background:#10284a;color:#fff;box-shadow:0 2px 8px rgba(16,40,74,.25)}.c153-segment.compact button{padding:8px 18px;font-size:12px}.c153-basic-summary{margin-top:22px;border-top:1px solid #ddd6cc;padding-top:16px;color:#5b6673}.c153-basic-summary b,.c153-basic-summary span{display:block}.c153-basic-summary span{font-size:18px;color:#17283e;margin-top:4px}.c153-basic-summary p{font-size:12px}.c153-next,.c153-confirm{margin-top:22px;border:1px solid #18558d;background:#10375f;color:white;border-radius:7px;padding:12px 24px;font-weight:700;cursor:pointer}'
+  +'.c153-appearance{display:grid;grid-template-columns:minmax(650px,1fr) 360px;gap:18px;padding:0;max-width:none}.c153-center{padding:20px 20px 40px 22px;min-width:0}.c153-preview{background:linear-gradient(180deg,#292725,#161b22);color:#fff;min-height:100vh;padding:16px;box-sizing:border-box;position:sticky;top:0;align-self:start}.c153-preview-title{font:700 16px Georgia;margin-bottom:9px}.c153-preview-photo{width:100%;height:48vh;min-height:390px;border-radius:6px;background-size:500% 200%!important;box-shadow:inset 0 -80px 80px rgba(0,0,0,.25)}.c153-preview-empty{height:48vh;min-height:390px;display:grid;place-items:center;text-align:center;color:#8d9aa7;border:1px dashed #52606f;border-radius:6px;padding:24px}'
+  +'.c153-top-select{display:flex;gap:18px;background:rgba(255,255,255,.65);border:1px solid #ddd5ca;border-radius:8px;padding:10px 12px;margin-bottom:12px;flex-wrap:wrap}.c153-top-select>div{display:flex;align-items:center;gap:9px}.c153-top-select b{font-size:12px}.c153-block{border-top:1px solid #ddd4c8;padding-top:10px;margin-top:8px}.c153-block-head{display:flex;gap:14px;align-items:baseline;margin-bottom:8px}.c153-block-head b{color:#182c45;font-size:13px}.c153-block-head span{font-size:10px;color:#777d82}'
+  +'.c153-template-row{display:grid;grid-template-columns:repeat(5,minmax(110px,1fr));gap:7px}.c153-template{border:1px solid #d7d0c6;border-radius:6px;padding:4px;background:#faf8f4;cursor:pointer;text-align:left;color:#25354a;min-width:0}.c153-template.selected{border:2px solid #2d75b9;box-shadow:0 0 0 2px rgba(45,117,185,.15)}.c153-template-photo{width:100%;aspect-ratio:1.55/1;background-size:500% 200%!important;border-radius:3px}.c153-template span{display:block;padding:5px 2px 2px}.c153-template b{font-size:10px;display:block}.c153-template small{font-size:9px;color:#737a80}'
+  +'.c153-option-row{display:grid;grid-template-columns:90px minmax(0,1fr);gap:8px;border-top:1px solid #e1dbd2;padding:8px 0}.c153-option-title{font-weight:800;color:#25354a;font-size:12px;padding-top:7px}.c153-option-strip{display:grid;grid-template-columns:repeat(10,minmax(52px,1fr));gap:5px}.c153-mini{border:1px solid #d8d0c6;background:#fbfaf8;border-radius:4px;padding:2px;min-width:0;cursor:pointer;color:#4d5660}.c153-mini.selected{border:2px solid #2b72b5}.c153-mini-preview{display:block;height:34px;border-radius:2px;background:linear-gradient(135deg,#d8c1ae,#6c5548)}.c153-mini span:last-child{display:block;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:2px}.c153-mini.hairColor .c153-mini-preview{}'
+  +'.c153-mini-preview.body{background:linear-gradient(90deg,#262c34,#d7d9da)}.c153-mini-preview.hair{background:linear-gradient(140deg,#171515,#594639)}.c153-mini-preview.face{background:radial-gradient(ellipse at center,#e7b99d 42%,#ad7860 43%,#eee 45%)}.c153-mini-preview.makeup{background:linear-gradient(135deg,#ebc0b0,#aa6871)}.c153-mini-preview.hairColor.p0{background:#111}.c153-mini-preview.hairColor.p1{background:#29201d}.c153-mini-preview.hairColor.p2{background:#4a3329}.c153-mini-preview.hairColor.p3{background:#704532}.c153-mini-preview.hairColor.p4{background:#5a4b45}.c153-mini-preview.hairColor.p5{background:#99755c}.c153-mini-preview.hairColor.p6{background:#555}.c153-mini-preview.hairColor.p7{background:#777}.c153-mini-preview.hairColor.p8{background:#aaa}.c153-mini-preview.hairColor.p9{background:#633a3b}.c153-mini-preview.outfit{background:linear-gradient(135deg,#182233 52%,#e9e3dd 53%)}'
+  +'.c153-chip-row{display:flex;gap:6px;flex-wrap:wrap}.c153-chip-row button{border:1px solid #cfc7bc;background:#faf8f5;border-radius:16px;padding:6px 10px;font-size:10px;cursor:pointer}.c153-chip-row button.selected{background:#172e50;color:#fff;border-color:#172e50}'
+  +'.c153-info{margin-top:12px;background:rgba(7,14,23,.68);border:1px solid rgba(255,255,255,.16);padding:12px;border-radius:6px}.c153-info>b{display:block;margin-bottom:8px}.c153-info-grid{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:7px 10px;font-size:10px}.c153-info-grid span{color:#9ca8b4}.c153-info-grid strong{font-weight:600}.c153-confirm{width:100%;background:linear-gradient(90deg,#0d3a67,#12548d);font-size:14px}'
+  +'.c153-stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:900px}.c153-stat-grid>div{background:#fff;border:1px solid #ddd6cc;border-radius:8px;padding:12px;position:relative;overflow:hidden}.c153-stat-grid span{font-size:12px;color:#66717b}.c153-stat-grid b{float:right;color:#132d4f}.c153-stat-grid i{position:absolute;left:0;bottom:0;height:3px;background:#2d78b9}.c153-subpanel{max-width:1000px;margin-top:18px}.c153-subpanel .creator-wrap{max-width:none;margin:0}.c153-footer-nav{display:flex;justify-content:space-between;margin-top:22px}.c153-footer-nav button,.c153-final-actions button{border:1px solid #a9b0b5;background:#fff;border-radius:6px;padding:10px 18px;cursor:pointer}.c153-footer-nav button:last-child,.c153-final-actions .primary{background:#123b67;color:#fff;border-color:#123b67}'
+  +'.c153-life{max-width:1100px}.c153-life .creator-row:first-child,.c153-life .creator-row:nth-child(2){display:none}.c153-confirm-grid{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;max-width:980px}.c153-confirm-photo{width:300px;aspect-ratio:3/4;border-radius:10px;background-size:500% 200%!important}.c153-confirm-data{background:rgba(255,255,255,.78);border:1px solid #ddd6cc;border-radius:10px;padding:22px}.c153-confirm-data h2{margin:0;color:#152c4a}.c153-confirm-data>p{color:#737b84}.c153-confirm-stats{display:flex;flex-wrap:wrap;gap:7px}.c153-confirm-stats span{background:#eef1f4;border-radius:14px;padding:5px 9px;font-size:11px}.c153-final-actions{display:flex;justify-content:space-between;margin-top:18px}'
+  +'@media(max-width:1100px){.c153-shell{grid-template-columns:185px minmax(0,1fr);background:linear-gradient(90deg,#101a28 0 185px,#f5f1e9 185px)}.c153-appearance{grid-template-columns:minmax(0,1fr) 300px}.c153-template-row{grid-template-columns:repeat(3,minmax(100px,1fr))}.c153-option-strip{grid-template-columns:repeat(5,minmax(56px,1fr))}}'
+  +'@media(max-width:780px){.c153-shell{display:block;background:#f5f1e9}.c153-nav{position:static;height:auto;padding:10px;display:flex;overflow:auto;gap:5px}.c153-brand,.c153-motto{display:none}.c153-nav-item{width:auto;min-width:130px;padding:8px;border-left:0;border-bottom:3px solid transparent;grid-template-columns:30px 1fr}.c153-nav-item.active{border-bottom-color:#39b8ff}.c153-nav-num{width:26px;height:26px;font-size:12px}.c153-appearance{display:block}.c153-preview{position:static;min-height:0}.c153-preview-photo,.c153-preview-empty{height:430px;min-height:0;max-width:330px;margin:auto}.c153-option-row{grid-template-columns:1fr}.c153-option-strip{grid-template-columns:repeat(5,minmax(50px,1fr))}.c153-confirm-grid{grid-template-columns:1fr}.c153-confirm-photo{width:min(280px,100%);margin:auto}}';
+  document.head.appendChild(st);
+
+  install153();
+  var sub=document.querySelector("#title-screen .subtitle");
+  if(sub)sub.textContent="SURVIVAL IN CLINICAL DEVELOPMENT · Creator Workbench · Demo v15.3";
+})();
+/* =====================  v15.3 CREATOR WORKBENCH END  ===================== */
 
 /* =====================  v14.7 END  ===================== */
 
