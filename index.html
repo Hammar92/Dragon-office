@@ -8041,6 +8041,8 @@ renderLifeBuilder();
       +'\n经验 '+(m.xp||0)+' · 培养 '+(m.training||0)+' · 返工 '+(m.rework||0)+'</div></div>';
   }
 
+  window.staffCard147=staffCard147;
+
   window.showTeam147=function(){
     window._teamReturn147=(S.coverage&&S.coverage.current)?function(){
       var c=coverageState(),cur=c.current;
@@ -8054,7 +8056,7 @@ renderLifeBuilder();
     document.getElementById("scene-area").innerHTML='<div class="result-box"><h4>▎👥 我的团队</h4>'
       +'<div class="result-text">编制 '+t.members.length+' / '+cap+'　·　招聘吸引力 '+playerAttraction147()+'　·　委派 '+t.delegated+'　·　返工接管 '+t.covered+''
       +(cap===0?'\n\n需要至少 '+RECRUIT_POWER+' 权力才能获得第一个直属编制。':'')+'</div>'
-      +(t.members.length?t.members.map(staffCard147).join(''):'<div class="creator-note">你现在没有直属下属。所有额外交付最终都只能落回你自己。</div>')
+      +(t.members.length?t.members.map(window.staffCard147).join(''):'<div class="creator-note">你现在没有直属下属。所有额外交付最终都只能落回你自己。</div>')
       +'<div class="choices">'
       +(canHire?'<button class="choice" onclick="showRecruit147()"><span class="idx">R</span>发起招聘</button>':'')
       +t.members.map(function(m,i){return '<button class="choice" onclick="trainStaff147('+i+')"><span class="idx">T</span>培养 '+m.name+'<span class="badge cost">⚡8</span></button>';}).join('')
@@ -8338,7 +8340,7 @@ renderLifeBuilder();
   window.staffDetail147=staffDetail147;
 
   /* Replace compact card with visible capability summary + management state. */
-  staffCard147=function(m){
+  window.staffCard147=function(m){
     ensurePeopleState147(m);
     return '<div class="intel-item"><div class="ih"><span class="it">'+m.name+' · '+m.role+'</span><span class="isrc">综合 '+window.staffOverall147(m)+' · 潜力 '+m.potential+'</span></div>'
       +'<div class="ib">专业 '+window.effectiveStat147(m,"professional")+' · 执行 '+window.effectiveStat147(m,"execution")+' · 判断 '+window.effectiveStat147(m,"judgment")
