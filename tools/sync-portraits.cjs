@@ -1,0 +1,12 @@
+'use strict';
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..'),file=path.join(root,'index.html');
+const data=JSON.parse(fs.readFileSync(path.join(root,'assets/portraits/manifest.json'),'utf8'));
+const geometry=JSON.parse(fs.readFileSync(path.join(root,'assets/portraits/geometry.json'),'utf8'));
+const html=fs.readFileSync(file,'utf8'),moduleStart=html.indexOf('/* ===================== CharacterCreatorV2 ·');
+const start=html.indexOf('  const DATA = ',moduleStart),end=html.indexOf('  const copy = ',start);
+if(moduleStart<0||start<0||end<0)throw new Error('CharacterCreatorV2 registry markers missing');
+if(data.player.length!==30||data.npc.length!==27)throw new Error('Portrait registry coverage changed');
+const encoded=x=>JSON.stringify(x,null,2).replaceAll('<','\\u003c');
+fs.writeFileSync(file,html.slice(0,start)+'  const DATA = '+encoded(data)+';\n  const GEOMETRY = '+encoded(geometry)+';\n'+html.slice(end));
+console.log('Portrait registries synchronized');

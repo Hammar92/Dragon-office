@@ -83,7 +83,7 @@ run("window._evObj=null; Math.random=()=>0.1");
 run('S.prestige={boss:0,team:0,chain:0,last:null,history:[]}; const _p=prestigeState(); addPrestige(3,4,"test")');
 assert.strictEqual(run('S.prestige.boss'),3,'boss prestige');
 assert.strictEqual(run('S.prestige.team'),4,'team prestige');
-assert.ok(html.includes('Demo v16.0.0'),'visible release label is current');
+assert.ok(html.includes('Demo v16.0.1'),'visible release label is current');
 assert.ok(html.includes('RC_CANONICAL_ENDING_RESOLVER_BEGIN'),'canonical ending resolver embedded in single-file build');
 assert.ok(html.includes('RC_ENDING_RUNTIME_BRIDGE_BEGIN'),'canonical runtime bridge embedded in single-file build');
 assert.strictEqual(run('typeof rcEndingAudit'),'function','runtime ending audit installed');

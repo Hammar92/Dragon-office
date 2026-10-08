@@ -1,0 +1,845 @@
+{
+  "version": 2,
+  "assets": [
+    {
+      "id": "body_female_0_0",
+      "gender": "female",
+      "outfit": 0,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_0_0.webp"
+    },
+    {
+      "id": "body_female_0_1",
+      "gender": "female",
+      "outfit": 0,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_0_1.webp"
+    },
+    {
+      "id": "body_female_0_4",
+      "gender": "female",
+      "outfit": 0,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_0_4.webp"
+    },
+    {
+      "id": "body_female_0_2",
+      "gender": "female",
+      "outfit": 0,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_0_2.webp"
+    },
+    {
+      "id": "body_female_0_5",
+      "gender": "female",
+      "outfit": 0,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_0_5.webp"
+    },
+    {
+      "id": "body_female_0_3",
+      "gender": "female",
+      "outfit": 0,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_0_3.webp"
+    },
+    {
+      "id": "body_female_6_5",
+      "gender": "female",
+      "outfit": 6,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_6_5.webp"
+    },
+    {
+      "id": "body_female_1_0",
+      "gender": "female",
+      "outfit": 1,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_1_0.webp"
+    },
+    {
+      "id": "body_female_1_1",
+      "gender": "female",
+      "outfit": 1,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_1_1.webp"
+    },
+    {
+      "id": "body_female_3_0",
+      "gender": "female",
+      "outfit": 3,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_3_0.webp"
+    },
+    {
+      "id": "body_female_3_1",
+      "gender": "female",
+      "outfit": 3,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_3_1.webp"
+    },
+    {
+      "id": "body_female_1_2",
+      "gender": "female",
+      "outfit": 1,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_1_2.webp"
+    },
+    {
+      "id": "body_female_1_3",
+      "gender": "female",
+      "outfit": 1,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_1_3.webp"
+    },
+    {
+      "id": "body_female_5_0",
+      "gender": "female",
+      "outfit": 5,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_5_0.webp"
+    },
+    {
+      "id": "body_female_1_4",
+      "gender": "female",
+      "outfit": 1,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_1_4.webp"
+    },
+    {
+      "id": "body_female_1_5",
+      "gender": "female",
+      "outfit": 1,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_1_5.webp"
+    },
+    {
+      "id": "body_female_2_0",
+      "gender": "female",
+      "outfit": 2,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_2_0.webp"
+    },
+    {
+      "id": "body_female_3_3",
+      "gender": "female",
+      "outfit": 3,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_3_3.webp"
+    },
+    {
+      "id": "body_female_2_1",
+      "gender": "female",
+      "outfit": 2,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_2_1.webp"
+    },
+    {
+      "id": "body_female_3_4",
+      "gender": "female",
+      "outfit": 3,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_3_4.webp"
+    },
+    {
+      "id": "body_female_2_2",
+      "gender": "female",
+      "outfit": 2,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_2_2.webp"
+    },
+    {
+      "id": "body_female_4_5",
+      "gender": "female",
+      "outfit": 4,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_4_5.webp"
+    },
+    {
+      "id": "body_female_2_3",
+      "gender": "female",
+      "outfit": 2,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_2_3.webp"
+    },
+    {
+      "id": "body_female_2_4",
+      "gender": "female",
+      "outfit": 2,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_2_4.webp"
+    },
+    {
+      "id": "body_female_3_5",
+      "gender": "female",
+      "outfit": 3,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_3_5.webp"
+    },
+    {
+      "id": "body_female_2_5",
+      "gender": "female",
+      "outfit": 2,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_2_5.webp"
+    },
+    {
+      "id": "body_female_5_1",
+      "gender": "female",
+      "outfit": 5,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_5_1.webp"
+    },
+    {
+      "id": "body_female_3_2",
+      "gender": "female",
+      "outfit": 3,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_3_2.webp"
+    },
+    {
+      "id": "body_female_4_0",
+      "gender": "female",
+      "outfit": 4,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_4_0.webp"
+    },
+    {
+      "id": "body_female_6_2",
+      "gender": "female",
+      "outfit": 6,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_6_2.webp"
+    },
+    {
+      "id": "body_female_4_1",
+      "gender": "female",
+      "outfit": 4,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_4_1.webp"
+    },
+    {
+      "id": "body_female_4_2",
+      "gender": "female",
+      "outfit": 4,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_4_2.webp"
+    },
+    {
+      "id": "body_female_5_2",
+      "gender": "female",
+      "outfit": 5,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_5_2.webp"
+    },
+    {
+      "id": "body_female_4_3",
+      "gender": "female",
+      "outfit": 4,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_4_3.webp"
+    },
+    {
+      "id": "body_female_6_3",
+      "gender": "female",
+      "outfit": 6,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_6_3.webp"
+    },
+    {
+      "id": "body_female_4_4",
+      "gender": "female",
+      "outfit": 4,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_4_4.webp"
+    },
+    {
+      "id": "body_female_5_3",
+      "gender": "female",
+      "outfit": 5,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_5_3.webp"
+    },
+    {
+      "id": "body_female_7_5",
+      "gender": "female",
+      "outfit": 7,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_7_5.webp"
+    },
+    {
+      "id": "body_female_5_4",
+      "gender": "female",
+      "outfit": 5,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_5_4.webp"
+    },
+    {
+      "id": "body_female_5_5",
+      "gender": "female",
+      "outfit": 5,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_5_5.webp"
+    },
+    {
+      "id": "body_female_6_4",
+      "gender": "female",
+      "outfit": 6,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_6_4.webp"
+    },
+    {
+      "id": "body_female_6_0",
+      "gender": "female",
+      "outfit": 6,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_6_0.webp"
+    },
+    {
+      "id": "body_female_8_0",
+      "gender": "female",
+      "outfit": 8,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_8_0.webp"
+    },
+    {
+      "id": "body_female_6_1",
+      "gender": "female",
+      "outfit": 6,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_6_1.webp"
+    },
+    {
+      "id": "body_female_7_0",
+      "gender": "female",
+      "outfit": 7,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_7_0.webp"
+    },
+    {
+      "id": "body_female_9_1",
+      "gender": "female",
+      "outfit": 9,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_9_1.webp"
+    },
+    {
+      "id": "body_female_7_1",
+      "gender": "female",
+      "outfit": 7,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_7_1.webp"
+    },
+    {
+      "id": "body_female_7_2",
+      "gender": "female",
+      "outfit": 7,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_7_2.webp"
+    },
+    {
+      "id": "body_female_8_1",
+      "gender": "female",
+      "outfit": 8,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_female_8_1.webp"
+    },
+    {
+      "id": "body_female_7_3",
+      "gender": "female",
+      "outfit": 7,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_7_3.webp"
+    },
+    {
+      "id": "body_female_9_2",
+      "gender": "female",
+      "outfit": 9,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_9_2.webp"
+    },
+    {
+      "id": "body_female_7_4",
+      "gender": "female",
+      "outfit": 7,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_7_4.webp"
+    },
+    {
+      "id": "body_female_8_2",
+      "gender": "female",
+      "outfit": 8,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_female_8_2.webp"
+    },
+    {
+      "id": "body_male_0_3",
+      "gender": "male",
+      "outfit": 0,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_0_3.webp"
+    },
+    {
+      "id": "body_female_8_3",
+      "gender": "female",
+      "outfit": 8,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_8_3.webp"
+    },
+    {
+      "id": "body_female_8_4",
+      "gender": "female",
+      "outfit": 8,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_8_4.webp"
+    },
+    {
+      "id": "body_female_9_3",
+      "gender": "female",
+      "outfit": 9,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_female_9_3.webp"
+    },
+    {
+      "id": "body_female_8_5",
+      "gender": "female",
+      "outfit": 8,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_8_5.webp"
+    },
+    {
+      "id": "body_male_0_4",
+      "gender": "male",
+      "outfit": 0,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_0_4.webp"
+    },
+    {
+      "id": "body_female_9_0",
+      "gender": "female",
+      "outfit": 9,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_female_9_0.webp"
+    },
+    {
+      "id": "body_female_9_4",
+      "gender": "female",
+      "outfit": 9,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_female_9_4.webp"
+    },
+    {
+      "id": "body_male_1_5",
+      "gender": "male",
+      "outfit": 1,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_1_5.webp"
+    },
+    {
+      "id": "body_female_9_5",
+      "gender": "female",
+      "outfit": 9,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_female_9_5.webp"
+    },
+    {
+      "id": "body_male_0_0",
+      "gender": "male",
+      "outfit": 0,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_0_0.webp"
+    },
+    {
+      "id": "body_male_0_5",
+      "gender": "male",
+      "outfit": 0,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_0_5.webp"
+    },
+    {
+      "id": "body_male_0_1",
+      "gender": "male",
+      "outfit": 0,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_0_1.webp"
+    },
+    {
+      "id": "body_male_2_0",
+      "gender": "male",
+      "outfit": 2,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_2_0.webp"
+    },
+    {
+      "id": "body_male_0_2",
+      "gender": "male",
+      "outfit": 0,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_0_2.webp"
+    },
+    {
+      "id": "body_male_1_0",
+      "gender": "male",
+      "outfit": 1,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_1_0.webp"
+    },
+    {
+      "id": "body_male_3_1",
+      "gender": "male",
+      "outfit": 3,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_3_1.webp"
+    },
+    {
+      "id": "body_male_1_1",
+      "gender": "male",
+      "outfit": 1,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_1_1.webp"
+    },
+    {
+      "id": "body_male_1_2",
+      "gender": "male",
+      "outfit": 1,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_1_2.webp"
+    },
+    {
+      "id": "body_male_2_1",
+      "gender": "male",
+      "outfit": 2,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_2_1.webp"
+    },
+    {
+      "id": "body_male_1_3",
+      "gender": "male",
+      "outfit": 1,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_1_3.webp"
+    },
+    {
+      "id": "body_male_3_2",
+      "gender": "male",
+      "outfit": 3,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_3_2.webp"
+    },
+    {
+      "id": "body_male_1_4",
+      "gender": "male",
+      "outfit": 1,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_1_4.webp"
+    },
+    {
+      "id": "body_male_2_2",
+      "gender": "male",
+      "outfit": 2,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_2_2.webp"
+    },
+    {
+      "id": "body_male_4_3",
+      "gender": "male",
+      "outfit": 4,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_4_3.webp"
+    },
+    {
+      "id": "body_male_2_3",
+      "gender": "male",
+      "outfit": 2,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_2_3.webp"
+    },
+    {
+      "id": "body_male_2_4",
+      "gender": "male",
+      "outfit": 2,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_2_4.webp"
+    },
+    {
+      "id": "body_male_3_3",
+      "gender": "male",
+      "outfit": 3,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_3_3.webp"
+    },
+    {
+      "id": "body_male_2_5",
+      "gender": "male",
+      "outfit": 2,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_2_5.webp"
+    },
+    {
+      "id": "body_male_4_4",
+      "gender": "male",
+      "outfit": 4,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_4_4.webp"
+    },
+    {
+      "id": "body_male_3_0",
+      "gender": "male",
+      "outfit": 3,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_3_0.webp"
+    },
+    {
+      "id": "body_male_3_4",
+      "gender": "male",
+      "outfit": 3,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_3_4.webp"
+    },
+    {
+      "id": "body_male_5_5",
+      "gender": "male",
+      "outfit": 5,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_5_5.webp"
+    },
+    {
+      "id": "body_male_3_5",
+      "gender": "male",
+      "outfit": 3,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_3_5.webp"
+    },
+    {
+      "id": "body_male_4_0",
+      "gender": "male",
+      "outfit": 4,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_4_0.webp"
+    },
+    {
+      "id": "body_male_4_5",
+      "gender": "male",
+      "outfit": 4,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_4_5.webp"
+    },
+    {
+      "id": "body_male_4_1",
+      "gender": "male",
+      "outfit": 4,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_4_1.webp"
+    },
+    {
+      "id": "body_male_6_0",
+      "gender": "male",
+      "outfit": 6,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_6_0.webp"
+    },
+    {
+      "id": "body_male_4_2",
+      "gender": "male",
+      "outfit": 4,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_4_2.webp"
+    },
+    {
+      "id": "body_male_5_0",
+      "gender": "male",
+      "outfit": 5,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_5_0.webp"
+    },
+    {
+      "id": "body_male_7_1",
+      "gender": "male",
+      "outfit": 7,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_7_1.webp"
+    },
+    {
+      "id": "body_male_5_1",
+      "gender": "male",
+      "outfit": 5,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_5_1.webp"
+    },
+    {
+      "id": "body_male_5_2",
+      "gender": "male",
+      "outfit": 5,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_5_2.webp"
+    },
+    {
+      "id": "body_male_6_1",
+      "gender": "male",
+      "outfit": 6,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_6_1.webp"
+    },
+    {
+      "id": "body_male_5_3",
+      "gender": "male",
+      "outfit": 5,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_5_3.webp"
+    },
+    {
+      "id": "body_male_7_2",
+      "gender": "male",
+      "outfit": 7,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_7_2.webp"
+    },
+    {
+      "id": "body_male_5_4",
+      "gender": "male",
+      "outfit": 5,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_5_4.webp"
+    },
+    {
+      "id": "body_male_6_2",
+      "gender": "male",
+      "outfit": 6,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_6_2.webp"
+    },
+    {
+      "id": "body_male_8_3",
+      "gender": "male",
+      "outfit": 8,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_8_3.webp"
+    },
+    {
+      "id": "body_male_6_3",
+      "gender": "male",
+      "outfit": 6,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_6_3.webp"
+    },
+    {
+      "id": "body_male_6_4",
+      "gender": "male",
+      "outfit": 6,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_6_4.webp"
+    },
+    {
+      "id": "body_male_7_3",
+      "gender": "male",
+      "outfit": 7,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_7_3.webp"
+    },
+    {
+      "id": "body_male_6_5",
+      "gender": "male",
+      "outfit": 6,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_6_5.webp"
+    },
+    {
+      "id": "body_male_8_4",
+      "gender": "male",
+      "outfit": 8,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_8_4.webp"
+    },
+    {
+      "id": "body_male_7_0",
+      "gender": "male",
+      "outfit": 7,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_7_0.webp"
+    },
+    {
+      "id": "body_male_7_4",
+      "gender": "male",
+      "outfit": 7,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_7_4.webp"
+    },
+    {
+      "id": "body_male_9_5",
+      "gender": "male",
+      "outfit": 9,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_9_5.webp"
+    },
+    {
+      "id": "body_male_7_5",
+      "gender": "male",
+      "outfit": 7,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_7_5.webp"
+    },
+    {
+      "id": "body_male_8_0",
+      "gender": "male",
+      "outfit": 8,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_8_0.webp"
+    },
+    {
+      "id": "body_male_8_5",
+      "gender": "male",
+      "outfit": 8,
+      "pose": 5,
+      "url": "assets/portraits/bodies/body_male_8_5.webp"
+    },
+    {
+      "id": "body_male_8_1",
+      "gender": "male",
+      "outfit": 8,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_8_1.webp"
+    },
+    {
+      "id": "body_male_8_2",
+      "gender": "male",
+      "outfit": 8,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_8_2.webp"
+    },
+    {
+      "id": "body_male_9_0",
+      "gender": "male",
+      "outfit": 9,
+      "pose": 0,
+      "url": "assets/portraits/bodies/body_male_9_0.webp"
+    },
+    {
+      "id": "body_male_9_1",
+      "gender": "male",
+      "outfit": 9,
+      "pose": 1,
+      "url": "assets/portraits/bodies/body_male_9_1.webp"
+    },
+    {
+      "id": "body_male_9_2",
+      "gender": "male",
+      "outfit": 9,
+      "pose": 2,
+      "url": "assets/portraits/bodies/body_male_9_2.webp"
+    },
+    {
+      "id": "body_male_9_3",
+      "gender": "male",
+      "outfit": 9,
+      "pose": 3,
+      "url": "assets/portraits/bodies/body_male_9_3.webp"
+    },
+    {
+      "id": "body_male_9_4",
+      "gender": "male",
+      "outfit": 9,
+      "pose": 4,
+      "url": "assets/portraits/bodies/body_male_9_4.webp"
+    }
+  ]
+}

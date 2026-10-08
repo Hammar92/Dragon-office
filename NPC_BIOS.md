@@ -1,4 +1,4 @@
-# Dragon-office · NPC人物小传合集（v16.0.0）
+# Dragon-office · NPC人物小传合集（v16.0.1）
 
 > 本文件是游戏设计用“人物圣经”。  
 > **公开小传**可以在游戏开始界面/人物志中出现；**隐藏设定**只用于后台行为、事件、台词和关系算法，不应直接展示给玩家。
@@ -353,7 +353,7 @@ Contribution Ledger；Recognition Debt；Promise Memory；贡献—回报匹配�
 
 ## K总 · 临床运营管理
 
-**形象档案**：女性，45–52岁，标准。独立立绘：`assets/portraits/npc/kzong.webp`。
+**形象档案**：女性，30–35岁，标准。独立立绘：`assets/portraits/npc/kzong-v2.webp`。
 
 **公开小传**  
 从CRC一路做过CRA、PM、CRO PM，最后到Sponsor端。她知道中心、CRA、CRO和Sponsor分别会怎么描述同一个问题，也很会把复杂现场问题压成老板真正需要做的两三个选择。

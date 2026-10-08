@@ -1,5 +1,5 @@
 {
-  "version": "16.0.0",
+  "version": "16.0.1",
   "npc": [
     {
       "id": "zhongshi",
@@ -203,9 +203,9 @@
       "id": "kzong",
       "name": "K总",
       "gender": "female",
-      "age": "45–52",
+      "age": "30–35",
       "body": "标准",
-      "portrait": "assets/portraits/npc/kzong.webp",
+      "portrait": "assets/portraits/npc/kzong-v2.webp",
       "portraitPosition": "50% 18%"
     },
     {
@@ -260,7 +260,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g1_a.webp"
+      "portrait": "assets/portraits/player-v2/f_g1_a.webp",
+      "faceSource": "assets/portraits/player/f_g1_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g1_b",
@@ -276,7 +278,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g1_b.webp"
+      "portrait": "assets/portraits/player-v2/f_g1_b.webp",
+      "faceSource": "assets/portraits/player/f_g1_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g1_c",
@@ -292,7 +296,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g1_c.webp"
+      "portrait": "assets/portraits/player-v2/f_g1_c.webp",
+      "faceSource": "assets/portraits/player/f_g1_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g2_a",
@@ -308,7 +314,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g2_a.webp"
+      "portrait": "assets/portraits/player-v2/f_g2_a.webp",
+      "faceSource": "assets/portraits/player/f_g2_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g2_b",
@@ -324,7 +332,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g2_b.webp"
+      "portrait": "assets/portraits/player-v2/f_g2_b.webp",
+      "faceSource": "assets/portraits/player/f_g2_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g2_c",
@@ -340,7 +350,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g2_c.webp"
+      "portrait": "assets/portraits/player-v2/f_g2_c.webp",
+      "faceSource": "assets/portraits/player/f_g2_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g3_a",
@@ -356,7 +368,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g3_a.webp"
+      "portrait": "assets/portraits/player-v2/f_g3_a.webp",
+      "faceSource": "assets/portraits/player/f_g3_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g3_b",
@@ -372,7 +386,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g3_b.webp"
+      "portrait": "assets/portraits/player-v2/f_g3_b.webp",
+      "faceSource": "assets/portraits/player/f_g3_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g3_c",
@@ -388,7 +404,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g3_c.webp"
+      "portrait": "assets/portraits/player-v2/f_g3_c.webp",
+      "faceSource": "assets/portraits/player/f_g3_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g4_a",
@@ -404,7 +422,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g4_a.webp"
+      "portrait": "assets/portraits/player-v2/f_g4_a.webp",
+      "faceSource": "assets/portraits/player/f_g4_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g4_b",
@@ -420,7 +440,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g4_b.webp"
+      "portrait": "assets/portraits/player-v2/f_g4_b.webp",
+      "faceSource": "assets/portraits/player/f_g4_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g4_c",
@@ -436,7 +458,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g4_c.webp"
+      "portrait": "assets/portraits/player-v2/f_g4_c.webp",
+      "faceSource": "assets/portraits/player/f_g4_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g5_a",
@@ -452,7 +476,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g5_a.webp"
+      "portrait": "assets/portraits/player-v2/f_g5_a.webp",
+      "faceSource": "assets/portraits/player/f_g5_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g5_b",
@@ -468,7 +494,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g5_b.webp"
+      "portrait": "assets/portraits/player-v2/f_g5_b.webp",
+      "faceSource": "assets/portraits/player/f_g5_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "f_g5_c",
@@ -484,7 +512,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/f_g5_c.webp"
+      "portrait": "assets/portraits/player-v2/f_g5_c.webp",
+      "faceSource": "assets/portraits/player/f_g5_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g1_a",
@@ -500,7 +530,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g1_a.webp"
+      "portrait": "assets/portraits/player-v2/m_g1_a.webp",
+      "faceSource": "assets/portraits/player/m_g1_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g1_b",
@@ -516,7 +548,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g1_b.webp"
+      "portrait": "assets/portraits/player-v2/m_g1_b.webp",
+      "faceSource": "assets/portraits/player/m_g1_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g1_c",
@@ -532,7 +566,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g1_c.webp"
+      "portrait": "assets/portraits/player-v2/m_g1_c.webp",
+      "faceSource": "assets/portraits/player/m_g1_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g2_a",
@@ -548,7 +584,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g2_a.webp"
+      "portrait": "assets/portraits/player-v2/m_g2_a.webp",
+      "faceSource": "assets/portraits/player/m_g2_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g2_b",
@@ -564,7 +602,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g2_b.webp"
+      "portrait": "assets/portraits/player-v2/m_g2_b.webp",
+      "faceSource": "assets/portraits/player/m_g2_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g2_c",
@@ -580,7 +620,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g2_c.webp"
+      "portrait": "assets/portraits/player-v2/m_g2_c.webp",
+      "faceSource": "assets/portraits/player/m_g2_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g3_a",
@@ -596,7 +638,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g3_a.webp"
+      "portrait": "assets/portraits/player-v2/m_g3_a.webp",
+      "faceSource": "assets/portraits/player/m_g3_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g3_b",
@@ -612,7 +656,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g3_b.webp"
+      "portrait": "assets/portraits/player-v2/m_g3_b.webp",
+      "faceSource": "assets/portraits/player/m_g3_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g3_c",
@@ -628,7 +674,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g3_c.webp"
+      "portrait": "assets/portraits/player-v2/m_g3_c.webp",
+      "faceSource": "assets/portraits/player/m_g3_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g4_a",
@@ -644,7 +692,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g4_a.webp"
+      "portrait": "assets/portraits/player-v2/m_g4_a.webp",
+      "faceSource": "assets/portraits/player/m_g4_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g4_b",
@@ -660,7 +710,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g4_b.webp"
+      "portrait": "assets/portraits/player-v2/m_g4_b.webp",
+      "faceSource": "assets/portraits/player/m_g4_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g4_c",
@@ -676,7 +728,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g4_c.webp"
+      "portrait": "assets/portraits/player-v2/m_g4_c.webp",
+      "faceSource": "assets/portraits/player/m_g4_c.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g5_a",
@@ -692,7 +746,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g5_a.webp"
+      "portrait": "assets/portraits/player-v2/m_g5_a.webp",
+      "faceSource": "assets/portraits/player/m_g5_a.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g5_b",
@@ -708,7 +764,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g5_b.webp"
+      "portrait": "assets/portraits/player-v2/m_g5_b.webp",
+      "faceSource": "assets/portraits/player/m_g5_b.webp",
+      "portraitRenderer": 2
     },
     {
       "id": "m_g5_c",
@@ -724,7 +782,9 @@
       "accessory": 0,
       "expression": 0,
       "pose": 0,
-      "portrait": "assets/portraits/player/m_g5_c.webp"
+      "portrait": "assets/portraits/player-v2/m_g5_c.webp",
+      "faceSource": "assets/portraits/player/m_g5_c.webp",
+      "portraitRenderer": 2
     }
   ]
 }
