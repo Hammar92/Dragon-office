@@ -69,7 +69,7 @@
       slayer:projectFull&&finalRouteIs(raw,'power')&&dragon<10&&power>=65&&mid60>=2,
       promotion:projectFull&&merit>=70&&reputation>=45&&bossTrust>=45&&promoSupport>=(hard?4:3)&&promoOppose<=(hard?2:3)&&(yes(f.duelWin)||trust>=30),
       unsung:projectFull&&merit>=75&&reputation<25,
-      next:projectFull&&finalRouteIs(raw,'govern')&&career>=75&&dragon<10,
+      next:projectFull&&finalRouteIs(raw,'govern')&&career>=75&&dragon<10&&(f.careerDecision===undefined||f.careerDecision==='depart'),
       firstline:projectFull&&finalRouteIs(raw,'govern')&&career>=55&&dragon<10,
       /* v11 organization endings remain public gallery endings. They sit below explicit
          career trajectories, but above event echoes: they summarize the whole operating model. */

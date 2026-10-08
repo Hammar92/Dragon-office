@@ -3568,7 +3568,7 @@ function maybePhoneEvent(next){
   const d=difficulty().id;
   const rate=d==='hard'?.42:d==='story'?.28:.34;
   if(Math.random()>rate){next();return;}
-  const left=PHONE_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0;});
+  const left=PHONE_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0&&(!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));});
   if(!left.length){next();return;}
   const ev=left[Math.floor(Math.random()*left.length)];
   usedEvents.push(ev.id);
@@ -3818,7 +3818,7 @@ function maybeEvent(chapterId, next){
   if(Math.random() > EVENT_RATES[chapterId]){ next(); return; }
   let pool, isHeina = false;
   const heinaLeft = HEINA_EVENTS.filter(function(e){ return usedHeina.indexOf(e.id)<0; });
-  const normalLeft = EVENTS.concat(INTERNAL_EVENTS).filter(function(e){ return usedEvents.indexOf(e.id)<0; });
+  const normalLeft = EVENTS.concat(INTERNAL_EVENTS).filter(function(e){ return usedEvents.indexOf(e.id)<0&&(!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx)); });
   if(usedHeina.length < HEINA_MAX && heinaLeft.length){
     pool = heinaLeft; isHeina = true;
   } else if(normalLeft.length){
@@ -5573,7 +5573,7 @@ renderLifeBuilder();
   maybeEvent=function(chapterId,next){
     var rate=difficulty().id==="hard"?.62:difficulty().id==="story"?.28:.44;
     if(Math.random()>rate){next();return;}
-    var pool=V11_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0;});
+    var pool=V11_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0&&(!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));});
     if(!pool.length){next();return;}
     var ev=pool[Math.floor(Math.random()*pool.length)];usedEvents.push(ev.id);
     renderHUD();window._evObj={ev:ev,next:next,cro:false};renderEventFromObj();
@@ -5993,7 +5993,7 @@ renderLifeBuilder();
   maybeEvent=function(chapterId,next){
     var base=difficulty().id==="hard"?.72:difficulty().id==="story"?.34:.53;
     if(Math.random()>base){next();return;}
-    var pool=V11_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0;});
+    var pool=V11_EVENTS.filter(function(e){return usedEvents.indexOf(e.id)<0&&(!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));});
     if(!pool.length){next();return;}
     var weighted=[];pool.forEach(function(e){for(var i=0;i<eventWeight(e);i++)weighted.push(e);});
     var ev=weighted[Math.floor(Math.random()*weighted.length)];
@@ -6768,6 +6768,7 @@ renderLifeBuilder();
   window.addPrestige=addPrestige;
 
   function piConflictFromChoice(c){
+    if(c&&c.campaignChoice&&c.project&&c.project.set&&c.project.set.piLedger)return null; // A jointly agreed contribution ledger resolves the rivalry.
     const d=(c&&c.npc)||{};
     const helped=PI_KEYS.filter(k=>(d[k]||0)>=4).sort((a,b)=>(d[b]||0)-(d[a]||0));
     if(!helped.length) return null;
@@ -7461,6 +7462,7 @@ renderLifeBuilder();
       if(!x.achievementName&&base.achievementName)x.achievementName=base.achievementName;
       if(!x.setFlag&&base.setFlag)x.setFlag=base.setFlag;
       if(!x.branchFlag&&base.branchFlag)x.branchFlag=base.branchFlag;
+      if(base.campaignChoice)x.campaignChoice=Object.assign({},base.campaignChoice,{context:true});
       chosen.push(x);
     });
     return out.concat(chosen);
@@ -7605,9 +7607,7 @@ renderLifeBuilder();
   };
 })();
 
-/* RC_CANONICAL_ENDING_RESOLVER_BEGIN
-   Embedded deliberately so index.html remains a one-file playable build.
-   Canonical source: ending-resolver.js */
+/* RC_CANONICAL_ENDING_RESOLVER_BEGIN */
 /* Dragon Office · canonical final-ending resolver
  * RC contract: one ordered resolver, no wrapper-specific early returns.
  * Browser-safe and Node-testable.
@@ -7679,7 +7679,7 @@ renderLifeBuilder();
       slayer:projectFull&&finalRouteIs(raw,'power')&&dragon<10&&power>=65&&mid60>=2,
       promotion:projectFull&&merit>=70&&reputation>=45&&bossTrust>=45&&promoSupport>=(hard?4:3)&&promoOppose<=(hard?2:3)&&(yes(f.duelWin)||trust>=30),
       unsung:projectFull&&merit>=75&&reputation<25,
-      next:projectFull&&finalRouteIs(raw,'govern')&&career>=75&&dragon<10,
+      next:projectFull&&finalRouteIs(raw,'govern')&&career>=75&&dragon<10&&(f.careerDecision===undefined||f.careerDecision==='depart'),
       firstline:projectFull&&finalRouteIs(raw,'govern')&&career>=55&&dragon<10,
       /* v11 organization endings remain public gallery endings. They sit below explicit
          career trajectories, but above event echoes: they summarize the whole operating model. */
@@ -7747,8 +7747,7 @@ renderLifeBuilder();
 
 /* RC_CANONICAL_ENDING_RESOLVER_END */
 
-/* RC_ENDING_RUNTIME_BRIDGE_BEGIN
-   Canonical source: ending-runtime-bridge.js */
+/* RC_ENDING_RUNTIME_BRIDGE_BEGIN */
 /* Dragon Office RC browser bridge.
  * Runs after ending-resolver.js and after the legacy game declarations.
  * Important: S / flags / NPCs are global lexical bindings in index.html, not guaranteed window properties.
@@ -7917,8 +7916,8 @@ renderLifeBuilder();
   window.DELIVERY_EVENTS_147=DELIVERY_EVENTS_147;
 
   function pickDelivery147(){
-    var c=coverageState(),pool=DELIVERY_EVENTS_147.filter(function(e){return c.seen.indexOf(e.id)<0;});
-    if(!pool.length){c.seen=[];pool=DELIVERY_EVENTS_147.slice();}
+    var c=coverageState(),pool=DELIVERY_EVENTS_147.filter(function(e){return c.seen.indexOf(e.id)<0&&(!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));});
+    if(!pool.length){c.seen=[];pool=DELIVERY_EVENTS_147.filter(e=>!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));}
     return pool[Math.floor(Math.random()*pool.length)];
   }
 
@@ -8621,11 +8620,11 @@ renderLifeBuilder();
 /* =====================  v14.7 RECRUITMENT END  ===================== */
 
 
-/* ===================== CharacterCreatorV2 · v16.0.1 ===================== */
+/* ===================== CharacterCreatorV2 · v17.1.0 ===================== */
 (function(){
   'use strict';
   const DATA = {
-  "version": "16.0.1",
+  "version": "17.0.0",
   "npc": [
     {
       "id": "zhongshi",
@@ -8877,3327 +8876,245 @@ renderLifeBuilder();
       "gender": "female",
       "age": "g1",
       "name": "专业干练",
-      "body": 0,
-      "hair": 0,
-      "face": 0,
-      "makeup": 0,
-      "hairColor": 0,
-      "outfit": 0,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g1_a.webp",
-      "faceSource": "assets/portraits/player/f_g1_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g1_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g1_b",
       "gender": "female",
       "age": "g1",
       "name": "温和协调",
-      "body": 1,
-      "hair": 1,
-      "face": 1,
-      "makeup": 1,
-      "hairColor": 0,
-      "outfit": 1,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g1_b.webp",
-      "faceSource": "assets/portraits/player/f_g1_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g1_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g1_c",
       "gender": "female",
       "age": "g1",
       "name": "学术沉稳",
-      "body": 2,
-      "hair": 2,
-      "face": 2,
-      "makeup": 2,
-      "hairColor": 0,
-      "outfit": 2,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g1_c.webp",
-      "faceSource": "assets/portraits/player/f_g1_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g1_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g2_a",
       "gender": "female",
       "age": "g2",
       "name": "专业干练",
-      "body": 3,
-      "hair": 3,
-      "face": 3,
-      "makeup": 3,
-      "hairColor": 0,
-      "outfit": 3,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g2_a.webp",
-      "faceSource": "assets/portraits/player/f_g2_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g2_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g2_b",
       "gender": "female",
       "age": "g2",
       "name": "温和协调",
-      "body": 4,
-      "hair": 4,
-      "face": 4,
-      "makeup": 4,
-      "hairColor": 0,
-      "outfit": 4,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g2_b.webp",
-      "faceSource": "assets/portraits/player/f_g2_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g2_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g2_c",
       "gender": "female",
       "age": "g2",
       "name": "学术沉稳",
-      "body": 5,
-      "hair": 5,
-      "face": 5,
-      "makeup": 5,
-      "hairColor": 0,
-      "outfit": 5,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g2_c.webp",
-      "faceSource": "assets/portraits/player/f_g2_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g2_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g3_a",
       "gender": "female",
       "age": "g3",
       "name": "专业干练",
-      "body": 6,
-      "hair": 6,
-      "face": 6,
-      "makeup": 6,
-      "hairColor": 0,
-      "outfit": 6,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g3_a.webp",
-      "faceSource": "assets/portraits/player/f_g3_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g3_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g3_b",
       "gender": "female",
       "age": "g3",
       "name": "温和协调",
-      "body": 7,
-      "hair": 7,
-      "face": 7,
-      "makeup": 7,
-      "hairColor": 0,
-      "outfit": 7,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g3_b.webp",
-      "faceSource": "assets/portraits/player/f_g3_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g3_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g3_c",
       "gender": "female",
       "age": "g3",
       "name": "学术沉稳",
-      "body": 8,
-      "hair": 8,
-      "face": 8,
-      "makeup": 8,
-      "hairColor": 0,
-      "outfit": 8,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g3_c.webp",
-      "faceSource": "assets/portraits/player/f_g3_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g3_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g4_a",
       "gender": "female",
       "age": "g4",
       "name": "专业干练",
-      "body": 9,
-      "hair": 9,
-      "face": 9,
-      "makeup": 9,
-      "hairColor": 0,
-      "outfit": 9,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g4_a.webp",
-      "faceSource": "assets/portraits/player/f_g4_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g4_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g4_b",
       "gender": "female",
       "age": "g4",
       "name": "温和协调",
-      "body": 0,
-      "hair": 0,
-      "face": 0,
-      "makeup": 0,
-      "hairColor": 0,
-      "outfit": 0,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g4_b.webp",
-      "faceSource": "assets/portraits/player/f_g4_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g4_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g4_c",
       "gender": "female",
       "age": "g4",
       "name": "学术沉稳",
-      "body": 1,
-      "hair": 1,
-      "face": 1,
-      "makeup": 1,
-      "hairColor": 0,
-      "outfit": 1,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g4_c.webp",
-      "faceSource": "assets/portraits/player/f_g4_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g4_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g5_a",
       "gender": "female",
       "age": "g5",
       "name": "专业干练",
-      "body": 2,
-      "hair": 2,
-      "face": 2,
-      "makeup": 2,
-      "hairColor": 0,
-      "outfit": 2,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g5_a.webp",
-      "faceSource": "assets/portraits/player/f_g5_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g5_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g5_b",
       "gender": "female",
       "age": "g5",
       "name": "温和协调",
-      "body": 3,
-      "hair": 3,
-      "face": 3,
-      "makeup": 3,
-      "hairColor": 0,
-      "outfit": 3,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g5_b.webp",
-      "faceSource": "assets/portraits/player/f_g5_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g5_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "f_g5_c",
       "gender": "female",
       "age": "g5",
       "name": "学术沉稳",
-      "body": 4,
-      "hair": 4,
-      "face": 4,
-      "makeup": 4,
-      "hairColor": 0,
-      "outfit": 4,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/f_g5_c.webp",
-      "faceSource": "assets/portraits/player/f_g5_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/f_g5_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g1_a",
       "gender": "male",
       "age": "g1",
       "name": "专业干练",
-      "body": 0,
-      "hair": 0,
-      "face": 3,
-      "makeup": 0,
-      "hairColor": 0,
-      "outfit": 0,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g1_a.webp",
-      "faceSource": "assets/portraits/player/m_g1_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g1_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g1_b",
       "gender": "male",
       "age": "g1",
       "name": "温和协调",
-      "body": 1,
-      "hair": 1,
-      "face": 4,
-      "makeup": 1,
-      "hairColor": 0,
-      "outfit": 1,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g1_b.webp",
-      "faceSource": "assets/portraits/player/m_g1_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g1_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g1_c",
       "gender": "male",
       "age": "g1",
       "name": "学术沉稳",
-      "body": 2,
-      "hair": 2,
-      "face": 5,
-      "makeup": 2,
-      "hairColor": 0,
-      "outfit": 2,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g1_c.webp",
-      "faceSource": "assets/portraits/player/m_g1_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g1_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g2_a",
       "gender": "male",
       "age": "g2",
       "name": "专业干练",
-      "body": 3,
-      "hair": 3,
-      "face": 6,
-      "makeup": 3,
-      "hairColor": 0,
-      "outfit": 3,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g2_a.webp",
-      "faceSource": "assets/portraits/player/m_g2_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g2_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g2_b",
       "gender": "male",
       "age": "g2",
       "name": "温和协调",
-      "body": 4,
-      "hair": 4,
-      "face": 7,
-      "makeup": 4,
-      "hairColor": 0,
-      "outfit": 4,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g2_b.webp",
-      "faceSource": "assets/portraits/player/m_g2_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g2_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g2_c",
       "gender": "male",
       "age": "g2",
       "name": "学术沉稳",
-      "body": 5,
-      "hair": 5,
-      "face": 8,
-      "makeup": 5,
-      "hairColor": 0,
-      "outfit": 5,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g2_c.webp",
-      "faceSource": "assets/portraits/player/m_g2_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g2_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g3_a",
       "gender": "male",
       "age": "g3",
       "name": "专业干练",
-      "body": 6,
-      "hair": 6,
-      "face": 9,
-      "makeup": 6,
-      "hairColor": 0,
-      "outfit": 6,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g3_a.webp",
-      "faceSource": "assets/portraits/player/m_g3_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g3_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g3_b",
       "gender": "male",
       "age": "g3",
       "name": "温和协调",
-      "body": 7,
-      "hair": 7,
-      "face": 0,
-      "makeup": 7,
-      "hairColor": 0,
-      "outfit": 7,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g3_b.webp",
-      "faceSource": "assets/portraits/player/m_g3_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g3_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g3_c",
       "gender": "male",
       "age": "g3",
       "name": "学术沉稳",
-      "body": 8,
-      "hair": 8,
-      "face": 1,
-      "makeup": 8,
-      "hairColor": 0,
-      "outfit": 8,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g3_c.webp",
-      "faceSource": "assets/portraits/player/m_g3_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g3_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g4_a",
       "gender": "male",
       "age": "g4",
       "name": "专业干练",
-      "body": 9,
-      "hair": 9,
-      "face": 2,
-      "makeup": 9,
-      "hairColor": 0,
-      "outfit": 9,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g4_a.webp",
-      "faceSource": "assets/portraits/player/m_g4_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g4_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g4_b",
       "gender": "male",
       "age": "g4",
       "name": "温和协调",
-      "body": 0,
-      "hair": 0,
-      "face": 3,
-      "makeup": 0,
-      "hairColor": 0,
-      "outfit": 0,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g4_b.webp",
-      "faceSource": "assets/portraits/player/m_g4_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g4_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g4_c",
       "gender": "male",
       "age": "g4",
       "name": "学术沉稳",
-      "body": 1,
-      "hair": 1,
-      "face": 4,
-      "makeup": 1,
-      "hairColor": 0,
-      "outfit": 1,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g4_c.webp",
-      "faceSource": "assets/portraits/player/m_g4_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g4_c.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g5_a",
       "gender": "male",
       "age": "g5",
       "name": "专业干练",
-      "body": 2,
-      "hair": 2,
-      "face": 5,
-      "makeup": 2,
-      "hairColor": 0,
-      "outfit": 2,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g5_a.webp",
-      "faceSource": "assets/portraits/player/m_g5_a.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g5_a.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g5_b",
       "gender": "male",
       "age": "g5",
       "name": "温和协调",
-      "body": 3,
-      "hair": 3,
-      "face": 6,
-      "makeup": 3,
-      "hairColor": 0,
-      "outfit": 3,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g5_b.webp",
-      "faceSource": "assets/portraits/player/m_g5_b.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g5_b.webp",
+      "portraitRenderer": 3
     },
     {
       "id": "m_g5_c",
       "gender": "male",
       "age": "g5",
       "name": "学术沉稳",
-      "body": 4,
-      "hair": 4,
-      "face": 7,
-      "makeup": 4,
-      "hairColor": 0,
-      "outfit": 4,
-      "accessory": 0,
-      "expression": 0,
-      "pose": 0,
-      "portrait": "assets/portraits/player-v2/m_g5_c.webp",
-      "faceSource": "assets/portraits/player/m_g5_c.webp",
-      "portraitRenderer": 2
+      "portrait": "assets/portraits/player/m_g5_c.webp",
+      "portraitRenderer": 3
     }
   ]
 };
-  const GEOMETRY = {
-  "accessory_1": {
-    "bounds": [
-      152,
-      247,
-      465,
-      157
-    ]
-  },
-  "accessory_2": {
-    "bounds": [
-      153,
-      257,
-      464,
-      137
-    ]
-  },
-  "accessory_3": {
-    "bounds": [
-      203,
-      365,
-      378,
-      108
-    ]
-  },
-  "accessory_4": {
-    "bounds": [
-      213,
-      308,
-      342,
-      292
-    ]
-  },
-  "accessory_5": {
-    "bounds": [
-      124,
-      0,
-      521,
-      979
-    ]
-  },
-  "accessory_6": {
-    "bounds": [
-      0,
-      39,
-      768,
-      626
-    ]
-  },
-  "accessory_7": {
-    "bounds": [
-      396,
-      179,
-      296,
-      171
-    ]
-  },
-  "accessory_8": {
-    "bounds": [
-      217,
-      210,
-      406,
-      716
-    ]
-  },
-  "accessory_9": {
-    "bounds": [
-      169,
-      44,
-      479,
-      932
-    ]
-  },
-  "hair_female_0": {
-    "bounds": [
-      25,
-      85,
-      722,
-      789
-    ],
-    "hole": [
-      314,
-      266,
-      155
-    ]
-  },
-  "hair_female_1": {
-    "bounds": [
-      46,
-      102,
-      684,
-      692
-    ],
-    "hole": [
-      321,
-      274,
-      174
-    ]
-  },
-  "hair_female_2": {
-    "bounds": [
-      57,
-      74,
-      664,
-      855
-    ],
-    "hole": [
-      309,
-      251,
-      165
-    ]
-  },
-  "hair_female_3": {
-    "bounds": [
-      22,
-      54,
-      725,
-      787
-    ],
-    "hole": [
-      337,
-      310,
-      148
-    ]
-  },
-  "hair_female_4": {
-    "bounds": [
-      22,
-      32,
-      726,
-      976
-    ],
-    "hole": [
-      314,
-      190,
-      154
-    ]
-  },
-  "hair_female_5": {
-    "bounds": [
-      127,
-      31,
-      606,
-      975
-    ],
-    "hole": [
-      287,
-      212,
-      145
-    ]
-  },
-  "hair_female_6": {
-    "bounds": [
-      141,
-      17,
-      610,
-      1000
-    ],
-    "hole": [
-      253,
-      283,
-      154
-    ]
-  },
-  "hair_female_7": {
-    "bounds": [
-      116,
-      44,
-      545,
-      932
-    ],
-    "hole": [
-      326,
-      357,
-      140
-    ]
-  },
-  "hair_female_8": {
-    "bounds": [
-      118,
-      129,
-      531,
-      608
-    ],
-    "hole": [
-      275,
-      318,
-      233
-    ]
-  },
-  "hair_female_9": {
-    "bounds": [
-      20,
-      56,
-      722,
-      690
-    ],
-    "hole": [
-      315,
-      271,
-      177
-    ]
-  },
-  "hair_male_0": {
-    "bounds": [
-      79,
-      72,
-      615,
-      577
-    ],
-    "hole": [
-      310,
-      367,
-      251
-    ]
-  },
-  "hair_male_1": {
-    "bounds": [
-      86,
-      113,
-      602,
-      543
-    ],
-    "hole": [
-      307,
-      342,
-      232
-    ]
-  },
-  "hair_male_2": {
-    "bounds": [
-      56,
-      87,
-      654,
-      728
-    ],
-    "hole": [
-      303,
-      322,
-      194
-    ]
-  },
-  "hair_male_3": {
-    "bounds": [
-      53,
-      103,
-      675,
-      596
-    ],
-    "hole": [
-      320,
-      341,
-      185
-    ]
-  },
-  "hair_male_4": {
-    "bounds": [
-      54,
-      85,
-      667,
-      580
-    ],
-    "hole": [
-      288,
-      348,
-      242
-    ]
-  },
-  "hair_male_5": {
-    "bounds": [
-      80,
-      59,
-      614,
-      779
-    ],
-    "hole": [
-      366,
-      270,
-      189
-    ]
-  },
-  "hair_male_6": {
-    "bounds": [
-      136,
-      6,
-      605,
-      1017
-    ],
-    "hole": [
-      261,
-      241,
-      186
-    ]
-  },
-  "hair_male_7": {
-    "bounds": [
-      79,
-      52,
-      611,
-      792
-    ],
-    "hole": [
-      243,
-      400,
-      282
-    ]
-  },
-  "hair_male_8": {
-    "bounds": [
-      38,
-      108,
-      689,
-      618
-    ],
-    "hole": [
-      201,
-      356,
-      374
-    ]
-  },
-  "hair_male_9": {
-    "bounds": [
-      89,
-      66,
-      598,
-      531
-    ],
-    "hole": [
-      280,
-      299,
-      240
-    ]
-  },
-  "caolan": {},
-  "ceo": {},
-  "cso": {},
-  "guyu": {},
-  "heina": {},
-  "houpi": {},
-  "jialin": {},
-  "kzong": {},
-  "linan": {},
-  "miaomiao": {},
-  "mingye": {},
-  "niupi": {},
-  "parker": {},
-  "pvp": {},
-  "ruidong": {},
-  "weilai": {},
-  "wuzong": {},
-  "xianren": {},
-  "xiaoen": {},
-  "xiaoyuan": {},
-  "yangyang": {},
-  "yijian": {},
-  "zhangpi": {},
-  "zhongshi": {},
-  "zhuzong": {},
-  "zihan": {},
-  "zouting": {},
-  "f_g1_a": {
-    "face": [
-      289,
-      133,
-      192,
-      192
-    ]
-  },
-  "f_g1_b": {
-    "face": [
-      281,
-      131,
-      208,
-      208
-    ]
-  },
-  "f_g1_c": {
-    "face": [
-      288,
-      137,
-      194,
-      194
-    ]
-  },
-  "f_g2_a": {
-    "face": [
-      283,
-      134,
-      203,
-      203
-    ]
-  },
-  "f_g2_b": {
-    "face": [
-      286,
-      135,
-      207,
-      207
-    ]
-  },
-  "f_g2_c": {
-    "face": [
-      277,
-      158,
-      205,
-      205
-    ]
-  },
-  "f_g3_a": {
-    "face": [
-      264,
-      134,
-      232,
-      232
-    ]
-  },
-  "f_g3_b": {
-    "face": [
-      267,
-      126,
-      223,
-      223
-    ]
-  },
-  "f_g3_c": {
-    "face": [
-      265,
-      105,
-      231,
-      231
-    ]
-  },
-  "f_g4_a": {
-    "face": [
-      292,
-      131,
-      196,
-      196
-    ]
-  },
-  "f_g4_b": {
-    "face": [
-      261,
-      122,
-      227,
-      227
-    ]
-  },
-  "f_g4_c": {
-    "face": [
-      275,
-      118,
-      207,
-      207
-    ]
-  },
-  "f_g5_a": {
-    "face": [
-      287,
-      129,
-      195,
-      195
-    ]
-  },
-  "f_g5_b": {
-    "face": [
-      279,
-      130,
-      209,
-      209
-    ]
-  },
-  "f_g5_c": {
-    "face": [
-      278,
-      133,
-      212,
-      212
-    ]
-  },
-  "m_g1_a": {
-    "face": [
-      289,
-      133,
-      191,
-      191
-    ]
-  },
-  "m_g1_b": {
-    "face": [
-      302,
-      129,
-      200,
-      200
-    ]
-  },
-  "m_g1_c": {
-    "face": [
-      297,
-      126,
-      190,
-      190
-    ]
-  },
-  "m_g2_a": {
-    "face": [
-      269,
-      125,
-      194,
-      194
-    ]
-  },
-  "m_g2_b": {
-    "face": [
-      278,
-      128,
-      203,
-      203
-    ]
-  },
-  "m_g2_c": {
-    "face": [
-      289,
-      99,
-      186,
-      186
-    ]
-  },
-  "m_g3_a": {
-    "face": [
-      280,
-      131,
-      203,
-      203
-    ]
-  },
-  "m_g3_b": {
-    "face": [
-      288,
-      129,
-      197,
-      197
-    ]
-  },
-  "m_g3_c": {
-    "face": [
-      274,
-      135,
-      211,
-      211
-    ]
-  },
-  "m_g4_a": {
-    "face": [
-      277,
-      155,
-      202,
-      202
-    ]
-  },
-  "m_g4_b": {
-    "face": [
-      282,
-      110,
-      203,
-      203
-    ]
-  },
-  "m_g4_c": {
-    "face": [
-      295,
-      141,
-      192,
-      192
-    ]
-  },
-  "m_g5_a": {
-    "face": [
-      287,
-      129,
-      193,
-      193
-    ]
-  },
-  "m_g5_b": {
-    "face": [
-      270,
-      116,
-      214,
-      214
-    ]
-  },
-  "m_g5_c": {
-    "face": [
-      280,
-      147,
-      206,
-      206
-    ]
-  },
-  "body_female_6_5": {
-    "bounds": [
-      53,
-      170,
-      715,
-      854
-    ],
-    "neck": [
-      378,
-      177
-    ],
-    "neckWidth": 168,
-    "wrist": [
-      307.72222222222223,
-      656.5
-    ],
-    "wristVersion": 3
-  },
-  "body_female_0_0": {
-    "bounds": [
-      18,
-      0,
-      740,
-      1024
-    ],
-    "neck": [
-      389,
-      0
-    ],
-    "neckWidth": 169,
-    "wrist": [
-      517.046511627907,
-      649.6511627906976
-    ],
-    "wristVersion": 3
-  },
-  "body_female_0_1": {
-    "bounds": [
-      34,
-      0,
-      724,
-      1024
-    ],
-    "neck": [
-      394,
-      0
-    ],
-    "neckWidth": 168,
-    "wrist": [
-      490.95412844036696,
-      667.2018348623853
-    ],
-    "wristVersion": 3
-  },
-  "body_female_0_4": {
-    "bounds": [
-      41,
-      0,
-      715,
-      1024
-    ],
-    "neck": [
-      379,
-      0
-    ],
-    "neckWidth": 175,
-    "wrist": [
-      476.8863636363636,
-      650.25
-    ],
-    "wristVersion": 3
-  },
-  "body_female_0_2": {
-    "bounds": [
-      5,
-      0,
-      762,
-      1024
-    ],
-    "neck": [
-      393.5,
-      0
-    ],
-    "neckWidth": 175,
-    "wrist": [
-      295.0330578512397,
-      648.8842975206611
-    ],
-    "wristVersion": 3
-  },
-  "body_female_0_5": {
-    "bounds": [
-      15,
-      0,
-      753,
-      1024
-    ],
-    "neck": [
-      343,
-      0
-    ],
-    "neckWidth": 169,
-    "wrist": [
-      372.9756097560976,
-      464.4024390243902
-    ],
-    "wristVersion": 3
-  },
-  "body_female_0_3": {
-    "bounds": [
-      14,
-      0,
-      743,
-      1024
-    ],
-    "neck": [
-      390,
-      0
-    ],
-    "neckWidth": 186,
-    "wrist": [
-      242.23622047244095,
-      572.1023622047244
-    ],
-    "wristVersion": 3
-  },
-  "body_female_1_0": {
-    "bounds": [
-      26,
-      0,
-      722,
-      1024
-    ],
-    "neck": [
-      386,
-      0
-    ],
-    "neckWidth": 179,
-    "wrist": [
-      618.8557692307693,
-      622.0192307692307
-    ],
-    "wristVersion": 3
-  },
-  "body_female_1_1": {
-    "bounds": [
-      59,
-      0,
-      676,
-      1024
-    ],
-    "neck": [
-      392,
-      0
-    ],
-    "neckWidth": 167,
-    "wrist": [
-      232.32967032967034,
-      636.2197802197802
-    ],
-    "wristVersion": 3
-  },
-  "body_female_3_0": {
-    "bounds": [
-      18,
-      0,
-      739,
-      1024
-    ],
-    "neck": [
-      389.5,
-      0
-    ],
-    "neckWidth": 178,
-    "wrist": [
-      527.1290322580645,
-      682.5677419354839
-    ],
-    "wristVersion": 3
-  },
-  "body_female_3_1": {
-    "bounds": [
-      31,
-      0,
-      737,
-      1024
-    ],
-    "neck": [
-      391,
-      0
-    ],
-    "neckWidth": 174,
-    "wrist": [
-      214.42857142857142,
-      668.422077922078
-    ],
-    "wristVersion": 3
-  },
-  "body_female_1_2": {
-    "bounds": [
-      17,
-      0,
-      745,
-      1024
-    ],
-    "neck": [
-      386.5,
-      0
-    ],
-    "neckWidth": 174,
-    "wrist": [
-      390.885,
-      528.13
-    ],
-    "wristVersion": 3
-  },
-  "body_female_1_3": {
-    "bounds": [
-      34,
-      0,
-      709,
-      1024
-    ],
-    "neck": [
-      383,
-      0
-    ],
-    "neckWidth": 194,
-    "wrist": [
-      419.5427135678392,
-      506.8542713567839
-    ],
-    "wristVersion": 3
-  },
-  "body_female_5_0": {
-    "bounds": [
-      28,
-      0,
-      716,
-      1024
-    ],
-    "neck": [
-      387,
-      0
-    ],
-    "neckWidth": 138,
-    "wrist": [
-      242.1496062992126,
-      653.5275590551181
-    ],
-    "wristVersion": 3
-  },
-  "body_female_1_4": {
-    "bounds": [
-      78,
-      0,
-      666,
-      1024
-    ],
-    "neck": [
-      392,
-      0
-    ],
-    "neckWidth": 189,
-    "wrist": [
-      447.1363636363636,
-      555.4090909090909
-    ],
-    "wristVersion": 3
-  },
-  "body_female_1_5": {
-    "bounds": [
-      23,
-      0,
-      745,
-      1024
-    ],
-    "neck": [
-      353.5,
-      0
-    ],
-    "neckWidth": 198,
-    "wrist": [
-      391.74418604651163,
-      468.5581395348837
-    ],
-    "wristVersion": 3
-  },
-  "body_female_2_0": {
-    "bounds": [
-      20,
-      0,
-      728,
-      1024
-    ],
-    "neck": [
-      384.5,
-      0
-    ],
-    "neckWidth": 180,
-    "wrist": [
-      526.2,
-      677.2434782608696
-    ],
-    "wristVersion": 3
-  },
-  "body_female_3_3": {
-    "bounds": [
-      13,
-      0,
-      747,
-      1024
-    ],
-    "neck": [
-      383.5,
-      0
-    ],
-    "neckWidth": 166,
-    "wrist": [
-      265.8375,
-      581.8375
-    ],
-    "wristVersion": 3
-  },
-  "body_female_2_1": {
-    "bounds": [
-      54,
-      0,
-      678,
-      1024
-    ],
-    "neck": [
-      392.5,
-      0
-    ],
-    "neckWidth": 166,
-    "wrist": [
-      254.54545454545453,
-      684.7902097902098
-    ],
-    "wristVersion": 3
-  },
-  "body_female_3_4": {
-    "bounds": [
-      43,
-      0,
-      711,
-      1024
-    ],
-    "neck": [
-      383,
-      0
-    ],
-    "neckWidth": 189,
-    "wrist": [
-      525.9794520547945,
-      623.6575342465753
-    ],
-    "wristVersion": 3
-  },
-  "body_female_2_2": {
-    "bounds": [
-      24,
-      0,
-      733,
-      1024
-    ],
-    "neck": [
-      394.5,
-      0
-    ],
-    "neckWidth": 184,
-    "wrist": [
-      328.68055555555554,
-      575.7986111111111
-    ],
-    "wristVersion": 3
-  },
-  "body_female_4_5": {
-    "bounds": [
-      31,
-      0,
-      729,
-      1024
-    ],
-    "neck": [
-      352.5,
-      0
-    ],
-    "neckWidth": 195,
-    "wrist": [
-      305.1587301587302,
-      475.92063492063494
-    ],
-    "wristVersion": 3
-  },
-  "body_female_2_3": {
-    "bounds": [
-      14,
-      0,
-      744,
-      1024
-    ],
-    "neck": [
-      386,
-      0
-    ],
-    "neckWidth": 178,
-    "wrist": [
-      274.54605263157896,
-      608.953947368421
-    ],
-    "wristVersion": 3
-  },
-  "body_female_2_4": {
-    "bounds": [
-      41,
-      0,
-      715,
-      1024
-    ],
-    "neck": [
-      379,
-      0
-    ],
-    "neckWidth": 178,
-    "wrist": [
-      503.5592105263158,
-      631.203947368421
-    ],
-    "wristVersion": 3
-  },
-  "body_female_3_5": {
-    "bounds": [
-      19,
-      0,
-      749,
-      1024
-    ],
-    "neck": [
-      326,
-      0
-    ],
-    "neckWidth": 194,
-    "wrist": [
-      318.2481203007519,
-      503.6616541353383
-    ],
-    "wristVersion": 3
-  },
-  "body_female_2_5": {
-    "bounds": [
-      23,
-      0,
-      745,
-      1024
-    ],
-    "neck": [
-      355.5,
-      0
-    ],
-    "neckWidth": 206,
-    "wrist": [
-      326.7008547008547,
-      501.7008547008547
-    ],
-    "wristVersion": 3
-  },
-  "body_female_5_1": {
-    "bounds": [
-      56,
-      0,
-      668,
-      1024
-    ],
-    "neck": [
-      393.5,
-      0
-    ],
-    "neckWidth": 180,
-    "wrist": [
-      510.89130434782606,
-      681.1666666666666
-    ],
-    "wristVersion": 3
-  },
-  "body_female_3_2": {
-    "bounds": [
-      18,
-      0,
-      744,
-      1024
-    ],
-    "neck": [
-      389,
-      0
-    ],
-    "neckWidth": 196,
-    "wrist": [
-      301.841059602649,
-      556.6092715231788
-    ],
-    "wristVersion": 3
-  },
-  "body_female_4_0": {
-    "bounds": [
-      30,
-      0,
-      711,
-      1024
-    ],
-    "neck": [
-      385,
-      0
-    ],
-    "neckWidth": 180,
-    "wrist": [
-      496.34722222222223,
-      637.2013888888889
-    ],
-    "wristVersion": 3
-  },
-  "body_female_6_2": {
-    "bounds": [
-      15,
-      0,
-      749,
-      1024
-    ],
-    "neck": [
-      391,
-      0
-    ],
-    "neckWidth": 202,
-    "wrist": [
-      280.6666666666667,
-      569.5376344086021
-    ],
-    "wristVersion": 3
-  },
-  "body_female_4_1": {
-    "bounds": [
-      35,
-      0,
-      703,
-      1024
-    ],
-    "neck": [
-      382.5,
-      0
-    ],
-    "neckWidth": 152,
-    "wrist": [
-      549.9303797468355,
-      628.1962025316456
-    ],
-    "wristVersion": 3
-  },
-  "body_female_4_2": {
-    "bounds": [
-      21,
-      0,
-      732,
-      1024
-    ],
-    "neck": [
-      388,
-      0
-    ],
-    "neckWidth": 211,
-    "wrist": [
-      287.57037037037037,
-      582.0370370370371
-    ],
-    "wristVersion": 3
-  },
-  "body_female_5_2": {
-    "bounds": [
-      0,
-      0,
-      768,
-      1024
-    ],
-    "neck": [
-      385,
-      0
-    ],
-    "neckWidth": 209,
-    "wrist": [
-      294.05732484076435,
-      612.1783439490446
-    ],
-    "wristVersion": 3
-  },
-  "body_female_4_3": {
-    "bounds": [
-      22,
-      0,
-      737,
-      1024
-    ],
-    "neck": [
-      387.5,
-      0
-    ],
-    "neckWidth": 189,
-    "wrist": [
-      542.6058394160584,
-      546.2700729927008
-    ],
-    "wristVersion": 3
-  },
-  "body_female_6_3": {
-    "bounds": [
-      30,
-      0,
-      723,
-      1024
-    ],
-    "neck": [
-      393.5,
-      0
-    ],
-    "neckWidth": 191,
-    "wrist": [
-      515.3913043478261,
-      536.6086956521739
-    ],
-    "wristVersion": 3
-  },
-  "body_female_4_4": {
-    "bounds": [
-      42,
-      0,
-      722,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 189,
-    "wrist": [
-      512.5490196078431,
-      666.1176470588235
-    ],
-    "wristVersion": 3
-  },
-  "body_female_5_3": {
-    "bounds": [
-      20,
-      0,
-      723,
-      1024
-    ],
-    "neck": [
-      378,
-      0
-    ],
-    "neckWidth": 199,
-    "wrist": [
-      303.56140350877195,
-      554.8538011695906
-    ],
-    "wristVersion": 3
-  },
-  "body_female_7_5": {
-    "bounds": [
-      15,
-      0,
-      753,
-      1024
-    ],
-    "neck": [
-      331.5,
-      0
-    ],
-    "neckWidth": 200,
-    "wrist": [
-      356.74074074074076,
-      406.25396825396825
-    ],
-    "wristVersion": 3
-  },
-  "body_female_5_4": {
-    "bounds": [
-      38,
-      0,
-      717,
-      1024
-    ],
-    "neck": [
-      378,
-      0
-    ],
-    "neckWidth": 183,
-    "wrist": [
-      479.20238095238096,
-      674.5833333333334
-    ],
-    "wristVersion": 3
-  },
-  "body_female_5_5": {
-    "bounds": [
-      21,
-      0,
-      747,
-      1024
-    ],
-    "neck": [
-      366,
-      0
-    ],
-    "neckWidth": 193,
-    "wrist": [
-      311.6625,
-      526.21875
-    ],
-    "wristVersion": 3
-  },
-  "body_female_6_4": {
-    "bounds": [
-      57,
-      0,
-      697,
-      1024
-    ],
-    "neck": [
-      389.5,
-      0
-    ],
-    "neckWidth": 186,
-    "wrist": [
-      534.5,
-      665.1724137931035
-    ],
-    "wristVersion": 3
-  },
-  "body_female_6_0": {
-    "bounds": [
-      38,
-      0,
-      711,
-      1024
-    ],
-    "neck": [
-      388.5,
-      0
-    ],
-    "neckWidth": 177,
-    "wrist": [
-      484.4193548387097,
-      622.8064516129032
-    ],
-    "wristVersion": 3
-  },
-  "body_female_8_0": {
-    "bounds": [
-      19,
-      0,
-      736,
-      1024
-    ],
-    "neck": [
-      391,
-      0
-    ],
-    "neckWidth": 193,
-    "wrist": [
-      264.2844827586207,
-      641.6206896551724
-    ],
-    "wristVersion": 3
-  },
-  "body_female_6_1": {
-    "bounds": [
-      35,
-      0,
-      713,
-      1024
-    ],
-    "neck": [
-      383,
-      0
-    ],
-    "neckWidth": 167,
-    "wrist": [
-      521.5340909090909,
-      651.7840909090909
-    ],
-    "wristVersion": 3
-  },
-  "body_female_7_0": {
-    "bounds": [
-      32,
-      0,
-      706,
-      1024
-    ],
-    "neck": [
-      389,
-      0
-    ],
-    "neckWidth": 174,
-    "wrist": [
-      493.1666666666667,
-      667.6041666666667
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_female_9_1": {
-    "bounds": [
-      31,
-      0,
-      706,
-      1024
-    ],
-    "neck": [
-      382.5,
-      0
-    ],
-    "neckWidth": 184,
-    "wrist": [
-      517.4377394636016,
-      653.6494252873564
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_female_7_1": {
-    "bounds": [
-      48,
-      0,
-      679,
-      1024
-    ],
-    "neck": [
-      386.5,
-      0
-    ],
-    "neckWidth": 168,
-    "wrist": [
-      342.7074829931973,
-      611.795918367347
-    ],
-    "wristVersion": 3
-  },
-  "body_female_7_2": {
-    "bounds": [
-      23,
-      0,
-      736,
-      1024
-    ],
-    "neck": [
-      383,
-      0
-    ],
-    "neckWidth": 179,
-    "wrist": [
-      389.2481203007519,
-      491.1503759398496
-    ],
-    "wristVersion": 3
-  },
-  "body_female_8_1": {
-    "bounds": [
-      35,
-      0,
-      715,
-      1024
-    ],
-    "neck": [
-      372.5,
-      0
-    ],
-    "neckWidth": 170,
-    "wrist": [
-      344.90425531914894,
-      698.7978723404256
-    ],
-    "wristVersion": 3
-  },
-  "body_female_7_3": {
-    "bounds": [
-      23,
-      0,
-      730,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 190,
-    "wrist": [
-      461.78195488721803,
-      420.3233082706767
-    ],
-    "wristVersion": 3
-  },
-  "body_female_9_2": {
-    "bounds": [
-      13,
-      0,
-      750,
-      1024
-    ],
-    "neck": [
-      386.5,
-      0
-    ],
-    "neckWidth": 196,
-    "wrist": [
-      398.9254658385093,
-      536.8757763975156
-    ],
-    "wristVersion": 3
-  },
-  "body_female_7_4": {
-    "bounds": [
-      45,
-      0,
-      717,
-      1024
-    ],
-    "neck": [
-      386,
-      0
-    ],
-    "neckWidth": 197,
-    "wrist": [
-      533.8823529411765,
-      639.4558823529412
-    ],
-    "wristVersion": 3
-  },
-  "body_female_8_2": {
-    "bounds": [
-      16,
-      0,
-      746,
-      1024
-    ],
-    "neck": [
-      387.5,
-      0
-    ],
-    "neckWidth": 191,
-    "wrist": [
-      529.1357142857142,
-      537.55
-    ],
-    "wristVersion": 3
-  },
-  "body_male_0_3": {
-    "bounds": [
-      3,
-      0,
-      765,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 204,
-    "wrist": [
-      248.890243902439,
-      528.3414634146342
-    ],
-    "wristVersion": 3
-  },
-  "body_female_8_3": {
-    "bounds": [
-      22,
-      0,
-      726,
-      1024
-    ],
-    "neck": [
-      383,
-      0
-    ],
-    "neckWidth": 181,
-    "wrist": [
-      284.5739130434783,
-      539.1391304347826
-    ],
-    "wristVersion": 3
-  },
-  "body_female_8_4": {
-    "bounds": [
-      23,
-      0,
-      745,
-      1024
-    ],
-    "neck": [
-      360.5,
-      0
-    ],
-    "neckWidth": 239,
-    "wrist": [
-      528.3943661971831,
-      623.2816901408451
-    ],
-    "wristVersion": 3
-  },
-  "body_female_9_3": {
-    "bounds": [
-      7,
-      0,
-      759,
-      1024
-    ],
-    "neck": [
-      388.5,
-      0
-    ],
-    "neckWidth": 203,
-    "wrist": [
-      393.63978494623655,
-      492.71505376344084
-    ],
-    "wristVersion": 3
-  },
-  "body_female_8_5": {
-    "bounds": [
-      25,
-      0,
-      743,
-      1024
-    ],
-    "neck": [
-      359.5,
-      0
-    ],
-    "neckWidth": 184,
-    "wrist": [
-      290.3225806451613,
-      486.4032258064516
-    ],
-    "wristVersion": 3
-  },
-  "body_male_0_4": {
-    "bounds": [
-      22,
-      0,
-      746,
-      1024
-    ],
-    "neck": [
-      377.5,
-      0
-    ],
-    "neckWidth": 201,
-    "wrist": [
-      289.3309294871795,
-      201.324358974359
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_female_9_0": {
-    "bounds": [
-      20,
-      0,
-      736,
-      1024
-    ],
-    "neck": [
-      385.5,
-      0
-    ],
-    "neckWidth": 187,
-    "wrist": [
-      510.04352250957857,
-      674.1023108237549
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_female_9_4": {
-    "bounds": [
-      56,
-      0,
-      688,
-      1024
-    ],
-    "neck": [
-      380,
-      0
-    ],
-    "neckWidth": 187,
-    "wrist": [
-      486.12179487179486,
-      596.376923076923
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_male_1_5": {
-    "bounds": [
-      5,
-      0,
-      763,
-      1024
-    ],
-    "neck": [
-      361,
-      0
-    ],
-    "neckWidth": 213,
-    "wrist": [
-      327,
-      518.75
-    ],
-    "wristVersion": 3
-  },
-  "body_female_9_5": {
-    "bounds": [
-      35,
-      0,
-      733,
-      1024
-    ],
-    "neck": [
-      368.5,
-      0
-    ],
-    "neckWidth": 189,
-    "wrist": [
-      345.87068965517244,
-      508.76346982758633
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_male_0_0": {
-    "bounds": [
-      14,
-      0,
-      744,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 202,
-    "wrist": [
-      468.54237288135596,
-      719.6016949152543
-    ],
-    "wristVersion": 3
-  },
-  "body_male_0_5": {
-    "bounds": [
-      12,
-      0,
-      756,
-      1024
-    ],
-    "neck": [
-      362,
-      0
-    ],
-    "neckWidth": 180,
-    "wrist": [
-      312.50602409638554,
-      495.13253012048193
-    ],
-    "wristVersion": 3
-  },
-  "body_male_0_1": {
-    "bounds": [
-      26,
-      0,
-      719,
-      1024
-    ],
-    "neck": [
-      390.5,
-      0
-    ],
-    "neckWidth": 180,
-    "wrist": [
-      453.0357142857143,
-      722.9857142857143
-    ],
-    "wristVersion": 3
-  },
-  "body_male_2_0": {
-    "bounds": [
-      20,
-      0,
-      734,
-      1024
-    ],
-    "neck": [
-      384.5,
-      0
-    ],
-    "neckWidth": 194,
-    "wrist": [
-      482.33986928104576,
-      684.9215686274509
-    ],
-    "wristVersion": 3
-  },
-  "body_male_0_2": {
-    "bounds": [
-      0,
-      0,
-      768,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 185,
-    "wrist": [
-      504.40458015267177,
-      628.2442748091603
-    ],
-    "wristVersion": 3
-  },
-  "body_male_1_0": {
-    "bounds": [
-      27,
-      0,
-      718,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 191,
-    "wrist": [
-      301.7852760736196,
-      726.8282208588957
-    ],
-    "wristVersion": 3
-  },
-  "body_male_3_1": {
-    "bounds": [
-      21,
-      0,
-      735,
-      1024
-    ],
-    "neck": [
-      387.5,
-      0
-    ],
-    "neckWidth": 207,
-    "wrist": [
-      301.36423841059604,
-      686.6953642384105
-    ],
-    "wristVersion": 3
-  },
-  "body_male_1_1": {
-    "bounds": [
-      22,
-      0,
-      726,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 183,
-    "wrist": [
-      471.7207792207792,
-      675.7532467532468
-    ],
-    "wristVersion": 3
-  },
-  "body_male_1_2": {
-    "bounds": [
-      4,
-      0,
-      763,
-      1024
-    ],
-    "neck": [
-      384.5,
-      0
-    ],
-    "neckWidth": 204,
-    "wrist": [
-      255.9281767955801,
-      601.121546961326
-    ],
-    "wristVersion": 3
-  },
-  "body_male_2_1": {
-    "bounds": [
-      12,
-      0,
-      753,
-      1024
-    ],
-    "neck": [
-      387.5,
-      0
-    ],
-    "neckWidth": 191,
-    "wrist": [
-      296.81045751633985,
-      740.2352941176471
-    ],
-    "wristVersion": 3
-  },
-  "body_male_1_3": {
-    "bounds": [
-      11,
-      0,
-      747,
-      1024
-    ],
-    "neck": [
-      388,
-      0
-    ],
-    "neckWidth": 195,
-    "wrist": [
-      247.82051282051282,
-      551.7179487179487
-    ],
-    "wristVersion": 3
-  },
-  "body_male_3_2": {
-    "bounds": [
-      0,
-      0,
-      768,
-      1024
-    ],
-    "neck": [
-      391,
-      0
-    ],
-    "neckWidth": 208,
-    "wrist": [
-      279.0406976744186,
-      570.9244186046511
-    ],
-    "wristVersion": 3
-  },
-  "body_male_1_4": {
-    "bounds": [
-      16,
-      0,
-      739,
-      1024
-    ],
-    "neck": [
-      381.5,
-      0
-    ],
-    "neckWidth": 190,
-    "wrist": [
-      630.8571428571429,
-      816.7460317460317
-    ],
-    "wristVersion": 3
-  },
-  "body_male_2_2": {
-    "bounds": [
-      2,
-      0,
-      766,
-      1024
-    ],
-    "neck": [
-      388,
-      0
-    ],
-    "neckWidth": 187,
-    "wrist": [
-      575.3024691358024,
-      592.0679012345679
-    ],
-    "wristVersion": 3
-  },
-  "body_male_4_3": {
-    "bounds": [
-      4,
-      0,
-      764,
-      1024
-    ],
-    "neck": [
-      387.5,
-      0
-    ],
-    "neckWidth": 205,
-    "wrist": [
-      213.40983606557376,
-      540.4426229508197
-    ],
-    "wristVersion": 3
-  },
-  "body_male_2_3": {
-    "bounds": [
-      5,
-      0,
-      763,
-      1024
-    ],
-    "neck": [
-      386.5,
-      0
-    ],
-    "neckWidth": 203,
-    "wrist": [
-      243.22340425531914,
-      540.2021276595744
-    ],
-    "wristVersion": 3
-  },
-  "body_male_2_4": {
-    "bounds": [
-      17,
-      0,
-      745,
-      1024
-    ],
-    "neck": [
-      378.5,
-      0
-    ],
-    "neckWidth": 187,
-    "wrist": [
-      294.5380747126436,
-      210.91235632183916
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_male_3_3": {
-    "bounds": [
-      4,
-      0,
-      762,
-      1024
-    ],
-    "neck": [
-      386,
-      0
-    ],
-    "neckWidth": 203,
-    "wrist": [
-      209.59310344827585,
-      565.6620689655173
-    ],
-    "wristVersion": 3
-  },
-  "body_male_2_5": {
-    "bounds": [
-      20,
-      0,
-      748,
-      1024
-    ],
-    "neck": [
-      367.5,
-      0
-    ],
-    "neckWidth": 210,
-    "wrist": [
-      413.5,
-      459.4032258064516
-    ],
-    "wristVersion": 3
-  },
-  "body_male_4_4": {
-    "bounds": [
-      17,
-      0,
-      739,
-      1024
-    ],
-    "neck": [
-      388,
-      0
-    ],
-    "neckWidth": 210,
-    "wrist": [
-      635.8333333333334,
-      791
-    ],
-    "wristVersion": 3
-  },
-  "body_male_3_0": {
-    "bounds": [
-      30,
-      0,
-      716,
-      1024
-    ],
-    "neck": [
-      387,
-      0
-    ],
-    "neckWidth": 191,
-    "wrist": [
-      298.43636363636364,
-      666.8181818181819
-    ],
-    "wristVersion": 3
-  },
-  "body_male_3_4": {
-    "bounds": [
-      4,
-      0,
-      761,
-      1024
-    ],
-    "neck": [
-      365,
-      0
-    ],
-    "neckWidth": 194,
-    "wrist": [
-      646,
-      849.4444444444445
-    ],
-    "wristVersion": 3
-  },
-  "body_male_5_5": {
-    "bounds": [
-      13,
-      0,
-      755,
-      1024
-    ],
-    "neck": [
-      366.5,
-      0
-    ],
-    "neckWidth": 191,
-    "wrist": [
-      475.4074074074074,
-      455.97037037037035
-    ],
-    "wristVersion": 3
-  },
-  "body_male_3_5": {
-    "bounds": [
-      20,
-      0,
-      748,
-      1024
-    ],
-    "neck": [
-      369.5,
-      0
-    ],
-    "neckWidth": 190,
-    "wrist": [
-      322.167701863354,
-      481.1366459627329
-    ],
-    "wristVersion": 3
-  },
-  "body_male_4_0": {
-    "bounds": [
-      32,
-      0,
-      706,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 175,
-    "wrist": [
-      299.59627329192546,
-      628.1987577639752
-    ],
-    "wristVersion": 3
-  },
-  "body_male_4_5": {
-    "bounds": [
-      9,
-      0,
-      758,
-      1024
-    ],
-    "neck": [
-      348.5,
-      0
-    ],
-    "neckWidth": 171,
-    "wrist": [
-      310.46666666666664,
-      486.03809523809525
-    ],
-    "wristVersion": 3
-  },
-  "body_male_4_1": {
-    "bounds": [
-      38,
-      0,
-      715,
-      1024
-    ],
-    "neck": [
-      395,
-      0
-    ],
-    "neckWidth": 182,
-    "wrist": [
-      231.76315789473685,
-      609.3421052631579
-    ],
-    "wristVersion": 3
-  },
-  "body_male_6_0": {
-    "bounds": [
-      15,
-      0,
-      741,
-      1024
-    ],
-    "neck": [
-      383.5,
-      0
-    ],
-    "neckWidth": 198,
-    "wrist": [
-      282.0625,
-      709.8229166666666
-    ],
-    "wristVersion": 3
-  },
-  "body_male_4_2": {
-    "bounds": [
-      10,
-      0,
-      758,
-      1024
-    ],
-    "neck": [
-      384.5,
-      0
-    ],
-    "neckWidth": 205,
-    "wrist": [
-      570.0204081632653,
-      582.6530612244898
-    ],
-    "wristVersion": 3
-  },
-  "body_male_5_0": {
-    "bounds": [
-      38,
-      0,
-      704,
-      1024
-    ],
-    "neck": [
-      385,
-      0
-    ],
-    "neckWidth": 185,
-    "wrist": [
-      285.0416666666667,
-      759.6875
-    ],
-    "wristVersion": 3
-  },
-  "body_male_7_1": {
-    "bounds": [
-      33,
-      0,
-      710,
-      1024
-    ],
-    "neck": [
-      389,
-      0
-    ],
-    "neckWidth": 191,
-    "wrist": [
-      368.5324074074074,
-      633.8611111111111
-    ],
-    "wristVersion": 3
-  },
-  "body_male_5_1": {
-    "bounds": [
-      29,
-      0,
-      721,
-      1024
-    ],
-    "neck": [
-      389,
-      0
-    ],
-    "neckWidth": 191,
-    "wrist": [
-      414.9160839160839,
-      688.3776223776224
-    ],
-    "wristVersion": 3
-  },
-  "body_male_5_2": {
-    "bounds": [
-      3,
-      0,
-      763,
-      1024
-    ],
-    "neck": [
-      385.5,
-      0
-    ],
-    "neckWidth": 195,
-    "wrist": [
-      266.27319587628864,
-      607.4020618556701
-    ],
-    "wristVersion": 3
-  },
-  "body_male_6_1": {
-    "bounds": [
-      16,
-      0,
-      742,
-      1024
-    ],
-    "neck": [
-      387,
-      0
-    ],
-    "neckWidth": 193,
-    "wrist": [
-      295.1686746987952,
-      688.9277108433735
-    ],
-    "wristVersion": 3
-  },
-  "body_male_5_3": {
-    "bounds": [
-      0,
-      0,
-      768,
-      1024
-    ],
-    "neck": [
-      388,
-      0
-    ],
-    "neckWidth": 199,
-    "wrist": [
-      241.24107142857142,
-      539.7053571428571
-    ],
-    "wristVersion": 3
-  },
-  "body_male_7_2": {
-    "bounds": [
-      3,
-      0,
-      765,
-      1024
-    ],
-    "neck": [
-      384.5,
-      0
-    ],
-    "neckWidth": 213,
-    "wrist": [
-      536.6835443037975,
-      610.7341772151899
-    ],
-    "wristVersion": 3
-  },
-  "body_male_5_4": {
-    "bounds": [
-      17,
-      0,
-      749,
-      1024
-    ],
-    "neck": [
-      382,
-      0
-    ],
-    "neckWidth": 205,
-    "wrist": [
-      623.0588235294117,
-      802.1176470588235
-    ],
-    "wristVersion": 3
-  },
-  "body_male_6_2": {
-    "bounds": [
-      1,
-      0,
-      767,
-      1024
-    ],
-    "neck": [
-      394.5,
-      0
-    ],
-    "neckWidth": 196,
-    "wrist": [
-      263.3615384615385,
-      622.0230769230769
-    ],
-    "wristVersion": 3
-  },
-  "body_male_8_3": {
-    "bounds": [
-      0,
-      0,
-      768,
-      1024
-    ],
-    "neck": [
-      385,
-      0
-    ],
-    "neckWidth": 208,
-    "wrist": [
-      581.1686746987951,
-      532.4216867469879
-    ],
-    "wristVersion": 3
-  },
-  "body_male_6_3": {
-    "bounds": [
-      2,
-      0,
-      765,
-      1024
-    ],
-    "neck": [
-      385.5,
-      0
-    ],
-    "neckWidth": 213,
-    "wrist": [
-      227.8939393939394,
-      519.2727272727273
-    ],
-    "wristVersion": 3
-  },
-  "body_male_6_4": {
-    "bounds": [
-      27,
-      0,
-      730,
-      1024
-    ],
-    "neck": [
-      386.5,
-      0
-    ],
-    "neckWidth": 203,
-    "wrist": [
-      298.75961538461536,
-      182.38301282051285
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_male_7_3": {
-    "bounds": [
-      6,
-      0,
-      759,
-      1024
-    ],
-    "neck": [
-      383,
-      0
-    ],
-    "neckWidth": 203,
-    "wrist": [
-      235.11875,
-      502.8625
-    ],
-    "wristVersion": 3
-  },
-  "body_male_6_5": {
-    "bounds": [
-      20,
-      0,
-      748,
-      1024
-    ],
-    "neck": [
-      355.5,
-      0
-    ],
-    "neckWidth": 180,
-    "wrist": [
-      405.07377049180326,
-      458.2049180327869
-    ],
-    "wristVersion": 3
-  },
-  "body_male_8_4": {
-    "bounds": [
-      5,
-      0,
-      763,
-      1024
-    ],
-    "neck": [
-      380,
-      0
-    ],
-    "neckWidth": 208,
-    "wrist": [
-      666.5,
-      831
-    ],
-    "wristVersion": 3
-  },
-  "body_male_7_0": {
-    "bounds": [
-      26,
-      0,
-      725,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 179,
-    "wrist": [
-      392.26666666666665,
-      671.4787878787879
-    ],
-    "wristVersion": 3
-  },
-  "body_male_7_4": {
-    "bounds": [
-      41,
-      0,
-      710,
-      1024
-    ],
-    "neck": [
-      377.5,
-      0
-    ],
-    "neckWidth": 190,
-    "wrist": [
-      608.5,
-      744.1282051282051
-    ],
-    "wristVersion": 3
-  },
-  "body_male_9_5": {
-    "bounds": [
-      9,
-      0,
-      759,
-      1024
-    ],
-    "neck": [
-      367,
-      0
-    ],
-    "neckWidth": 211,
-    "wrist": [
-      330.50961538461536,
-      504.35793269230766
-    ],
-    "wristVersion": 3,
-    "wristSource": "manual cuff calibration"
-  },
-  "body_male_7_5": {
-    "bounds": [
-      24,
-      0,
-      744,
-      1024
-    ],
-    "neck": [
-      350.5,
-      0
-    ],
-    "neckWidth": 201,
-    "wrist": [
-      482.61621621621623,
-      446.94594594594594
-    ],
-    "wristVersion": 3
-  },
-  "body_male_8_0": {
-    "bounds": [
-      9,
-      0,
-      751,
-      1024
-    ],
-    "neck": [
-      384,
-      0
-    ],
-    "neckWidth": 193,
-    "wrist": [
-      466.8478260869565,
-      698.2536231884058
-    ],
-    "wristVersion": 3
-  },
-  "body_male_8_5": {
-    "bounds": [
-      17,
-      0,
-      751,
-      1024
-    ],
-    "neck": [
-      375,
-      0
-    ],
-    "neckWidth": 184,
-    "wrist": [
-      431.46774193548384,
-      493.1774193548387
-    ],
-    "wristVersion": 3
-  },
-  "body_male_8_1": {
-    "bounds": [
-      12,
-      0,
-      746,
-      1024
-    ],
-    "neck": [
-      386.5,
-      0
-    ],
-    "neckWidth": 208,
-    "wrist": [
-      293.3618421052632,
-      658.4605263157895
-    ],
-    "wristVersion": 3
-  },
-  "body_male_8_2": {
-    "bounds": [
-      0,
-      0,
-      768,
-      1024
-    ],
-    "neck": [
-      387.5,
-      0
-    ],
-    "neckWidth": 198,
-    "wrist": [
-      541.0479041916168,
-      649.6526946107784
-    ],
-    "wristVersion": 3
-  },
-  "body_male_9_0": {
-    "bounds": [
-      30,
-      0,
-      719,
-      1024
-    ],
-    "neck": [
-      387.5,
-      0
-    ],
-    "neckWidth": 199,
-    "wrist": [
-      453.4347826086956,
-      696.5
-    ],
-    "wristVersion": 3
-  },
-  "body_male_9_1": {
-    "bounds": [
-      50,
-      0,
-      675,
-      1024
-    ],
-    "neck": [
-      392,
-      0
-    ],
-    "neckWidth": 187,
-    "wrist": [
-      318.61682242990656,
-      630.2149532710281
-    ],
-    "wristVersion": 3
-  },
-  "body_male_9_2": {
-    "bounds": [
-      0,
-      0,
-      768,
-      1024
-    ],
-    "neck": [
-      385,
-      0
-    ],
-    "neckWidth": 194,
-    "wrist": [
-      365.4765625,
-      560.4375
-    ],
-    "wristVersion": 3
-  },
-  "body_male_9_3": {
-    "bounds": [
-      23,
-      0,
-      724,
-      1024
-    ],
-    "neck": [
-      388,
-      0
-    ],
-    "neckWidth": 202,
-    "wrist": [
-      339.59493670886076,
-      464.77848101265823
-    ],
-    "wristVersion": 3
-  },
-  "body_male_9_4": {
-    "bounds": [
-      34,
-      0,
-      725,
-      1024
-    ],
-    "neck": [
-      381.5,
-      0
-    ],
-    "neckWidth": 201,
-    "wrist": [
-      570.8547008547008,
-      669.8290598290598
-    ],
-    "wristVersion": 3
-  }
-};
   const copy = x => JSON.parse(JSON.stringify(x));
   const html = x => String(x == null ? '' : x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const labels = {
-    body:['纤瘦','标准','匀称','微壮','圆润','高挑','娇小','肩宽','柔和','久坐型'],
-    hair:['短发','侧分','中长发','层次短发','微卷','低马尾','高马尾','盘发','后梳','自然蓬松'],
-    face:['鹅蛋脸','圆脸','方脸','长脸','窄脸','菱形脸','心形脸','方圆脸','轮廓分明','宽下颌'],
-    makeup:['素净自然','通勤淡妆','知性优雅','甜美柔和','冷感沉稳','清透自然','正式职场','疲惫感','亲和感','利落干练'],
-    hairColor:['纯黑','黑棕','深棕','栗棕','冷棕','浅棕','灰黑','少量白发','亚麻灰','酒红棕'],
-    outfit:['医学经理','商务休闲','学术型','高管风','正式西装','极简通勤','中层管理','年轻专业','会议日','实验室通勤'],
-    accessory:['无','细框眼镜','深色眼镜','简约耳饰','珍珠耳饰','工牌','项链','发夹','丝巾','腕表'],
-    expression:['默认','微笑','冷静','自信','思考','疲惫'],
-    pose:['正面','轻侧身','抱文件','拿平板','托腮','看电脑']
-  };
-  const titles={body:'体型',hair:'发型',face:'脸型',makeup:'妆容 / 气质',hairColor:'发色',outfit:'服装',accessory:'配饰',expression:'表情',pose:'姿态'};
   const names=['基本信息','外观形象','初始属性','人生词条','确认角色'];
   const npcByName=Object.fromEntries(DATA.npc.map(n=>[n.name,n]));
   const presets=DATA.player;
@@ -12216,19 +9133,13 @@ renderLifeBuilder();
     const gender=['male','female'].includes(ap.gender)?ap.gender:(identity.gender==='female'?'female':'male');
     const age=AGE_OPTIONS[ap.age]?ap.age:(AGE_OPTIONS[identity.age]?identity.age:'g3');
     const p=presets.find(p=>p.id===(ap.basePreset||identity.portraitPreset||ap.id||identity.id)&&p.gender===gender&&p.age===age)||presets.find(p=>p.gender===gender&&p.age===age);
-    const out={version:2,gender,age,basePreset:p.id};
-    if(ap.portraitRenderer===2)out.portraitRenderer=2;
-    Object.keys(labels).forEach(k=>{out[k]=Number.isInteger(ap[k])&&ap[k]>=0&&ap[k]<labels[k].length?ap[k]:p[k];});
-    // Old sheet coordinates are deliberately discarded; identity survives migration.
-    if(ap.portraitRenderer===2&&typeof ap.portraitURL==='string'&&(ap.portraitURL.startsWith('data:image/webp;base64,')||ap.portraitURL===p.portrait))out.portraitURL=ap.portraitURL;
-    return out;
+    return {version:3,portraitRenderer:3,gender,age,basePreset:p.id,portraitURL:p.portrait};
   }
   window.PortraitResolver={
     data:DATA, normalizeAppearance,
     npc(name,cls){const n=npcByName[name];return n?imageTag(n.portrait,cls||'npc-photo',name+'立绘',n.portraitPosition):'<span class="portrait-initial">'+html(String(name||'人').slice(0,2))+'</span>';},
     player(player,cls){const a=normalizeAppearance(player&&player.appearance,player);const p=presets.find(p=>p.id===a.basePreset);return imageTag(a.portraitURL||p.portrait,cls||'player-photo','主角立绘');},
-    url(name){return npcByName[name]&&npcByName[name].portrait;},
-    bodyURL(a){const id='body_'+a.gender+'_'+a.outfit+'_'+a.pose;if(!GEOMETRY[id])throw new Error('服装姿态资源缺失：'+id);return 'assets/portraits/bodies/'+id+'.webp';}
+    url(name){return npcByName[name]&&npcByName[name].portrait;}
   };
   window.NPC_PORTRAIT_URLS=Object.fromEntries(DATA.npc.map(n=>[n.name,n.portrait]));
   DATA.npc.forEach(n=>{if(NPCs[n.id])Object.assign(NPCs[n.id],{gender:n.gender,age:n.age,body:n.body,portrait:n.portrait,portraitPosition:n.portraitPosition});if(NPC_BIOS[n.id])Object.assign(NPC_BIOS[n.id],{gender:n.gender,age:n.age,body:n.body});});
@@ -12259,18 +9170,17 @@ renderLifeBuilder();
     go(n){this.step=Math.max(1,Math.min(5,n));this.render();window.scrollTo({top:0,behavior:'smooth'});}
     identity(k,value){
       if(k==='gender'&&!['male','female'].includes(value)||k==='age'&&!AGE_OPTIONS[value])return;
-      if(this.draft[k]!==value){this.draft[k]=value;this.draft.basePreset=null;this.previewURL=null;this.confirmed=null;this.revision++;}
+      if(this.draft[k]!==value){this.draft[k]=value;this.draft.basePreset=null;this.previewURL=null;this.confirmed=null;this.revision++;this.busy=false;this.error='';this.pending=Promise.resolve();}
       if(k==='gender'){LIFE_DRAFT.gender=value;localStorage.setItem('dragon_gender',value);}else{PLAYER_AGE=value;localStorage.setItem('dragon_age',value);trimUnavailableLifeStages();}
       this.render();
     }
     select(id){const p=this.pool().find(p=>p.id===id);if(!p)return;this.draft=normalizeAppearance(p,p);this.draft.basePreset=id;this.confirmed=null;this.updateCharacterPreview();this.render();}
-    detail(k,i){if(!this.ready()||!labels[k]||!Number.isInteger(i)||i<0||i>=labels[k].length)return;this.draft[k]=i;this.confirmed=null;this.updateCharacterPreview();this.render();}
     reset(){if(this.preset())this.select(this.preset().id);}
     async confirm(){
       if(!this.ready()){this.error='先选择性别、年龄和人物模板。';this.go(2);return false;}
       await this.pending;
       if(this.busy||this.error||!this.previewURL)return false;
-      this.confirmed=copy({...this.draft,portraitURL:this.previewURL,portraitRenderer:2});
+      this.confirmed=copy({...this.draft,portraitURL:this.previewURL,portraitRenderer:3});
       try{localStorage.setItem('dragon_creator_v2_confirmed',JSON.stringify(this.confirmed));}catch(e){this.error='无法保存形象，请检查浏览器存储空间。';this.render();return false;}
       this.go(3);return true;
     }
@@ -12278,9 +9188,8 @@ renderLifeBuilder();
       const revision=++this.revision,a=copy(this.draft),p=this.preset();this.error='';this.busy=true;
       this.pending=(async()=>{
         try{
-          const unchanged=Object.keys(labels).every(k=>a[k]===p[k]);
           await loadImage(p.portrait);
-          const url=unchanged?p.portrait:await composeAppearance(a);
+          const url=p.portrait;
           if(revision!==this.revision)return;
           this.previewURL=url;this.busy=false;this.renderPreview();
         }catch(e){if(revision!==this.revision)return;this.busy=false;this.previewURL=null;this.error=e.message;this.renderPreview();}
@@ -12288,28 +9197,16 @@ renderLifeBuilder();
       return this.pending;
     }
     identityHTML(){return '<div class="cc-identity"><div><b>性别</b><div class="cc-segment">'+['female','male'].map(g=>'<button data-gender="'+g+'" aria-pressed="'+(g===this.draft.gender)+'" class="'+(g===this.draft.gender?'selected':'')+'" onclick="CharacterCreatorV2.identity(\'gender\',\''+g+'\')">'+(g==='female'?'♀ 女性':'♂ 男性')+'</button>').join('')+'</div></div><div><b>年龄</b><div class="cc-segment">'+Object.keys(AGE_OPTIONS).map(k=>'<button data-age="'+k+'" aria-pressed="'+(k===this.draft.age)+'" class="'+(k===this.draft.age?'selected':'')+'" onclick="CharacterCreatorV2.identity(\'age\',\''+k+'\')">'+AGE_OPTIONS[k].label.split(' · ')[0]+'岁</button>').join('')+'</div></div></div>';}
-    thumb(k,i){
-      const g=this.draft.gender||'female';
-      if(k==='outfit'||k==='pose')return '<img class="cc-thumb cc-'+k+'" src="assets/portraits/thumbs/body_'+g+'_'+(k==='outfit'?i:this.draft.outfit||0)+'_'+(k==='pose'?i:this.draft.pose||0)+'.webp" alt="'+html(labels[k][i])+'" loading="lazy">';
-      if(k==='hair')return '<img class="cc-thumb cc-'+k+'" src="assets/portraits/thumbs/'+k+'_'+g+'_'+i+'.webp" alt="'+html(labels[k][i])+'" loading="lazy">';
-      if(k==='hairColor')return '<img class="cc-thumb cc-hairColor" src="assets/portraits/thumbs/hairColor_'+g+'_'+(this.draft.hair||0)+'_'+i+'.webp" alt="'+html(labels[k][i])+'" loading="lazy">';
-      if(k==='accessory')return i?'<img class="cc-thumb cc-accessory" src="assets/portraits/thumbs/accessory_'+i+(i===9?'-v2':'')+'.webp" alt="'+html(labels[k][i])+'" loading="lazy">':'<span class="cc-no-accessory">○</span>';
-      if(k==='body')return '<img class="cc-thumb cc-outfit" src="assets/portraits/thumbs/body_'+g+'_'+(this.draft.outfit||0)+'_'+(this.draft.pose||0)+'.webp" alt="'+html(labels[k][i])+'" loading="lazy" style="transform:scaleX('+[.84,1,1.02,1.10,1.15,.94,.9,1.18,1.07,1.12][i]+')">';
-      const p=this.preset()||presets.find(p=>p.gender===g);
-      return '<img class="cc-thumb cc-'+k+'" src="assets/portraits/thumbs/'+p.id+'_'+k+'_'+i+'.webp" alt="'+html(labels[k][i])+'" loading="lazy">';
-    }
-    optionsHTML(k){return '<section class="cc-detail-group"><h3>'+titles[k]+'</h3><div class="cc-options">'+labels[k].map((label,i)=>'<button data-group="'+k+'" data-value="'+i+'" type="button" aria-pressed="'+(this.draft[k]===i)+'" class="cc-option '+(this.draft[k]===i?'selected':'')+'" '+(!this.ready()?'disabled':'')+' onclick="CharacterCreatorV2.detail(\''+k+'\','+i+')">'+this.thumb(k,i)+'<span>'+html(label)+'</span></button>').join('')+'</div></section>';}
     mainHTML(){
       const x=lifeSummary();
       if(this.step===1)return '<h1>基本信息</h1><p class="cc-subtitle">先决定你是谁，再选择属于你的职场形象。</p>'+this.identityHTML()+'<div class="cc-basic-note"><b>你的下一段人生，从这里开始。</b><p>年龄决定可选择的人生阶段；经历与能力决定你如何应对办公室里的每一次选择。</p></div><button class="cc-primary" onclick="CharacterCreatorV2.go(2)">下一步：外观形象 →</button>';
-      if(this.step===2)return '<h1>外观形象</h1><p class="cc-subtitle">选择模板，定制你的职场形象。</p>'+this.identityHTML()+'<h2><span>1</span> 选择人物模板</h2><div class="cc-templates">'+(this.pool().length?this.pool().map((p,i)=>'<button data-preset="'+p.id+'" aria-pressed="'+(p.id===this.draft.basePreset)+'" class="cc-template '+(p.id===this.draft.basePreset?'selected':'')+'" onclick="CharacterCreatorV2.select(\''+p.id+'\')">'+imageTag(p.portrait,'cc-template-photo',p.name)+'<b>0'+(i+1)+'　'+p.name+'</b><small>'+labels.outfit[p.outfit]+'</small></button>').join(''):'<div class="cc-placeholder">请选择性别和年龄，显示对应的三个人物模板。</div>')+'</div><h2><span>2</span> 细节定制 <button class="cc-reset" onclick="CharacterCreatorV2.reset()">重置细节</button></h2><div class="cc-details">'+Object.keys(labels).map(k=>this.optionsHTML(k)).join('')+'</div>';
+      if(this.step===2)return '<h1>选择职场形象</h1><p class="cc-subtitle">确认性别、年龄，再选一个完整形象。入职后，把精力留给真正的决定。</p>'+this.identityHTML()+'<div class="cc-templates">'+(this.pool().length?this.pool().map((p,i)=>'<button data-preset="'+p.id+'" aria-pressed="'+(p.id===this.draft.basePreset)+'" class="cc-template '+(p.id===this.draft.basePreset?'selected':'')+'" onclick="CharacterCreatorV2.select(\''+p.id+'\')">'+imageTag(p.portrait,'cc-template-photo',p.name)+'<b>0'+(i+1)+'　'+html(p.name)+'</b><small>完整人物形象</small></button>').join(''):'<div class="cc-placeholder">请选择性别和年龄，显示对应的三个完整形象。</div>')+'</div>';
       if(this.step===3)return '<h1>初始属性</h1><p class="cc-subtitle">能力来自你的人生经历，也可以投入多周目资源。</p><div class="cc-stats">'+['professional','social','charm','management','insight','fitness'].map(k=>'<div><span>'+skillName(k)+'</span><b>'+x.skills[k]+'</b><i style="width:'+x.skills[k]+'%"></i></div>').join('')+'<div><span>体力上限</span><b>'+x.body.maxStamina+'</b></div><div><span>心力韧性</span><b>'+x.heart.resilience+'</b></div></div><div id="cc-ng-slot"></div>'+this.footer(2,4);
       if(this.step===4)return '<h1>人生词条</h1><p class="cc-subtitle">把有限时间投入经历，拼出属于你的优势。</p><div id="cc-life-slot">'+lifeBuilderHTML()+'</div>'+this.footer(3,5);
       const traits=derivedTraits(x);return '<h1>确认角色</h1><p class="cc-subtitle">检查你的档案，然后走进 Dragon Office。</p><div class="cc-confirm-card"><h2>'+html(this.preset()?this.preset().name:'尚未选择形象')+'</h2><p>'+(this.draft.gender==='female'?'女性':this.draft.gender==='male'?'男性':'未选择性别')+' · '+(this.draft.age?AGE_OPTIONS[this.draft.age].label:'未选择年龄')+'</p><div class="cc-stats">'+['professional','social','management','insight','fitness'].map(k=>'<div><span>'+skillName(k)+'</span><b>'+x.skills[k]+'</b></div>').join('')+'</div><h3>当前词条</h3><div class="trait-row">'+(traits.length?traits.map(t=>'<span class="trait '+t.rarity+'">'+html(t.name)+'</span>').join(''):'<span>尚未形成特殊词条</span>')+'</div><div id="cc-difficulty-slot"></div><p class="cc-status">'+(this.confirmed?'形象已确认，入职后将随存档保存。':'请先在右侧确认形象。')+'</p><button class="cc-primary" '+(!this.confirmed?'disabled':'')+' onclick="startGame()">签字入职 →</button></div>'+this.footer(4,null);
     }
     footer(prev,next){return '<div class="cc-footer"><button onclick="CharacterCreatorV2.go('+prev+')">← 上一步</button>'+(next?'<button class="cc-primary" onclick="CharacterCreatorV2.go('+next+')">下一步 →</button>':'<button onclick="backTitle()">返回首页</button>')+'</div>';}
-    previewHTML(){return '<h2>形象预览</h2><div id="cc-preview-image" class="cc-preview-frame">'+(this.previewURL?imageTag(this.previewURL,'cc-preview-photo','主角形象预览'):'<div class="cc-placeholder">'+(this.busy?'正在更新形象…':'选择性别 → 年龄 → 模板<br>显示完整立绘')+'</div>')+'</div><p id="cc-preview-status" class="cc-status" role="status">'+html(this.error||(this.busy?'正在更新形象…':this.confirmed?'形象已确认':'所有细节会实时更新预览'))+'</p><div class="cc-info"><h3>形象信息</h3><dl><dt>性别</dt><dd>'+(this.draft.gender==='female'?'女性':this.draft.gender==='male'?'男性':'待选择')+'</dd><dt>年龄</dt><dd>'+(this.draft.age?AGE_OPTIONS[this.draft.age].label.split(' · ')[0]+'岁':'待选择')+'</dd>'+Object.keys(labels).map(k=>'<dt>'+titles[k]+'</dt><dd>'+html(this.ready()?labels[k][this.draft[k]]:'—')+'</dd>').join('')+'</dl></div><button id="cc-confirm-look" class="cc-primary" '+(!this.ready()||this.busy||this.error?'disabled':'')+' onclick="CharacterCreatorV2.confirm()">确认形象 →</button>';
-    }
+    previewHTML(){return '<h2>员工形象</h2><div id="cc-preview-image" class="cc-preview-frame">'+(this.previewURL?imageTag(this.previewURL,'cc-preview-photo','主角完整形象'):'<div class="cc-placeholder">'+(this.busy?'正在载入形象…':'选择性别 → 年龄 → 完整形象')+'</div>')+'</div><p id="cc-preview-status" class="cc-status" role="status">'+html(this.error||(this.busy?'正在载入形象…':this.confirmed?'形象已确认':'选好完整形象后确认入职'))+'</p><div class="cc-info"><h3>员工信息</h3><dl><dt>性别</dt><dd>'+(this.draft.gender==='female'?'女性':this.draft.gender==='male'?'男性':'待选择')+'</dd><dt>年龄</dt><dd>'+(this.draft.age?AGE_OPTIONS[this.draft.age].label.split(' · ')[0]+'岁':'待选择')+'</dd><dt>形象</dt><dd>'+html(this.preset()?this.preset().name:'待选择')+'</dd></dl></div><button id="cc-confirm-look" class="cc-primary" '+(!this.ready()||this.busy||this.error?'disabled':'')+' onclick="CharacterCreatorV2.confirm()">确认形象 →</button>';}
     renderPreview(){const el=document.querySelector('.cc-preview');if(el)el.innerHTML=this.previewHTML();}
     render(){
       const root=document.getElementById('creator-v2-root');if(!root)return;
@@ -12327,39 +9224,6 @@ renderLifeBuilder();
   window.setPlayerAge=a=>CharacterCreatorV2.identity('age',a);
   CharacterCreatorV2.install();
 
-  async function composeAppearance(a){
-    const p=presets.find(p=>p.id===a.basePreset),W=768,H=1024;
-    const bodyId='body_'+a.gender+'_'+a.outfit+'_'+a.pose;
-    PortraitResolver.bodyURL(a);
-    const ids=['hair_'+a.gender+'_'+a.hair,bodyId];
-    if(a.accessory)ids.push('accessory_'+a.accessory);
-    const imgs=await Promise.all([p.faceSource||p.portrait,...ids.map(id=>'assets/portraits/'+(id.startsWith('body_')?'bodies/':'layers/')+id+(id==='accessory_9'?'-v2':'')+'.webp')].map(loadImage));
-    const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');
-    const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#d6d0c7');bg.addColorStop(1,'#858b8d');ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-    const [sx,sy,sw,sh]=GEOMETRY[p.id].face;
-    const faceScale=[[1,1],[1.08,.97],[1.03,.99],[.94,1.05],[.92,1],[.97,1.01],[1.01,.99],[1.04,1],[.98,1],[1.08,1]][a.face];
-    const fw=W*.30*faceScale[0],fh=H*.225*faceScale[1],fx=(W-fw)/2,fy=H*.205;
-    const skin=imgs[0],scale=fw/sw;
-
-    const bodyScale=[.84,1,1.02,1.10,1.15,.94,.9,1.18,1.07,1.12][a.body];
-    function layer(im,id,x,y,w,h){const b=GEOMETRY[id].bounds;ctx.drawImage(im,...b,x,y,w,h);}
-    const clothingTop=fy+fh+H*.033;
-    // Neck, garment, sleeves, hands and props come from one photographed pose.
-    const b=GEOMETRY[bodyId],bs=Math.min(W*.95/b.bounds[2],Math.max(W*.65/b.bounds[2],fw*.58/b.neckWidth));
-    const bodyX=W/2-b.neck[0]*bs*bodyScale,bodyY=fy+fh*.90-b.neck[1]*bs;
-    ctx.drawImage(imgs[2],bodyX,bodyY,W*bs*bodyScale,H*bs);
-    // Only the selected identity is blended over the natural neck. No painted neck plug.
-    ctx.save();ctx.beginPath();ctx.ellipse(W/2,fy+fh*.48,fw*.48,fh*.53,0,0,Math.PI*2);ctx.clip();ctx.drawImage(skin,fx-sx*scale,fy-sy*scale,skin.width*scale,skin.height*scale);ctx.restore();
-    const hair=document.createElement('canvas');hair.width=W;hair.height=H;const hc=hair.getContext('2d');
-    const hole=GEOMETRY[ids[0]].hole,hs=Math.min(fw*.90/Math.max(90,hole[2]),fw*1.55/GEOMETRY[ids[0]].bounds[2]);
-    hc.drawImage(imgs[1],W/2-(hole[0]+hole[2]/2)*hs,fy+fh*.06-hole[1]*hs,W*hs,H*hs);
-    if(a.hairColor){hc.globalCompositeOperation='source-atop';hc.fillStyle=['#171411','#2d211c','#443025','#633e2c','#50443d','#95705a','#55534e','#85837c','#b5afa4','#643333'][a.hairColor];hc.globalAlpha=.57;hc.fillRect(0,0,W,H);}ctx.drawImage(hair,0,0);
-    if(a.makeup){ctx.save();ctx.beginPath();ctx.ellipse(W/2,fy+fh*.55,fw*.39,fh*.45,0,0,Math.PI*2);ctx.clip();ctx.globalCompositeOperation='soft-light';ctx.globalAlpha=[0,.09,.1,.12,.07,.06,.08,.16,.1,.09][a.makeup];ctx.fillStyle=['#e6ac9c','#e5b49d','#d4a6a2','#e3a6b2','#789397','#e6ccb8','#b9a5aa','#725969','#e3bd98','#ad8f80'][a.makeup];ctx.fillRect(fx,fy,fw,fh);ctx.restore();}
-    if(a.expression){const snap=document.createElement('canvas');snap.width=W;snap.height=H;snap.getContext('2d').drawImage(canvas,0,0);const x=fx+fw*.30,y=fy+fh*.70,w=fw*.40,h=fh*.12;for(let i=0;i<w;i+=2){const t=(i/w-.5)*2,dy=[0,-5,1,-3,2,3][a.expression]*(t*t-.25);ctx.drawImage(snap,x+i,y,2,h,x+i,y+dy,2,h);}if(a.expression===5){ctx.fillStyle='#73565c';ctx.globalAlpha=.13;ctx.fillRect(fx+fw*.2,fy+fh*.44,fw*.6,fh*.025);ctx.globalAlpha=1;}}
-    let ix=3;if(a.accessory){let rect;switch(a.accessory){case 1:case 2:rect=[fx+fw*.02,fy+fh*.33,fw*.96,fh*.20];break;case 3:case 4:rect=[fx-fw*.08,fy+fh*.51,fw*1.16,fh*.32];break;case 5:rect=[W*.39,clothingTop,W*.22,H*.31];break;case 6:rect=[W*.40,clothingTop-H*.012,W*.20,H*.13];break;case 7:rect=[fx+fw*.78,fy-fh*.07,fw*.22,fh*.10];break;case 8:rect=[W*.34,clothingTop-H*.04,W*.32,H*.16];break;default:{const wrist=b.wrist||[b.neck[0]+160,b.neck[1]+650],wx=bodyX+wrist[0]*bs*bodyScale,wy=bodyY+wrist[1]*bs;rect=[wx-fw*.065,wy-fh*.075,fw*.13,fh*.15];}}layer(imgs[ix++],'accessory_'+a.accessory,...rect);}
-    return canvas.toDataURL('image/webp',.88);
-  }
-  window.composeAppearance=composeAppearance;
   function refreshPortraits(){
     if(S&&S.player){S.player.appearance=normalizeAppearance(S.player.appearance,S.player);const el=document.querySelector('.pm-avatar');if(el){el.innerHTML=PortraitResolver.player(S.player,'pm-player-photo');el.classList.add('pm-avatar-photo');}}
     document.querySelectorAll('.dialogue-row').forEach(row=>{const n=row.querySelector('.dialogue-name'),f=row.querySelector('.dialogue-face');if(n&&f)f.innerHTML=PortraitResolver.npc(n.textContent.trim(),'dialogue-portrait-img');});
@@ -12390,11 +9254,13 @@ renderLifeBuilder();
     // Rebuild authored branch chapters under the saved flags, without changing the live game.
     try{S=copy(data.state);flags=copy(data.flags||{});chapters=data.chapterIds.map((id,i)=>{
       const base=timeline.find(c=>c.id===id)||V11_CHAPTERS.find(c=>c.id===id);if(base)return base;
+      // Preserve the position and player of a legacy campaign chapter; do not invent past evidence.
+      if(window.ProjectCampaignV1&&/^v12_\d+_/.test(id)&&i<18)return ProjectCampaignV1.chapter(i,ProjectCampaignV1.fresh(true));
       const branch=window.V12_BRANCH_VARIANTS&&window.V12_BRANCH_VARIANTS[i];const variant=branch&&branch();return variant&&variant.id===id?variant:null;
     });}finally{S=previousState;flags=previousFlags;}
     if(chapters.some(c=>!c)){toast('存档章节与当前版本不兼容。','down');return false;}
     const restored=copy(data.state);restored.player.appearance=normalizeAppearance(restored.player.appearance,restored.player);
-    if(!restored.player.appearance.portraitURL){try{restored.player.appearance.portraitURL=await composeAppearance(restored.player.appearance);restored.player.appearance.portraitRenderer=2;}catch(e){toast("形象资源加载失败，请稍后重试。","down");return false;}}
+    try{await loadImage(restored.player.appearance.portraitURL);}catch(e){toast('形象资源加载失败，请稍后重试。','down');return false;}
     S=restored;flags=copy(data.flags||{});usedEvents=copy(data.usedEvents||[]);usedHeina=copy(data.usedHeina||[]);chapterIdx=data.chapterIdx;runChapters=chapters;
     Object.keys(data.loveMeta||{}).forEach(k=>{if(LOVE_META[k])Object.assign(LOVE_META[k],data.loveMeta[k]);});
     S.player.appearance=normalizeAppearance(S.player.appearance,S.player);
@@ -12403,7 +9269,7 @@ renderLifeBuilder();
     LIFE_DRAFT.gender=S.player.gender;PLAYER_AGE=S.player.age;selectedDifficulty=S.difficulty||'normal';
     showScreen('game-screen');renderHUD();renderChapter();toast('已读取进度与主角形象。','up');return true;
   };
-  const title=document.querySelector('#title-screen .subtitle');if(title)title.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · CharacterCreatorV2 · Demo v16.0.1';
+  const title=document.querySelector('#title-screen .subtitle');if(title)title.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · CharacterCreatorV2 · Demo v17.1.0';
   const titleActions=document.querySelector('#title-screen');if(titleActions)titleActions.insertAdjacentHTML('beforeend','<button class="btn" onclick="loadGameV2()">读取进度</button>');
 })();
 /* ===================== CharacterCreatorV2 END ===================== */
@@ -12429,6 +9295,206 @@ renderLifeBuilder();
 
 
 /* =====================  v14.7 END  ===================== */
+
+/* PROJECT CAMPAIGN V1 START */
+/* Fictional development campaign; calendar, costs and thresholds are game parameters. */
+(function(root){
+ 'use strict';
+ const rows=[
+ ['FIH','第一针之前：准备好的不是同一套文件','一建',1,100,5,'fih','核对版本、批次与首例条件，由相应owner确认。','按现有签字启动，差异留到会后补。','钟时讨论“首例”还是“首名”，说安全和效率都重要，实际门槛请团队评估。'],
+ ['FIH','哨兵之后：谁能把判断写进记录','PVP',1,100,5,'safety','保留独立时间线，按正式标准核查并确认恢复条件。','先准备下一队列，统一结论以后再补。','她要求红色邮件改灰色，再说安全必须重视；PVP等的是可以执行的决定。'],
+ ['FIH','暴露曲线：下一阶段需要什么剂量依据','则韩',5,300,5,'dose','形成暴露与安全矩阵，写明候选剂量和未决项。','用高暴露的漂亮图推进，解释稍后补齐。','钟时改小数位与图例；剂量尊重专业，重大取舍请老板判断。'],
+ ['FIH','第9月：融资会没有等你把材料改完','小圆',2,200,5,'phase1','交付可核查一期总结，明确证据、限制与贡献。','先完成成果汇报，未决问题不要放在第一页。','她退回第六版封面，成果页仍只有她的名字。投资人问的不是页数。'],
+ ['IIA','IIa方案：一个研究要回答几个问题','琳琳',4,500,10,'design','按真实中心容量固定患者问题、预设终点与PI承诺。','所有探索都先答应，预算与访视负担以后协调。','钟时改表格列宽，希望意见都充分体现；增加人手与删目标却没人确认。'],
+ ['IIA','第20月：第一张图值多少钱','明夜',7,1000,10,'signal','核对分母和预设分析，诚实交付临床信号及比较限制。','突出最好看的亚组，分母和限制移到附录。','钟时要求同时严谨和突破；能否证明优势仍被丢给团队。'],
+ ['IIB','IIb剂量：以前没回答的问题回来了','则韩',4,900,5,'dose2','用已核查的暴露与IIa结果固定IIb剂量选择规则。','先按乐观剂量推进，缺口下次会上再解释。','她重排目录，表示充分尊重专业，团队仍需把问题变成可拍板的取舍。'],
+ ['IIB','扩大暴露：谁愿意陪你站到会上','加琳',4,800,5,'safety2','请有记录的专业团队共同确认安全策略与升级边界。','将异常写成已有解释，今晚自己补齐全部报告。','钟时同意安全第一，但要求横向材料再丰富一版；决定又被退回明早。'],
+ ['IIB','多中心交付：Tracker绿色不等于数据能用','黑娜',3,600,5,'sites','核清CRO责任、实际访视与PI承诺，按记录落实整改。','Tracker先标绿，邮件确认后再找时间落实。','进度有要求，钟时开始要求每天九点逐人过表；人力缺口留给大家内部协调。'],
+ ['EOP2','第34月：三期融资只认能跑的研究','K总',3,700,5,'eop2','带剂量、人群、终点与真实资源计划完成EOP2验收。','先承诺原范围全部完成，资源签约后再找。','钟时准备代表所有职能，遇到具体问题转给你，会后又要求统一沟通。'],
+ ['III','三期预算：现在才可能争到运行权','苏苏',2,1500,3,'budget','按实际首期现金与批准范围形成分期执行预算。','先独自接下所有工作，编制与权限以后再说。','她改四版组织图，说所有目标都重要；苏苏需要的是哪些钱今天能付。'],
+ ['III','供应：外盒颜色与无菌问题不能占同一个位置','肖恩',3,1800,4,'supply','由专业owner确认批次衔接、稳定性与冷链支持。','先保启动日期，批次支持的缺口会后统一表述。','钟时讨论外盒颜色，强调质量和进度都不能牺牲，关键取舍仍请老板判断。'],
+ ['III','执行：每天报进度不会长出三名CRC','杨杨',10,7000,5,'execution','处理真实中心阻塞，按批准资源执行并培养合格接替。','白天参加全员每日会，晚上自己补全部进度。','每天九点逐人问为什么还是80%；琳琳需要CRC支持，钟时要求方案再完善。'],
+ ['III','锁库：没有提前保护记录，就没有现成的证人','则韩',4,500,5,'lock','和DM、统计、质量核查关键Query；有来源才关闭。','先以无影响关闭争议Query，保证表面日期。','她要求红色Query改提示；发布时间不能动，结论又要专业团队负责。'],
+ ['III','第54月：最后一张图与谁的贡献','老板',1,200,8,'topline','按可追溯分析解释主要结果，分别列出团队交付与限制。','按庆功摘要宣布完成，不在融资会上展开未决项。','她已经写好“在本人领导下”，数据追问转统计，最终安排交老板。'],
+ ['NDA','整合：她改了术语，却没有决定两个Module谁改','一建',5,3000,5,'integration','安排真正owner追溯安全、批次与临床引用，关闭矛盾。','先把术语改成一样，来源不一致以后补解释。','标点与缩写已过三轮，跨资料冲突仍退给各职能自行负责。'],
+ ['PRENDA','第62月：申报钱与那把椅子','邹婷',3,1000,5,'prenda','完成真实复核，按已履约职责与岗位进入正式评审。','先参加庆功预演，正式职责和复核等老板问再说。','钟时安排发言顺序；老板同时问下一阶段谁能真正负责。'],
+ ['NDA','提交：你留下的是运行机制，还是一个新入口','一建',1,500,5,'nda','按实际验收与正式责任完成递交或如实安排补证／停止。','接下所有最终入口，继续以本人名义替团队兜底。','最终确认仍需真实证据；更响的声音不能替代一次正式递交。']
+ ];
+ const data={version:2,product:{code:'DO-8006',name:'DO-8006皮下注射液',breakthroughBackground:false},initial:{progress:0,quality:55,cash:2500,months:0},ranks:['医学经理','高级医学经理','临床开发副总监','临床开发总监','临床开发VP'],financing:[
+ {id:'phase1',month:9,index:3,progress:20,quality:65,amount:2000,proof:['fih','safety','dose','phase1']},
+ {id:'iia',month:20,index:5,progress:40,quality:70,amount:6000,proof:['design','signal']},
+ {id:'eop2',month:34,index:9,progress:60,quality:75,amount:12000,proof:['dose2','safety2','sites','eop2']},
+ {id:'topline',month:54,index:14,progress:85,quality:80,amount:18000,proof:['supply','execution','lock','topline']},
+ {id:'prenda',month:62,index:16,progress:95,quality:80,amount:8000,proof:['integration','prenda']}
+ ],chapters:rows.map((r,i)=>({id:'v11_'+(i+1),n:i+1,stage:r[0],act:r[0]+' · 开发第'+(i+1)+'章',title:r[1],from:r[2],months:r[3],cost:r[4],progress:r[5],proof:r[6],honest:r[7],shortcut:r[8],politics:r[9]}))};
+ if(typeof module!=='undefined'&&module.exports)module.exports=data;else root.DragonCampaignData=data;
+})(typeof window!=='undefined'?window:globalThis);
+
+/* One project clock, three project metrics, evidence ledger and bounded authority. */
+(function(root){
+ 'use strict';
+ const data=typeof module!=='undefined'&&module.exports?require('./campaign-v2-data.js'):root.DragonCampaignData;
+ const clone=x=>JSON.parse(JSON.stringify(x)),cap=x=>Math.max(0,Math.min(100,x));
+ const metrics=['progress','cash','quality','coalition','boss','credit','obstruction'];
+ const labels={progress:'验收进度',cash:'现金（万元）',quality:'已核查质量',coalition:'职能支持',boss:'老板认可',credit:'交付记录',obstruction:'管理摩擦'};
+ function fresh(migrated){return Object.assign({},data.initial,{version:2,product:data.product.code,flags:{},proofs:{},risks:[],history:[],entries:{},financing:{},milestones:{},coalition:30,boss:30,credit:10,obstruction:20,rank:0,authority:0,promotionHistory:[],btd:{status:'potential'},teamReady:false,dailyMeeting:false,meetingReformed:false,careCount:0,finished:false,migrated:!!migrated,offers:{newCompany:Math.random()<0.60},events:[]});}
+ function ensureVersion(p){if(!p||p.version!==2){const n=fresh(true);n.events.push('旧存档的分数不代表新版证据；从当前阶段重新核查。');return n;}return p;}
+ function patch(p,x){if(!x)return;metrics.forEach(k=>{if(Number.isFinite(x[k]))p[k]=k==='cash'?Math.max(0,p[k]+x[k]):cap(p[k]+x[k]);});if(x.set)Object.assign(p.flags,x.set);}
+ function risk(p,key,index){if(!p.risks.some(r=>r.key===key&&r.status!=='closed'))p.risks.push({key,index,status:'open',source:'有异议或来源未核实，不能以措辞关闭',visible:false});}
+ function inspect(p,index){p.risks.filter(r=>r.status==='open'&&(index===7||index===13||index===15||data.financing.some(f=>f.index===index))).forEach(r=>{r.visible=true;p.quality=cap(p.quality-4);r.status='exposed';p.events.push('复核发现：'+r.key+'，相关交付仍需真实修复。');});}
+ function missing(p,keys){return keys.filter(k=>!p.proofs[k]||p.risks.some(r=>r.key===k&&r.status!=='closed'));}
+ function funding(p,f){
+  let record=p.financing[f.id];if(record&&record.settled)return;
+  if(p.months<f.month)return;
+  const gaps=missing(p,f.proof),late=p.months-f.month;
+  if(!record)record=p.financing[f.id]={id:f.id,due:f.month,amount:0,paid:0,status:'unmet',settled:false};
+  if(gaps.length||p.progress<f.progress||p.quality<f.quality-10){record.missing=gaps;record.status='unmet';if(late>3){record.settled=true;record.status='window_closed';}return;}
+  if(late>3){record.status='window_closed';record.settled=true;return;}
+  const full=p.quality>=f.quality,base=f.amount*(full?1:0.6)*(late>0?0.7:1);
+  record.amount=Math.round(base*(full&&late===0&&p.btd.status==='granted'?1.2:1));record.status=late>0?'renegotiated':full?'full':'conditional';record.settled=true;record.missing=[];
+  // A signed commitment is not cash; later tranche has achievable first-stage prerequisites.
+  const fraction=f.id==='eop2'?(p.coalition>=55&&p.boss>=45?0.60:0.40):1;
+  record.paid=Math.round(record.amount*fraction);record.remaining=record.amount-record.paid;p.cash+=record.paid;
+  p.events.push('第'+f.month+'月融资：协议'+record.amount+'万元，本次到账'+record.paid+'万元。');
+ }
+ function release(p){const r=p.financing.eop2;if(r&&r.remaining>0&&p.proofs.supply&&p.proofs.budget){p.cash+=r.remaining;r.paid+=r.remaining;p.events.push('供应与首期执行条件成立，后续'+r.remaining+'万元实际到账。');r.remaining=0;}}
+ function advance(p,months,index){
+  // Check deadlines on passage of time, even if the corresponding chapter is not reached.
+  const end=p.months+months,burn=(index<10?50:100)+(p.staffCount||0)*15;
+  data.financing.filter(f=>f.month>p.months&&f.month<end).forEach(f=>{p.cash=Math.max(0,p.cash-(f.month-p.months)*burn);p.months=f.month;funding(p,f);});
+  p.cash=Math.max(0,p.cash-(end-p.months)*burn);p.months=end;
+  data.financing.forEach(f=>funding(p,f));
+  if(p.btd.status==='pending'&&p.months>=p.btd.requestedAt+2){p.btd.status=p.quality>=75&&p.flags.clinicalAdvantage&&!missing(p,['dose','safety','signal']).length?'granted':'needs_evidence';p.events.push(p.btd.status==='granted'?'突破性治疗认定获得；后续沟通可条件提速。':'认定需要补充证据；常规开发仍可继续。');}
+ }
+ function gate(p,name){
+  const f=data.financing.find(x=>x.id===name);
+  const keys=name==='nda'?data.chapters.map(x=>x.proof):f?f.proof:[];
+  const gaps=missing(p,keys),q=name==='nda'?80:f?f.quality:0,progress=name==='nda'?100:f?f.progress:0;
+  if(p.quality<q)gaps.push('质量不足');if(p.progress<progress)gaps.push('验收进度不足');if(name==='nda'&&p.cash<=0)gaps.push('递交响应资金不足');
+  return{outcome:gaps.length?'blocked':'ready',missing:gaps};
+ }
+ function promotion(p,index){
+  const count=p.history.filter(h=>h.kind==='work'||h.kind==='authority'||h.kind==='btd'||h.kind==='delegation').length;
+  let next=p.rank;
+  if(index>=5&&count>=2&&p.credit>=30&&p.boss>=42&&p.coalition>=40)next=Math.max(next,1);
+  if(index>=10&&p.rank>=1&&p.authority>=1&&p.flags.authorityApproved&&p.proofs.budget&&p.cash>0)next=Math.max(next,2);
+  if(index>=16&&p.rank>=2&&p.teamReady&&p.proofs.integration&&p.credit>=65&&p.boss>=55&&p.coalition>=55)next=Math.max(next,3);
+  if(next>p.rank){p.promotionHistory.push({index,from:p.rank,to:next,approved:true,scope:next===1?'医学专题':next===2?'已批准三期工作包':'正式项目负责人'});p.rank=next;p.events.push('正式任命：'+data.ranks[next]+'。职责与授权范围已记录；专业owner仍各自确认结论。');}
+ }
+ function canAuthority(p){return p.credit>=40&&p.boss>=45&&p.coalition>=50&&(p.supporters||[]).length>=2&&p.proofs.eop2&&!missing(p,['dose2','safety2','sites','eop2']).length&&p.cash>=2500;}
+ function available(p,index){
+  const d=data.chapters[index],rows=[];
+  const bad=p.risks.filter(r=>r.status!=='closed');
+  rows.push({kind:'work',t:bad.length?'先完成真实补证与当前交付：'+d.honest:d.honest,route:'govern',extraCost:bad.length?250:0,extraMonths:bad.length?0.5:0});
+  rows.push({kind:'shortcut',t:d.shortcut,route:'appease'});
+  if(index===1&&p.proofs.fih)rows.push({kind:'safetyReview',t:'援引已确认的暂停与恢复标准，请PVP保留独立意见并启动正式复核。',route:'govern'});
+  if(index===3&&p.credit>=20&&p.boss>=35)rows.push({kind:'present',t:'带已有交付记录亲自回答一期限制，并保留团队署名。',route:'govern'});
+  if(index===4&&p.cash>=d.cost+600)rows.push({kind:'exploration',t:'保留主要临床问题，只对有明确用途的机制子研究另列预算与访视。',route:'govern',extraCost:600,extraMonths:0.5});
+  if(index===7&&p.proofs.safety&&p.coalition>=42)rows.push({kind:'safetyReview',t:'带早期时间线邀请PVP和加琳共同汇报，将待补材料与即时安全决定分开。',route:'govern',extraCost:150});
+  if(index===6&&p.progress>=40&&p.quality>=75&&p.flags.clinicalAdvantage&&!missing(p,['dose','safety','signal']).length&&p.btd.status!=='granted'&&p.btd.status!=='pending')rows.push({kind:'btd',t:'用可信临床优势提交认定请求，同时按预设规则继续IIb。',route:'govern'});
+  if(index===10&&canAuthority(p))rows.push({kind:'authority',t:'用已到账预算、团队支持与交付记录，请老板确认工作包运行权及副总监评审。',route:'power'});
+  if(index===12&&p.authority>0&&p.proofs.supply)rows.push({kind:'delegation',t:'按已批岗位安排接替与中心支持，申请将每日全员会改为限时阻塞会。',route:'govern'});
+  if(index===13)rows.push({kind:'delay',t:'不补造来源：调查关键Query，接受延期并写清分析边界。',route:'govern',extraCost:200,extraMonths:1});
+  if(index===13)rows.push({kind:'fraud',t:'把未观察的来源补写成已确认，留下本人签字。风险：后续核查可使结论失效。',route:'power'});
+  if(index===15&&p.rank>=2&&p.authority&&p.teamReady&&p.boss>=65&&p.coalition>=65)rows.push({kind:'department',t:'用已经履行的跨职能职责，请老板批准部门级申报统筹试任，明确岗位和资源。',route:'power'});
+  if(index===17&&p.rank>=3&&p.flags.departmentDutyCompleted&&p.teamReady&&p.boss>=70&&p.coalition>=65)rows.push({kind:'vp',t:'依据部门试任的真实交付与批准岗位，进入VP正式任命与职责重划。',route:'power'});
+  if(index===17&&p.authority>=1&&p.rank>=2)rows.push({kind:'concentrate',t:'把后续所有对外入口收归自己，替团队继续兜底。',route:'power'});
+  return rows;
+ }
+ function chapter(index,p){
+  p=ensureVersion(p);const d=data.chapters[index];if(!d)throw Error('Invalid chapter');
+  const rows=available(p,index);
+  const text='DO-8006 · 皮下注射液。开发至NDA递交；认定需实际数据，不是开局身份。\n\n'+d.politics+'\n\n'+(p.risks.some(r=>r.status!=='closed')?'前期异议仍在：'+p.risks.filter(r=>r.status!=='closed').map(r=>r.key).join('、')+'。':'已有记录将决定本阶段可以采取的行动。')+'\n\n'+summary(p);
+  return{id:d.id,n:d.n,stage:d.stage,act:d.act,title:d.title,aside:{from:d.from,text:'当前交付：'+d.honest},text,campaign:true,choices:rows.map((r,j)=>({t:r.t,route:r.route,achievement:'a'+(index*3+Math.min(j,2)+1),achievementName:d.title,e:{progress:0,trust:r.kind==='shortcut'?3:-1,power:r.kind==='authority'?4:0,morale:r.kind==='shortcut'?-2:1,heart:r.kind==='shortcut'?2:2,sanity:r.kind==='shortcut'?-2:0},npc:r.kind==='shortcut'?{}:Object.fromEntries((index===1?['pvp','jialin']:index===2?['zihan','mingye']:index===4?['miaomiao','yangyang']:index===8?['kzong','heina']:index===13?['xiaoen','zihan']:['yijian','kzong']).map(k=>[k,2])),r:r.kind==='shortcut'?'表面日期保住了，未核实的内容仍留下来源与责任记录。':'实际交付、限制与专业owner一并记录。',project:{set:{}},record:r.kind==='shortcut'?undefined:'campaign_'+d.proof,campaignChoice:{index,kind:r.kind,slot:j,extraCost:r.extraCost||0,extraMonths:r.extraMonths||0,context:false}}))};
+ }
+ function apply(p,c){
+  const m=c.campaignChoice;if(!m)return null;if(m.context){p.careCount++;return null;}
+  if(p.history.some(h=>h.index===m.index))return null;
+  const d=data.chapters[m.index],before=clone(p),bad=p.risks.filter(r=>r.status!=='closed'),kind=m.kind||'work';
+  const actualCost=d.cost+(m.extraCost||0);let elapsed=d.months+(m.extraMonths||0);
+  if(p.cash<actualCost){p.events.push('现金不足，当前研究没有执行：保留资料，提出缩小／补证或停止安排。');p.flags.cashConstraint=true;}
+  else{
+   p.cash-=actualCost;
+   if(kind==='shortcut'||kind==='fraud'){
+    p.proofs[d.proof]=true;p.credit=cap(p.credit+1);p.obstruction=cap(p.obstruction+5);
+    risk(p,d.proof,m.index);if(kind==='fraud')p.flags.fraud=true;
+   }else{
+    // Repair needs source verification and real time/payment; fraud cannot be erased by a later choice.
+    bad.filter(r=>r.key!=='lock'||!p.flags.fraud).forEach(r=>{r.status='closed';p.proofs[r.key]=true;p.progress=cap(p.progress+data.chapters[r.index].progress);p.quality=cap(p.quality+3);});
+    p.proofs[d.proof]=true;p.progress=cap(p.progress+d.progress);p.quality=cap(p.quality+(m.index<4?4:3));
+    p.coalition=cap(p.coalition+4);p.boss=cap(p.boss+3);p.credit=cap(p.credit+5);
+    const support=m.index===1?['PV']:m.index===2?['统计']:m.index===4?['运营']:m.index===8?['CRO执行']:m.index===13?['质量']:[];p.supporters=Array.from(new Set((p.supporters||[]).concat(support)));
+    if(m.index===5)p.flags.clinicalAdvantage=p.flags.negativeClinicalData?false:p.proofs.design&&p.proofs.dose&&p.proofs.safety;
+    if(kind==='btd'){p.btd={status:'pending',requestedAt:p.months};p.events.push('认定请求已提交；资格不是获得认定。');}
+    if(kind==='authority'&&canAuthority(before)){p.authority=1;p.flags.authorityApproved=true;p.events.push('老板批准有限运行权，专业确认仍由owner完成。');}
+    if(kind==='delegation'){p.teamReady=true;p.meetingReformed=true;p.dailyMeeting=false;}
+    if(kind==='department'){p.flags.departmentPilot=true;p.events.push('部门级统筹试任获批，需完成整合与复核后才可进入VP评审。');}
+    if(m.index===16&&p.flags.departmentPilot&&p.proofs.integration&&p.proofs.prenda){p.flags.departmentDutyCompleted=true;}
+    if(kind==='vp'&&before.rank>=3&&before.flags.departmentDutyCompleted){p.rank=4;p.authority=2;p.promotionHistory.push({index:m.index,from:3,to:4,approved:true,scope:'批准的临床开发部门；原VP职责重划'});p.events.push('高层正式任命临床开发VP并确认职责重划，不由一场辩论自动接替钟时。');}
+    if(kind==='concentrate'){p.flags.centralized=true;p.teamReady=false;p.coalition=cap(p.coalition-12);}
+   }
+  }
+  if(m.index>=8&&!p.meetingReformed&&(bad.length||p.coalition<50)){p.dailyMeeting=true;p.events.push('钟时要求每天九点逐人报进度，等待资源决定的阻塞没有消失。');}
+  if(p.dailyMeeting&&m.index>=12&&!p.meetingReformed){elapsed+=0.25;p.events.push('全员会与日报挤占关键核查工作，本阶段延后0.25个月。');}
+  if(p.btd.status==='granted'&&!p.flags['accelerated_'+m.index]&&kind!=='shortcut'&&[9,15].includes(m.index)&&p.coalition>=50&&p.cash>0){elapsed=Math.max(0.5,elapsed-1);p.flags['accelerated_'+m.index]=true;p.events.push('具备认定、资料与协作条件，本次沟通少等待1个月。');}
+  inspect(p,m.index);release(p);advance(p,elapsed,m.index);
+  const h={index:m.index,slot:m.slot,kind,stage:d.stage,title:d.title,delta:{},cases:bad.map(r=>r.key)};metrics.concat('months').forEach(k=>{if(p[k]!==before[k])h.delta[k]=p[k]-before[k];});p.history.push(h);promotion(p,m.index);
+  if(m.index===17){p.finished=true;const g=gate(p,'nda');p.milestones.nda=g;p.outcome=p.flags.negativeClinicalData?'scientific_stop':g.outcome==='ready'?'submitted':p.cash<=0?'stopped':'deferred';p.career=p.credit>=55&&p.boss>=45&&p.coalition>=45?'recognized':p.credit>=55?'isolated':'unrecognized';}
+  return h;
+ }
+ function summary(p){return '验收进度 '+p.progress+' / 100 · 现金 '+Math.round(p.cash)+'万元 · 已核查质量 '+p.quality+' / 100\n开发第'+p.months+'月 · '+data.ranks[p.rank]+' · 授权 '+(p.authority?'已批工作包':'本人职责')+' · 认定 '+({potential:'尚待证据',pending:'评估中',granted:'已获得',needs_evidence:'需补证'}[p.btd.status])+(p.finished?'\n'+({submitted:'已正式递交 NDA；尚未获批',deferred:'NDA暂缓：真实资料仍需补证',stopped:'开发暂停／停止：资金不足',scientific_stop:'研究不支持继续开发：如实保留负面结果'}[p.outcome]):'');}
+ const api={data,metrics,labels,fresh,patch,gate,chapter,apply,summary,available,canAuthority,advance,funding,ensureVersion};
+ if(typeof module!=='undefined'&&module.exports){module.exports=api;return;}
+ root.ProjectCampaignV2=api;root.ProjectCampaignV1=api;
+ function ensure(){S.campaign=ensureVersion(S.campaign);return S.campaign;}api.ensure=ensure;
+ V12_BRANCH_VARIANTS={};root.V12_BRANCH_VARIANTS=V12_BRANCH_VARIANTS;
+ V11_CHAPTERS.splice(0,V11_CHAPTERS.length,...data.chapters.map((_,i)=>chapter(i,fresh(false))));
+ buildDevelopmentTimeline=function(){return data.chapters.map((_,i)=>chapter(i,S&&S.campaign?S.campaign:fresh(false)));};
+ const oldContext=contextualChoiceList;contextualChoiceList=function(list){if(list&&list.some(c=>c.campaignChoice))return list;return oldContext.apply(this,arguments);};
+ const oldRecruit=root.showRecruit147,oldOffer=root.offerCandidate147;
+ if(oldRecruit)root.showRecruit147=function(){const p=ensure();if(!p.authority||!p.flags.authorityApproved||p.rank<2||p.cash<300){toast('招聘需要已批准岗位、运行权限与至少300万元的可执行预算','down');return;}if(root.teamState147().members.length>=(p.rank>=3?2:1)){toast('已批准编制已满，新增岗位需要再确认','down');return;}return oldRecruit();};
+ if(oldOffer)root.offerCandidate147=function(){const p=ensure(),t=root.teamState147();if(!p.authority||!p.flags.authorityApproved||p.cash<300||t.members.length>=(p.rank>=3?2:1)){toast('当前没有可执行的新增岗位预算','down');return;}const before=t.members.length,r=oldOffer();if(t.members.length>before){p.cash-=300;p.staffCount=t.members.length;p.events.push('岗位实际入职，投入300万元；后续固定现金消耗包含人员支持。');}return r;};
+ const oldStart=startGame;startGame=function(){const r=oldStart.apply(this,arguments);if(r===false)return r;S.campaign=fresh(false);flags.careerDecision='stay';root._careerPending=false;root._careerChoices=null;runChapters=buildDevelopmentTimeline();renderChapter();return r;};
+ const oldRender=renderChapter;renderChapter=function(){if(S&&data.chapters[chapterIdx])runChapters[chapterIdx]=chapter(chapterIdx,ensure());return oldRender.apply(this,arguments);};
+ const oldApply=applyChoice;applyChoice=function(c){if(c&&c.campaignChoice&&ensure().history.some(h=>h.index===c.campaignChoice.index))return;const h=c&&c.campaignChoice?apply(ensure(),c):null;const r=oldApply.apply(this,arguments);if(h){const p=ensure();S.progress=p.progress;S.bossTrust=cap((S.bossTrust||0)+Math.max(0,h.delta.boss||0));S.merit=cap((S.merit||0)+Math.max(0,h.delta.credit||0));c.r+='\n'+summary(p)+'\n'+p.events.slice(-3).join('\n');if(p.flags.centralized)S.dragon=Math.max(12,S.dragon||0);if(p.rank>=2)S.power=Math.max(50,S.power||0);}return r;};
+ // Formal review comes before ending; relationship alone cannot kill an authorized career.
+ const oldDeath=checkDeath;checkDeath=function(text,deltas,next){
+  if(S&&S.campaign&&S.campaign.version===2){const p=ensure();
+   if(S.heart<=0){if(p.teamReady&&!p.flags.usedLeave){p.flags.usedLeave=true;S.heart=35;S.stamina=40;p.events.push('有合格替补，休假后回归；项目按已批范围继续。');showResult(text+'\n你完成交接后休假，团队接替既定工作。',deltas,next);return;}showResult(text,deltas,()=>showEnding('be_heart'));return;}
+   if(S.sanity<=0){showResult(text,deltas,()=>showEnding('be_sanity'));return;}
+   if(S.trust<=0){S.trust=1;p.events.push('与钟时关系破裂，后续通过正式责任和老板确认沟通。');}
+   if(S.morale<=0){showResult(text,deltas,()=>showEnding('be_morale'));return;}
+   showResult(text,deltas,next);return;
+  }return oldDeath.apply(this,arguments);
+ };
+ const priorEvaluate=evaluateFinal;evaluateFinal=function(){const p=ensure();if(!p.finished)return priorEvaluate.apply(this,arguments);if(!flags.careerReviewed){
+  const eligible=p.credit>=45&&p.quality>=60&&p.offers.newCompany&&!p.flags.fraud;
+  root._careerPending=true;root._careerChoices=[{id:'stay',t:'留在当前岗位或正式任命范围，明确下一阶段责任。'}];
+  if(eligible)root._careerChoices.push({id:'depart',t:'接受已确认的新公司邀约，完成交接后离开。'});
+  document.getElementById('scene-area').innerHTML='<div class="scene"><h2>项目之后，你选择去哪</h2><p>'+summary(p)+'</p>'+root._careerChoices.map((x,i)=>'<button class="choice" onclick="pickCareerChoice('+i+')">'+x.t+'</button>').join('')+'</div>';return;
+ }return priorEvaluate.apply(this,arguments);};
+ root.pickCareerChoice=function(i){const c=root._careerChoices&&root._careerChoices[i];if(!c||!root._careerPending)return;flags.careerDecision=c.id;flags.careerReviewed=true;root._careerPending=false;if(c.id==='depart'){showEnding('ge_next');return;}priorEvaluate();};
+ const oldFinal=finalizeEvaluation;finalizeEvaluation=function(){const p=ensure();if(p.finished){if(p.outcome!=='submitted')S.progress=Math.min(p.outcome==='stopped'?34:59,S.progress);if(p.flags.fraud){showEnding('be_fraud');return;}if(p.flags.centralized){showEnding('true_dragon');return;}if(p.rank>=2){showEnding('ge_promotion');return;}}return oldFinal.apply(this,arguments);};
+ const oldEnding=showEnding;showEnding=function(id){const p=S&&S.campaign&&S.campaign.version===2?ensure():null;
+  if(p&&p.finished&&id==='ge_project'&&p.outcome!=='submitted')id=p.outcome==='stopped'?'be_progress':'mid_halfbridge';
+  if(p&&id==='ge_next'&&flags.careerDecision!=='depart')id=p.career==='recognized'?'ge_firstline':'ge_survive';
+  if(p&&p.finished&&flags.careerDecision!=='depart'&&!p.flags.fraud){if(p.flags.centralized)id='true_dragon';else if(p.rank>=2)id='ge_promotion';}
+  const ending=ENDINGS[id],saved=ending&&ending.story;
+  if(p&&p.finished&&ending){ending.story=summary(p)+'\n\n'+(id==='true_dragon'?'你收拢了所有对外入口，团队必须经过你才能推进。':id==='ge_promotion'?'正式岗位来自实际交付、团队支持和批准职责。晋升不能代替项目验收。':id==='ge_next'?'你接受了已确认的邀约，完成交接后前往新的团队。':'项目结果和职业评价已经分开记录，个人际遇不能替代临床证据。');}
+  let r;try{r=oldEnding(id);}finally{if(ending)ending.story=saved;}if(p){const node=document.getElementById('ending-screen');if(node){let organization=p.flags.centralized?'终成恶龙：所有入口都集中到你身上。':p.teamReady?'建立接替：你不在，团队仍能执行。':p.credit>=55&&p.rank<2?'金牌救火队员：交付归你，实际运行位置没有兑现。':'按已有职责继续运行。';node.insertAdjacentHTML('beforeend','<div class="panel" style="white-space:pre-line"><h3>产品、职业与组织结果</h3>'+summary(p)+'\n职业：'+(flags.careerDecision==='depart'?'接受真实邀约，交接后离开':data.ranks[p.rank]+' · '+({recognized:'贡献获认可',isolated:'贡献未换来团队位置',unrecognized:'贡献未获充分认可'}[p.career]||'阶段尚未结束'))+'\n组织：'+organization+'\n'+p.events.slice(-4).join('\n')+'</div>');}}return r;};
+ api.eventAllowed=function(e,i){return !e.campaignStages||e.campaignStages.includes(data.chapters[Math.min(17,i)].stage);};
+ if(ENDINGS.ge_project)ENDINGS.ge_project.name='GE · NDA递交了';if(ENDINGS.true_dragon)ENDINGS.true_dragon.name='终成恶龙';
+ if(ENDINGS.nc_caolan){ENDINGS.nc_caolan.name='NPC · 合作谈判的门';ENDINGS.nc_caolan.story=ENDINGS.nc_caolan.story.replace(/她/g,'他').replace(/市场部/g,'合作团队').replace(/商业化/g,'开发合作');}
+ ['nc_ruidong','nc_weilai'].forEach(k=>{if(ENDINGS[k])ENDINGS[k].story=ENDINGS[k].story.replace(/他/g,'她');});
+ Object.values(ENDINGS).forEach(e=>{if(e.story)e.story=e.story.replace(/上市以后|上市后|post-marketing/gi,'下一阶段').replace('上市申请顺利受理','完成实际验收与交接').replace('把二期做完','把下一项已批准工作做完');});
+ const stageOverrides={v11_0:['FIH','IIA'],v11_1:['IIB','EOP2','III'],v11_2:['FIH','IIA','NDA'],v11_3:['IIA','IIB','III'],v11_4:['IIA','IIB'],v11_5:['IIA','IIB','EOP2','III','NDA'],v11_6:['IIA','IIB','EOP2','III'],v11_7:['III','NDA','PRENDA'],v11_8:['III','NDA','PRENDA']};
+ V11_EVENTS.forEach(e=>{e.text=(e.text||'').replace(/上市后|post-marketing/gi,'开发合作');if(stageOverrides[e.id])e.campaignStages=stageOverrides[e.id];});
+})(typeof window!=='undefined'?window:globalThis);
+
+
+
+
+/* PROJECT CAMPAIGN V1 END */
 
 buildCast();
 renderVP();

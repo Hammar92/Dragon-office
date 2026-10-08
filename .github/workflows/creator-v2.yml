@@ -14,8 +14,10 @@ jobs:
           node-version: 22
       - run: npm install --no-save playwright
       - run: npx playwright install --with-deps chromium
+      - run: node tests/project-campaign.cjs
       - run: node tests/smoke.cjs
       - run: node --test tests/ending-priority.spec.js tests/ending-witness.spec.js tests/terminal-ending-witness.spec.js tests/all-ending-witness.spec.js tests/release-placeholders.spec.js
+      - run: node tests/campaign-browser.cjs
       - run: node tests/creator-v2.cjs
       - uses: actions/upload-artifact@v4
         if: always()
