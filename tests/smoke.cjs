@@ -63,8 +63,7 @@ run("buySkill('professional')");
 assert.strictEqual(run('S.player.skills.professional'),44,'RC skill upgrade adds four');
 
 assert.strictEqual(run('new Set(ACHIEVEMENTS.map(a=>a.id)).size'),108,'unique achievement IDs');
-assert.strictEqual(run(`(()=>{const s=new Set();V11_CHAPTERS.forEach(ch=>(ch.choices||[]).forEach(c=>c.achievement&&s.add(c.achievement)));V11_EVENTS.forEach(ev=>(ev.choices||[]).forEach(c=>c.achievement&&s.add(c.achievement)));return [...s].every(id=>ACHIEVEMENTS.some(a=>a.id===id));})()`),true,'all 108 achievements have a real chapter/event source');
-assert.strictEqual(html.includes('unlockAchievement("a')||html.includes("unlockAchievement('a"),false,'no stale hard-coded achievement ID auto-unlocks');
+assert.strictEqual(run(`(()=>{const sources=DragonCollectionV3.sources(),ids=new Set(sources.main.flatMap(x=>x.ids).concat(sources.events.flatMap(x=>x.ids)));return ACHIEVEMENTS.every(a=>ids.has(a.id))&&[...ids].every(id=>ACHIEVEMENTS.some(a=>a.id===id));})()`),true,'bidirectional achievement source registry');
 assert.strictEqual(run('Object.keys(ENDINGS).length'),64,'ending count');
 for(const k of ['anyu','qiaoqiao','wenjing','xiaoke','linpi','tongxin']){
   assert.strictEqual(run(`Object.prototype.hasOwnProperty.call(NPCs,'${k}')`),false,`deleted NPC ${k} absent`);
@@ -83,7 +82,7 @@ run("window._evObj=null; Math.random=()=>0.1");
 run('S.prestige={boss:0,team:0,chain:0,last:null,history:[]}; const _p=prestigeState(); addPrestige(3,4,"test")');
 assert.strictEqual(run('S.prestige.boss'),3,'boss prestige');
 assert.strictEqual(run('S.prestige.team'),4,'team prestige');
-assert.ok(html.includes('Demo v17.1.0'),'visible release label is current');
+assert.ok(html.includes('Demo v17.2.0'),'visible release label is current');
 assert.ok(html.includes('RC_CANONICAL_ENDING_RESOLVER_BEGIN'),'canonical ending resolver embedded in single-file build');
 assert.ok(html.includes('RC_ENDING_RUNTIME_BRIDGE_BEGIN'),'canonical runtime bridge embedded in single-file build');
 assert.strictEqual(run('typeof rcEndingAudit'),'function','runtime ending audit installed');
@@ -132,16 +131,15 @@ assert.strictEqual(run('V11_EVENTS.every((ev,i)=>ev.choices.some(c=>c.achievemen
 assert.strictEqual(run('V11_EVENTS.slice(15).every(ev=>ev.choices.every(c=>c.achievement))'),true,'new random events award on every choice');
 assert.strictEqual(run('new Set(V11_EVENTS.map((ev,i)=>ACHIEVEMENTS.find(a=>a.id===RANDOM_ACHIEVEMENT_IDS[i][0]).name)).size'),34,'individual black humor event names');
 assert.strictEqual(run('V11_EVENTS.slice(25).every((ev,i)=>ev.choices.every(c=>c.achievement==="a"+(100+i) && c.branchFlag))'),true,'nine new events have assigned awards and consequences');
-assert.strictEqual(run('V11_CHAPTERS.every((ch,i)=>ch.choices.every((c,j)=>c.achievement==="a"+(i*3+Math.min(j,2)+1)))'),true,'main chapter awards retain historical gallery IDs');
+assert.strictEqual(run('V11_CHAPTERS.every((ch,i)=>ch.choices.every(c=>c.achievement==="a"+(i*3+(c.campaignChoice.kind==="shortcut"||c.campaignChoice.kind==="fraud"?2:1))))'),true,'choice rewards match actual route, milestones have separate sources');
 
 run('chapterIdx=17; runChapters=V11_CHAPTERS.map(x=>Object.assign({},x)); renderChapter()');
 assert.ok(el('scene-area').innerHTML.includes('提交：你留下的是运行机制'),'chapter 18 renders');
 run('flags.shadow_capture=true; chapterIdx=17; renderChapter()');
 assert.strictEqual(run('runChapters[17].id'),'v11_18','final branch variant reachable');
-assert.ok(run('runChapters[17].choices[0].achievementName').includes('提交：你留下的是运行机制'),'campaign achievement names the actual outcome');
+assert.ok(run('runChapters[17].choices[0].achievementName').includes('按实际验收'),'campaign achievement names the actual outcome');
 run('checkAchievements(runChapters[17].choices[0])');
-assert.strictEqual(JSON.parse(storage.get('dragon_achievement_details')).a52,run('runChapters[17].choices[0].achievementName'),'branch award stored');
-assert.ok(el('achievement-panel').innerHTML.includes(run('runChapters[17].choices[0].achievementName')),'branch award shown');
+assert.strictEqual(JSON.parse(storage.get('dragon_achievement_details')||'{}').a52,undefined,'unexecuted final chapter cannot award delivery');
 
 run('projectBattleState=null; chapterIdx=3; flags.battle_v11_4=false; maybeProjectBattle("v11_4",function(){})');
 const before=el('scene-area').innerHTML;

@@ -146,7 +146,6 @@
  const oldEnding=showEnding;showEnding=function(id){const p=S&&S.campaign&&S.campaign.version===2?ensure():null;
   if(p&&p.finished&&id==='ge_project'&&p.outcome!=='submitted')id=p.outcome==='stopped'?'be_progress':'mid_halfbridge';
   if(p&&id==='ge_next'&&flags.careerDecision!=='depart')id=p.career==='recognized'?'ge_firstline':'ge_survive';
-  if(p&&p.finished&&flags.careerDecision!=='depart'&&!p.flags.fraud){if(p.flags.centralized)id='true_dragon';else if(p.rank>=2)id='ge_promotion';}
   const ending=ENDINGS[id],saved=ending&&ending.story;
   if(p&&p.finished&&ending){ending.story=summary(p)+'\n\n'+(id==='true_dragon'?'你收拢了所有对外入口，团队必须经过你才能推进。':id==='ge_promotion'?'正式岗位来自实际交付、团队支持和批准职责。晋升不能代替项目验收。':id==='ge_next'?'你接受了已确认的邀约，完成交接后前往新的团队。':'项目结果和职业评价已经分开记录，个人际遇不能替代临床证据。');}
   let r;try{r=oldEnding(id);}finally{if(ending)ending.story=saved;}if(p){const node=document.getElementById('ending-screen');if(node){let organization=p.flags.centralized?'终成恶龙：所有入口都集中到你身上。':p.teamReady?'建立接替：你不在，团队仍能执行。':p.credit>=55&&p.rank<2?'金牌救火队员：交付归你，实际运行位置没有兑现。':'按已有职责继续运行。';node.insertAdjacentHTML('beforeend','<div class="panel" style="white-space:pre-line"><h3>产品、职业与组织结果</h3>'+summary(p)+'\n职业：'+(flags.careerDecision==='depart'?'接受真实邀约，交接后离开':data.ranks[p.rank]+' · '+({recognized:'贡献获认可',isolated:'贡献未换来团队位置',unrecognized:'贡献未获充分认可'}[p.career]||'阶段尚未结束'))+'\n组织：'+organization+'\n'+p.events.slice(-4).join('\n')+'</div>');}}return r;};

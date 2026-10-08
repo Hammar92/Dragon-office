@@ -12,7 +12,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+(req
     for(let i=0;i<18;i++){
       assert.equal(await page.evaluate(()=>chapterIdx),i);assert.equal(await page.evaluate(()=>runChapters[chapterIdx].id),'v11_'+(i+1));stages.push(await page.evaluate(()=>runChapters[chapterIdx].stage));
       await page.evaluate(()=>{if(S.restLeft>0){showRest();takeNap(2);restClose();}});
-      if(i===9){assert(await page.evaluate(()=>saveGameV2()));const state=await page.evaluate(()=>JSON.stringify(S.campaign));assert(await page.evaluate(()=>loadGameV2()));assert.equal(await page.evaluate(()=>JSON.stringify(S.campaign)),state);}
+      if(i===9){assert(await page.evaluate(()=>saveGameV2()));const state=await page.evaluate(()=>JSON.stringify(S.campaign)),ledger=await page.evaluate(()=>JSON.stringify(S.collection));assert(await page.evaluate(()=>loadGameV2()));assert.equal(await page.evaluate(()=>JSON.stringify(S.campaign)),state);assert.equal(await page.evaluate(()=>JSON.stringify(S.collection)),ledger);}
       await page.locator('button[onclick="pickChapter(0)"]').click();
       for(let count=0;count<30;count++){
         const snapshot=await page.evaluate(()=>({chapter:chapterIdx,battle:!!projectBattleState,ended:document.getElementById('ending-screen').classList.contains('active'),result:!!document.querySelector('button[onclick="continueResult()"]')}));
@@ -26,6 +26,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+(req
     }
     assert.equal(await page.evaluate(()=>S.campaign.outcome),'submitted');assert.equal(await page.evaluate(()=>S.campaign.career),'recognized');assert.equal(await page.evaluate(()=>S.campaign.history.length),18);assert.equal(await page.evaluate(()=>S.campaign.months),63);
     assert.match(await page.locator('#ending-screen').innerText(),/正式递交 NDA/);assert.match(await page.locator('#ending-screen').innerText(),/尚未获批/);assert.deepEqual(errors,[]);
+    assert(await page.evaluate(()=>getUnlocked().includes('ge_project')),'product record is not discarded by career outcome');assert(await page.locator('#collection-results').isVisible());
     await page.screenshot({path:path.join(__dirname,'campaign-ending.png'),fullPage:true});
     console.log(JSON.stringify({result:'PASS',actualChapterTransitions:18,stages,qteChapters:[...new Set(battles)],saveReloadAt:'EOP2 / 三期立项',ending:'submitted / recognized',errors},null,2));
   }finally{if(browser)await browser.close();server.close();}

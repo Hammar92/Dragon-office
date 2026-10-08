@@ -1,5 +1,5 @@
-/* Dragon Office RC terminal-only ending entry audit.
- * These seven gallery endings do not need the final resolver; they are proven at their real trigger layer.
+/* Historical terminal predicate fixtures; these are not production entry/reachability tests.
+ * Current replacements and actual entry paths are validated by collection-paths.cjs.
  * be_trust / be_progress also have immediate-death entry paths, but remain in the final resolver because
  * the game deliberately uses them as end-of-run generic failure outcomes too.
  */
