@@ -1,6 +1,7 @@
 /* Fictional development campaign; calendar, costs and thresholds are game parameters. */
 (function(root){
  'use strict';
+ const responsibilities=typeof module!=='undefined'&&module.exports?require('./responsibilities.js'):root.StoryResponsibilities;
  const rows=[
  ['FIH','第一针之前：准备好的不是同一套文件','一建',1,100,5,'fih','核对版本、批次与首例条件，由相应owner确认。','按现有签字启动，差异留到会后补。','钟时讨论“首例”还是“首名”，说安全和效率都重要，实际门槛请团队评估。'],
  ['FIH','哨兵之后：谁能把判断写进记录','PVP',1,100,5,'safety','保留独立时间线，按正式标准核查并确认恢复条件。','先准备下一队列，统一结论以后再补。','她要求红色邮件改灰色，再说安全必须重视；PVP等的是可以执行的决定。'],
@@ -28,5 +29,6 @@
  {id:'topline',month:54,index:14,progress:85,quality:80,amount:18000,proof:['supply','execution','lock','topline']},
  {id:'prenda',month:62,index:16,progress:95,quality:80,amount:8000,proof:['integration','prenda']}
  ],chapters:rows.map((r,i)=>({id:'v11_'+(i+1),n:i+1,stage:r[0],act:r[0]+' · 开发第'+(i+1)+'章',title:r[1],from:r[2],months:r[3],cost:r[4],progress:r[5],proof:r[6],honest:r[7],shortcut:r[8],politics:r[9]}))};
+ data.chapters.forEach((ch,i)=>{ch.from=responsibilities.chapters[i].lead;ch.responsibility=responsibilities.chapters[i].scope;});
  if(typeof module!=='undefined'&&module.exports)module.exports=data;else root.DragonCampaignData=data;
 })(typeof window!=='undefined'?window:globalThis);

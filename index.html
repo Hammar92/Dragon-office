@@ -382,6 +382,7 @@ body.ow-strained #hud{border-color:#d8aaa6!important}body.ow-strained #scene-are
 #hud{grid-area:1/1/2/4!important}#pm-left-panel{grid-area:2/1/3/2!important}#scene-area{grid-area:2/2/3/3!important}#pm-right-panel{grid-area:2/3/3/4!important}
 @media(min-width:901px) and (max-width:1100px){#hud{grid-area:1/1/2/3!important}#scene-area{grid-area:2/1/3/2!important}#pm-right-panel{grid-area:2/2/3/3!important}}
 .sd-scene .ow-stage{min-height:112px;height:112px;padding:18px 22px;margin-bottom:18px}.sd-scene .ow-location{width:80%}.sd-scene .ow-location h3{font-size:20px;margin:6px 0}.sd-scene .ow-location p{font-size:11px;margin:0}.sd-scene .ow-scene-portrait{width:100px;object-position:center 18%;opacity:.65}.sd-scene .vp-name{display:none}.sd-dialogue{display:grid;gap:17px;margin:12px 0 26px}.sd-action{font-size:14px;line-height:1.9;color:#647c89;margin:0 0 5px;padding:10px 0;border-left:0}.sd-turn{display:grid;grid-template-columns:46px minmax(0,1fr);gap:12px;align-items:start}.sd-turn img{width:46px;height:61px;object-fit:cover;object-position:center 20%;border-radius:7px}.sd-turn>div{padding:12px 16px;border:1px solid #dce7ef;background:#f7fafc;border-radius:0 12px 12px 12px;min-width:0}.sd-turn header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.sd-turn header b{color:#245b70;font-size:14px}.sd-turn header small{font-size:10px;color:#7e929e}.sd-turn p{font-size:16px;line-height:1.9;margin:7px 0 0;overflow-wrap:anywhere}.sd-turn[data-speaker="钟时"]>div{background:#eef1f5;border-color:#d2dae4}.sd-player>div{background:#eaf5fa}.sd-initial{width:46px;height:46px;display:grid;place-items:center;border-radius:9px;background:#e4edf1;color:#4b7184}.sd-summary{font-size:12px;color:#728793;white-space:pre-line}.sd-summary summary{cursor:pointer}.sd-reply-heading{font-size:13px;font-weight:700;color:#34738a;margin-bottom:12px}.sd-scene .choice{text-align:left;line-height:1.8}.sd-scene .choice .idx{font-size:11px}
+.md-duty{font-size:11px;color:#617f90}.md-duty summary{cursor:pointer}.md-duty p{line-height:1.8;margin:8px 0}
 @media(max-width:760px){.sd-scene .ow-stage{min-height:100px;height:100px;padding:14px}.sd-scene .ow-location h3{font-size:16px}.sd-turn{grid-template-columns:34px minmax(0,1fr);gap:8px}.sd-turn img{width:34px;height:45px}.sd-initial{width:34px;height:34px}.sd-turn>div{padding:10px 12px}.sd-turn p{font-size:14px;line-height:1.85}.sd-turn header{gap:4px 9px}.sd-scene .ow-scene-portrait{width:72px}}
 
 /* OFFICE_UI_STYLE END */
@@ -9337,7 +9338,7 @@ renderLifeBuilder();
     LIFE_DRAFT.gender=S.player.gender;PLAYER_AGE=S.player.age;selectedDifficulty=S.difficulty||'normal';
     showScreen('game-screen');renderHUD();renderChapter();toast('已读取进度与主角形象。','up');return true;
   };
-  const title=document.querySelector('#title-screen .subtitle');if(title)title.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · CharacterCreatorV2 · Demo v18.2.0';
+  const title=document.querySelector('#title-screen .subtitle');if(title)title.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · CharacterCreatorV2 · Demo v18.2.1';
   const titleActions=document.querySelector('#title-screen');if(titleActions)titleActions.insertAdjacentHTML('beforeend','<button class="btn" onclick="loadGameV2()">读取进度</button>');
 })();
 /* ===================== CharacterCreatorV2 END ===================== */
@@ -9365,9 +9366,54 @@ renderLifeBuilder();
 /* =====================  v14.7 END  ===================== */
 
 /* PROJECT CAMPAIGN V1 START */
+/* Fictional organization: coordination is distinct from scientific and functional sign-off. */
+(function(root){
+ 'use strict';
+ const functions={
+ '杨杨':{label:'PM / 项目统筹',scope:'整合排期、依赖、行动项与阻塞；协调专业确认和中心反馈，不代替专业签认。'},
+ '一建':{label:'RA / 注册事务',scope:'监管沟通、批准与申报版本对照、申报资料要求和正式递交；不统筹中心启动或安排首例给药。'},
+ '你':{label:'Clinical Medical / 临床医学',scope:'临床问题、方案与终点的医学依据、剂量建议和受试者安全判断；与研究者及专业职能共同评估。'},
+ 'PVP':{label:'PV / 安全医学',scope:'个例医学评估、安全信号与风险建议；不替研究者或临床医学独自批准给药、暂停或恢复。'},
+ '加琳':{label:'PV / 安全管理',scope:'安全流程、报告安排与正式出口；管理确认不代替医师的医学判断。'},
+ '则韩':{label:'STAT / 统计负责人',scope:'研究设计的统计依据、样本量、预设分析与结果解释；不独自决定推荐剂量或关全部Query。'},
+ '明夜':{label:'STAT / 统计',scope:'分析定义、分母、程序与结果核对；可记录分析决定，不承担全项目会议纪要统筹。'},
+ '肖恩':{label:'QA / 质量保证',scope:'核查体系、独立质量审阅与记录完整性；不替CMC提供药品质量依据或替DM关闭Query。'},
+ 'CMC':{label:'CMC / 药学与供应',scope:'批次、稳定性、无菌与冷链依据；药品放行由相应质量职能按程序确认。'},
+ '临床药理':{label:'Clinical Pharmacology / 临床药理',scope:'暴露、PK/PD与暴露—反应依据，支持跨职能剂量建议。'},
+ 'DM':{label:'DM / 数据管理',scope:'数据清理、Query流转、核对与锁库准备；中心答复来源、医学判断和分析影响分别确认。'},
+ '琳琳':{label:'ClinOps / CRA主管',scope:'中心可行性、访视执行与监查、源记录跟进；不独自确定临床问题或科学终点。'},
+ 'K总':{label:'ClinOps / 临床运营管理',scope:'运营资源、CRO与中心执行边界；不代替RA作正式监管沟通或医学作科学判断。'},
+ '邹婷':{label:'HR / 人力资源',scope:'岗位、任命评审、组织与交接；不验收临床资料或统筹NDA递交准备。'},
+ '苏苏':{label:'Finance / 财务',scope:'现金、预算、付款与成本假设；不替医学决定研究是否科学成立。'},
+ '老板':{label:'CEO / 公司决策',scope:'资源投入、业务取舍和组织授权；不能以公司拍板替代专业安全判断。'}
+ };
+ const chapters=[
+ ['杨杨','PM统筹启动检查和回执；RA核批准版本；医学/研究者确认给药条件；CMC与质量职能确认药品条件。',['yangyang','kzong']],
+ ['PVP','PV核安全事实并提出建议；临床医学与研究者按方案评估暂停/恢复；PM协调行动，RA处理必要的监管沟通。',['pvp','jialin']],
+ ['则韩','临床药理提供暴露依据，统计核分析，医学形成剂量建议；资源取舍由公司确认。',['zihan','mingye']],
+ ['小圆','PM汇总真实交付；各专业负责结果与限制；财务/BD支持融资，高层确认承诺。',['xiaoyuan','guyu']],
+ ['琳琳','医学/PI定义临床问题，统计确认设计依据，运营核容量；PM整合访视和资源依赖。',['miaomiao','yangyang']],
+ ['明夜','统计核预设分析与分母；医学解释临床意义；BD与财务据证据谈融资。',['zihan','mingye']],
+ ['则韩','临床药理、医学与统计形成剂量依据；RA提交认定资料并沟通，PM协调并行开发。',['zihan','pvp']],
+ ['加琳','PV负责安全评价流程及信号依据，临床医学负责方案行动建议，QA核记录与过程。',['pvp','jialin']],
+ ['黑娜','CRO和运营核中心整改；PM统筹行动项，专业职能分别确认，不以邮件替专业批准。',['kzong','heina']],
+ ['一建','RA组织EOP2监管沟通与资料要求；医学/统计提供三期科学依据，PM/运营提供资源计划。',['yijian','kzong']],
+ ['苏苏','财务确认到账预算，PM与运营落实批准范围；老板批准资源与运行权限。',['weilai','yangyang']],
+ ['肖恩','CMC提供批次、稳定性与冷链依据，质量职能确认放行；QA独立审阅，PM/运营排供应。',['xiaoen','kzong']],
+ ['杨杨','PM管理关键路径和阻塞，运营配置中心支持；专业判断不由日报完成。',['yangyang','miaomiao']],
+ ['DM','DM统筹清理和锁库准备，中心答复来源、医学判断内容、统计核分析影响，QA独立审阅。',['xiaoen','zihan']],
+ ['老板','统计产出与核查分析，医学解释结果与限制；PM记录贡献，BD/财务支撑融资。',['zihan','mingye']],
+ ['一建','RA核申报要求及跨模块一致性；各内容负责人解决专业冲突，PM追踪依赖和完成时点。',['yijian','xiaoen']],
+ ['杨杨','PM统筹递交准备，RA核申报要求，专业职能确认资料；HR只评审岗位履约与交接。',['yangyang','yijian']],
+ ['一建','RA执行正式递交并保留版本；专业职能签认内容，PM安排后续响应，老板确认资源与组织。',['yijian','kzong']]
+ ].map(([lead,scope,npc])=>({lead,scope,npc}));
+ const api={functions,chapters};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.StoryResponsibilities=api;
+})(typeof window!=='undefined'?window:globalThis);
+
 /* Fictional development campaign; calendar, costs and thresholds are game parameters. */
 (function(root){
  'use strict';
+ const responsibilities=typeof module!=='undefined'&&module.exports?require('./responsibilities.js'):root.StoryResponsibilities;
  const rows=[
  ['FIH','第一针之前：准备好的不是同一套文件','一建',1,100,5,'fih','核对版本、批次与首例条件，由相应owner确认。','按现有签字启动，差异留到会后补。','钟时讨论“首例”还是“首名”，说安全和效率都重要，实际门槛请团队评估。'],
  ['FIH','哨兵之后：谁能把判断写进记录','PVP',1,100,5,'safety','保留独立时间线，按正式标准核查并确认恢复条件。','先准备下一队列，统一结论以后再补。','她要求红色邮件改灰色，再说安全必须重视；PVP等的是可以执行的决定。'],
@@ -9395,6 +9441,7 @@ renderLifeBuilder();
  {id:'topline',month:54,index:14,progress:85,quality:80,amount:18000,proof:['supply','execution','lock','topline']},
  {id:'prenda',month:62,index:16,progress:95,quality:80,amount:8000,proof:['integration','prenda']}
  ],chapters:rows.map((r,i)=>({id:'v11_'+(i+1),n:i+1,stage:r[0],act:r[0]+' · 开发第'+(i+1)+'章',title:r[1],from:r[2],months:r[3],cost:r[4],progress:r[5],proof:r[6],honest:r[7],shortcut:r[8],politics:r[9]}))};
+ data.chapters.forEach((ch,i)=>{ch.from=responsibilities.chapters[i].lead;ch.responsibility=responsibilities.chapters[i].scope;});
  if(typeof module!=='undefined'&&module.exports)module.exports=data;else root.DragonCampaignData=data;
 })(typeof window!=='undefined'?window:globalThis);
 
@@ -9402,26 +9449,29 @@ renderLifeBuilder();
 (function(root){
  'use strict';
  const scenes=[
- {place:'首例给药前 · 项目会议室',opening:'一建把两份盖过章的文件推到你面前。附件的版本号不一样。中心已经在等今天能否安排首例给药。',turns:[
- ['一建','我这边收到的是签字版，中心拿到的是昨天的附件。你先帮我确认能不能用，我今天得给他们一个回话。'],
+ {place:'首例给药前 · 项目会议室',opening:'杨杨打开首例启动检查表，中心使用的附件与工作盘版本不一致。她把尚待确认的项目逐项圈出，等各职能确认后再协调中心安排。',turns:[
+ ['杨杨','首例启动还差版本、药品和给药条件三项确认。我负责把人和时间拉齐，不替各位签专业结论。今天什么时候能给中心回执？'],
+ ['一建','批准和申报对应的版本我核对，必要的监管沟通也由RA跟进。中心启动排期请杨杨统筹，给药条件要由医学和研究者确认。'],
  ['肖恩','哪个版本对应哪个批次？签字是真的，附件也是真的，不代表它们是一套。先别把“文件齐了”写进放行记录。'],
  ['钟时','这一页为什么写“首例”？我觉得“首名受试者”更严谨，前后要统一。安全和效率都要考虑，不能顾此失彼。'],
  ['琳琳','叫首例还是首名，中心都要问同一件事：今天能不能打？患者不能在候诊室等我们统一名词。'],
  ['钟时','这个还是请专业团队充分评估。我可以把整体情况向老板汇报，你们先给一个成熟的建议。'],
- ['一建','那我回复“材料已签”还是“给药条件待确认”？这两句话，中心会做两件不同的事。']],work:'我先核对附件版本、批次和首例条件，请各自负责的人确认。今天能不能给药，按确认结果回复中心。',shortcut:'先按现在的签字启动吧。附件差异我会后追着补，今天的日期先保住。'},
+ ['CMC','批次与运输依据我们提供，放行按相应质量程序确认。收到药不等于中心可以给药。'],
+ ['杨杨','那启动表先留待确认。请医学和研究者确认给药条件，RA核版本，药品条件也齐了，我再协调中心排期。']],work:'杨杨统筹检查和中心反馈，RA核批准版本，CMC与质量职能核药品条件。我组织医学和研究者确认首例条件，齐了再安排给药。',shortcut:'先按现在的签字启动吧。附件差异我会后追着补，今天的日期先保住。'},
  {place:'哨兵给药后 · 安全评估会',opening:'PVP把三张时间线摆在桌上。给药时间有记录，症状起始时间却有两个版本。下一队列的准备邮件已经发出。',turns:[
  ['PVP','我……先报事实。中心邮件和随访记录差了几个小时。我不能拿后收到的那封，直接替掉前一份。'],
  ['加琳','PV会内部确认，大家不要先传播不同口径。PVP，把你那张表先发给我。'],
  ['钟时','邮件标题这个红色太紧张了，改灰色吧。安全肯定是第一位的，同时也不能让团队产生不必要的焦虑。'],
  ['琳琳','颜色可以改。下一队列要不要继续准备，谁现在告诉中心？'],
- ['PVP','如果满足暂停标准，就该按标准处理；恢复也要有依据。我这张表还缺原始随访时间，不是说已经排除了风险。'],
+ ['PVP','我负责核安全事实、作个例评估和风险建议。这张表还缺原始随访时间，不能说排除了风险；暂停和恢复请临床医学与研究者按方案评估。'],
  ['钟时','我完全同意严谨。你们把材料再丰富一下，最好加横向对比。我向老板说明大家正在积极处理。']],work:'先保留两份记录，核清时间线。按正式标准判断暂停和恢复，我不把“正在核查”说成“可以继续”。',shortcut:'先准备下一队列，统一结论等PV确认后再补。现在别让中心停在这里。'},
  {place:'一期剂量讨论 · 统计投屏',opening:'两条暴露曲线停在屏幕上。高剂量的信号更醒目，但安全记录并没有跟着变得完整。老板的下一场会议还有十五分钟。',turns:[
  ['则韩','我们今天是讨论推荐剂量，还是讨论哪个数字放首页？如果要写进下一阶段方案，先把暴露和安全放在同一张矩阵里。'],
  ['明夜','高剂量那条线确实漂亮。把置信区间藏起来，还能更漂亮。漂亮不负责给下一阶段算代价。'],
  ['钟时','小数点位数先统一，图例也不要这么密。各个剂量都有优缺点，这个判断还是要尊重专业。'],
  ['老板','我不需要每个人说都有优缺点。你们建议哪个？下一步用它，承担什么风险？'],
- ['则韩','我可以签分析结论，不能替医学签安全判断。两个结论齐了，才有可供您选择的剂量建议。'],
+ ['临床药理','暴露和暴露—反应依据由我们提供，统计核分析口径。推荐剂量还要结合医学和安全判断，不能只看哪条曲线漂亮。'],
+ ['则韩','我确认统计分析，不独自定剂量。医学把药理和安全依据合起来形成建议，老板确认资源取舍，不替专业判断签字。'],
  ['钟时','对，就是这个意思。团队把建议做完整，再请老板从公司整体层面把握。']],work:'我把暴露、安全和缺口并排给您。统计和医学分别确认依据，再给出推荐剂量和它的代价。',shortcut:'先用那条最有说服力的曲线汇报，剂量依据我们后面补完整。'},
  {place:'第9月 · 一期融资彩排',opening:'小圆把第六版封面翻到背面。正文还停在第三版；团队署名已经从最后一页消失。明天投资人会问一期到底做成了什么。',turns:[
  ['小圆','先别改封面了。钱会不会来，取决于明天谁能把完成了什么、还缺什么讲清楚。'],
@@ -9436,7 +9486,7 @@ renderLifeBuilder();
  ['N院长','我关心的差异可以留样本研究，但别拿一个大而全的采样表，冒充你已经想清楚了机制。'],
  ['杨杨','那我先把所有访视都排上？不然到时候临时加，时间更来不及。'],
  ['钟时','大家的意见都很有价值，最好都体现。这个表列宽再调一下，现在读起来不够顺。'],
- ['琳琳','意见全体现，工作也得有人全做。今天不能只把列宽定下来。']],work:'主要临床问题和预设终点先定清，再请中心核容量。额外访视得说明用途，不能把“保险一点”算成资源。',shortcut:'先把大家提出的项目都写进方案，中心执行时再协调。'},
+ ['琳琳','医学和PI定科学问题，统计确认设计，我们核运营容量。意见全体现，工作也得有人全做。今天不能只把列宽定下来。']],work:'我和PI先定主要临床问题，统计确认终点与设计依据，运营核中心容量，PM整合排期。额外访视得有用途和资源。',shortcut:'先把大家提出的项目都写进方案，中心执行时再协调。'},
  {place:'第20月 · 信号融资核验',opening:'买方把一张亚组图推回来，问为什么正文和附录的分母不同。谷雨没有再翻下一页。',turns:[
  ['谷雨','对方不是没看见我们的好结果，是看见了两种好结果。明天再说“口径稍有不同”，估值就会替我们变小。'],
  ['明夜','正文只放了完成随访的，附录放了全体。两个数各自都能算出来，不能不写定义就当成同一个答案。'],
@@ -9450,7 +9500,8 @@ renderLifeBuilder();
  ['曹兰','临床优势要跟现有治疗比，不能只跟我们自己的期望比。差异到底能改变谁的治疗选择？'],
  ['钟时','目录层级有点乱。认定和剂量可以一起讨论，但专业意见要充分，最后还是请老板把关。'],
  ['老板','如果证据够，我愿意支持认定。但别为了一个名称，把下一阶段真正该做的研究省掉。'],
- ['则韩','先把支持剂量的分析写实。没有的证据，目录里多一个标题也不会长出来。']],work:'按已经核实的剂量和安全依据推进IIb，缺口另列。下一阶段不能靠一期的旧口径自动过关。',shortcut:'沿用之前最好看的剂量口径，先把IIb推起来，依据后面再整理。'},
+ ['临床药理','IIa的暴露—反应要和一期、安全范围放在一起。剂量不是统计结果好看就能独自定下来。'],
+ ['则韩','先把支持剂量的分析写实。没有的证据，目录里多一个标题也不会长出来。']],work:'我汇总临床药理、安全与统计依据形成医学剂量建议，再推进IIb；RA处理认定资料，PM协调并行排期。缺口不会靠旧口径自动过关。',shortcut:'沿用之前最好看的剂量口径，先把IIb推起来，依据后面再整理。'},
  {place:'扩展安全评估 · 会议室',opening:'加琳说还没有形成安全信号，PVP的记录里却有几项未完成的判断。钟时已经把这页标题改成了“整体可控”。',turns:[
  ['加琳','尚未形成signal，不代表我们没有工作。PV会形成统一意见，外部不要拿单个case自行解释。'],
  ['PVP','我同意不能凭单个case下结论。但这几项还没核实，我也不能凭“没有signal”把它们关掉。'],
@@ -9466,6 +9517,7 @@ renderLifeBuilder();
  ['琳琳','CRA在中心九点要做访视。每天先讲一遍昨天为什么没做完，不会多出一个CRC。'],
  ['钟时','这是关键期，大家克服一下。具体资源问题你们先形成建议，再报老板。']],work:'我把中心、CRO和Sponsor的未决责任拆清，逐项核整改。表可以每天更新，启动条件不能靠颜色通过。',shortcut:'先按Tracker已关的项目启动，剩下的问题边推进边补。'},
  {place:'EOP2 · 第34月融资与三期路径',opening:'K总只留了两页。第一页是剂量、人群和终点，第二页是缺口和费用。钟时的备份材料有八十页。',turns:[
+ ['一建','EOP2的监管沟通和资料要求由RA组织，医学和统计准备专业答复。运营资源请K总给，PM把未决项接回排期。'],
  ['K总','今天不是八十页谁讲完，是三期能不能开。方案需要的资源、现有证据能支持的范围，都在这里。'],
  ['钟时','材料我都看过，也跟各部门充分沟通过。具体剂量那个问题，请你再给老板解释一下。'],
  ['老板','我投下一阶段的钱，总得知道换来什么。你们建议的三期，到底凭哪几块数据站得住？'],
@@ -9481,11 +9533,11 @@ renderLifeBuilder();
  ['苏苏','今天先说清哪些钱已经有、哪些工作已经批。等后续到账，不代表现在默认同意超范围执行。']],work:'先按首期现金落实已经批准的范围。我把岗位、费用和不能兑现的日期列清，不替未到账的钱作承诺。',shortcut:'先把完整排期答应下来，资金和岗位后面再争取。'},
  {place:'三期供应准备 · 批次核查',opening:'肖恩把冷链记录翻到断开的那一页。钟时拿着外盒样稿，在两种蓝色之间比较。中心的首批供应已排上日程。',turns:[
  ['肖恩','这段温度记录没有来源。我问的不是有没有人说没问题，是谁能拿出当时的证据。'],
- ['瑞冬','稳定性报告我再核一下原文。这个条件能不能外推，我现在不想凭印象答。'],
+ ['CMC','稳定性和冷链条件由我们核原始依据。涉及批次处置和放行，需要相应质量职能确认，不是让毒理或QA替我们补结论。'],
  ['钟时','外盒这个蓝看起来更稳重。上市以后也要考虑品牌统一，大家别只盯着局部。'],
  ['琳琳','现在还没上市，中心先问药能不能收。盒子再稳重，也替不了冷链记录。'],
- ['肖恩','补核可以，补造不行。没有证据的批次，要写清怎么处理，不是把缺口变成一句“已确认”。'],
- ['钟时','质量一定要守住，同时别影响供应节奏。具体安排团队评估后给一个方案。']],work:'先核批次、稳定性和冷链来源。能放行的按依据确认，有缺口的批次另作处理，不让外盒颜色替我们放行。',shortcut:'先按供应日期发出，缺失的记录让供应商后补。'},
+ ['肖恩','QA核记录完整性与处置程序，不代替CMC提供稳定性结论。补核可以，补造不行，没有依据的批次必须保留缺口和真实处置。'],
+ ['钟时','质量一定要守住，同时别影响供应节奏。具体安排团队评估后给一个方案。']],work:'请CMC提供批次、稳定性和冷链依据，质量职能确认放行，QA核过程。我确认医学需求，PM和运营据此排供应，不拿外盒颜色替放行。',shortcut:'先按供应日期发出，缺失的记录让供应商后补。'},
  {place:'三期执行 · 进度落后后的每日会',opening:'杨杨的九点日报还没发完，中心已经在问谁接替休假的CRA。屏幕上“完成80%”停了三天。',turns:[
  ['杨杨','老板问为什么还是80%。我能不能让每个人每天更新两次？至少变化能看见。'],
  ['琳琳','剩下20%不是因为大家忘了更新。少一个CRC，缺一项安排，发两次日报还是少一个人。'],
@@ -9494,12 +9546,13 @@ renderLifeBuilder();
  ['杨杨','那哪些事我可以直接安排？我不想每次问完一圈，最后又回到等你点头。'],
  ['钟时','沟通充分一点总没坏处。具体怎么提速，你们拿建议给老板。']],work:'先按现有资源解决真正的阻塞，安排中心支持和接替。80%怎么变成可验收的交付，我逐项核，不增加一份空日报。',shortcut:'每日会和两次日报都照做，剩下20%我们加班赶出来。'},
  {place:'锁库前夜 · 盲态数据核查',opening:'锁库日期已经写进高层日程。则韩、DM和肖恩发现几项可能影响主要终点的关键Query。钟时问能不能把红色状态改成“提示”。',turns:[
+ ['DM','关键Query我这边流转，中心要答来源，医学要判内容，统计要核分析影响。准备齐了才进入锁库确认，我不能替三个职能全部签掉。'],
  ['则韩','它是不是红色，与它会不会影响主要分析没有关系。来源未确认，就不能按“无影响”关掉。'],
  ['明夜','现在关了，明天表能跑。将来有人问这几个值怎么来的，跑得快的那张表不会替我们回答。'],
  ['肖恩','我们可以记录调查过程和延期。不能把未观察到的东西补写成已观察到，我也不会给这种补写签字。'],
  ['钟时','日期大家都承诺过了，要有契约精神。专业上请你们确保质量，形式上是不是可以先改成提示？'],
  ['则韩','锁库不是把形式锁住。要按时，得有真实的闭合依据；否则要有人接受延期。'],
- ['钟时','我没有让大家降低质量。你们把风险充分评估，我向老板汇报团队的专业建议。']],work:'先调查关键Query，来源、判断和处置分别留清楚。能真实闭合才锁，不能把改成提示当成关闭。',shortcut:'先按日期锁库，这几项用现有口径关闭，来源差异以后解释。'},
+ ['钟时','我没有让大家降低质量。你们把风险充分评估，我向老板汇报团队的专业建议。']],work:'DM统筹调查和流转，中心核来源，我核医学判断，统计评估分析影响，QA作独立审阅。各自确认后再锁，改成提示不算关闭。',shortcut:'先按日期锁库，这几项用现有口径关闭，来源差异以后解释。'},
  {place:'第54月 · Topline与下一笔钱',opening:'老板打开汇报第一页。钟时已经把“本人领导下完成”放进了标题。投资人将在十分钟后接入会议。',turns:[
  ['老板','先告诉我主要结果成立不成立。资金只够下一段的话，我们优先做什么？'],
  ['钟时','在我的统筹下，团队克服了很多困难。我也反复审阅了结果，整体方向是积极的。'],
@@ -9510,30 +9563,33 @@ renderLifeBuilder();
  {place:'NDA整合 · 模块对齐会',opening:'同一个安全结论，在三个模块里有三种写法。一建催最后的回复，钟时正在逐个改逗号。',turns:[
  ['一建','目录我能整合，医学结论我不能替你们定。这三句话，到底哪句才是提交版？我今天必须有一版。'],
  ['PVP','安全汇总要保留核查范围。临床模块删掉那句限制，就像PV已经确认了更多东西。'],
- ['肖恩','批次描述也不一致。把术语改一样，不能让两个不同的事实变成同一个事实。'],
+ ['CMC','批次引用由我们回查，RA核申报模块要求。把术语改一样，不能让两个不同的批次事实变成同一个事实。'],
+ ['肖恩','QA核追溯和批准链，各模块内容由相应职能确认。不能用“都看过”代替确认。'],
  ['钟时','标点先规范起来。我都看了三轮了，怎么还有不一致？各职能之间要加强协同。'],
  ['K总','不一致就在眼前：谁确认事实、谁批准文字、谁处理冲突。三轮改逗号，没有替任何一个人完成判断。'],
  ['一建','给我每处冲突的结论和确认人。我可以合并文件，不能把“大家都看过”装订成批准。']],work:'我们逐处核安全、批次和临床结论的冲突，确认人跟着结论走。真正对齐后再合并，不只统一词。',shortcut:'先统一术语和格式把包整出来，各模块的差异会后再追。'},
- {place:'第62月 · 递交准备与任命复核',opening:'邹婷带来岗位评审表。小圆带来递交费用。钟时先问谁在高层会上第一个发言。',turns:[
+ {place:'第62月 · 递交准备与任命复核',opening:'杨杨把递交准备的未决项投上屏幕。一建核申报要求，苏苏带来响应预算，邹婷在另一本表里核岗位履约。钟时先问谁在高层会上第一个发言。',turns:[
+ ['杨杨','递交准备我按依赖逐项跟，专业确认谁还没完成就列谁。岗位评审另外记，不能拿任命讨论替资料验收。'],
+ ['一建','申报要求和版本链由RA核，各模块结论由对应职能签认。齐不齐请按提交清单看，不看今天谁先发言。'],
  ['邹婷','大家都认可你很辛苦。岗位评审还要看实际承担的职责、交接和授权，不能只把加班时数写进去。'],
- ['小圆','这次费用付完，还要有回应后续问题的钱。递交窗口不能拿来掩盖没完成的复核。'],
+ ['苏苏','递交费付完，还要留响应问题的钱。可用现金和后续预算我核，不让窗口把未完成的专业复核抹掉。'],
  ['钟时','高层汇报我先讲，你们再补充。组织上要稳，不要因为临近节点就急着调整。'],
  ['K总','稳也有两种。有人能接替，是稳；每件事只有一个人知道，是表面没出事。'],
  ['老板','我看实际履行了什么，不是看谁在会议里先说了什么。能支持任命的材料和递交准备一起复核。'],
- ['邹婷','那今天把真实职责和未完成项都列清。该确认的不能再用“下一季度看看”拖过去。']],work:'递交准备如实复核，实际职责、交接和批准记录一起交给评审。未完成的我会写出来，不用加班替它证明。',shortcut:'先把递交窗口抢下来，岗位和资料复核等节点过了再说。'},
+ ['邹婷','岗位职责、履约和交接由我组织评审。申报材料请专业团队确认，我不会给资料是否成立作验收。']],work:'PM统筹准备，RA核申报要求，专业职能确认资料，财务核响应预算。实际履约另交HR评审，未完成项如实保留。',shortcut:'先把递交窗口抢下来，岗位和资料复核等节点过了再说。'},
  {place:'NDA递交日 · 最后一轮签署',opening:'一建的鼠标停在提交按钮上。所有人都等你说下一句。你面前既有一路积累的证据，也有一路没有解决的事。',turns:[
  ['一建','附件清单到这里了。请确认我们递交的是已核实的这套，不是为了赶窗口把待补项换一个名字。'],
  ['肖恩','递交之后还会有人问来源。今天没人问，不代表以后也没人问。'],
  ['钟时','这个节点走到现在很不容易。大家要站在公司角度看问题，后续工作继续充分配合。'],
  ['老板','能递交就如实递交，不能就把原因和代价讲清。别到最后只剩一句团队共同承担。'],
- ['K总','递交不是获批。后面谁回应、谁能替班、哪些决定有边界，现在就得留给团队。'],
+ ['杨杨','递交不是获批。RA对接监管请求，我统筹响应时点和依赖，各内容负责人回答专业问题。不能又把所有入口收到一个人那里。'],
  ['明夜','按钮按下去很快。有人会被写进履历，有人会继续改附件。你最好知道自己留下的是哪一种安排。']],work:'按真实资料决定递交、补证还是停止。下一阶段的责任和接替照记录执行，我不把所有问题又收回自己手里。',shortcut:'先按窗口递交，剩下的后续再解释。我继续把所有回复接住，别让节点卡在今天。'}
  ];
  const special={
- safetyReview:['暂停和恢复条件已有记录。我请PVP保留独立医学意见，待补材料和今天的安全决定分开，请正式复核。','把早期时间线拿出来，请PVP说医学判断、加琳确认正式出口。今天需要的行动先决定，横向材料随后补。'],
+ safetyReview:['暂停和恢复条件已有记录。我请PVP保留安全医学意见，再由临床医学与研究者按方案评估行动，PM协调落实。待补材料和当前决定分开。','把早期时间线拿出来，请PVP说安全评估、加琳确认报告出口，临床医学和研究者评估行动。今天需要的事先决定，横向材料随后补。'],
  present:'我可以亲自回答一期限制。这里有实际交付记录，台上保留团队署名，请负责这块的人一起回答。',
  exploration:'主要问题不动。N院长的机制子研究另列用途、预算和访视；钱从哪里出、额外工作谁做，一起确认。',
- btd:'现有临床优势和有效证据支持提交认定请求，我建议现在提交。IIb照预设规则继续，认定不替我们做研究。',
+ btd:'现有临床优势和有效证据支持认定请求，我提供医学依据，请RA组织提交和沟通，PM协调排期。IIb照预设规则继续，认定不替研究。',
  authority:'老板，前面的交付和职能支持在这里，首期预算也已到账。请确认这个工作包的运行范围和副总监评审，让我在批准范围内调资源。',
  delegation:'岗位和供应已经批了，我按这个范围安排接替。九点会改成限时阻塞会，只把需要决定的事带进来。',
  delay:'这几个Query先查清，不能补造来源。我接受延期，把费用、时间和分析边界一起报上去。',
@@ -9559,7 +9615,7 @@ renderLifeBuilder();
  ['肖恩','关键Query按真实来源处置过，Topline能沿这条路径追溯。','锁库时留下的来源问题还在。现在结果再漂亮，也不能绕过那几项未确认。'],
  ['谷雨','Topline的限制对外讲过了，申报包里的结论要与它一致。','上一轮先讲积极结果，限制放后面。申报不是融资彩排，缺口还得回来面对。'],
  ['一建','模块冲突核过，确认人也在。今天查能否提交这套，不再只问格式齐没齐。','先拼出的包还带着模块差异。窗口近了，不会把三个结论自动变成一个。'],
- ['邹婷','准备复核和真实职责已经留下记录，今天请按那份签署，不临时改成口头授权。','上次抢了窗口、复核留到后面。今天就是后面，不能让提交按钮替复核签字。']
+ ['杨杨','专业复核和实际职责分别有记录。RA核提交版本，各职能签专业内容，不能临时换成口头授权。','上次抢了窗口、复核留到后面。今天就是后面，不能让提交按钮替复核签字。']
  ];
  function text(index,p){const s=scenes[index],parts=[s.opening];
   if(index>0){const h=p.history&&p.history.find(x=>x.index===index-1),a=callbacks[index];if(h)parts.push(a[0]+'：「'+a[h.kind==='shortcut'||h.kind==='fraud'?2:1]+'」');}
@@ -9615,11 +9671,11 @@ renderLifeBuilder();
  safety:[['加琳','两例异常的原始资料发你了，评估明天截止，今晚能不能先把时间线串一下？'],['PVP','基线、给药和化验时间还要核，最终判断我按流程出，别今晚先写成全部确认。']],
  stats:[['明夜','两个PPT分母不一样。别替我重算全世界，先看看定义和版本谁在撒谎。'],['则韩','截止日也核，不能只挑看起来更顺的那一版。']],
  reg:[['一建','回复只缺最后一句医学立场，我今天不需要你重写全文。'],['一建','但要能支持这句结论，不能为了锁版把语气写得比证据更肯定。']],
- pi:[['贤人','MK主任明早只有二十分钟，完整材料都在，问题还没压出来。'],['MK主任','别拿二十分钟给我读目录。我需要知道哪些问题真的需要我判断。']],
+ pi:[['Parker','主任的时间我跟秘书确认了，明早二十分钟。医学问题请你准备，我协调会面和后续行动。'],['MK主任','别拿二十分钟给我读目录。我需要知道哪些问题真的需要我判断。']],
  cro:[['黑娜','这句需要Sponsor确认，我们等贵方回复后再发。'],['K总','她等的是一句责任，不是一句客气。看清楚我们到底确认哪一部分。']],
  version:[['K总','共享盘四个Final，明早谁敢保证打开的是哪一版？'],['杨杨','我这个是昨天晚上更新的，别人的修改是不是又合进来了，我还没问到。']],
  site:[['琳琳','三个部门都加要求，再采一次样，CRA也许还能扛。真的非这周不可吗？'],['林主任','我的中心答应过的会做。新加的要求，请把用途和人手说清，不要都叫顺便。']],
- decision:[['明夜','三场会，三个“基本同意”。你要不要趁大家还记得，把究竟决定了什么写下来？'],['则韩','未决定的就写未决定，不要帮会议变得比当时更果断。']],
+ decision:[['杨杨','三场会，三种“基本同意”。纪要和未决项我统筹，专业结论请对应的人确认，不由我补写成已经决定。'],['则韩','分析结论我确认，医学判断请医学确认。没决定的就写没决定，别帮会议变得比当时更果断。']],
  tfl:[['则韩','TFL数值没问题，脚注把临床解释写成了结论。明天QC前能不能先核医学边界？'],['则韩','请别动统计结果，也别把这张表扩成今晚整套文件的复核。']],
  mentor:[['PVP','能不能帮我看看判断框架？时间关系、替代解释，我怕漏了一项。'],['PVP','不是请你替我签。我想能说清自己的判断，再走内部确认。']],
  competitor:[['曹兰','竞品刚出结果，明早老板会问。终点、人群、停药后结果，真正改变判断的是这三项。'],['曹兰','先区分可比和不可比，新闻标题不是我们的研究依据。']],
@@ -9667,6 +9723,11 @@ renderLifeBuilder();
  const privateReplies={
  rom_dinner:['我坐下吃完，今晚这顿不打开电脑。','我先发最紧急那封，再把电脑收起来。','你先回去吧，我还要两个小时。'],rom_trip:['好，电脑合上，陪你听完这张专辑。','我只发今晚必须发的纪要，然后合上。','我还是把所有后续工作都清完吧。'],rom_sick:['我请半天假，电脑关掉，今天先休息。','只做明天必须由我确认的一页，然后休息。','我没事，你别过来了。'],rom_argument:['你说得对，这半年我把所有关系都排在工作后面了。','每周一个晚上不处理非紧急工作，我们先试四周。','这次项目真的关键，请你再理解一下。'],rom_weekend:['去，手机只留真正紧急联系人的提醒。','我去两个小时，回来再处理必要工作。','这周还是算了，我想把下周材料做完。'],ph_friend_dinner:['我下楼，二十分钟不聊工作。','下次吧，我继续改材料。','电话先别挂，我一边改一边聊。'],ph_pi_thanks:['谢谢主任，您记得这件事，对我很重要。今天先不打扰您了。','谢谢主任，方便再聊十分钟下一步吗？','谢谢，谢谢，我这边还有工作，先挂了。'],ph_pm_breakdown:['你先说完，我们再定明天第一件补什么。','现在别哭，把遗漏清单发我。','我把电话转给你的直属经理，请他处理。'],ph_vp_midnight:['明早九点我带现有决定记录，按记录讨论，今晚先到这里。','现在可以，我陪您把这个问题再讨论透。','今晚不接了，我明早再回复。'],ph_mingye_gossip:['我到外面，你说，信息只用来准备。','你发文字给我，留个记录。','今晚我不想知道，明天再说吧。'],ph_home:['先不说项目，聊聊你们今天怎么样？','我给你讲讲这个项目为什么重要。','我在忙，晚点打给你。'],home_deadline:['我收尾真正必须今晚做的，剩下明天，回来前告诉你。','今晚别等我，我把所有东西清完。','先不说工作了，你今天怎么样？'],home_weekend:['我合电脑，紧急的会打电话，我们走吧。','上午两小时，下午按原计划出门。','就这一次，下周一定。'],home_truth:['我确实把公司的情绪带回家了，让你一直等我从会议里出来。','回家后除安全事件外不处理群消息，我们把边界定下来。','没事，我先去洗澡。'],love_a:['我接，先到楼梯间，你说。','我还在改方案，今晚先挂了。','我现在不接，让它自己停吧。'],love_b:['我去，电脑留在包里，今天陪你。','我带电脑过去，可以坐你对面改材料吗？','改天吧，这周真的不行。'],love_c:['我怕自己慢慢变得不在乎，连你问我这句话都想用标准答案应付。','只是工作压力，有几个节点要赶，我会调整。','没事，真的。']};
  Object.keys(privateScenes).forEach(k=>add(k,privateScenes[k],privateReplies[k]));
+ events.d147_decision.from='杨杨';events.d147_decision.opening='杨杨发现三场会里同一问题出现三种“基本同意”。作为PM，她要整合真实决定、未决项与后续行动，请你确认其中的医学结论。';
+ events.d147_decision.replies[0]='你统筹纪要和行动项，我确认医学结论；其他专业各自确认，未决定的保留未决定。';
+ events.d147_decision.rewards=[{yangyang:4,kzong:4},{yangyang:-1},null];
+ events.d147_pi.opening='Parker与秘书确认了MK主任明早的二十分钟空档。临床医学团队的材料齐了，需要把真正请PI判断的问题压成一页。';
+ events.v14_successor.replies[0]='给杨杨项目协调边界，给琳琳运营执行边界，专业判断各自签认，留一张可交接的运行图。';
  const api={events};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.SideDialogue=api;
 })(typeof window!=='undefined'?window:globalThis);
 
@@ -9676,6 +9737,7 @@ renderLifeBuilder();
  const data=typeof module!=='undefined'&&module.exports?require('./campaign-v2-data.js'):root.DragonCampaignData;
  const clone=x=>JSON.parse(JSON.stringify(x)),cap=x=>Math.max(0,Math.min(100,x));
  const dialogue=typeof module!=='undefined'&&module.exports?require('./dialogue-scenes.js'):root.StoryDialogue;
+ const responsibilities=typeof module!=='undefined'&&module.exports?require('./responsibilities.js'):root.StoryResponsibilities;
  const metrics=['progress','cash','quality','coalition','boss','credit','obstruction'];
  const labels={progress:'验收进度',cash:'现金（万元）',quality:'已核查质量',coalition:'职能支持',boss:'老板认可',credit:'交付记录',obstruction:'管理摩擦'};
  function fresh(migrated){return Object.assign({},data.initial,{version:2,product:data.product.code,flags:{},proofs:{},risks:[],history:[],entries:{},financing:{},milestones:{},coalition:30,boss:30,credit:10,obstruction:20,rank:0,authority:0,promotionHistory:[],btd:{status:'potential'},teamReady:false,dailyMeeting:false,meetingReformed:false,careCount:0,finished:false,migrated:!!migrated,offers:{newCompany:Math.random()<0.60},events:[]});}
@@ -9747,8 +9809,8 @@ renderLifeBuilder();
   const rows=available(p,index);
   const text='DO-8006 · 皮下注射液。开发至NDA递交；认定需实际数据，不是开局身份。\n\n'+d.politics+'\n\n'+(p.risks.some(r=>r.status!=='closed')?'前期异议仍在：'+p.risks.filter(r=>r.status!=='closed').map(r=>r.key).join('、')+'。':'已有记录将决定本阶段可以采取的行动。')+'\n\n'+summary(p);
   const ch={id:d.id,n:d.n,stage:d.stage,act:d.act,title:d.title,aside:{from:d.from,text:'当前交付：'+d.honest},text,campaign:true,choices:rows.map((r,j)=>({t:r.t,route:r.route,achievement:'a'+(index*3+Math.min(j,2)+1),achievementName:d.title,e:{progress:0,trust:r.kind==='shortcut'?3:-1,power:r.kind==='authority'?4:0,morale:r.kind==='shortcut'?-2:1,heart:r.kind==='shortcut'?2:2,sanity:r.kind==='shortcut'?-2:0},npc:r.kind==='shortcut'?{}:Object.fromEntries((index===1?['pvp','jialin']:index===2?['zihan','mingye']:index===4?['miaomiao','yangyang']:index===8?['kzong','heina']:index===13?['xiaoen','zihan']:['yijian','kzong']).map(k=>[k,2])),r:r.kind==='shortcut'?'表面日期保住了，未核实的内容仍留下来源与责任记录。':'实际交付、限制与专业owner一并记录。',project:{set:{}},record:r.kind==='shortcut'?undefined:'campaign_'+d.proof,campaignChoice:{index,kind:r.kind,slot:j,extraCost:r.extraCost||0,extraMonths:r.extraMonths||0,context:false}}))};
-  ch.text=dialogue.text(index,p)+'\n\n'+summary(p);ch.location=dialogue.scenes[index].place;ch.aside=undefined;
-  ch.choices.forEach(c=>{c.t=dialogue.choice(index,c.campaignChoice.kind,p);});
+  ch.text=dialogue.text(index,p)+'\n\n'+summary(p);ch.location=dialogue.scenes[index].place;ch.aside=undefined;ch.from=d.from;ch.responsibility=d.responsibility;
+  ch.choices.forEach(c=>{c.t=dialogue.choice(index,c.campaignChoice.kind,p);c.npc=['shortcut','fraud','concentrate'].includes(c.campaignChoice.kind)?{}:Object.fromEntries(responsibilities.chapters[index].npc.map(k=>[k,2]));});
   return ch;
  }
  function apply(p,c){
@@ -10049,14 +10111,15 @@ renderLifeBuilder();
 (function(root){
  'use strict';
  const D=root.StoryDialogue,E=root.SideDialogue.events;
+ NPCs.yijian.role='RA / 注册事务';NPCs.yangyang.role='PM / 项目管理';
  const pools=[V11_EVENTS,DELIVERY_EVENTS_147,PI_CHAIN_EVENTS,ROMANCE_ENCOUNTERS,PHONE_EVENTS,root.DragonHomeEvents||[]];
  function prepare(ev){
   if(!ev||!E[ev.id]||ev._spokenScene)return ev;
   const s=E[ev.id];ev._spokenScene=true;ev.originalText=ev.text;
-  const opening=String(ev.text||'').split('\n\n')[0];
+  const opening=s.opening||String(ev.text||'').split('\n\n')[0];if(s.from)ev.from=s.from;
   // Retain the concrete setup; actor intent is expressed in the following exchange.
   ev.text=opening+'\n\n'+s.turns.map(([n,t])=>n+'：「'+t+'」').join('\n\n');
-  (ev.choices||[]).forEach((c,i)=>{if(s.replies[i])c.t='「'+s.replies[i]+'」';});return ev;
+  (ev.choices||[]).forEach((c,i)=>{if(s.replies[i])c.t='「'+s.replies[i]+'」';if(s.rewards&&s.rewards[i])c.npc=Object.assign({},s.rewards[i]);});return ev;
  }
  pools.forEach(a=>a.forEach(prepare));
  Object.keys(LOVE_META).forEach(k=>prepare(Object.assign(LOVE_META[k],{id:'love_'+k})));
@@ -10068,7 +10131,7 @@ renderLifeBuilder();
   return replies.apply(this,arguments);
  };
  const render=renderChapter;renderChapter=function(){const r=render.apply(this,arguments);decorate();return r;};root.renderChapter=renderChapter;
- function role(n){const npc=Object.values(NPCs).find(x=>x.name===n);return npc?npc.role:n==='钟时'?'Clinical Development VP':n==='你'?'玩家 · 当前发言':n==='对方'?'工作之外的关系':'私人联系';}
+ function role(n){const f=root.StoryResponsibilities.functions[n];if(f)return f.label;const npc=Object.values(NPCs).find(x=>x.name===n);return npc?npc.role:n==='钟时'?'Clinical Development VP':n==='对方'?'工作之外的关系':'私人联系';}
  function html(text){return '<div class="sd-dialogue" aria-label="现场对话">'+String(text||'').split(/\n\n+/).filter(Boolean).map(p=>{
   const m=p.match(/^([^：「\n]{1,12})：「([\s\S]+)」$/);
   if(!m){if(p.startsWith('验收进度 '))return '<details class="sd-summary"><summary>查看本阶段项目记录</summary><p>'+esc(p)+'</p></details>';return '<p class="sd-action">'+esc(p)+'</p>';}
@@ -10122,7 +10185,7 @@ renderLifeBuilder();
  ];
  const valid=(p,key)=>!!p.proofs[key]&&!p.risks.some(r=>r.key===key&&r.status!=='closed');
  const responses=[
- ['一建','那我按核实的这套回复中心，附件和批次一起留存。不是再发一句“材料已齐”。','我先把今天的回复发出去。差异还在，后面问到，得有人把那一段补核。'],
+ ['杨杨','专业条件和版本各自确认了，我按启动表协调中心排期与反馈，RA继续跟监管版本。不是再发一句“材料已齐”。','启动表仍有待确认项。我会继续跟各职能，中心是否能给药不能由我把日期排上就算通过。'],
  ['PVP','我的独立时间线和限制保留了。恢复条件以后可以沿这条记录核，不必猜当时是谁点头。','我会保留当前版本。统一结论没有核清之前，我不能把待评估改成已排除。'],
  ['则韩','这次推荐剂量有对应依据。下一阶段引用它时，安全范围和分析限制也要一起带。','曲线可以放上去。有人追问为什么选这个剂量，仍然需要这次没有完成的依据。'],
  ['小圆','结论、限制和负责的人都放在材料里了。明天问到，不用再隔着三层找答案。','彩排可以继续。钱会不会来，要看实际证据；统一发言没有替我们增加一块数据。'],
@@ -10138,7 +10201,7 @@ renderLifeBuilder();
  ['则韩','来源和处置有记录了。是否延期与分析边界也保留，后续看结果的人可以追溯。','锁库日期可以往前走，来源问题不会跟着消失。下一张表仍要背着它。'],
  ['谷雨','我按可追溯的结果继续谈，不拿一句积极替代限制。贡献是谁做的，也留在正式材料里。','积极的标题能先发出去。钱和后续尽调要面对的，仍是完整的数据和来源。'],
  ['一建','这次能整合的是确认后的结论，不只是一样的术语。以后问模块冲突，我有对应记录可找。','包整出来了，冲突还没消失。递交前仍要有人确认哪句是真正的结论。'],
- ['邹婷','职责与复核都有材料，后续评审按真实履约看。辛苦值得承认，但不能替批准记录。','窗口先保留了。评审和复核没有因为临近递交而自动通过，后面还是要补。'],
+ ['杨杨','递交准备有各职能的确认，RA核版本和申报要求；岗位材料另交HR评审。两套确认都不能靠辛苦替代。','窗口先保留了，专业确认还待补。我跟准备清单，HR另跟岗位评审，不把两件事混成一次通过。'],
  ['一建','按真实核验结果记录这次递交判断。即使递交完成，下一阶段的回复也不能当作已经获批。','我会保留这次选择和仍待核查的附件。按没按按钮，与资料能不能成立，是两份记录。']
  ];
  function snapshot(index,p){const d=ProjectCampaignV2.data.chapters[index],f=ProjectCampaignV2.data.financing.find(x=>x.month>=p.months&&!p.financing[x.id]?.settled);return{index,title:files[index][0],surface:files[index][1],risk:files[index][2],rows:files[index].slice(3),verified:valid(p,d.proof),remaining:f?Math.max(0,f.month-p.months):null,due:f&&f.month,proof:d.proof};}
@@ -10148,7 +10211,7 @@ renderLifeBuilder();
   if(!S.meetingMinutes)S.meetingMinutes=[];
   S.meetingMinutes.push({chapter:m.index+1,title:d.title,month:p.months,reply:c.t,kind:h.kind,proof:d.proof,verified:ok,
    conclusion:ok?'【'+files[m.index][2]+'】已形成可追溯交付；具体限制与专业确认保留在阶段记录。':'【'+files[m.index][2]+'】本次未形成有效的可追溯交付；日期与口径不能代替来源核查。',
-   authority:p.authority,rank:p.rank,notes:p.events.slice(-3)});
+   authority:p.authority,rank:p.rank,responsibility:d.responsibility,notes:p.events.slice(-3)});
  }return r;};root.applyChoice=applyChoice;
  const api={files,snapshot,valid};root.MeetingDocuments=api;
  if(!document.documentElement||!root.MutationObserver)return;
@@ -10160,6 +10223,8 @@ renderLifeBuilder();
   const ch=runChapters[chapterIdx],p=S.campaign,v=snapshot(chapterIdx,p),panel=document.createElement('section');panel.className='md-workspace';
   const names=[...new Set(StoryDialogue.scenes[chapterIdx].turns.map(x=>x[0]))].filter(n=>n!=='你');
   panel.innerHTML='<details class="md-share" open><summary><span>▣ SCREEN SHARE / 当前展示文件</span><b>'+esc(v.title)+'</b></summary><div class="md-paper"><header>DRAGON BIOTECH <small>内部审阅 · 第'+(chapterIdx+1)+'章</small></header><p class="md-marked">'+esc(v.surface)+'<span>请再统一一下</span></p><div class="md-paper-rows">'+v.rows.map(n=>'<div><span>'+esc(n)+'</span><b>'+esc(v.verified?'已有阶段核查记录':'本阶段待核查')+'</b></div>').join('')+'</div><footer>批注最醒目的地方，未必是决定项目成败的地方。</footer></div></details><div class="md-agenda"><section><small>明面会议 · 正在纠缠</small><p>'+esc(v.surface)+'</p></section><section class="md-risk '+(!v.verified?'md-pending':'')+'"><small>真实业务 · '+(v.verified?'已有依据':'悬而未决')+'</small><p>'+esc(v.risk)+'</p><b>'+(v.remaining!==null?'距第'+v.due+'月融资核验 '+v.remaining+' 个月':'按当前阶段递交／响应条件核验')+'</b><span>项目时间按选择结算；限时会议按屏幕倒计时。</span></section></div><section class="md-room"><header><b>参会者 · 职能现场</b><small>悬停或聚焦回复，查看预计关系变化</small></header><div class="md-roster">'+names.map(n=>'<div data-person="'+esc(n)+'">'+(PortraitResolver.url(n)?'<img src="'+esc(PortraitResolver.url(n))+'" alt="'+esc(n)+'">':'<i>'+esc(n.slice(0,1))+'</i>')+'<b>'+esc(n)+'</b><small data-room-note>'+esc(n==='钟时'?'关注表面议题':'等待业务回应')+'</small></div>').join('')+(chapterIdx===13?'<div data-person="DM"><i>DM</i><b>数据管理</b><small>关键Query待确认</small></div>':'')+'</div></section>';
+  const duplicate=panel.querySelectorAll('[data-person="DM"]');if(duplicate.length>1)duplicate[1].remove();
+  const duty=document.createElement('details');duty.className='md-duty';duty.innerHTML='<summary>本场职责分工</summary><p>'+esc(ch.responsibility)+'</p>';panel.appendChild(duty);
   const stage=scene.querySelector('.ow-stage'),dialogue=scene.querySelector('.sd-dialogue');if(stage)stage.after(panel);else if(dialogue)dialogue.before(panel);else scene.prepend(panel);
   const choices=scene.querySelector('.choices');if(choices){const box=document.createElement('div');box.innerHTML=minutesHTML(null);choices.after(box.firstElementChild);}
   scene.querySelectorAll('button[onclick^="pickChapter("]').forEach(b=>{const i=Number(b.getAttribute('onclick').match(/\((\d+)/)[1]);const show=()=>{const c=presentedChoice(ch.choices,i);panel.querySelectorAll('[data-person]').forEach(row=>{const n=row.dataset.person,key=Object.keys(NPCs).find(k=>NPCs[k].name===n),delta=n==='钟时'?c.e&&c.e.trust:key&&c.npc&&c.npc[key];row.classList.toggle('md-gain',delta>0);row.classList.toggle('md-loss',delta<0);row.querySelector('[data-room-note]')?.replaceChildren(document.createTextNode(delta?'预计关系 '+(delta>0?'+':'')+delta:n==='钟时'?'关注表面议题':'本选项无直接关系增减'));});};const clear=()=>{panel.querySelectorAll('[data-person]').forEach(row=>{row.classList.remove('md-gain','md-loss');row.querySelector('[data-room-note]')?.replaceChildren(document.createTextNode(row.dataset.person==='钟时'?'关注表面议题':'等待业务回应'));});};b.addEventListener('mouseenter',show);b.addEventListener('focus',show);b.addEventListener('mouseleave',clear);b.addEventListener('blur',clear);});
@@ -10217,13 +10282,14 @@ renderLifeBuilder();
   if(!scene.querySelector('.ow-stage')){
    const ch=data.chapters[Math.min(17,chapterIdx)],event=root._sceneMode==='event'&&root._evObj&&root._evObj.ev||S.coverage&&S.coverage.current&&DELIVERY_EVENTS_147.find(e=>e.id===S.coverage.current.eventId);
    const raw=(scene.textContent||''),from=event&&(event.from||event.npc)||ch.from;
-   let person=event&&event.from?event.from:PortraitResolver.url(from)?from:(raw.includes('钟时')?'钟时':ch.from);
+   let person=event&&event.from?event.from:PortraitResolver.url(from)||root.StoryResponsibilities&&StoryResponsibilities.functions[from]?from:(raw.includes('钟时')?'钟时':ch.from);
    if(projectBattleState)person=projectBattleState.opponent==='vp'?'钟时':NPCs[projectBattleState.opponent]&&NPCs[projectBattleState.opponent].name||'会议发言人';
    else if(duelState)person='钟时';else if(meetingState)person=MEETING_ROUNDS[meetingState.round]&&MEETING_ROUNDS[meetingState.round].who||'会议发言人';
    else if(root._homeEv||root._romEv||root._lovePending)person='私人时间';
    const npc=Object.values(NPCs).find(x=>x.name===person);
+   const personFunction=root.StoryResponsibilities&&StoryResponsibilities.functions[person];
    const online=!!(event&&event.phone)||/短信|微信|群消息|来电|手机亮/.test(raw.slice(0,300));scene.classList.toggle('ow-online',online);
-   const stage=document.createElement('div');stage.className='ow-stage';stage.innerHTML='<div class="ow-location"><small>'+esc(online?'OFFICE MESSENGER':'CLINICAL DEVELOPMENT / '+ch.stage)+'</small><h3>'+esc(!event&&root.StoryDialogue?StoryDialogue.scenes[Math.min(17,chapterIdx)].place:person)+'</h3><p>'+esc(npc?npc.role:person==='钟时'?'Clinical Development VP':'工作之外的联系')+'</p></div>'+(PortraitResolver.url(person)?'<img class="ow-scene-portrait" src="'+esc(PortraitResolver.url(person))+'" alt="'+esc(person)+'立绘">':'<div class="ow-anonymous" aria-hidden="true">'+(online?'☎':'☕')+'</div>');const sub=scene.querySelector('.scene-sub')||scene.querySelector('.scene-title');if(sub)sub.after(stage);else scene.prepend(stage);
+   const stage=document.createElement('div');stage.className='ow-stage';stage.innerHTML='<div class="ow-location"><small>'+esc(online?'OFFICE MESSENGER':'CLINICAL DEVELOPMENT / '+ch.stage)+'</small><h3>'+esc(!event&&root.StoryDialogue?StoryDialogue.scenes[Math.min(17,chapterIdx)].place:person)+'</h3><p>'+esc(personFunction?personFunction.label:npc?npc.role:person==='钟时'?'Clinical Development VP':'工作之外的联系')+'</p></div>'+(PortraitResolver.url(person)?'<img class="ow-scene-portrait" src="'+esc(PortraitResolver.url(person))+'" alt="'+esc(person)+'立绘">':'<div class="ow-anonymous" aria-hidden="true">'+(online?'☎':'☕')+'</div>');const sub=scene.querySelector('.scene-sub')||scene.querySelector('.scene-title');if(sub)sub.after(stage);else scene.prepend(stage);
    const label=scene.querySelector('.vp-name');if(label)label.textContent='会议现场 · '+ch.stage+' / '+(online?'线上沟通':'临床开发');
    if(!event){scene.querySelectorAll('.dialogue-narration').forEach(n=>{if(n.textContent===ch.politics){n.classList.add('ow-politics');n.innerHTML='<span class="dialogue-action">现场记录 · 管理议题</span>'+esc(ch.politics);}else if(n.textContent.startsWith('验收进度 ')){n.classList.add('ow-summary');n.innerHTML='<details><summary>展开项目与任命摘要</summary>'+esc(n.textContent)+'</details>';}});}
    if(chapterIdx===13&&scene.querySelector('button[onclick^="pickChapter("]')){scene.classList.add('ow-query');const head=document.createElement('div');head.className='ow-query-head';head.textContent='DATA MANAGEMENT / DBL · Query处置与稽查轨迹';const choices=scene.querySelector('.choices');if(choices)choices.before(head);}
@@ -10241,7 +10307,7 @@ renderLifeBuilder();
  function title(){
   const screen=$('#title-screen');if(!screen||screen.querySelector('.ow-title-banner'))return;
   const banner=document.createElement('div');banner.className='ow-title-banner';banner.innerHTML='<small>DRAGON OFFICE · BIOTECH WORKSPACE</small><h1>下一场会议之前，<br>先决定你要成为什么样的人。</h1><p>从首次人体试验走到NDA。守住数据，拉拢团队，让真正的贡献被看见。</p><button onclick="openCreatorScreen()">新员工入职 →</button><button class="secondary" onclick="loadGameV2()">恢复工作空间</button>';
-  const subtitle=$('#title-screen .subtitle');if(subtitle){subtitle.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · Demo v18.2.0';banner.appendChild(subtitle);}screen.prepend(banner);
+  const subtitle=$('#title-screen .subtitle');if(subtitle){subtitle.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · Demo v18.2.1';banner.appendChild(subtitle);}screen.prepend(banner);
   const gameTitle=screen.querySelector('.game-title');if(gameTitle)banner.prepend(gameTitle);screen.querySelectorAll(':scope > button').forEach(n=>n.remove());
   const mainStart=screen.querySelector('button[onclick="startGame()"]');if(mainStart)mainStart.remove();
   const intro=document.createElement('details');intro.className='ow-title-folder';intro.innerHTML='<summary>入职须知 · 产品与职场</summary><div></div>';const box=screen.querySelector('.intro-box:not(.vp-card)'),hint=screen.querySelector('.intro-hint');if(box)intro.lastElementChild.appendChild(box);if(hint)intro.lastElementChild.appendChild(hint);screen.appendChild(intro);

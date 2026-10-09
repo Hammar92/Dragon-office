@@ -16,6 +16,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: node tests/project-campaign.cjs
       - run: node tests/dialogue-contract.cjs
+      - run: node tests/responsibilities.cjs
       - run: node tests/collection-contract.spec.cjs
       - run: node tests/ending-review.cjs
       - run: node tests/collection-paths.cjs

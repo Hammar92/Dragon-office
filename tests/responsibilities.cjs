@@ -1,0 +1,14 @@
+'use strict';
+const assert=require('assert/strict'),createGame=require('./runtime-fixture.cjs'),g=createGame();
+const chapters=g.json('ProjectCampaignV2.data.chapters');assert.equal(chapters[0].from,'杨杨');assert.equal(chapters[9].from,'一建');assert.equal(chapters[13].from,'DM');assert.equal(chapters[16].from,'杨杨');assert.equal(chapters[17].from,'一建');
+g.run(`startGame();window.__beforeRole=JSON.parse(JSON.stringify(S.npc));applyChoice(runChapters[0].choices[0]);`);
+assert(g.run('S.npc.yangyang>__beforeRole.yangyang'),'PM receives startup collaboration');assert.equal(g.run('S.npc.yijian'),g.run('__beforeRole.yijian'),'RA does not receive PM credit');
+assert.match(g.run('StoryDialogue.scenes[0].turns.find(x=>x[0]==="一建")[1]'),/中心启动排期请杨杨统筹/);
+assert(!g.run('StoryDialogue.scenes[11].turns.some(x=>x[0]==="瑞冬")'),'toxicology does not own product stability');assert(g.run('StoryDialogue.scenes[11].turns.some(x=>x[0]==="CMC")'));
+assert.match(g.run('StoryDialogue.scenes[13].turns.find(x=>x[0]==="DM")[1]'),/中心.*医学.*统计/);
+assert.match(g.run('StoryDialogue.scenes[16].turns.filter(x=>x[0]==="邹婷").at(-1)[1]'),/不会给资料是否成立作验收/);
+assert.match(g.run('StoryDialogue.html("CMC：「药品依据由我们确认。」")'),/CMC \/ 药学与供应/);assert(!g.run('StoryDialogue.html("CMC：「药品依据由我们确认。」").includes("<img")'));
+assert.equal(g.run('DELIVERY_EVENTS_147.find(x=>x.id==="d147_decision").from'),'杨杨');assert.equal(g.run('DELIVERY_EVENTS_147.find(x=>x.id==="d147_decision").choices[0].npc.mingye'),undefined);
+assert.equal(g.run('Object.keys(ProjectCampaignV2.chapter(13,ProjectCampaignV2.fresh(false)).choices.find(c=>c.campaignChoice.kind==="fraud").npc).length'),0,'fraud does not earn QA/STAT collaboration');
+assert(g.run(`ProjectCampaignV2.data.chapters.every(ch=>ch.responsibility&&ch.responsibility.length>20)`));
+console.log('PASS functional boundaries: PM startup/coordination, RA submission/EOP2, CMC supply, DM lock, PV/medical safety, HR scope, NPC attribution and no borrowed functional portraits.');

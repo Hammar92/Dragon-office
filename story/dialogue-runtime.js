@@ -1,14 +1,15 @@
 (function(root){
  'use strict';
  const D=root.StoryDialogue,E=root.SideDialogue.events;
+ NPCs.yijian.role='RA / 注册事务';NPCs.yangyang.role='PM / 项目管理';
  const pools=[V11_EVENTS,DELIVERY_EVENTS_147,PI_CHAIN_EVENTS,ROMANCE_ENCOUNTERS,PHONE_EVENTS,root.DragonHomeEvents||[]];
  function prepare(ev){
   if(!ev||!E[ev.id]||ev._spokenScene)return ev;
   const s=E[ev.id];ev._spokenScene=true;ev.originalText=ev.text;
-  const opening=String(ev.text||'').split('\n\n')[0];
+  const opening=s.opening||String(ev.text||'').split('\n\n')[0];if(s.from)ev.from=s.from;
   // Retain the concrete setup; actor intent is expressed in the following exchange.
   ev.text=opening+'\n\n'+s.turns.map(([n,t])=>n+'：「'+t+'」').join('\n\n');
-  (ev.choices||[]).forEach((c,i)=>{if(s.replies[i])c.t='「'+s.replies[i]+'」';});return ev;
+  (ev.choices||[]).forEach((c,i)=>{if(s.replies[i])c.t='「'+s.replies[i]+'」';if(s.rewards&&s.rewards[i])c.npc=Object.assign({},s.rewards[i]);});return ev;
  }
  pools.forEach(a=>a.forEach(prepare));
  Object.keys(LOVE_META).forEach(k=>prepare(Object.assign(LOVE_META[k],{id:'love_'+k})));
@@ -20,7 +21,7 @@
   return replies.apply(this,arguments);
  };
  const render=renderChapter;renderChapter=function(){const r=render.apply(this,arguments);decorate();return r;};root.renderChapter=renderChapter;
- function role(n){const npc=Object.values(NPCs).find(x=>x.name===n);return npc?npc.role:n==='钟时'?'Clinical Development VP':n==='你'?'玩家 · 当前发言':n==='对方'?'工作之外的关系':'私人联系';}
+ function role(n){const f=root.StoryResponsibilities.functions[n];if(f)return f.label;const npc=Object.values(NPCs).find(x=>x.name===n);return npc?npc.role:n==='钟时'?'Clinical Development VP':n==='对方'?'工作之外的关系':'私人联系';}
  function html(text){return '<div class="sd-dialogue" aria-label="现场对话">'+String(text||'').split(/\n\n+/).filter(Boolean).map(p=>{
   const m=p.match(/^([^：「\n]{1,12})：「([\s\S]+)」$/);
   if(!m){if(p.startsWith('验收进度 '))return '<details class="sd-summary"><summary>查看本阶段项目记录</summary><p>'+esc(p)+'</p></details>';return '<p class="sd-action">'+esc(p)+'</p>';}

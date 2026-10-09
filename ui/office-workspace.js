@@ -45,13 +45,14 @@
   if(!scene.querySelector('.ow-stage')){
    const ch=data.chapters[Math.min(17,chapterIdx)],event=root._sceneMode==='event'&&root._evObj&&root._evObj.ev||S.coverage&&S.coverage.current&&DELIVERY_EVENTS_147.find(e=>e.id===S.coverage.current.eventId);
    const raw=(scene.textContent||''),from=event&&(event.from||event.npc)||ch.from;
-   let person=event&&event.from?event.from:PortraitResolver.url(from)?from:(raw.includes('钟时')?'钟时':ch.from);
+   let person=event&&event.from?event.from:PortraitResolver.url(from)||root.StoryResponsibilities&&StoryResponsibilities.functions[from]?from:(raw.includes('钟时')?'钟时':ch.from);
    if(projectBattleState)person=projectBattleState.opponent==='vp'?'钟时':NPCs[projectBattleState.opponent]&&NPCs[projectBattleState.opponent].name||'会议发言人';
    else if(duelState)person='钟时';else if(meetingState)person=MEETING_ROUNDS[meetingState.round]&&MEETING_ROUNDS[meetingState.round].who||'会议发言人';
    else if(root._homeEv||root._romEv||root._lovePending)person='私人时间';
    const npc=Object.values(NPCs).find(x=>x.name===person);
+   const personFunction=root.StoryResponsibilities&&StoryResponsibilities.functions[person];
    const online=!!(event&&event.phone)||/短信|微信|群消息|来电|手机亮/.test(raw.slice(0,300));scene.classList.toggle('ow-online',online);
-   const stage=document.createElement('div');stage.className='ow-stage';stage.innerHTML='<div class="ow-location"><small>'+esc(online?'OFFICE MESSENGER':'CLINICAL DEVELOPMENT / '+ch.stage)+'</small><h3>'+esc(!event&&root.StoryDialogue?StoryDialogue.scenes[Math.min(17,chapterIdx)].place:person)+'</h3><p>'+esc(npc?npc.role:person==='钟时'?'Clinical Development VP':'工作之外的联系')+'</p></div>'+(PortraitResolver.url(person)?'<img class="ow-scene-portrait" src="'+esc(PortraitResolver.url(person))+'" alt="'+esc(person)+'立绘">':'<div class="ow-anonymous" aria-hidden="true">'+(online?'☎':'☕')+'</div>');const sub=scene.querySelector('.scene-sub')||scene.querySelector('.scene-title');if(sub)sub.after(stage);else scene.prepend(stage);
+   const stage=document.createElement('div');stage.className='ow-stage';stage.innerHTML='<div class="ow-location"><small>'+esc(online?'OFFICE MESSENGER':'CLINICAL DEVELOPMENT / '+ch.stage)+'</small><h3>'+esc(!event&&root.StoryDialogue?StoryDialogue.scenes[Math.min(17,chapterIdx)].place:person)+'</h3><p>'+esc(personFunction?personFunction.label:npc?npc.role:person==='钟时'?'Clinical Development VP':'工作之外的联系')+'</p></div>'+(PortraitResolver.url(person)?'<img class="ow-scene-portrait" src="'+esc(PortraitResolver.url(person))+'" alt="'+esc(person)+'立绘">':'<div class="ow-anonymous" aria-hidden="true">'+(online?'☎':'☕')+'</div>');const sub=scene.querySelector('.scene-sub')||scene.querySelector('.scene-title');if(sub)sub.after(stage);else scene.prepend(stage);
    const label=scene.querySelector('.vp-name');if(label)label.textContent='会议现场 · '+ch.stage+' / '+(online?'线上沟通':'临床开发');
    if(!event){scene.querySelectorAll('.dialogue-narration').forEach(n=>{if(n.textContent===ch.politics){n.classList.add('ow-politics');n.innerHTML='<span class="dialogue-action">现场记录 · 管理议题</span>'+esc(ch.politics);}else if(n.textContent.startsWith('验收进度 ')){n.classList.add('ow-summary');n.innerHTML='<details><summary>展开项目与任命摘要</summary>'+esc(n.textContent)+'</details>';}});}
    if(chapterIdx===13&&scene.querySelector('button[onclick^="pickChapter("]')){scene.classList.add('ow-query');const head=document.createElement('div');head.className='ow-query-head';head.textContent='DATA MANAGEMENT / DBL · Query处置与稽查轨迹';const choices=scene.querySelector('.choices');if(choices)choices.before(head);}
@@ -69,7 +70,7 @@
  function title(){
   const screen=$('#title-screen');if(!screen||screen.querySelector('.ow-title-banner'))return;
   const banner=document.createElement('div');banner.className='ow-title-banner';banner.innerHTML='<small>DRAGON OFFICE · BIOTECH WORKSPACE</small><h1>下一场会议之前，<br>先决定你要成为什么样的人。</h1><p>从首次人体试验走到NDA。守住数据，拉拢团队，让真正的贡献被看见。</p><button onclick="openCreatorScreen()">新员工入职 →</button><button class="secondary" onclick="loadGameV2()">恢复工作空间</button>';
-  const subtitle=$('#title-screen .subtitle');if(subtitle){subtitle.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · Demo v18.2.0';banner.appendChild(subtitle);}screen.prepend(banner);
+  const subtitle=$('#title-screen .subtitle');if(subtitle){subtitle.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · Demo v18.2.1';banner.appendChild(subtitle);}screen.prepend(banner);
   const gameTitle=screen.querySelector('.game-title');if(gameTitle)banner.prepend(gameTitle);screen.querySelectorAll(':scope > button').forEach(n=>n.remove());
   const mainStart=screen.querySelector('button[onclick="startGame()"]');if(mainStart)mainStart.remove();
   const intro=document.createElement('details');intro.className='ow-title-folder';intro.innerHTML='<summary>入职须知 · 产品与职场</summary><div></div>';const box=screen.querySelector('.intro-box:not(.vp-card)'),hint=screen.querySelector('.intro-hint');if(box)intro.lastElementChild.appendChild(box);if(hint)intro.lastElementChild.appendChild(hint);screen.appendChild(intro);

@@ -23,7 +23,7 @@
  ];
  const valid=(p,key)=>!!p.proofs[key]&&!p.risks.some(r=>r.key===key&&r.status!=='closed');
  const responses=[
- ['一建','那我按核实的这套回复中心，附件和批次一起留存。不是再发一句“材料已齐”。','我先把今天的回复发出去。差异还在，后面问到，得有人把那一段补核。'],
+ ['杨杨','专业条件和版本各自确认了，我按启动表协调中心排期与反馈，RA继续跟监管版本。不是再发一句“材料已齐”。','启动表仍有待确认项。我会继续跟各职能，中心是否能给药不能由我把日期排上就算通过。'],
  ['PVP','我的独立时间线和限制保留了。恢复条件以后可以沿这条记录核，不必猜当时是谁点头。','我会保留当前版本。统一结论没有核清之前，我不能把待评估改成已排除。'],
  ['则韩','这次推荐剂量有对应依据。下一阶段引用它时，安全范围和分析限制也要一起带。','曲线可以放上去。有人追问为什么选这个剂量，仍然需要这次没有完成的依据。'],
  ['小圆','结论、限制和负责的人都放在材料里了。明天问到，不用再隔着三层找答案。','彩排可以继续。钱会不会来，要看实际证据；统一发言没有替我们增加一块数据。'],
@@ -39,7 +39,7 @@
  ['则韩','来源和处置有记录了。是否延期与分析边界也保留，后续看结果的人可以追溯。','锁库日期可以往前走，来源问题不会跟着消失。下一张表仍要背着它。'],
  ['谷雨','我按可追溯的结果继续谈，不拿一句积极替代限制。贡献是谁做的，也留在正式材料里。','积极的标题能先发出去。钱和后续尽调要面对的，仍是完整的数据和来源。'],
  ['一建','这次能整合的是确认后的结论，不只是一样的术语。以后问模块冲突，我有对应记录可找。','包整出来了，冲突还没消失。递交前仍要有人确认哪句是真正的结论。'],
- ['邹婷','职责与复核都有材料，后续评审按真实履约看。辛苦值得承认，但不能替批准记录。','窗口先保留了。评审和复核没有因为临近递交而自动通过，后面还是要补。'],
+ ['杨杨','递交准备有各职能的确认，RA核版本和申报要求；岗位材料另交HR评审。两套确认都不能靠辛苦替代。','窗口先保留了，专业确认还待补。我跟准备清单，HR另跟岗位评审，不把两件事混成一次通过。'],
  ['一建','按真实核验结果记录这次递交判断。即使递交完成，下一阶段的回复也不能当作已经获批。','我会保留这次选择和仍待核查的附件。按没按按钮，与资料能不能成立，是两份记录。']
  ];
  function snapshot(index,p){const d=ProjectCampaignV2.data.chapters[index],f=ProjectCampaignV2.data.financing.find(x=>x.month>=p.months&&!p.financing[x.id]?.settled);return{index,title:files[index][0],surface:files[index][1],risk:files[index][2],rows:files[index].slice(3),verified:valid(p,d.proof),remaining:f?Math.max(0,f.month-p.months):null,due:f&&f.month,proof:d.proof};}
@@ -49,7 +49,7 @@
   if(!S.meetingMinutes)S.meetingMinutes=[];
   S.meetingMinutes.push({chapter:m.index+1,title:d.title,month:p.months,reply:c.t,kind:h.kind,proof:d.proof,verified:ok,
    conclusion:ok?'【'+files[m.index][2]+'】已形成可追溯交付；具体限制与专业确认保留在阶段记录。':'【'+files[m.index][2]+'】本次未形成有效的可追溯交付；日期与口径不能代替来源核查。',
-   authority:p.authority,rank:p.rank,notes:p.events.slice(-3)});
+   authority:p.authority,rank:p.rank,responsibility:d.responsibility,notes:p.events.slice(-3)});
  }return r;};root.applyChoice=applyChoice;
  const api={files,snapshot,valid};root.MeetingDocuments=api;
  if(!document.documentElement||!root.MutationObserver)return;
@@ -61,6 +61,8 @@
   const ch=runChapters[chapterIdx],p=S.campaign,v=snapshot(chapterIdx,p),panel=document.createElement('section');panel.className='md-workspace';
   const names=[...new Set(StoryDialogue.scenes[chapterIdx].turns.map(x=>x[0]))].filter(n=>n!=='你');
   panel.innerHTML='<details class="md-share" open><summary><span>▣ SCREEN SHARE / 当前展示文件</span><b>'+esc(v.title)+'</b></summary><div class="md-paper"><header>DRAGON BIOTECH <small>内部审阅 · 第'+(chapterIdx+1)+'章</small></header><p class="md-marked">'+esc(v.surface)+'<span>请再统一一下</span></p><div class="md-paper-rows">'+v.rows.map(n=>'<div><span>'+esc(n)+'</span><b>'+esc(v.verified?'已有阶段核查记录':'本阶段待核查')+'</b></div>').join('')+'</div><footer>批注最醒目的地方，未必是决定项目成败的地方。</footer></div></details><div class="md-agenda"><section><small>明面会议 · 正在纠缠</small><p>'+esc(v.surface)+'</p></section><section class="md-risk '+(!v.verified?'md-pending':'')+'"><small>真实业务 · '+(v.verified?'已有依据':'悬而未决')+'</small><p>'+esc(v.risk)+'</p><b>'+(v.remaining!==null?'距第'+v.due+'月融资核验 '+v.remaining+' 个月':'按当前阶段递交／响应条件核验')+'</b><span>项目时间按选择结算；限时会议按屏幕倒计时。</span></section></div><section class="md-room"><header><b>参会者 · 职能现场</b><small>悬停或聚焦回复，查看预计关系变化</small></header><div class="md-roster">'+names.map(n=>'<div data-person="'+esc(n)+'">'+(PortraitResolver.url(n)?'<img src="'+esc(PortraitResolver.url(n))+'" alt="'+esc(n)+'">':'<i>'+esc(n.slice(0,1))+'</i>')+'<b>'+esc(n)+'</b><small data-room-note>'+esc(n==='钟时'?'关注表面议题':'等待业务回应')+'</small></div>').join('')+(chapterIdx===13?'<div data-person="DM"><i>DM</i><b>数据管理</b><small>关键Query待确认</small></div>':'')+'</div></section>';
+  const duplicate=panel.querySelectorAll('[data-person="DM"]');if(duplicate.length>1)duplicate[1].remove();
+  const duty=document.createElement('details');duty.className='md-duty';duty.innerHTML='<summary>本场职责分工</summary><p>'+esc(ch.responsibility)+'</p>';panel.appendChild(duty);
   const stage=scene.querySelector('.ow-stage'),dialogue=scene.querySelector('.sd-dialogue');if(stage)stage.after(panel);else if(dialogue)dialogue.before(panel);else scene.prepend(panel);
   const choices=scene.querySelector('.choices');if(choices){const box=document.createElement('div');box.innerHTML=minutesHTML(null);choices.after(box.firstElementChild);}
   scene.querySelectorAll('button[onclick^="pickChapter("]').forEach(b=>{const i=Number(b.getAttribute('onclick').match(/\((\d+)/)[1]);const show=()=>{const c=presentedChoice(ch.choices,i);panel.querySelectorAll('[data-person]').forEach(row=>{const n=row.dataset.person,key=Object.keys(NPCs).find(k=>NPCs[k].name===n),delta=n==='钟时'?c.e&&c.e.trust:key&&c.npc&&c.npc[key];row.classList.toggle('md-gain',delta>0);row.classList.toggle('md-loss',delta<0);row.querySelector('[data-room-note]')?.replaceChildren(document.createTextNode(delta?'预计关系 '+(delta>0?'+':'')+delta:n==='钟时'?'关注表面议题':'本选项无直接关系增减'));});};const clear=()=>{panel.querySelectorAll('[data-person]').forEach(row=>{row.classList.remove('md-gain','md-loss');row.querySelector('[data-room-note]')?.replaceChildren(document.createTextNode(row.dataset.person==='钟时'?'关注表面议题':'等待业务回应'));});};b.addEventListener('mouseenter',show);b.addEventListener('focus',show);b.addEventListener('mouseleave',clear);b.addEventListener('blur',clear);});
