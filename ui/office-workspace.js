@@ -69,7 +69,7 @@
  function title(){
   const screen=$('#title-screen');if(!screen||screen.querySelector('.ow-title-banner'))return;
   const banner=document.createElement('div');banner.className='ow-title-banner';banner.innerHTML='<small>DRAGON OFFICE · BIOTECH WORKSPACE</small><h1>下一场会议之前，<br>先决定你要成为什么样的人。</h1><p>从首次人体试验走到NDA。守住数据，拉拢团队，让真正的贡献被看见。</p><button onclick="openCreatorScreen()">新员工入职 →</button><button class="secondary" onclick="loadGameV2()">恢复工作空间</button>';
-  const subtitle=$('#title-screen .subtitle');if(subtitle){subtitle.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · Demo v18.0.1';banner.appendChild(subtitle);}screen.prepend(banner);
+  const subtitle=$('#title-screen .subtitle');if(subtitle){subtitle.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · Demo v18.1.0';banner.appendChild(subtitle);}screen.prepend(banner);
   const gameTitle=screen.querySelector('.game-title');if(gameTitle)banner.prepend(gameTitle);screen.querySelectorAll(':scope > button').forEach(n=>n.remove());
   const mainStart=screen.querySelector('button[onclick="startGame()"]');if(mainStart)mainStart.remove();
   const intro=document.createElement('details');intro.className='ow-title-folder';intro.innerHTML='<summary>入职须知 · 产品与职场</summary><div></div>';const box=screen.querySelector('.intro-box:not(.vp-card)'),hint=screen.querySelector('.intro-hint');if(box)intro.lastElementChild.appendChild(box);if(hint)intro.lastElementChild.appendChild(hint);screen.appendChild(intro);
@@ -93,6 +93,3 @@
  new MutationObserver(()=>{const dock=$('#ow-dock');if(dock)dock.hidden=!$('#game-screen').classList.contains('active');}).observe($('#game-screen'),{attributes:true,attributeFilter:['class']});
  const toastObserver=new MutationObserver(()=>{document.querySelectorAll('#toast-wrap .toast').forEach(n=>{if(n.querySelector('.ow-notification-label'))return;const label=document.createElement('span');label.className='ow-notification-label';label.textContent=n.textContent.includes('🏆')?'年度绩效 · 新记录':'工作台通知';n.prepend(label);});});toastObserver.observe($('#toast-wrap'),{childList:true});
 })(typeof window!=='undefined'?window:globalThis);
-
-
-

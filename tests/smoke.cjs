@@ -82,7 +82,7 @@ run("window._evObj=null; Math.random=()=>0.1");
 run('S.prestige={boss:0,team:0,chain:0,last:null,history:[]}; const _p=prestigeState(); addPrestige(3,4,"test")');
 assert.strictEqual(run('S.prestige.boss'),3,'boss prestige');
 assert.strictEqual(run('S.prestige.team'),4,'team prestige');
-assert.ok(html.includes('Demo v18.0.1'),'visible release label is current');
+assert.ok(html.includes('Demo v18.1.0'),'visible release label is current');
 assert.ok(html.includes('RC_CANONICAL_ENDING_RESOLVER_BEGIN'),'canonical ending resolver embedded in single-file build');
 assert.ok(html.includes('RC_ENDING_RUNTIME_BRIDGE_BEGIN'),'canonical runtime bridge embedded in single-file build');
 assert.strictEqual(run('typeof rcEndingAudit'),'function','runtime ending audit installed');
@@ -198,8 +198,9 @@ const migrated=Object.assign({},context,{localStorage:{getItem:k=>legacyStorage.
 migrated.window=migrated;
 vm.createContext(migrated);vm.runInContext(code,migrated,{timeout:5000});
 assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_achievements')),['a55','a70'],'old unlocked outcomes mapped');
-assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_achievements')),['PVP本人请发言','机制抢麦'],'retired outcomes archived');
+assert.deepStrictEqual(JSON.parse(legacyStorage.get('dragon_legacy_achievements')||'[]'),[],'retired achievement labels removed');
 assert.strictEqual(legacyStorage.get('dragon_ng_points'),'7','earned points preserved');
+assert.ok(JSON.parse(legacyStorage.get('dragon_achievement_points_paid')).includes('a72'),'removed achievement ID still cannot pay twice');
 legacyStorage.set('dragon_endings','["be_heart","retired_old_ending","true_dragon","be_heart"]');
 legacyStorage.delete('dragon_legacy_endings');
 assert.deepStrictEqual(JSON.parse(JSON.stringify(vm.runInContext('getUnlocked()',migrated))),['be_heart','true_dragon'],'stale ending ids removed from active gallery');
@@ -316,4 +317,3 @@ console.log('v14.5 relationship/contextual-choice regressions OK');
 
 // RC-06 is intentionally a separate release gate in release-placeholders.spec.js.
 // Balance is verified separately by tests/balance-v2.cjs.
-

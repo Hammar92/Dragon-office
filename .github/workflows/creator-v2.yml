@@ -16,6 +16,7 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: node tests/project-campaign.cjs
       - run: node tests/collection-contract.spec.cjs
+      - run: node tests/ending-review.cjs
       - run: node tests/collection-paths.cjs
       - run: node tests/smoke.cjs
       - run: node --test tests/ending-priority.spec.js tests/ending-witness.spec.js tests/terminal-ending-witness.spec.js tests/all-ending-witness.spec.js tests/release-placeholders.spec.js
