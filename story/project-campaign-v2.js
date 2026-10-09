@@ -123,10 +123,10 @@
  if(typeof module!=='undefined'&&module.exports){module.exports=api;return;}
  root.ProjectCampaignV2=api;root.ProjectCampaignV1=api;
  // Preview and settlement use the same discount; failed execution and ordinary responses get no extra reduction.
- function traitDiscount(c){const m=c&&c.campaignChoice,r=m&&traitOptions.rules[m.trait],p=S&&S.campaign;if(!r||!p||!playerTraits().includes(r.id)||m.kind!=='work')return 0;const used=(p.traitUses||{})[r.id];if(!traitOptions.eligible(p,m.index,playerTraits()).some(x=>x.id===r.id)&&!(used&&used.index===m.index&&p.history.at(-1)&&p.history.at(-1).index===m.index))return 0;if(!used&&p.cash<data.chapters[m.index].cost+(m.extraCost||0))return 0;return traitOptions.tiers[r.tier].discount;}
+ function traitModifiers(c){const m=c&&c.campaignChoice,r=m&&traitOptions.rules[m.trait],p=S&&S.campaign;if(!r||!p||!playerTraits().includes(r.id)||['shortcut','fraud','concentrate'].includes(m.kind))return null;const used=(p.traitUses||{})[r.id];if(!traitOptions.eligible(p,m.index,playerTraits()).some(x=>x.id===r.id)&&!(used&&used.index===m.index&&p.history.at(-1)&&p.history.at(-1).index===m.index))return null;if(!used&&p.cash<data.chapters[m.index].cost+(m.extraCost||0))return null;return r;}
  const priorHeart=costHeart,priorStamina=costStamina;
- costHeart=function(c,heavy){return Math.max(0,Math.round(priorHeart(c,heavy)*(1-traitDiscount(c))));};
- costStamina=function(c){return Math.max(1,Math.round(priorStamina(c)*(1-traitDiscount(c))));};
+ costHeart=function(c,heavy){const r=traitModifiers(c);return Math.max(0,Math.round(priorHeart(c,heavy)*(1-(r?r.heartDiscount:0)))+(r?r.heartSurcharge:0));};
+ costStamina=function(c){const r=traitModifiers(c);return Math.max(1,Math.round(priorStamina(c)*(1-(r?r.staminaDiscount:0))));};
  function ensure(){S.campaign=ensureVersion(S.campaign);return S.campaign;}api.ensure=ensure;
  V12_BRANCH_VARIANTS={};root.V12_BRANCH_VARIANTS=V12_BRANCH_VARIANTS;
  V11_CHAPTERS.splice(0,V11_CHAPTERS.length,...data.chapters.map((_,i)=>chapter(i,fresh(false))));
@@ -137,7 +137,7 @@
  if(oldOffer)root.offerCandidate147=function(){const p=ensure(),t=root.teamState147();if(!p.authority||!p.flags.authorityApproved||p.cash<300||t.members.length>=(p.rank>=3?2:1)){toast('当前没有可执行的新增岗位预算','down');return;}const before=t.members.length,r=oldOffer();if(t.members.length>before){p.cash-=300;p.staffCount=t.members.length;p.events.push('岗位实际入职，投入300万元；后续固定现金消耗包含人员支持。');}return r;};
  const oldStart=startGame;startGame=function(){const r=oldStart.apply(this,arguments);if(r===false)return r;S.campaign=fresh(false);flags.careerDecision='stay';root._careerPending=false;root._careerChoices=null;runChapters=buildDevelopmentTimeline();renderChapter();return r;};
  const oldRender=renderChapter;renderChapter=function(){if(S&&data.chapters[chapterIdx])runChapters[chapterIdx]=chapter(chapterIdx,ensure());return oldRender.apply(this,arguments);};
- const oldApply=applyChoice;applyChoice=function(c){if(c&&c.campaignChoice&&ensure().history.some(h=>h.index===c.campaignChoice.index))return;const h=c&&c.campaignChoice?apply(ensure(),c):null;const r=oldApply.apply(this,arguments);if(h){const p=ensure();S.progress=p.progress;S.bossTrust=cap((S.bossTrust||0)+Math.max(0,h.delta.boss||0));S.merit=cap((S.merit||0)+Math.max(0,h.delta.credit||0));c.r+='\n'+summary(p)+'\n'+p.events.slice(-3).join('\n');if(p.flags.centralized)S.dragon=Math.max(12,S.dragon||0);if(p.rank>=2)S.power=Math.max(50,S.power||0);}return r;};
+ const oldApply=applyChoice;applyChoice=function(c){if(c&&c.campaignChoice&&ensure().history.some(h=>h.index===c.campaignChoice.index))return;const h=c&&c.campaignChoice?apply(ensure(),c):null;const r=oldApply.apply(this,arguments);if(h){const p=ensure(),use=c.campaignChoice.trait&&(p.traitUses||{})[c.campaignChoice.trait];if(use&&use.index===c.campaignChoice.index&&!use.personalApplied){if(use.recovery)grant({heart:use.recovery});use.personalApplied=true;}S.progress=p.progress;S.bossTrust=cap((S.bossTrust||0)+Math.max(0,h.delta.boss||0));S.merit=cap((S.merit||0)+Math.max(0,h.delta.credit||0));c.r+='\n'+summary(p)+'\n'+p.events.slice(-3).join('\n');if(p.flags.centralized)S.dragon=Math.max(12,S.dragon||0);if(p.rank>=2)S.power=Math.max(50,S.power||0);}return r;};
  // Formal review comes before ending; relationship alone cannot kill an authorized career.
  const oldDeath=checkDeath;checkDeath=function(text,deltas,next){
   if(S&&S.campaign&&S.campaign.version===2){const p=ensure();

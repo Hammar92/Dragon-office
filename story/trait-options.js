@@ -1,7 +1,7 @@
 /* Experience traits unlock bounded responses; evidence and professional sign-off remain mandatory. */
 (function(root){
  'use strict';
- const tiers={rare:{name:'精良',value:1,discount:.08},epic:{name:'史诗',value:2,discount:.12},legendary:{name:'金色传说',value:3,discount:.18}};
+ const tiers={rare:{name:'精良',value:1},epic:{name:'史诗',value:2},legendary:{name:'金色传说',value:3}};
  const rows=[
  ['pku','北大毕业','epic',[3,9],'boss','我把研究问题、证据和限制写在同一页。学校只能替我敲门，今天请看团队真正做出的数据。'],
  ['pro','专业优秀','epic',[2,6,14],'quality','先把剂量暴露、效应和不确定性分开。医学结论由我负责，药理与统计各自确认，不能用一句趋势不错代替。'],
@@ -32,33 +32,43 @@
  ['relationshipwise','关系不是项目','legendary',[12,16],'coalition','我能投入，也能说清边界。团队支持不是欠我的人情；请把岗位、替班和私人时间留在安排里，让合作不靠谁耗尽自己来维持。']
  ];
  const rules=Object.fromEntries(rows.map(([id,name,tier,chapters,metric,text])=>[id,{id,name,tier,chapters,metric,text}]));
- const limits={quality:6,coalition:8,boss:6,credit:8,obstruction:8};
+ const profiles={
+  pku:{staminaDiscount:0,heartDiscount:0},pro:{staminaDiscount:.12},socialstrong:{},manager:{staminaDiscount:.12},orgleader:{staminaDiscount:.12},phase3:{staminaDiscount:.12},nda:{staminaDiscount:.18},
+  fit:{metric:null,staminaDiscount:.08},iron:{metric:null,staminaDiscount:.18},boundary:{heartDiscount:.08},resilient:{metric:null,heartDiscount:.12},stable:{heartDiscount:.12},selfcontrol:{heartDiscount:.12},cool:{heartDiscount:.18},
+  workaholic:{staminaDiscount:.12,heartSurcharge:2},smartlazy:{staminaDiscount:.18},political:{},highdrive:{heartSurcharge:1},beenloved:{metric:null,recovery:'heart',heartDiscount:.08},contentalone:{metric:null,recovery:'heart'},scarred:{},rebuild:{metric:null,recovery:'heart',heartDiscount:.12},securebase:{metric:null,recovery:'heart',heartDiscount:.12},hardtotrust:{},emotionreg:{heartDiscount:.12},caregiver:{},relationshipwise:{metric:'obstruction',heartDiscount:.18,recovery:'heart'}
+ };
+ Object.values(rules).forEach(r=>Object.assign(r,{heartDiscount:0,staminaDiscount:0,heartSurcharge:0},profiles[r.id]));
+ const limits={quality:6,coalition:8,boss:6,credit:8,obstruction:8,heart:8};
+ const preferred={orgleader:{10:'authority',12:'delegation'},smartlazy:{12:'delegation'}};
  function owns(ids,id){return Array.isArray(ids)&&ids.includes(id);}
+ function benefit(r,p){const tier=tiers[r.tier],parts=[];if(r.metric){const amount=p?Math.min(tier.value,Math.max(0,limits[r.metric]-((p.traitBonuses||{})[r.metric]||0))):tier.value;parts.push(({quality:'质量',coalition:'职能支持',boss:'老板认可',credit:'交付记录',obstruction:'管理摩擦'})[r.metric]+(r.metric==='obstruction'?'−':'+')+amount);}if(r.recovery){const amount=p?Math.min(tier.value,Math.max(0,8-((p.traitBonuses||{}).heart||0))):tier.value;parts.push('心力恢复+'+amount);}if(r.staminaDiscount)parts.push('本次体力耗费−'+Math.round(r.staminaDiscount*100)+'%');if(r.heartDiscount)parts.push('本次心力耗费−'+Math.round(r.heartDiscount*100)+'%');if(r.heartSurcharge)parts.push('额外心力消耗'+r.heartSurcharge);return parts.join('；');}
  function eligible(p,index,ids){return rows.map(r=>rules[r[0]]).filter(r=>owns(ids,r.id)&&r.chapters.includes(index)&&!(p.traitUses||{})[r.id]);}
  function augment(ch,p,index,ids){
   const work=ch.choices.find(c=>c.campaignChoice.kind==='work');if(!work)return ch;
   for(const r of eligible(p,index,ids)){
-   const c=JSON.parse(JSON.stringify(work)),tier=tiers[r.tier],amount=Math.min(tier.value,Math.max(0,limits[r.metric]-((p.traitBonuses||{})[r.metric]||0)));
+   const kind=(preferred[r.id]||{})[index],base=ch.choices.find(c=>c.campaignChoice.kind===kind)||work;
+   const c=JSON.parse(JSON.stringify(base)),tier=tiers[r.tier];
    c.t='【'+tier.name+' · '+r.name+'】「'+r.text+'」';
    c.campaignChoice.slot=ch.choices.length;c.campaignChoice.trait=r.id;
-   c.traitOption={id:r.id,tier:r.tier,discount:tier.discount};
-   c.r+='\n词条回应：'+r.name+'。执行成功后'+(r.metric==='obstruction'?'管理摩擦降低':({quality:'已核查质量',coalition:'职能支持',boss:'老板认可',credit:'交付记录'})[r.metric]+'增加')+amount+'；本词条本轮限用一次，同类奖励有累计上限。';
-   c.t+='（'+(r.metric==='obstruction'?'摩擦−':({quality:'质量',coalition:'支持',boss:'认可',credit:'记录'})[r.metric]+'+')+amount+'；本次体力/心力耗费−'+Math.round(tier.discount*100)+'%；每轮一次）';
+   c.traitOption={id:r.id,tier:r.tier};
+   c.r+='\n词条回应：'+r.name+'。'+benefit(r,p)+'；执行成功后生效，本词条本轮限用一次，同类奖励有累计上限。';
+   c.t+='（'+benefit(r,p)+'；每轮一次）';
    ch.choices.push(c);
   }return ch;
  }
  function reward(p,m,ids){
-  const r=rules[m.trait];if(!r||m.kind!=='work'||!eligible(p,m.index,ids).some(x=>x.id===r.id))return false;
+  const r=rules[m.trait];if(!r||!['work',(preferred[r.id]||{})[m.index]].includes(m.kind)||!eligible(p,m.index,ids).some(x=>x.id===r.id))return false;
   p.traitUses=p.traitUses||{};p.traitBonuses=p.traitBonuses||{};
-  const amount=Math.min(tiers[r.tier].value,Math.max(0,limits[r.metric]-(p.traitBonuses[r.metric]||0)));
-  p[r.metric]=Math.max(0,Math.min(100,p[r.metric]+(r.metric==='obstruction'?-amount:amount)));
-  p.traitBonuses[r.metric]=(p.traitBonuses[r.metric]||0)+amount;p.traitUses[r.id]={index:m.index,amount};
-  p.events.push(tiers[r.tier].name+' · '+r.name+'：本轮专属回应已使用，'+r.metric+(r.metric==='obstruction'?'-':'+')+amount+'。');return true;
+  const amount=r.metric?Math.min(tiers[r.tier].value,Math.max(0,limits[r.metric]-(p.traitBonuses[r.metric]||0))):0;
+  if(r.metric){p[r.metric]=Math.max(0,Math.min(100,p[r.metric]+(r.metric==='obstruction'?-amount:amount)));p.traitBonuses[r.metric]=(p.traitBonuses[r.metric]||0)+amount;}
+  const recovery=r.recovery?Math.min(tiers[r.tier].value,Math.max(0,8-(p.traitBonuses.heart||0))):0;if(recovery)p.traitBonuses.heart=(p.traitBonuses.heart||0)+recovery;
+  p.traitUses[r.id]={index:m.index,amount,recovery};
+  p.events.push(tiers[r.tier].name+' · '+r.name+'：专属回应已使用。');return true;
  }
- const api={rules,tiers,limits,eligible,augment,reward};
+ const api={rules,tiers,limits,eligible,augment,reward,benefit};
  if(typeof module!=='undefined'&&module.exports)module.exports=api;else {
   root.StoryTraitOptions=api;
-  for(const t of TRAIT_RECIPES){const r=rules[t.id];if(r){const tier=tiers[r.tier];t.desc+=' 专属回应：第'+r.chapters.map(i=>i+1).join('、')+'章；'+tier.name+'奖励'+tier.value+'点，本轮一次，本次体力/心力耗费减少'+Math.round(tier.discount*100)+'%。';}}
+  for(const t of TRAIT_RECIPES){const r=rules[t.id];if(r)t.desc+=' 专属回应：第'+r.chapters.map(i=>i+1).join('、')+'章；'+benefit(r)+'；本轮一次。';}
   const oldName=rarityName;rarityName=function(r){return r==='legendary'?'金色传说':oldName(r);};
  }
 })(typeof window!=='undefined'?window:globalThis);
