@@ -21,6 +21,7 @@ jobs:
       - run: node --test tests/ending-priority.spec.js tests/ending-witness.spec.js tests/terminal-ending-witness.spec.js tests/all-ending-witness.spec.js tests/release-placeholders.spec.js
       - run: node tests/campaign-browser.cjs
       - run: node tests/creator-v2.cjs
+      - run: node tests/office-ui.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
