@@ -8,7 +8,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+(req
     await new Promise(r=>server.listen(8766,'127.0.0.1',r));browser=await pw.chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
     const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:8766/');
     await page.evaluate(async()=>{openCreatorScreen();CharacterCreatorV2.identity('gender','female');CharacterCreatorV2.identity('age','g3');CharacterCreatorV2.select('f_g3_b');await CharacterCreatorV2.pending;await CharacterCreatorV2.confirm();selectedDifficulty='story';startGame();Math.random=()=>0.99;maybeEvent=(id,next)=>next();maybeRomanceEncounter=next=>next();maybePhoneEvent=next=>next();maybeLove=next=>next();});
-    const stages=[],battles=[];
+    const stages=[],battles=[];let qteClockInstalled=false;
     for(let i=0;i<18;i++){
       assert.equal(await page.evaluate(()=>chapterIdx),i);assert.equal(await page.evaluate(()=>runChapters[chapterIdx].id),'v11_'+(i+1));stages.push(await page.evaluate(()=>runChapters[chapterIdx].stage));
       await page.evaluate(()=>{if(S.restLeft>0){showRest();takeNap(2);restClose();}});
@@ -19,7 +19,7 @@ const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+(req
         if(snapshot.chapter!==i||snapshot.ended)break;
         if(snapshot.result)await page.locator('button[onclick="continueResult()"]').click();
         else if(await page.evaluate(()=>!!window._careerPending)){await page.locator('button[onclick="pickCareerChoice(0)"]').click();}
-        else if(snapshot.battle){battles.push(i+1);await page.locator('button[onclick^="projectBattlePick(2,"]').click();}
+        else if(snapshot.battle){if(!qteClockInstalled){await page.clock.install();qteClockInstalled=true;}await page.clock.runFor(35000);battles.push(i+1);await page.locator('button[onclick^="projectBattlePick(2,"]').click();}
         else break;
       }
       if(i<17)assert.equal(await page.evaluate(()=>chapterIdx),i+1,'real chapter transition '+(i+1));

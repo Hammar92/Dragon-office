@@ -1,0 +1,16 @@
+'use strict';
+// Asset and presentation check only: no campaign/balance simulation.
+const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict'),pw=require(process.env.PLAYWRIGHT_MODULE||'playwright'),root=path.join(__dirname,'..');
+const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]==='/'?'/index.html':req.url.split('?')[0]));if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}fs.readFile(file,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':file.endsWith('.html')?'text/html':file.endsWith('.webp')?'image/webp':'application/octet-stream'});res.end(e?'missing':b);});});
+(async()=>{let browser;try{
+ await new Promise(r=>server.listen(8776,'127.0.0.1',r));browser=await pw.chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('http://127.0.0.1:8776/');
+ const ids=await page.evaluate(()=>Object.keys(ENDINGS));assert.equal(ids.length,64);const urls=await page.evaluate(()=>Object.values(ENDINGS).map(e=>e.art));assert.equal(new Set(urls).size,64);
+ await page.evaluate(()=>{localStorage.setItem('dragon_endings',JSON.stringify(Object.keys(ENDINGS)));renderGallery();});
+ assert.equal(await page.locator('#gallery-grid img').count(),64);
+ const loaded=await page.evaluate(async()=>Promise.all(Object.keys(ENDINGS).map(async id=>{const im=new Image();im.src=ENDINGS[id].art;await im.decode();return{id,width:im.naturalWidth,height:im.naturalHeight,match:EndingArtMap[id].url===ENDINGS[id].art};})));assert(loaded.every(x=>x.width>=1000&&x.height>=600&&x.match));
+ for(const id of ids){assert(await page.evaluate(id=>EndingReview.view(id),id));const im=page.locator('#er-dialog img');await im.evaluate(i=>i.decode());assert.equal(await im.getAttribute('src'),await page.evaluate(id=>EndingArtMap[id].url,id));assert(await im.getAttribute('alt'));await page.keyboard.press('Escape');}
+ await page.evaluate(async()=>{openCreatorScreen();CharacterCreatorV2.identity('gender','female');CharacterCreatorV2.identity('age','g3');CharacterCreatorV2.select('f_g3_b');await CharacterCreatorV2.pending;await CharacterCreatorV2.confirm();startGame();showEnding('ge_unsung');});
+ await page.locator('#ending-review img').evaluate(i=>i.decode());assert.equal(await page.locator('#ending-review img').getAttribute('src'),await page.evaluate(()=>ENDINGS.ge_unsung.art));
+ for(const width of [1440,390]){await page.setViewportSize({width,height:1000});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));if(process.env.ENDING_OUTPUT)await page.screenshot({path:path.join(process.env.ENDING_OUTPUT,'ending-'+width+'.png'),fullPage:true,animations:'disabled'});}
+ assert.deepEqual(errors,[]);console.log(JSON.stringify({result:'PASS',records:64,uniqueUrls:64,loadedImages:loaded.length,detailViews:64,endingDisplay:true,widths:[1440,390],errors},null,2));
+ }finally{if(browser)await browser.close();server.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

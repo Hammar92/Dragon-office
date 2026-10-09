@@ -6,7 +6,7 @@ for(const [marker,file] of [['RC_CANONICAL_ENDING_RESOLVER','ending-resolver.js'
  if(html.includes(a)&&html.includes(b))html=html.slice(0,html.indexOf(a))+a+' */\n'+fs.readFileSync(path.join(root,file),'utf8')+'\n'+b+html.slice(html.indexOf(b)+b.length);
 }
 const begin='/* PROJECT CAMPAIGN V1 START */',end='/* PROJECT CAMPAIGN V1 END */';
-const content=begin+'\n'+['responsibilities.js','campaign-v2-data.js','dialogue-scenes.js','side-dialogues.js','trait-options.js','project-campaign-v2.js','collection-v3.js','ending-review.js','dialogue-runtime.js'].map(f=>fs.readFileSync(path.join(root,'story',f),'utf8')).join('\n')+'\n'+end;
+const content=begin+'\n'+['responsibilities.js','campaign-v2-data.js','dialogue-scenes.js','side-dialogues.js','trait-options.js','project-campaign-v2.js','collection-v3.js','ending-art-map.js','ending-review.js','dialogue-runtime.js'].map(f=>fs.readFileSync(path.join(root,'story',f),'utf8')).join('\n')+'\n'+end;
 if(html.includes(begin))html=html.slice(0,html.indexOf(begin))+content+html.slice(html.indexOf(end)+end.length);
 else html=html.replace('\nbuildCast();\n', '\n'+content+'\n\nbuildCast();\n').replace('\r\nbuildCast();\r\n','\r\n'+content+'\r\n\r\nbuildCast();\r\n');
 if(!html.includes(begin))throw Error('Campaign insertion marker missing');
@@ -16,7 +16,7 @@ if(!html.includes('legacy campaign chapter'))html=html.replace('      const bran
 html=html.replace(/^    if\(c&&c\.campaignChoice&&c\.project&&c\.project\.set&&c\.project\.set\.piLedger\)return null;[^\n]*\r?\n/gm,'');
 html=html.replace('  function piConflictFromChoice(c){','  function piConflictFromChoice(c){\n    if(c&&c.campaignChoice&&c.project&&c.project.set&&c.project.set.piLedger)return null; // A jointly agreed contribution ledger resolves the rivalry.');
 html=html.replace('return c.seen.indexOf(e.id)<0;','return c.seen.indexOf(e.id)<0&&(!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));').replace('pool=DELIVERY_EVENTS_147.slice();','pool=DELIVERY_EVENTS_147.filter(e=>!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));');
-html=html.replace(/Demo v(?:16\.0\.1|17\.0\.0|17\.1\.0|17\.2\.0|18\.0\.0|18\.0\.1|18\.1\.0|18\.2\.0|18\.2\.1)/g,'Demo v18.3.0');
+html=html.replace(/Demo v(?:16\.0\.1|17\.0\.0|17\.1\.0|17\.2\.0|18\.0\.0|18\.0\.1|18\.1\.0|18\.2\.0|18\.2\.1|18\.3\.0)/g,'Demo v18.3.1');
 fs.writeFileSync(target,html);
 if(fs.existsSync(path.join(root,'ui','office-workspace.js')))require('./sync-office-ui.cjs');
 console.log('Canonical V2 campaign embedded: 18 chapters, contextual authority and evidence.');

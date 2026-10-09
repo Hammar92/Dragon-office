@@ -45,3 +45,4 @@ body.ow-strained #hud{border-color:#d8aaa6!important}body.ow-strained #scene-are
 .trait.legendary{color:#f7c76b;border-color:#bc8b35;background:linear-gradient(135deg,#44351d,#1d2830);box-shadow:0 0 12px #bc8b3526}.choice:has(.trait.legendary){border-color:#bc8b35}
 .choice.trait-option-legendary{border-color:#bc8b35;background:linear-gradient(110deg,#fff7dc,#fff)}.choice.trait-option-epic{border-color:#9271b4}.choice.trait-option-rare{border-color:#598cb0}
 .trait-row .trait.legendary{color:#f7c76b;border-color:#bc8b35;background:linear-gradient(135deg,#44351d,#1d2830)}
+#scene-area .choices button[hidden]{display:none!important}

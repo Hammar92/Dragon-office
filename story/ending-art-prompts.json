@@ -1,0 +1,578 @@
+[
+  {
+    "id": "be_trust",
+    "name": "组织 · 责任退回个人",
+    "verdict": "你替日期担保，日期替别人担保。等责任退回个人，组织终于实现了精准投递。",
+    "art": "assets/endings/firefighter.webp",
+    "reuse": null,
+    "scene": "A corporate pneumatic mail chute dumps every unsigned management promise into the open briefcase of one employee; executives at the other end send congratulatory confetti while an enormous return-address stamp points only to the worker. Responsibility is precisely delivered downward.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending be_trust (组织 · 责任退回个人): A corporate pneumatic mail chute dumps every unsigned management promise into the open briefcase of one employee; executives at the other end send congratulatory confetti while an enormous return-address stamp points only to the worker. Responsibility is precisely delivered downward. Meaning of the ending: 你替日期担保，日期替别人担保。等责任退回个人，组织终于实现了精准投递。"
+  },
+  {
+    "id": "be_progress",
+    "name": "BE · 项目祭天",
+    "verdict": "预算先断气，项目后盖章。复盘会上人人都谈外部环境，仿佛现金流是天气预报。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A stalled clinical development assembly line fed by a bank vault whose pipes are dry. Board members hold umbrellas indoors, pretending the dry cash tap is bad weather; the employee holds an unpaid electricity bill. Wide industrial office composition.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending be_progress (BE · 项目祭天): A stalled clinical development assembly line fed by a bank vault whose pipes are dry. Board members hold umbrellas indoors, pretending the dry cash tap is bad weather; the employee holds an unpaid electricity bill. Wide industrial office composition. Meaning of the ending: 预算先断气，项目后盖章。复盘会上人人都谈外部环境，仿佛现金流是天气预报。"
+  },
+  {
+    "id": "be_island",
+    "name": "BE · 孤岛",
+    "verdict": "你把每一道题都答对了，唯独忘了答题卡由别人收。没有同伴的正确，是会议室里最安静的自费演出。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "A lone worker on an island of perfect research files in a flooded boardroom; distant executives hold the grading rubric. An empty unrowed ferry moored beside the worker. Correctness without coalition.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending be_island (BE · 孤岛): A lone worker on an island of perfect research files in a flooded boardroom; distant executives hold the grading rubric. An empty unrowed ferry moored beside the worker. Correctness without coalition. Meaning of the ending: 你把每一道题都答对了，唯独忘了答题卡由别人收。没有同伴的正确，是会议室里最安静的自费演出。"
+  },
+  {
+    "id": "be_heart",
+    "name": "BE · 凌晨三点的空椅子",
+    "verdict": "灯还亮着，人已经下线。公司称你情绪稳定——因为他们再也听不见异议。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": "empty-chair",
+    "scene": null,
+    "prompt": null
+  },
+  {
+    "id": "nc_love",
+    "name": "私人 · 有人记得你几点下班",
+    "verdict": "有人问你几点下班，没有问你项目百分比。你尚未因此赢得公司，却至少没把整个人生抵押给公司。",
+    "art": "assets/endings/exit.webp",
+    "reuse": null,
+    "scene": "Warm ordinary home dinner with a person offering a bowl of soup to an exhausted returning worker. Through a distant window a meeting tower is still illuminated. The home clock measures dinner, not project percentages. No office exit box or handcuffs.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending nc_love (私人 · 有人记得你几点下班): Warm ordinary home dinner with a person offering a bowl of soup to an exhausted returning worker. Through a distant window a meeting tower is still illuminated. The home clock measures dinner, not project percentages. No office exit box or handcuffs. Meaning of the ending: 有人问你几点下班，没有问你项目百分比。你尚未因此赢得公司，却至少没把整个人生抵押给公司。"
+  },
+  {
+    "id": "be_fraud",
+    "name": "BE · 签字的人",
+    "verdict": "正确废话没有签名栏，错误文件有。你把自己的名字借给捷径，捷径把你还给了问责。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "Close-up of an employee hand signing a missing-source document; the wet signature becomes a red thread leading to a searchlight. Above, an executive wearing spotless gloves releases the same pen. No gore, no courtroom bars.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending be_fraud (BE · 签字的人): Close-up of an employee hand signing a missing-source document; the wet signature becomes a red thread leading to a searchlight. Above, an executive wearing spotless gloves releases the same pen. No gore, no courtroom bars. Meaning of the ending: 正确废话没有签名栏，错误文件有。你把自己的名字借给捷径，捷径把你还给了问责。"
+  },
+  {
+    "id": "ge_survive",
+    "name": "GE · 幸存者",
+    "verdict": "你没有被吃掉，这值得庆祝；但别把未上菜单误认成坐上主桌。活下来是底线，不是组织欠你的晋升书。",
+    "art": "assets/endings/exit.webp",
+    "reuse": null,
+    "scene": "Office corridor as an absurd restaurant kitchen. An ordinary employee quietly walks past a giant covered silver serving platter and a wall of executive portraits; the employee is outside the menu, yet still far from the boardroom dining table.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_survive (GE · 幸存者): Office corridor as an absurd restaurant kitchen. An ordinary employee quietly walks past a giant covered silver serving platter and a wall of executive portraits; the employee is outside the menu, yet still far from the boardroom dining table. Meaning of the ending: 你没有被吃掉，这值得庆祝；但别把未上菜单误认成坐上主桌。活下来是底线，不是组织欠你的晋升书。"
+  },
+  {
+    "id": "ge_slayer",
+    "name": "组织 · 屠龙者：规则接替了人",
+    "verdict": "你没有砍掉龙头，只让它的每句废话都必须带上预算、owner和截止日。神兽第一次被迫填写表格，传说从此缺乏想象力。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A pompous shadow creature made from executive ties is trapped inside a transparent small filing box containing a budget abacus, an owner key and a deadline clock. Ordinary colleagues calmly attach each item. Accountability domesticates grand empty speeches.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_slayer (组织 · 屠龙者：规则接替了人): A pompous shadow creature made from executive ties is trapped inside a transparent small filing box containing a budget abacus, an owner key and a deadline clock. Ordinary colleagues calmly attach each item. Accountability domesticates grand empty speeches. Meaning of the ending: 你没有砍掉龙头，只让它的每句废话都必须带上预算、owner和截止日。神兽第一次被迫填写表格，传说从此缺乏想象力。"
+  },
+  {
+    "id": "true_dragon",
+    "name": "终成恶龙",
+    "verdict": "你曾恨所有问题都要问她，后来只恨它们没有先问你。王座没有换制度，只换了一个更懂数据的臀部。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": "dragon",
+    "scene": null,
+    "prompt": null
+  },
+  {
+    "id": "ge_firstline",
+    "name": "GE · 交付者",
+    "verdict": "交付让老板看见你，却未必让HR改工资。你已拿到进入下一场谈判的证据，别再拿它换一句“辛苦了”。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A worker stands on a modest lit presentation platform with a visible pile of verified team deliveries, while an HR payroll window above remains shut with one tiny coin on the sill. Being seen is not being paid.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_firstline (GE · 交付者): A worker stands on a modest lit presentation platform with a visible pile of verified team deliveries, while an HR payroll window above remains shut with one tiny coin on the sill. Being seen is not being paid. Meaning of the ending: 交付让老板看见你，却未必让HR改工资。你已拿到进入下一场谈判的证据，别再拿它换一句“辛苦了”。"
+  },
+  {
+    "id": "ge_next",
+    "name": "GE · 更好的地方",
+    "verdict": "你带走的是可核查的履历，不是会议室里留下的掌声。终于有人愿意给贡献报价，原公司这才想起感情没有预算科目。",
+    "art": "assets/endings/exit.webp",
+    "reuse": "exit",
+    "scene": null,
+    "prompt": null
+  },
+  {
+    "id": "mid_halfbridge",
+    "name": "中结局 · 半座桥",
+    "verdict": "桥只修到一半，至少你没把河流写成“已通过”。坏消息保住了返工的可能，好看的谎话通常只保住第一页。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "An unfinished bridge of clinical folders stops halfway across an office chasm. A worker honestly puts a striped barricade at its open edge; executives try to drape a ribbon across the missing span. Honest incompletion versus cosmetic completion.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending mid_halfbridge (中结局 · 半座桥): An unfinished bridge of clinical folders stops halfway across an office chasm. A worker honestly puts a striped barricade at its open edge; executives try to drape a ribbon across the missing span. Honest incompletion versus cosmetic completion. Meaning of the ending: 桥只修到一半，至少你没把河流写成“已通过”。坏消息保住了返工的可能，好看的谎话通常只保住第一页。"
+  },
+  {
+    "id": "nc_xiaoyuan",
+    "name": "NPC · 署名留在材料里",
+    "verdict": "署名留在材料里，比留在酒杯边可靠。你给团队留下位置，别人以后才有理由在权力桌上给你留一把椅子。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "Close view of a clinical report on a boardroom table bearing several different colored contributor fingerprints. One colleague slides a spare chair into the power table for the worker while an executive reaches unsuccessfully to cover the fingerprints.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending nc_xiaoyuan (NPC · 署名留在材料里): Close view of a clinical report on a boardroom table bearing several different colored contributor fingerprints. One colleague slides a spare chair into the power table for the worker while an executive reaches unsuccessfully to cover the fingerprints. Meaning of the ending: 署名留在材料里，比留在酒杯边可靠。你给团队留下位置，别人以后才有理由在权力桌上给你留一把椅子。"
+  },
+  {
+    "id": "nc_caolan",
+    "name": "NPC · 比较也有边界",
+    "verdict": "你让商业叙事有了边界，也让正确不再只躺在抽屉里。别把传播权送得太干净：讲故事的人，总爱顺手当故事的作者。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A commercial storyteller uses a projector to illuminate a real evidence chart, while its power cable is carefully tied to the researcher holding the underlying source notebook. A second hand tries to steal the cable. Evidence needs voice without losing authorship.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending nc_caolan (NPC · 比较也有边界): A commercial storyteller uses a projector to illuminate a real evidence chart, while its power cable is carefully tied to the researcher holding the underlying source notebook. A second hand tries to steal the cable. Evidence needs voice without losing authorship. Meaning of the ending: 你让商业叙事有了边界，也让正确不再只躺在抽屉里。别把传播权送得太干净：讲故事的人，总爱顺手当故事的作者。"
+  },
+  {
+    "id": "nc_heina",
+    "name": "NPC · 责任写回执行范围",
+    "verdict": "责任终于写进执行范围。合同没有突然变温柔，只是不再允许一句“你们确认了”买走所有风险。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "Two CRO and sponsor teams face one another across a clean boundary made of an opened contract. Scissors trim the overflowing tasks back to the agreed scope; a vague email balloon fails to cross the boundary.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending nc_heina (NPC · 责任写回执行范围): Two CRO and sponsor teams face one another across a clean boundary made of an opened contract. Scissors trim the overflowing tasks back to the agreed scope; a vague email balloon fails to cross the boundary. Meaning of the ending: 责任终于写进执行范围。合同没有突然变温柔，只是不再允许一句“你们确认了”买走所有风险。"
+  },
+  {
+    "id": "nc_ruidong",
+    "name": "NPC · 报告回到原始来源",
+    "verdict": "原始来源保住了，人的名字也保住了。你没有把同事的工作炼成自己的履历，这笔不够聪明的账，可能最耐花。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A weary female nonclinical scientist and a colleague protect several original laboratory notebooks inside a transparent glass cabinet. Each notebook keeps its individual colored ribbon; an executive empty CV binder cannot swallow them.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending nc_ruidong (NPC · 报告回到原始来源): A weary female nonclinical scientist and a colleague protect several original laboratory notebooks inside a transparent glass cabinet. Each notebook keeps its individual colored ribbon; an executive empty CV binder cannot swallow them. Meaning of the ending: 原始来源保住了，人的名字也保住了。你没有把同事的工作炼成自己的履历，这笔不够聪明的账，可能最耐花。"
+  },
+  {
+    "id": "nc_weilai",
+    "name": "NPC · 协议金额不等于现金",
+    "verdict": "协议上的零很多，账户里的零也很多——只是站的位置不同。你终于学会把鼓掌的承诺和能付款的承诺分开。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A finance employee compares an enormous ceremonial funding cheque held aloft with a tiny actual cash drawer on the desk; an abacus separates promised beads from paid beads. Elegant accounting absurdity, no shutdown pipeline.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending nc_weilai (NPC · 协议金额不等于现金): A finance employee compares an enormous ceremonial funding cheque held aloft with a tiny actual cash drawer on the desk; an abacus separates promised beads from paid beads. Elegant accounting absurdity, no shutdown pipeline. Meaning of the ending: 协议上的零很多，账户里的零也很多——只是站的位置不同。你终于学会把鼓掌的承诺和能付款的承诺分开。"
+  },
+  {
+    "id": "ge_promotion",
+    "name": "GE · 名字写在第一行",
+    "verdict": "名字终于单独占了一行。别急着庆功：岗位说明书里多出的每个动词，都在等你确认它有没有预算。",
+    "art": "assets/endings/firefighter.webp",
+    "reuse": null,
+    "scene": "A newly promoted employee climbs a ceremonial ladder; each upper rung is made of an expanding job description, but the budget bag attached below is empty. Celebration ribbons turn into tasks. Vertical ladder within landscape composition.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_promotion (GE · 名字写在第一行): A newly promoted employee climbs a ceremonial ladder; each upper rung is made of an expanding job description, but the budget bag attached below is empty. Celebration ribbons turn into tasks. Vertical ladder within landscape composition. Meaning of the ending: 名字终于单独占了一行。别急着庆功：岗位说明书里多出的每个动词，都在等你确认它有没有预算。"
+  },
+  {
+    "id": "ge_unsung",
+    "name": "职业 · 金牌救火队员",
+    "verdict": "你把火灭了，别人把照片拍了。奖杯证明你擅长救急，空白的任命邮件证明公司更擅长省钱。",
+    "art": "assets/endings/firefighter.webp",
+    "reuse": "firefighter",
+    "scene": null,
+    "prompt": null
+  },
+  {
+    "id": "ge_project",
+    "name": "GE · NDA递交了",
+    "verdict": "卷宗递交了，药还没有获批。庆功宴可以提前，证据不能；最危险的一页，往往写着“后续再说”。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A complete clinical NDA dossier with every source binder firmly supporting its foundation is formally handed through a regulatory intake window. The tired development team waits outside holding unused celebration ribbons: submission achieved, approval still pending. The intake clerk accepts the package but keeps the final approval seal behind glass. Humane black humor about the distance between filing and approval; no crumbling tower, no prison shadow, no red rejection stamp.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_project: A complete clinical NDA dossier with every source binder firmly supporting its foundation is formally handed through a regulatory intake window. The tired development team waits outside holding unused celebration ribbons: submission achieved, approval still pending. The intake clerk accepts the package but keeps the final approval seal behind glass. Humane black humor about the distance between filing and approval; no crumbling tower, no prison shadow, no red rejection stamp."
+  },
+  {
+    "id": "ge_system",
+    "name": "吵着把事做完",
+    "verdict": "大家仍然彼此嫌弃，居然也能把事做完。制度最朴素的胜利，是让合作不再依赖每个人今天心情不错。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "An office engine assembled by different functional teams, each holding its own distinct key and connected by working gears. Colleagues look annoyed at each other yet the mechanism runs steadily. No hero throne and no shared bridge.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_system (吵着把事做完): An office engine assembled by different functional teams, each holding its own distinct key and connected by working gears. Colleagues look annoyed at each other yet the mechanism runs steadily. No hero throne and no shared bridge. Meaning of the ending: 大家仍然彼此嫌弃，居然也能把事做完。制度最朴素的胜利，是让合作不再依赖每个人今天心情不错。"
+  },
+  {
+    "id": "ge_court",
+    "name": "听调不听宣",
+    "verdict": "每日会准时开，阻塞准时还在。你向上汇报了越来越多的进度，向下分配了越来越少的时间。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "Workers walk inside a giant round meeting clock like a hamster wheel; a stack of unresolved blockers stays stationary in its center. One manager calmly adjusts the tiny font on a progress board. Time passes, blockers do not.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_court (听调不听宣): Workers walk inside a giant round meeting clock like a hamster wheel; a stack of unresolved blockers stays stationary in its center. One manager calmly adjusts the tiny font on a progress board. Time passes, blockers do not. Meaning of the ending: 每日会准时开，阻塞准时还在。你向上汇报了越来越多的进度，向下分配了越来越少的时间。"
+  },
+  {
+    "id": "ge_regent",
+    "name": "摄政",
+    "verdict": "你有运行权，却没有能接班的人。摄政听起来威风，翻译成考勤语言，是休假必须本人到场。",
+    "art": "assets/endings/firefighter.webp",
+    "reuse": null,
+    "scene": "An employee in a temporary ceremonial sash sits on a rolling office seat tethered to a ringing pager. A packed holiday suitcase nearby is chained to the seat; all substitute desks remain unstaffed. Authority without relief.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_regent (摄政): An employee in a temporary ceremonial sash sits on a rolling office seat tethered to a ringing pager. A packed holiday suitcase nearby is chained to the seat; all substitute desks remain unstaffed. Authority without relief. Meaning of the ending: 你有运行权，却没有能接班的人。摄政听起来威风，翻译成考勤语言，是休假必须本人到场。"
+  },
+  {
+    "id": "ge_coalition",
+    "name": "没有王座的多数派",
+    "verdict": "你没有私人王国，只有一群肯在关键处署名的人。比起亲信，盟友贵一点；好处是他们不必每天向你证明忠诚。",
+    "art": "assets/endings/team.webp",
+    "reuse": "team",
+    "scene": null,
+    "prompt": null
+  },
+  {
+    "id": "ge_puppetmaster",
+    "name": "老板说得对",
+    "verdict": "你替漂亮日期付过四次账，老板次次都对。聪明的逢迎能让会议散得早，却不能让缺失的源文件长出来。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "A manager proudly conducts marionette calendar pages with strings, while a large source-document shelf beneath the stage is visibly missing its foundations. The smiling audience applauds the dates, not the absent evidence.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_puppetmaster (老板说得对): A manager proudly conducts marionette calendar pages with strings, while a large source-document shelf beneath the stage is visibly missing its foundations. The smiling audience applauds the dates, not the absent evidence. Meaning of the ending: 你替漂亮日期付过四次账，老板次次都对。聪明的逢迎能让会议散得早，却不能让缺失的源文件长出来。"
+  },
+  {
+    "id": "ge_succession",
+    "name": "继承人名单上没有名字",
+    "verdict": "接班的资格来自有人接你的班。若下一把椅子只能靠你永不离席来坐稳，那不是晋升，是换个高度值夜班。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A senior employee hands a work baton and three separate labeled-by-color keys to a capable successor, then genuinely steps away toward an open window. The chair is stable because somebody else can occupy it. No bridge.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ge_succession (继承人名单上没有名字): A senior employee hands a work baton and three separate labeled-by-color keys to a capable successor, then genuinely steps away toward an open window. The chair is stable because somebody else can occupy it. No bridge. Meaning of the ending: 接班的资格来自有人接你的班。若下一把椅子只能靠你永不离席来坐稳，那不是晋升，是换个高度值夜班。"
+  },
+  {
+    "id": "true_afterdragon",
+    "name": "轮回 · 第二次，你没有收拢所有入口",
+    "verdict": "第二次走到王座前，你终于舍得把扶手拆成别人的桌子。经验没有让你更像龙，这才算没有白死上一回。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A returning veteran dismantles the ornate armrests of an executive throne and uses the pieces to build several small colleagues desks. The old crown becomes a practical desk lamp. Reform after a previous cycle, neither dragon shadow nor bridge.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending true_afterdragon (轮回 · 第二次，你没有收拢所有入口): A returning veteran dismantles the ornate armrests of an executive throne and uses the pieces to build several small colleagues desks. The old crown becomes a practical desk lamp. Reform after a previous cycle, neither dragon shadow nor bridge. Meaning of the ending: 第二次走到王座前，你终于舍得把扶手拆成别人的桌子。经验没有让你更像龙，这才算没有白死上一回。"
+  },
+  {
+    "id": "v14_0_0",
+    "name": "资源表终于有减号",
+    "verdict": "你给“不可能”留了一个合法单元格。科学没变温柔，至少资源不再靠下属的睡眠自动扩容。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "An employee places a solid red boundary tile into an impossible resource scheduling grid; workers sleep at home beyond the grid while a manager cannot stretch it further.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_0_0 (资源表终于有减号): An employee places a solid red boundary tile into an impossible resource scheduling grid; workers sleep at home beyond the grid while a manager cannot stretch it further. Meaning of the ending: 你给“不可能”留了一个合法单元格。科学没变温柔，至少资源不再靠下属的睡眠自动扩容。"
+  },
+  {
+    "id": "v14_0_1",
+    "name": "TBD负责到凌晨",
+    "verdict": "岗位仍叫TBD，承担者却有姓名。你用答应解决了会议，用熬夜解决了答应。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "A faceless vacant job silhouette holds an enormous assignment bag, but the bag casts the shadow of one named worker sewing it through the night.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_0_1 (TBD负责到凌晨): A faceless vacant job silhouette holds an enormous assignment bag, but the bag casts the shadow of one named worker sewing it through the night. Meaning of the ending: 岗位仍叫TBD，承担者却有姓名。你用答应解决了会议，用熬夜解决了答应。"
+  },
+  {
+    "id": "v14_0_2",
+    "name": "不可替代直到不能请假",
+    "verdict": "人人需要你，没人敢替你。不可替代既像奖章，也像不附钥匙的手铐。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "An indispensable medal is actually a locked pair of gold cuffs; many colleagues ask a lone worker for help but nobody possesses its missing key.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_0_2 (不可替代直到不能请假): An indispensable medal is actually a locked pair of gold cuffs; many colleagues ask a lone worker for help but nobody possesses its missing key. Meaning of the ending: 人人需要你，没人敢替你。不可替代既像奖章，也像不附钥匙的手铐。"
+  },
+  {
+    "id": "v14_1_0",
+    "name": "没形成信号也要看见事实",
+    "verdict": "你没有替风险化妆。事实带着限制出门，反倒比一张过分干净的脸更容易被信任。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A researcher removes decorative cosmetics from a risk assessment sheet so its real cracks and limits are visible under a clear clinical review lamp.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_1_0 (没形成信号也要看见事实): A researcher removes decorative cosmetics from a risk assessment sheet so its real cracks and limits are visible under a clear clinical review lamp. Meaning of the ending: 你没有替风险化妆。事实带着限制出门，反倒比一张过分干净的脸更容易被信任。"
+  },
+  {
+    "id": "v14_1_1",
+    "name": "十七页解释一个否定句",
+    "verdict": "“未见风险”省了四个字，后来花了十七页。办公室里最贵的删减，常被叫作简洁。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "An editor erases four small risk marks from a summary, causing a seventeen-page coil of follow-up questions to spill across the desk.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_1_1 (十七页解释一个否定句): An editor erases four small risk marks from a summary, causing a seventeen-page coil of follow-up questions to spill across the desk. Meaning of the ending: “未见风险”省了四个字，后来花了十七页。办公室里最贵的删减，常被叫作简洁。"
+  },
+  {
+    "id": "v14_1_2",
+    "name": "把事实吵成阵营",
+    "verdict": "你把事实说成了输赢，赢了这次，失去了下次有人悄悄提醒你的资格。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "A worker lifts a scientific fact as a duel sword; the colleague who used to bring quiet warnings closes a side door and walks away.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_1_2 (把事实吵成阵营): A worker lifts a scientific fact as a duel sword; the colleague who used to bring quiet warnings closes a side door and walks away. Meaning of the ending: 你把事实说成了输赢，赢了这次，失去了下次有人悄悄提醒你的资格。"
+  },
+  {
+    "id": "v14_2_0",
+    "name": "晚半小时，少十年解释",
+    "verdict": "迟到半小时，省下多年解释。你终于分清交付速度和把责任甩进未来的速度。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A clinical file courier waits calmly at a checkpoint for the correct source records; a large future burden of explanations dissolves beyond the gate.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_2_0 (晚半小时，少十年解释): A clinical file courier waits calmly at a checkpoint for the correct source records; a large future burden of explanations dissolves beyond the gate. Meaning of the ending: 迟到半小时，省下多年解释。你终于分清交付速度和把责任甩进未来的速度。"
+  },
+  {
+    "id": "v14_2_1",
+    "name": "元数据比人诚实",
+    "verdict": "文件可以补签，时间不会陪签。元数据没有大局观，所以它终于说了真话。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A backdated signature tries to run backward on an irreversible clock, while a tiny metadata magnifying glass pins it to its actual origin.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_2_1 (元数据比人诚实): A backdated signature tries to run backward on an irreversible clock, while a tiny metadata magnifying glass pins it to its actual origin. Meaning of the ending: 文件可以补签，时间不会陪签。元数据没有大局观，所以它终于说了真话。"
+  },
+  {
+    "id": "v14_2_2",
+    "name": "签字权是最后一口锅",
+    "verdict": "你收拢了签字，也收拢了收件人。领导力很集中，问责信也很集中。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "Every signature cable and every responsibility return envelope converge on the same employee pen; the worker is surrounded by inbound envelopes, not colleagues.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_2_2 (签字权是最后一口锅): Every signature cable and every responsibility return envelope converge on the same employee pen; the worker is surrounded by inbound envelopes, not colleagues. Meaning of the ending: 你收拢了签字，也收拢了收件人。领导力很集中，问责信也很集中。"
+  },
+  {
+    "id": "v14_3_0",
+    "name": "少一次访视，多一点人性",
+    "verdict": "你替患者减了一趟路，也替中心减了一句怨言。真正的同盟，有时从少填一张表开始。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A coordinator removes an unnecessary clinical visit from a route map; a patient smiles as a real center nurse closes one needless form tray.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_3_0 (少一次访视，多一点人性): A coordinator removes an unnecessary clinical visit from a route map; a patient smiles as a real center nurse closes one needless form tray. Meaning of the ending: 你替患者减了一趟路，也替中心减了一句怨言。真正的同盟，有时从少填一张表开始。"
+  },
+  {
+    "id": "v14_3_1",
+    "name": "总部绿灯，中心红灯",
+    "verdict": "总部一片绿，中心一路红。你用一张Tracker建设了一个没人住得起的理想世界。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "A headquarters dashboard is a perfect green miniature city above an exhausted real center full of red visit queues. The ideal city casts a heavy shadow.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_3_1 (总部绿灯，中心红灯): A headquarters dashboard is a perfect green miniature city above an exhausted real center full of red visit queues. The ideal city casts a heavy shadow. Meaning of the ending: 总部一片绿，中心一路红。你用一张Tracker建设了一个没人住得起的理想世界。"
+  },
+  {
+    "id": "v14_3_2",
+    "name": "正确决定的错误传达",
+    "verdict": "你做了正确的减法，却把提醒你的人一起减掉。技术上省了事，政治上断了线。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "A worker neatly reduces redundant tasks with shears, but also cuts the warning telephone line from the helpful center colleague.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_3_2 (正确决定的错误传达): A worker neatly reduces redundant tasks with shears, but also cuts the warning telephone line from the helpful center colleague. Meaning of the ending: 你做了正确的减法，却把提醒你的人一起减掉。技术上省了事，政治上断了线。"
+  },
+  {
+    "id": "v14_4_0",
+    "name": "十二个人不是全部世界",
+    "verdict": "十二个人没有被你讲成十二亿人的未来。分母留在明处，限制才不必在法务室重逢。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "Twelve plain patient data tokens remain visibly twelve on a research tray; an investor telescope aimed at an enormous imagined population is held firmly out of reach.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_4_0 (十二个人不是全部世界): Twelve plain patient data tokens remain visibly twelve on a research tray; an investor telescope aimed at an enormous imagined population is held firmly out of reach. Meaning of the ending: 十二个人没有被你讲成十二亿人的未来。分母留在明处，限制才不必在法务室重逢。"
+  },
+  {
+    "id": "v14_4_1",
+    "name": "附录里的分母",
+    "verdict": "分母进了附录，掌声进了会议室。以后回来的问题，通常比当初省下的说明长。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "An important denominator is stuffed into a closed appendix suitcase while a polished effect-size slide attracts champagne applause overhead.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_4_1 (附录里的分母): An important denominator is stuffed into a closed appendix suitcase while a polished effect-size slide attracts champagne applause overhead. Meaning of the ending: 分母进了附录，掌声进了会议室。以后回来的问题，通常比当初省下的说明长。"
+  },
+  {
+    "id": "v14_4_2",
+    "name": "把统计正确说成了人身攻击",
+    "verdict": "图撤了，人也被撤出会议。你守住统计判断，却让上级把科学误听成公开羞辱。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "A statistician takes down a misleading chart, but the executive also removes the statisticians seat from the room; the empty seat is beside the rolled chart.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_4_2 (把统计正确说成了人身攻击): A statistician takes down a misleading chart, but the executive also removes the statisticians seat from the room; the empty seat is beside the rolled chart. Meaning of the ending: 图撤了，人也被撤出会议。你守住统计判断，却让上级把科学误听成公开羞辱。"
+  },
+  {
+    "id": "v14_5_0",
+    "name": "业务和医学各答各的",
+    "verdict": "各自回答各自的问题，居然不需要一个万能总指挥。边界不是甩锅，是给合作装上门把手。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A meeting table has several distinct practical door handles, each professional controls the door to their own conclusion. Cooperation works without a universal commanding hand.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_5_0 (业务和医学各答各的): A meeting table has several distinct practical door handles, each professional controls the door to their own conclusion. Cooperation works without a universal commanding hand. Meaning of the ending: 各自回答各自的问题，居然不需要一个万能总指挥。边界不是甩锅，是给合作装上门把手。"
+  },
+  {
+    "id": "v14_5_1",
+    "name": "医学负责最后一个句号",
+    "verdict": "你负责句号，别人负责结论。参与感很充分，决定权很节约。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "An employee types a final period on a document made entirely of other peoples conclusions; the keyboard has a participation ribbon but its decision keys are absent.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_5_1 (医学负责最后一个句号): An employee types a final period on a document made entirely of other peoples conclusions; the keyboard has a participation ribbon but its decision keys are absent. Meaning of the ending: 你负责句号，别人负责结论。参与感很充分，决定权很节约。"
+  },
+  {
+    "id": "v14_5_2",
+    "name": "围墙里的正确",
+    "verdict": "围墙挡住了干预，也把预算和专家关系关在了外面。医学终于全权负责，包括医学不该独吞的活。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "A medical team erects a protective high wall around its work, accidentally trapping budget bags and expert contact bridges outside. Self-protection becomes costly isolation.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_5_2 (围墙里的正确): A medical team erects a protective high wall around its work, accidentally trapping budget bags and expert contact bridges outside. Self-protection becomes costly isolation. Meaning of the ending: 围墙挡住了干预，也把预算和专家关系关在了外面。医学终于全权负责，包括医学不该独吞的活。"
+  },
+  {
+    "id": "v14_6_0",
+    "name": "新增一项，必须删一项",
+    "verdict": "新增必须配删除，老板第一次不能同时拥有所有愿望。减号，是预算表上最不受欢迎的民主。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A budget balance scale requires removing one existing task before adding a new task. A disappointed executive holds several impossible wishes while the scale stays level.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_6_0 (新增一项，必须删一项): A budget balance scale requires removing one existing task before adding a new task. A disappointed executive holds several impossible wishes while the scale stays level. Meaning of the ending: 新增必须配删除，老板第一次不能同时拥有所有愿望。减号，是预算表上最不受欢迎的民主。"
+  },
+  {
+    "id": "v14_6_1",
+    "name": "原则同意不能付款",
+    "verdict": "原则同意全票通过，付款申请无人认领。你把愿望存进银行，银行不肯承认这种货币。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "A worker attempts to pay at a bank teller using floating approval balloons instead of banknotes; the clerk points at the empty cash tray.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_6_1 (原则同意不能付款): A worker attempts to pay at a bank teller using floating approval balloons instead of banknotes; the clerk points at the empty cash tray. Meaning of the ending: 原则同意全票通过，付款申请无人认领。你把愿望存进银行，银行不肯承认这种货币。"
+  },
+  {
+    "id": "v14_6_2",
+    "name": "优先级长着老板的脸",
+    "verdict": "预算长了老板的脸，也长了二老板的记性。你赢下这次排序，别忘了对方还有下一次议程。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "A priority queue of projects has a large executive portrait-shaped coin inserted at its head, while a second senior scientist quietly adds a bookmark to the next meeting agenda.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_6_2 (优先级长着老板的脸): A priority queue of projects has a large executive portrait-shaped coin inserted at its head, while a second senior scientist quietly adds a bookmark to the next meeting agenda. Meaning of the ending: 预算长了老板的脸，也长了二老板的记性。你赢下这次排序，别忘了对方还有下一次议程。"
+  },
+  {
+    "id": "v14_7_0",
+    "name": "预设终点还活着",
+    "verdict": "预设和探索各有位置，统计不必替昨天改户口。你让科学问题免于按庆功宴的座次更名。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "Prespecified and exploratory research folders have separate solid shelves; a statistics researcher keeps the older protocol key away from a rearranged celebration seating chart.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_7_0 (预设终点还活着): Prespecified and exploratory research folders have separate solid shelves; a statistics researcher keeps the older protocol key away from a rearranged celebration seating chart. Meaning of the ending: 预设和探索各有位置，统计不必替昨天改户口。你让科学问题免于按庆功宴的座次更名。"
+  },
+  {
+    "id": "v14_7_1",
+    "name": "摘要先于方案诞生",
+    "verdict": "摘要先走，方案后追。故事跑得快，锁库后的文件却不会替它让路。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A flamboyant summary paper airplane races ahead while its protocol binder remains tethered to an already locked database cabinet. The chronology cannot catch up.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_7_1 (摘要先于方案诞生): A flamboyant summary paper airplane races ahead while its protocol binder remains tethered to an already locked database cabinet. The chronology cannot catch up. Meaning of the ending: 摘要先走，方案后追。故事跑得快，锁库后的文件却不会替它让路。"
+  },
+  {
+    "id": "v14_7_2",
+    "name": "会议纪要成了证人",
+    "verdict": "纪要赢了一次辩论，却不保证下一次合作。证人可以保护你，把证人当锤子也会磨损同盟。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "Meeting minutes stand like a paper witness under a bright review lamp, while a worker starts using their folder as a hammer and allied colleagues step back.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_7_2 (会议纪要成了证人): Meeting minutes stand like a paper witness under a bright review lamp, while a worker starts using their folder as a hammer and allied colleagues step back. Meaning of the ending: 纪要赢了一次辩论，却不保证下一次合作。证人可以保护你，把证人当锤子也会磨损同盟。"
+  },
+  {
+    "id": "v14_8_0",
+    "name": "你请假，项目还在",
+    "verdict": "请假期间项目仍转，你没有变轻，只是组织不再把你的重量算成基础设施。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A worker relaxes outdoors on actual leave while a substitute-led office operates through a distant window, powered by distributed gears rather than a human cable.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_8_0 (你请假，项目还在): A worker relaxes outdoors on actual leave while a substitute-led office operates through a distant window, powered by distributed gears rather than a human cable. Meaning of the ending: 请假期间项目仍转，你没有变轻，只是组织不再把你的重量算成基础设施。"
+  },
+  {
+    "id": "v14_8_1",
+    "name": "再忙过这一阵",
+    "verdict": "再忙过这一阵，便有了下一阵。你把暂时当作制度，公司很满意这份永久的临时工协议。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "A worker passes through an endless sequence of finish-line ribbons inside the same office; every ribbon opens onto another deadline and the vacation ticket fades.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_8_1 (再忙过这一阵): A worker passes through an endless sequence of finish-line ribbons inside the same office; every ribbon opens onto another deadline and the vacation ticket fades. Meaning of the ending: 再忙过这一阵，便有了下一阵。你把暂时当作制度，公司很满意这份永久的临时工协议。"
+  },
+  {
+    "id": "v14_8_2",
+    "name": "全公司等你点同意",
+    "verdict": "审批都归你，假期也归零。你终于学会了钟时的核心技术：让每个人依赖你，再称它为管理。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "All office approval lights converge on one employee mouse click. The worker holds a suitcase with no handle while every other department patiently waits for the single finger.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_8_2 (全公司等你点同意): All office approval lights converge on one employee mouse click. The worker holds a suitcase with no handle while every other department patiently waits for the single finger. Meaning of the ending: 审批都归你，假期也归零。你终于学会了钟时的核心技术：让每个人依赖你，再称它为管理。"
+  },
+  {
+    "id": "v14_joint_capacity",
+    "name": "没有人力的关键路径",
+    "verdict": "你把人力表和预算表叠在一起，漂亮日期终于露出了借条。管理第一次需要做选择，而不是做总结。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A transparent manpower grid laid over a budget sheet reveals a long hidden debt receipt beneath a beautiful critical-path arrow. Several hands must remove a desired task instead of adding another sleepless worker.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_joint_capacity (没有人力的关键路径): A transparent manpower grid laid over a budget sheet reveals a long hidden debt receipt beneath a beautiful critical-path arrow. Several hands must remove a desired task instead of adding another sleepless worker. Meaning of the ending: 你把人力表和预算表叠在一起，漂亮日期终于露出了借条。管理第一次需要做选择，而不是做总结。"
+  },
+  {
+    "id": "v14_joint_paper",
+    "name": "两份文件一条时间线",
+    "verdict": "两份文件只有一条时间线，稽查组失去了发挥空间。无聊，是你给未来自己买下的最便宜保险。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "Two distinct document binders sit on parallel rails precisely aligned to one actual chronology ruler. An auditor with a magnifying glass looks pleasantly bored because the dates are consistent. No prison bars or red stamping tower.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_joint_paper (两份文件一条时间线): Two distinct document binders sit on parallel rails precisely aligned to one actual chronology ruler. An auditor with a magnifying glass looks pleasantly bored because the dates are consistent. No prison bars or red stamping tower. Meaning of the ending: 两份文件只有一条时间线，稽查组失去了发挥空间。无聊，是你给未来自己买下的最便宜保险。"
+  },
+  {
+    "id": "v14_joint_site",
+    "name": "最便宜的是别让患者来",
+    "verdict": "少一次无用访视，比多一次关怀患者的讲话便宜。你让预算学会了人话，也让人话终于进了预算。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A clinical visit path winds between too many clinic doors. A patient and center coordinator remove one unnecessary detour door and the budget counter drops accordingly; a ceremonial patient-care speech podium remains unused.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_joint_site (最便宜的是别让患者来): A clinical visit path winds between too many clinic doors. A patient and center coordinator remove one unnecessary detour door and the budget counter drops accordingly; a ceremonial patient-care speech podium remains unused. Meaning of the ending: 少一次无用访视，比多一次关怀患者的讲话便宜。你让预算学会了人话，也让人话终于进了预算。"
+  },
+  {
+    "id": "v14_joint_story",
+    "name": "漂亮故事的两份分母",
+    "verdict": "曲线很漂亮，摘要很勇敢，分母躲了两次。讲好故事的政治利润，终于碰上不听故事的审评者。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A glossy upward chart and a brave abstract stand on two decorative plinths, each hiding a denominator beneath its skirt. A sober reviewer lifts both skirts with a desk lamp while the fundraising audience freezes mid-applause.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_joint_story (漂亮故事的两份分母): A glossy upward chart and a brave abstract stand on two decorative plinths, each hiding a denominator beneath its skirt. A sober reviewer lifts both skirts with a desk lamp while the fundraising audience freezes mid-applause. Meaning of the ending: 曲线很漂亮，摘要很勇敢，分母躲了两次。讲好故事的政治利润，终于碰上不听故事的审评者。"
+  },
+  {
+    "id": "v14_joint_dragon",
+    "name": "新的龙有审批权限",
+    "verdict": "没有钟时也能转，离了你却不能转。屠龙的验收单上，你把旧瓶颈签收为个人资产。",
+    "art": "assets/endings/dragon.webp",
+    "reuse": null,
+    "scene": "An employee has replaced a broad shared workflow pipe with one narrow personal approval funnel. Every other office waits at its mouth; a shiny old bottleneck trophy is now in the employees property cabinet. No throne dragon shadow.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending v14_joint_dragon (新的龙有审批权限): An employee has replaced a broad shared workflow pipe with one narrow personal approval funnel. Every other office waits at its mouth; a shiny old bottleneck trophy is now in the employees property cabinet. No throne dragon shadow. Meaning of the ending: 没有钟时也能转，离了你却不能转。屠龙的验收单上，你把旧瓶颈签收为个人资产。"
+  },
+  {
+    "id": "ce_fih_review",
+    "name": "阶段 · FIH交付通过核查",
+    "verdict": "第一针之前，你先核清了谁该签什么。没新闻，没神话，只有一个不必靠祈祷开始的试验。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A single unopened subcutaneous injection study package rests behind three separate functional keys, each confirmed by a different professional hand. A dramatic ribbon-cutting scissors waits uselessly outside the safety lock. Scientific readiness over ceremony.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ce_fih_review (阶段 · FIH交付通过核查): A single unopened subcutaneous injection study package rests behind three separate functional keys, each confirmed by a different professional hand. A dramatic ribbon-cutting scissors waits uselessly outside the safety lock. Scientific readiness over ceremony. Meaning of the ending: 第一针之前，你先核清了谁该签什么。没新闻，没神话，只有一个不必靠祈祷开始的试验。"
+  },
+  {
+    "id": "ce_team_ready",
+    "name": "阶段 · 合格接替已经就位",
+    "verdict": "终于有人能在你不在时做决定。你把“不可替代”的奖状撕成了交接表，这是比自我证明更昂贵的成熟。",
+    "art": "assets/endings/team.webp",
+    "reuse": null,
+    "scene": "A capable substitute operates a well-organized workstation as the original owner removes a gold indispensable medal from its cable and leaves a clear handover folder instead. Competence, not martyrdom, keeps the desk running.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ce_team_ready (阶段 · 合格接替已经就位): A capable substitute operates a well-organized workstation as the original owner removes a gold indispensable medal from its cable and leaves a clear handover folder instead. Competence, not martyrdom, keeps the desk running. Meaning of the ending: 终于有人能在你不在时做决定。你把“不可替代”的奖状撕成了交接表，这是比自我证明更昂贵的成熟。"
+  },
+  {
+    "id": "ce_source_repair",
+    "name": "阶段 · 确认邮件不能替代来源",
+    "verdict": "缺的资料补回来了，缺的时间也花掉了。钟时的“原则同意”没有印钞，幸好你没有拿它当源文件。",
+    "art": "assets/endings/audit.webp",
+    "reuse": null,
+    "scene": "A worker inserts a heavy genuine source-file brick into the missing foundation of a dossier tower. A real hourglass and a small paid invoice lie beside it; a floating approval balloon cannot hold the structure up.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ce_source_repair (阶段 · 确认邮件不能替代来源): A worker inserts a heavy genuine source-file brick into the missing foundation of a dossier tower. A real hourglass and a small paid invoice lie beside it; a floating approval balloon cannot hold the structure up. Meaning of the ending: 缺的资料补回来了，缺的时间也花掉了。钟时的“原则同意”没有印钞，幸好你没有拿它当源文件。"
+  },
+  {
+    "id": "ce_mental_strain",
+    "name": "个人 · 判断需要留出余地",
+    "verdict": "判断余地被一点点借走，最后连拒绝都要加班。懂得代价，和还有力气付代价，是两回事。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "A worker tries to turn a delicate clear lens of judgment while managers keep borrowing pieces of its frame as stationery. The lens bends under too many paperclips. Psychological exhaustion as disappearing decision space, no literal brain.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ce_mental_strain (个人 · 判断需要留出余地): A worker tries to turn a delicate clear lens of judgment while managers keep borrowing pieces of its frame as stationery. The lens bends under too many paperclips. Psychological exhaustion as disappearing decision space, no literal brain. Meaning of the ending: 判断余地被一点点借走，最后连拒绝都要加班。懂得代价，和还有力气付代价，是两回事。"
+  },
+  {
+    "id": "ce_team_fray",
+    "name": "团队 · 默契不会自动维持",
+    "verdict": "每个人都还在群里，已经没人愿意多说一句。你赢过几次争论，也可能输掉了问题发生之前的提醒。",
+    "art": "assets/endings/empty-chair.webp",
+    "reuse": null,
+    "scene": "Five colleagues sit at separate desks connected by a chat cable. Their speech balloons are silently deflated, warning lamps dimmed, while a triumphant debate trophy glints on one desk. Membership without willingness to warn.",
+    "prompt": "One standalone finished landscape 3:2 editorial illustration for a Chinese biotech office black-comedy game. Mature painterly oil and ink texture, cinematic petroleum blue, old ivory, restrained vermilion and muted gold. Anonymous ordinary Chinese office people, humane bitter political satire expressed through objects and power relationships. No readable text, letters, watermark, logos, grid or collage; not an icon. Each illustration must use its specified unique scene, not a generic empty chair, shared trophy or reused dragon composition. Specific ending ce_team_fray (团队 · 默契不会自动维持): Five colleagues sit at separate desks connected by a chat cable. Their speech balloons are silently deflated, warning lamps dimmed, while a triumphant debate trophy glints on one desk. Membership without willingness to warn. Meaning of the ending: 每个人都还在群里，已经没人愿意多说一句。你赢过几次争论，也可能输掉了问题发生之前的提醒。"
+  }
+]
