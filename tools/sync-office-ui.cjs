@@ -7,4 +7,4 @@ for(const [key,file,tag] of [['OFFICE_UI_STYLE','office-workspace.css','style'],
  else if(tag==='style')html=html.replace('</head>','<style>\n'+content+'\n</style>\n</head>');
  else html=html.replace('/* PROJECT CAMPAIGN V1 END */','/* PROJECT CAMPAIGN V1 END */\n\n'+content);
 }
-fs.writeFileSync(target,html);console.log('Office workspace embedded: v18.0.0');
+fs.writeFileSync(target,html);console.log('Office workspace embedded: v18.0.1');

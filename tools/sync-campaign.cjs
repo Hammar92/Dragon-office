@@ -16,7 +16,8 @@ if(!html.includes('legacy campaign chapter'))html=html.replace('      const bran
 html=html.replace(/^    if\(c&&c\.campaignChoice&&c\.project&&c\.project\.set&&c\.project\.set\.piLedger\)return null;[^\n]*\r?\n/gm,'');
 html=html.replace('  function piConflictFromChoice(c){','  function piConflictFromChoice(c){\n    if(c&&c.campaignChoice&&c.project&&c.project.set&&c.project.set.piLedger)return null; // A jointly agreed contribution ledger resolves the rivalry.');
 html=html.replace('return c.seen.indexOf(e.id)<0;','return c.seen.indexOf(e.id)<0&&(!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));').replace('pool=DELIVERY_EVENTS_147.slice();','pool=DELIVERY_EVENTS_147.filter(e=>!window.ProjectCampaignV1||ProjectCampaignV1.eventAllowed(e,chapterIdx));');
-html=html.replaceAll('Demo v16.0.1','Demo v18.0.0').replaceAll('Demo v17.0.0','Demo v18.0.0').replaceAll('Demo v17.1.0','Demo v18.0.0').replaceAll('Demo v17.2.0','Demo v18.0.0');
+html=html.replaceAll('Demo v16.0.1','Demo v18.0.1').replaceAll('Demo v17.0.0','Demo v18.0.1').replaceAll('Demo v17.1.0','Demo v18.0.1').replaceAll('Demo v17.2.0','Demo v18.0.1').replaceAll('Demo v18.0.0','Demo v18.0.1');
 fs.writeFileSync(target,html);
 if(fs.existsSync(path.join(root,'ui','office-workspace.js')))require('./sync-office-ui.cjs');
 console.log('Canonical V2 campaign embedded: 18 chapters, contextual authority and evidence.');
+

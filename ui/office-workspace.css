@@ -4,6 +4,7 @@ body{background:radial-gradient(ellipse at top left,#d5e6ed,transparent 65%),#e9
 #app{max-width:1600px;padding:26px 28px 110px}
 button{font-family:inherit}button:focus-visible,[tabindex]:focus-visible{outline:3px solid #3097ce;outline-offset:4px}
 .ow-dock[hidden]{display:none!important}
+.ow-save-status{font-size:10px;color:#6c879a;margin-top:7px;text-align:right}#ow-save-work{background:#ffffff12;color:#e3f1f8;border:1px solid #789eaf66}
 .ow-query-head{font-size:11px;letter-spacing:1px;color:#45809a;background:#edf5fa;border:1px solid #c9deeb;border-radius:6px;padding:10px 14px;margin-top:24px}.ow-query .choice{border-radius:4px!important;border-left:3px solid #5595b1!important}.ow-query .choice .idx{font-family:monospace!important}.ow-query .choice.warn{border-left-color:#b46659!important}
 .ow-anonymous{position:absolute;right:10%;font-size:90px;color:#b9d9e680;line-height:1}
 #hud{grid-column:1/-1!important;grid-row:1!important}#pm-left-panel{grid-column:1!important;grid-row:2!important}#scene-area{grid-column:2!important;grid-row:2!important}#pm-right-panel{grid-column:3!important;grid-row:2!important}
