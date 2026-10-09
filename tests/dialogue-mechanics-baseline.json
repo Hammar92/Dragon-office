@@ -1,0 +1,4064 @@
+{
+  "main": [
+    {
+      "id": "v11_1",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a1",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_fih",
+          "campaignChoice": {
+            "index": 0,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a2",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 0,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_2",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a4",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "pvp": 2,
+            "jialin": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_safety",
+          "campaignChoice": {
+            "index": 1,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a5",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 1,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "govern",
+          "achievement": "a4",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "pvp": 2,
+            "jialin": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_safety",
+          "campaignChoice": {
+            "index": 1,
+            "kind": "safetyReview",
+            "slot": 2,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_3",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a7",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "zihan": 2,
+            "mingye": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_dose",
+          "campaignChoice": {
+            "index": 2,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a8",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 2,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_4",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a10",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_phase1",
+          "campaignChoice": {
+            "index": 3,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a11",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 3,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "govern",
+          "achievement": "a10",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_phase1",
+          "campaignChoice": {
+            "index": 3,
+            "kind": "present",
+            "slot": 2,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_5",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a13",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "miaomiao": 2,
+            "yangyang": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_design",
+          "campaignChoice": {
+            "index": 4,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a14",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 4,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "govern",
+          "achievement": "a13",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "miaomiao": 2,
+            "yangyang": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_design",
+          "campaignChoice": {
+            "index": 4,
+            "kind": "exploration",
+            "slot": 2,
+            "extraCost": 600,
+            "extraMonths": 0.5,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_6",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a16",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_signal",
+          "campaignChoice": {
+            "index": 5,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a17",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 5,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_7",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a19",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_dose2",
+          "campaignChoice": {
+            "index": 6,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a20",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 6,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "govern",
+          "achievement": "a19",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_dose2",
+          "campaignChoice": {
+            "index": 6,
+            "kind": "btd",
+            "slot": 2,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_8",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a22",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_safety2",
+          "campaignChoice": {
+            "index": 7,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a23",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 7,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "govern",
+          "achievement": "a22",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_safety2",
+          "campaignChoice": {
+            "index": 7,
+            "kind": "safetyReview",
+            "slot": 2,
+            "extraCost": 150,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_9",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a25",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "kzong": 2,
+            "heina": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_sites",
+          "campaignChoice": {
+            "index": 8,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a26",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 8,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_10",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a28",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_eop2",
+          "campaignChoice": {
+            "index": 9,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a29",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 9,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_11",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a31",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_budget",
+          "campaignChoice": {
+            "index": 10,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a32",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 10,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "power",
+          "achievement": "a31",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 4,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_budget",
+          "campaignChoice": {
+            "index": 10,
+            "kind": "authority",
+            "slot": 2,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_12",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a34",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_supply",
+          "campaignChoice": {
+            "index": 11,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a35",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 11,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_13",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a37",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_execution",
+          "campaignChoice": {
+            "index": 12,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a38",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 12,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "govern",
+          "achievement": "a37",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_execution",
+          "campaignChoice": {
+            "index": 12,
+            "kind": "delegation",
+            "slot": 2,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_14",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a40",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "xiaoen": 2,
+            "zihan": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_lock",
+          "campaignChoice": {
+            "index": 13,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a41",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 13,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "govern",
+          "achievement": "a40",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "xiaoen": 2,
+            "zihan": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_lock",
+          "campaignChoice": {
+            "index": 13,
+            "kind": "delay",
+            "slot": 2,
+            "extraCost": 200,
+            "extraMonths": 1,
+            "context": false
+          }
+        },
+        {
+          "route": "power",
+          "achievement": "a41",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "xiaoen": 2,
+            "zihan": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_lock",
+          "campaignChoice": {
+            "index": 13,
+            "kind": "fraud",
+            "slot": 3,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_15",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a43",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_topline",
+          "campaignChoice": {
+            "index": 14,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a44",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 14,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_16",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a46",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_integration",
+          "campaignChoice": {
+            "index": 15,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a47",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 15,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "power",
+          "achievement": "a46",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_integration",
+          "campaignChoice": {
+            "index": 15,
+            "kind": "department",
+            "slot": 2,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_17",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a49",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_prenda",
+          "campaignChoice": {
+            "index": 16,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a50",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 16,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "v11_18",
+      "choices": [
+        {
+          "route": "govern",
+          "achievement": "a52",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_nda",
+          "campaignChoice": {
+            "index": 17,
+            "kind": "work",
+            "slot": 0,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "appease",
+          "achievement": "a53",
+          "e": {
+            "progress": 0,
+            "trust": 3,
+            "power": 0,
+            "morale": -2,
+            "heart": 2,
+            "sanity": -2
+          },
+          "npc": {},
+          "project": {
+            "set": {}
+          },
+          "campaignChoice": {
+            "index": 17,
+            "kind": "shortcut",
+            "slot": 1,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "power",
+          "achievement": "a52",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_nda",
+          "campaignChoice": {
+            "index": 17,
+            "kind": "vp",
+            "slot": 2,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        },
+        {
+          "route": "power",
+          "achievement": "a52",
+          "e": {
+            "progress": 0,
+            "trust": -1,
+            "power": 0,
+            "morale": 1,
+            "heart": 2,
+            "sanity": 0
+          },
+          "npc": {
+            "yijian": 2,
+            "kzong": 2
+          },
+          "project": {
+            "set": {}
+          },
+          "record": "campaign_nda",
+          "campaignChoice": {
+            "index": 17,
+            "kind": "concentrate",
+            "slot": 3,
+            "extraCost": 0,
+            "extraMonths": 0,
+            "context": false
+          }
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "v11e_comment",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "zihan": 5
+          },
+          "achievement": "a55",
+          "route": "govern"
+        },
+        {
+          "e": {
+            "trust": 5,
+            "stamina": -8,
+            "heart": -5
+          },
+          "achievement": "a56",
+          "route": "appease"
+        },
+        {
+          "e": {
+            "progress": -4,
+            "heart": -4
+          },
+          "achievement": "a57",
+          "route": "power"
+        }
+      ]
+    },
+    {
+      "id": "v11e_resource",
+      "choices": [
+        {
+          "e": {
+            "power": 3,
+            "progress": 4
+          },
+          "npc": {
+            "kzong": 6
+          },
+          "achievement": "a58",
+          "route": "govern"
+        },
+        {
+          "e": {
+            "trust": 4,
+            "stamina": -9,
+            "heart": -6
+          },
+          "achievement": "a59",
+          "route": "appease"
+        },
+        {
+          "e": {
+            "progress": 3
+          },
+          "npc": {
+            "linan": 5
+          },
+          "achievement": "a60",
+          "route": "power"
+        }
+      ]
+    },
+    {
+      "id": "v11e_ai",
+      "choices": [
+        {
+          "e": {
+            "progress": 4
+          },
+          "npc": {
+            "ruidong": 1,
+            "xiaoen": 3
+          },
+          "achievement": "a61",
+          "route": "govern"
+        },
+        {
+          "e": {
+            "power": 2,
+            "morale": -3
+          },
+          "npc": {
+            "ruidong": -9,
+            "ceo": -3
+          },
+          "achievement": "a62",
+          "route": "appease"
+        },
+        {
+          "e": {
+            "progress": 2,
+            "heart": -3
+          },
+          "npc": {
+            "ruidong": 4
+          },
+          "achievement": "a63",
+          "route": "power"
+        }
+      ]
+    },
+    {
+      "id": "v11e_visible",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "linan": 2,
+            "miaomiao": 4
+          },
+          "achievement": "a64",
+          "route": "govern"
+        },
+        {
+          "e": {
+            "trust": 3,
+            "morale": -4
+          },
+          "npc": {
+            "linan": 6,
+            "miaomiao": -6
+          },
+          "achievement": "a65",
+          "route": "appease"
+        },
+        {
+          "e": {
+            "power": 2
+          },
+          "npc": {
+            "linan": -7
+          },
+          "achievement": "a66",
+          "route": "power"
+        }
+      ]
+    },
+    {
+      "id": "v11e_cro",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "power": 3
+          },
+          "npc": {
+            "kzong": 6,
+            "heina": 3
+          },
+          "achievement": "a67",
+          "route": "govern"
+        },
+        {
+          "e": {
+            "progress": 3,
+            "blame": 6
+          },
+          "npc": {
+            "zhuzong": 4,
+            "heina": 4,
+            "xiaoen": -5
+          },
+          "achievement": "a68",
+          "route": "appease",
+          "branchFlag": "v11_cro_sponsor_mail"
+        },
+        {
+          "e": {
+            "power": 2,
+            "progress": -2
+          },
+          "npc": {
+            "heina": -5
+          },
+          "achievement": "a69",
+          "route": "power"
+        }
+      ]
+    },
+    {
+      "id": "v11e_pvp",
+      "choices": [
+        {
+          "e": {
+            "progress": 3
+          },
+          "npc": {
+            "pvp": 5,
+            "jialin": -2
+          },
+          "achievement": "a70",
+          "route": "govern"
+        },
+        {
+          "e": {
+            "trust": 2
+          },
+          "npc": {
+            "jialin": 4,
+            "pvp": -3
+          },
+          "achievement": "a71",
+          "route": "appease"
+        },
+        {
+          "e": {
+            "power": 3
+          },
+          "npc": {
+            "pvp": 4,
+            "jialin": -6
+          },
+          "achievement": null,
+          "route": "power"
+        }
+      ]
+    },
+    {
+      "id": "v11e_pi",
+      "choices": [
+        {
+          "e": {
+            "progress": 3
+          },
+          "npc": {
+            "parker": 1
+          },
+          "achievement": "a72",
+          "route": "govern"
+        },
+        {
+          "e": {
+            "trust": 2,
+            "piRep": -2
+          },
+          "npc": {
+            "parker": 5,
+            "houpi": -3
+          },
+          "achievement": "a73",
+          "route": "appease"
+        },
+        {
+          "e": {
+            "piRep": 4,
+            "progress": 3
+          },
+          "npc": {
+            "houpi": 4,
+            "mingye": 3,
+            "parker": -2
+          },
+          "achievement": null,
+          "route": "power"
+        }
+      ]
+    },
+    {
+      "id": "v11e_zhuzong",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "xiaoen": 5,
+            "zhuzong": -2
+          },
+          "achievement": "a74",
+          "route": "govern"
+        },
+        {
+          "e": {
+            "progress": 3,
+            "blame": 5
+          },
+          "npc": {
+            "zhuzong": 4,
+            "xiaoen": -5
+          },
+          "achievement": "a75",
+          "route": "appease"
+        },
+        {
+          "e": {
+            "power": 3
+          },
+          "npc": {
+            "zhuzong": -7,
+            "xiaoen": 3
+          },
+          "achievement": null,
+          "route": "power"
+        }
+      ]
+    },
+    {
+      "id": "v12e_minutes",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "zihan": 5,
+            "yangyang": -2
+          },
+          "route": "govern",
+          "achievement": "a76"
+        },
+        {
+          "e": {
+            "trust": 3,
+            "progress": -2
+          },
+          "route": "appease",
+          "achievement": "a77"
+        },
+        {
+          "e": {
+            "trust": 5
+          },
+          "route": "power",
+          "achievement": null
+        }
+      ]
+    },
+    {
+      "id": "v12e_wuzong",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "wuzong": 3,
+            "caolan": 4
+          },
+          "route": "govern",
+          "achievement": "a78"
+        },
+        {
+          "e": {
+            "progress": 5,
+            "stamina": -5
+          },
+          "npc": {
+            "wuzong": 5
+          },
+          "route": "appease",
+          "achievement": "a79"
+        },
+        {
+          "e": {
+            "power": 4,
+            "trust": -3
+          },
+          "npc": {
+            "wuzong": -6
+          },
+          "route": "power",
+          "achievement": null
+        }
+      ]
+    },
+    {
+      "id": "v12e_xianren",
+      "choices": [
+        {
+          "e": {
+            "progress": 3
+          },
+          "npc": {
+            "xianren": 2,
+            "caolan": 5
+          },
+          "route": "govern",
+          "achievement": "a80"
+        },
+        {
+          "e": {
+            "progress": 1
+          },
+          "npc": {
+            "xianren": -2
+          },
+          "route": "appease",
+          "achievement": "a81"
+        },
+        {
+          "e": {
+            "progress": 4
+          },
+          "npc": {
+            "caolan": 6,
+            "xianren": -7
+          },
+          "route": "power",
+          "achievement": null
+        }
+      ]
+    },
+    {
+      "id": "v12e_bd",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "career": 2
+          },
+          "npc": {
+            "guyu": 6
+          },
+          "route": "govern",
+          "achievement": "a82"
+        },
+        {
+          "e": {
+            "trust": 4,
+            "stamina": -5
+          },
+          "npc": {
+            "guyu": -2
+          },
+          "route": "appease",
+          "achievement": "a83"
+        },
+        {
+          "e": {
+            "progress": 3
+          },
+          "npc": {
+            "guyu": 4
+          },
+          "route": "power",
+          "achievement": null
+        }
+      ]
+    },
+    {
+      "id": "v12e_susu",
+      "choices": [
+        {
+          "e": {
+            "progress": 3
+          },
+          "npc": {
+            "weilai": 3,
+            "yangyang": 2
+          },
+          "route": "govern",
+          "achievement": "a84"
+        },
+        {
+          "e": {
+            "trust": 3,
+            "stamina": -4
+          },
+          "npc": {
+            "weilai": 5,
+            "yangyang": -3
+          },
+          "route": "appease",
+          "achievement": "a85"
+        },
+        {
+          "e": {
+            "power": 2
+          },
+          "npc": {
+            "yangyang": 5,
+            "weilai": -4
+          },
+          "route": "power",
+          "achievement": null
+        }
+      ]
+    },
+    {
+      "id": "v12e_ceo",
+      "choices": [
+        {
+          "e": {
+            "power": 3,
+            "progress": 2
+          },
+          "npc": {
+            "ceo": -2,
+            "ruidong": 2,
+            "kzong": 4
+          },
+          "route": "govern",
+          "achievement": "a86"
+        },
+        {
+          "e": {
+            "trust": 5
+          },
+          "npc": {
+            "ceo": 5,
+            "ruidong": -2
+          },
+          "route": "appease",
+          "achievement": "a87"
+        },
+        {
+          "e": {
+            "power": 4,
+            "trust": -6
+          },
+          "npc": {
+            "ceo": -8,
+            "ruidong": -5
+          },
+          "route": "power",
+          "achievement": null
+        }
+      ]
+    },
+    {
+      "id": "v12e_mkn",
+      "choices": [
+        {
+          "e": {
+            "piRep": 5,
+            "power": 3
+          },
+          "npc": {
+            "houpi": 2,
+            "niupi": 3
+          },
+          "route": "govern",
+          "achievement": "a88"
+        },
+        {
+          "e": {
+            "piRep": 2
+          },
+          "npc": {
+            "houpi": 6,
+            "niupi": -5
+          },
+          "route": "appease",
+          "achievement": "a89"
+        },
+        {
+          "e": {
+            "piRep": 2
+          },
+          "npc": {
+            "niupi": 6,
+            "houpi": -5
+          },
+          "route": "power",
+          "achievement": null
+        }
+      ]
+    },
+    {
+      "id": "v13e_ceo_detail",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "ceo": 4,
+            "mingye": 3
+          },
+          "branchFlag": "v13_ceo_number",
+          "achievement": "a90"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 3,
+            "stamina": -3
+          },
+          "npc": {
+            "ceo": -2
+          },
+          "achievement": "a90"
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 3,
+            "trust": -4
+          },
+          "npc": {
+            "ceo": -1
+          },
+          "achievement": "a90"
+        }
+      ]
+    },
+    {
+      "id": "v13e_cso_deepdive",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "cso": 5,
+            "pvp": 4,
+            "jialin": -2
+          },
+          "branchFlag": "v13_cso_owner",
+          "achievement": "a91"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 3,
+            "stamina": -5
+          },
+          "achievement": "a91"
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 5,
+            "morale": -3
+          },
+          "npc": {
+            "cso": 3,
+            "jialin": -7
+          },
+          "achievement": "a91"
+        }
+      ]
+    },
+    {
+      "id": "v13e_xiaoyuan_translate",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 6
+          },
+          "npc": {
+            "xiaoyuan": 6
+          },
+          "branchFlag": "v13_translate",
+          "achievement": "a92"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 3,
+            "stamina": -5
+          },
+          "npc": {
+            "yangyang": 3,
+            "xiaoyuan": -2
+          },
+          "achievement": "a92"
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 4,
+            "trust": -4
+          },
+          "npc": {
+            "ceo": -3,
+            "xiaoyuan": 2
+          },
+          "achievement": "a92"
+        }
+      ]
+    },
+    {
+      "id": "v13e_hr_patch",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "zouting": 2,
+            "kzong": 5
+          },
+          "branchFlag": "v13_hr_structure",
+          "achievement": "a93"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "morale": 4,
+            "progress": -2
+          },
+          "npc": {
+            "zouting": 6
+          },
+          "achievement": "a93"
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 4,
+            "trust": -3
+          },
+          "npc": {
+            "zouting": -4,
+            "kzong": 3
+          },
+          "achievement": "a93"
+        }
+      ]
+    },
+    {
+      "id": "v13e_yijian_secret",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 5,
+            "power": 2
+          },
+          "npc": {
+            "zihan": 4,
+            "yijian": -2
+          },
+          "branchFlag": "v13_reg_access",
+          "achievement": "a94"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 4,
+            "progress": -2
+          },
+          "npc": {
+            "yijian": 5
+          },
+          "achievement": "a94"
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 5,
+            "trust": -5
+          },
+          "npc": {
+            "yijian": -6,
+            "ceo": 1
+          },
+          "achievement": "a94"
+        }
+      ]
+    },
+    {
+      "id": "v13e_caolan_xianren",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 4
+          },
+          "npc": {
+            "xianren": 2,
+            "caolan": 5,
+            "wuzong": 3
+          },
+          "branchFlag": "v13_postlaunch_roles",
+          "achievement": "a95"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 3
+          },
+          "npc": {
+            "xianren": 4,
+            "caolan": -2
+          },
+          "achievement": "a95"
+        },
+        {
+          "route": "power",
+          "e": {
+            "progress": 5,
+            "power": 2
+          },
+          "npc": {
+            "caolan": 6,
+            "xianren": -6
+          },
+          "achievement": "a95"
+        }
+      ]
+    },
+    {
+      "id": "v13e_guyu_safety",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 4,
+            "career": 2
+          },
+          "npc": {
+            "guyu": 6,
+            "pvp": 3,
+            "jialin": -1
+          },
+          "branchFlag": "v13_dd_safety",
+          "achievement": "a96"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 3
+          },
+          "npc": {
+            "jialin": 5,
+            "guyu": -3
+          },
+          "achievement": "a96"
+        },
+        {
+          "route": "power",
+          "e": {
+            "progress": 3
+          },
+          "npc": {
+            "guyu": 4,
+            "pvp": -2
+          },
+          "achievement": "a96"
+        }
+      ]
+    },
+    {
+      "id": "v13e_linline",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 4,
+            "morale": 3
+          },
+          "npc": {
+            "miaomiao": 6,
+            "yangyang": 1
+          },
+          "branchFlag": "v13_visit_tradeoff",
+          "achievement": "a97"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 3,
+            "stamina": -4
+          },
+          "npc": {
+            "yangyang": 5,
+            "miaomiao": -5
+          },
+          "achievement": "a97"
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 4,
+            "trust": -3
+          },
+          "npc": {
+            "yangyang": -6,
+            "miaomiao": 4
+          },
+          "achievement": "a97"
+        }
+      ]
+    },
+    {
+      "id": "v13e_lindan_mingye",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "insight": 3
+          },
+          "npc": {
+            "linan": 3,
+            "mingye": 4
+          },
+          "branchFlag": "v13_gossip_used",
+          "achievement": "a98"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "power": 2
+          },
+          "npc": {
+            "linan": 4
+          },
+          "achievement": "a98"
+        },
+        {
+          "route": "power",
+          "e": {
+            "insight": 2
+          },
+          "npc": {
+            "linan": -3,
+            "mingye": 3
+          },
+          "achievement": "a98"
+        }
+      ]
+    },
+    {
+      "id": "v13e_susu_wu",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 4,
+            "power": 2
+          },
+          "npc": {
+            "weilai": 5,
+            "wuzong": 2,
+            "xianren": 1
+          },
+          "branchFlag": "v13_medical_boundary",
+          "achievement": "a99"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 4
+          },
+          "npc": {
+            "wuzong": 5,
+            "weilai": -4
+          },
+          "achievement": "a99"
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 5,
+            "trust": -4
+          },
+          "npc": {
+            "wuzong": -7,
+            "weilai": 3
+          },
+          "achievement": "a99"
+        }
+      ]
+    },
+    {
+      "id": "v14_capacity",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "morale": 5,
+            "power": 2
+          },
+          "npc": {
+            "kzong": 5,
+            "yangyang": 2,
+            "miaomiao": 4
+          },
+          "route": "govern",
+          "branchFlag": "v14_0_0",
+          "achievement": "a100"
+        },
+        {
+          "e": {
+            "progress": 5,
+            "stamina": -7,
+            "morale": -5
+          },
+          "npc": {
+            "kzong": -3,
+            "miaomiao": -4
+          },
+          "route": "appease",
+          "branchFlag": "v14_0_1",
+          "achievement": "a100"
+        },
+        {
+          "e": {
+            "power": 6,
+            "stamina": -5,
+            "dragon": 2
+          },
+          "npc": {
+            "kzong": -2,
+            "yangyang": -3
+          },
+          "route": "power",
+          "branchFlag": "v14_0_2",
+          "achievement": "a100"
+        }
+      ]
+    },
+    {
+      "id": "v14_safety_copy",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "trust": -1
+          },
+          "npc": {
+            "pvp": 5,
+            "guyu": 3,
+            "jialin": 2
+          },
+          "route": "govern",
+          "branchFlag": "v14_1_0",
+          "achievement": "a101"
+        },
+        {
+          "e": {
+            "trust": 5,
+            "progress": 2
+          },
+          "npc": {
+            "guyu": -4,
+            "pvp": -3
+          },
+          "route": "appease",
+          "branchFlag": "v14_1_1",
+          "achievement": "a101"
+        },
+        {
+          "e": {
+            "power": 5,
+            "trust": -5
+          },
+          "npc": {
+            "jialin": -7,
+            "pvp": 2
+          },
+          "route": "power",
+          "branchFlag": "v14_1_2",
+          "achievement": "a101"
+        }
+      ]
+    },
+    {
+      "id": "v14_signature",
+      "choices": [
+        {
+          "e": {
+            "progress": 2,
+            "power": 2
+          },
+          "npc": {
+            "xiaoen": 5,
+            "yijian": 3
+          },
+          "route": "govern",
+          "branchFlag": "v14_2_0",
+          "achievement": "a102"
+        },
+        {
+          "e": {
+            "progress": 6,
+            "trust": 4,
+            "blame": 5
+          },
+          "npc": {
+            "xiaoen": -6,
+            "yijian": 2
+          },
+          "route": "appease",
+          "branchFlag": "v14_2_1",
+          "achievement": "a102"
+        },
+        {
+          "e": {
+            "power": 7,
+            "dragon": 4,
+            "blame": 4
+          },
+          "npc": {
+            "xiaoen": -5,
+            "zihan": -3
+          },
+          "route": "power",
+          "branchFlag": "v14_2_2",
+          "achievement": "a102"
+        }
+      ]
+    },
+    {
+      "id": "v14_site_time",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "morale": 3
+          },
+          "npc": {
+            "miaomiao": 5,
+            "niupi": 4,
+            "yangyang": 1
+          },
+          "route": "govern",
+          "branchFlag": "v14_3_0",
+          "achievement": "a103"
+        },
+        {
+          "e": {
+            "trust": 4,
+            "progress": 2
+          },
+          "npc": {
+            "miaomiao": -6,
+            "niupi": -3
+          },
+          "route": "appease",
+          "branchFlag": "v14_3_1",
+          "achievement": "a103"
+        },
+        {
+          "e": {
+            "power": 5,
+            "trust": -3
+          },
+          "npc": {
+            "miaomiao": 3,
+            "yangyang": -6
+          },
+          "route": "power",
+          "branchFlag": "v14_3_2",
+          "achievement": "a103"
+        }
+      ]
+    },
+    {
+      "id": "v14_interim",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "career": 2
+          },
+          "npc": {
+            "mingye": 5,
+            "zihan": 4,
+            "ceo": -1
+          },
+          "route": "govern",
+          "branchFlag": "v14_4_0",
+          "achievement": "a104"
+        },
+        {
+          "e": {
+            "trust": 5,
+            "power": 2
+          },
+          "npc": {
+            "mingye": -4,
+            "zihan": -3
+          },
+          "route": "appease",
+          "branchFlag": "v14_4_1",
+          "achievement": "a104"
+        },
+        {
+          "e": {
+            "power": 5,
+            "trust": -7
+          },
+          "npc": {
+            "ceo": -8,
+            "mingye": 2
+          },
+          "route": "power",
+          "branchFlag": "v14_4_2",
+          "achievement": "a104"
+        }
+      ]
+    },
+    {
+      "id": "v14_postmarket",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "power": 2
+          },
+          "npc": {
+            "caolan": 5,
+            "weilai": 4,
+            "wuzong": 2
+          },
+          "route": "govern",
+          "branchFlag": "v14_5_0",
+          "achievement": "a105"
+        },
+        {
+          "e": {
+            "trust": 4,
+            "progress": 3
+          },
+          "npc": {
+            "wuzong": 5,
+            "caolan": -4
+          },
+          "route": "appease",
+          "branchFlag": "v14_5_1",
+          "achievement": "a105"
+        },
+        {
+          "e": {
+            "power": 6,
+            "dragon": 2
+          },
+          "npc": {
+            "wuzong": -7,
+            "xianren": -4
+          },
+          "route": "power",
+          "branchFlag": "v14_5_2",
+          "achievement": "a105"
+        }
+      ]
+    },
+    {
+      "id": "v14_budget",
+      "choices": [
+        {
+          "e": {
+            "power": 3,
+            "progress": 2
+          },
+          "npc": {
+            "weilai": 5,
+            "cso": 3,
+            "ceo": 1
+          },
+          "route": "govern",
+          "branchFlag": "v14_6_0",
+          "achievement": "a106"
+        },
+        {
+          "e": {
+            "trust": 4,
+            "progress": -2
+          },
+          "npc": {
+            "weilai": -5,
+            "cso": 2
+          },
+          "route": "appease",
+          "branchFlag": "v14_6_1",
+          "achievement": "a106"
+        },
+        {
+          "e": {
+            "power": 5,
+            "trust": 2
+          },
+          "npc": {
+            "ceo": 5,
+            "cso": -7,
+            "weilai": 1
+          },
+          "route": "power",
+          "branchFlag": "v14_6_2",
+          "achievement": "a106"
+        }
+      ]
+    },
+    {
+      "id": "v14_endpoint",
+      "choices": [
+        {
+          "e": {
+            "progress": 4,
+            "career": 2
+          },
+          "npc": {
+            "zihan": 5,
+            "mingye": 5
+          },
+          "route": "govern",
+          "branchFlag": "v14_7_0",
+          "achievement": "a107"
+        },
+        {
+          "e": {
+            "trust": 5,
+            "progress": 2,
+            "blame": 4
+          },
+          "npc": {
+            "zihan": -6,
+            "mingye": -5
+          },
+          "route": "appease",
+          "branchFlag": "v14_7_1",
+          "achievement": "a107"
+        },
+        {
+          "e": {
+            "power": 6,
+            "trust": -6
+          },
+          "npc": {
+            "zihan": 2,
+            "mingye": 2
+          },
+          "route": "power",
+          "branchFlag": "v14_7_2",
+          "achievement": "a107"
+        }
+      ]
+    },
+    {
+      "id": "v14_successor",
+      "choices": [
+        {
+          "e": {
+            "morale": 5,
+            "power": 2
+          },
+          "npc": {
+            "yangyang": 4,
+            "miaomiao": 4,
+            "kzong": 4
+          },
+          "route": "govern",
+          "branchFlag": "v14_8_0",
+          "achievement": "a108"
+        },
+        {
+          "e": {
+            "progress": 4,
+            "stamina": -4
+          },
+          "npc": {
+            "zouting": 2,
+            "yangyang": -2
+          },
+          "route": "appease",
+          "branchFlag": "v14_8_1",
+          "achievement": "a108"
+        },
+        {
+          "e": {
+            "power": 7,
+            "dragon": 4,
+            "morale": -4
+          },
+          "npc": {
+            "kzong": -5,
+            "miaomiao": -4
+          },
+          "route": "power",
+          "branchFlag": "v14_8_2",
+          "achievement": "a108"
+        }
+      ]
+    },
+    {
+      "id": "d147_safety",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "power": 1
+          },
+          "npc": {
+            "jialin": 4
+          },
+          "hidden": {
+            "merit": 5,
+            "reputation": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 4,
+            "heart": -4
+          },
+          "npc": {
+            "jialin": 2
+          },
+          "hidden": {
+            "merit": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": -1
+          },
+          "npc": {
+            "jialin": -3
+          },
+          "hidden": {
+            "blame": 2
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_stats",
+      "choices": [
+        {
+          "e": {
+            "progress": 3
+          },
+          "npc": {
+            "mingye": 5
+          },
+          "hidden": {
+            "merit": 5,
+            "reputation": 3
+          },
+          "record": "coverageDataCheck",
+          "recordSource": "额外交付：数据核对",
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 4,
+            "heart": -3
+          },
+          "npc": {
+            "mingye": 3
+          },
+          "hidden": {
+            "merit": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "power": 1
+          },
+          "npc": {
+            "mingye": -4
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_reg",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "power": 1
+          },
+          "npc": {
+            "yijian": 5
+          },
+          "hidden": {
+            "merit": 5,
+            "reputation": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 4,
+            "heart": -4
+          },
+          "npc": {
+            "yijian": 2
+          },
+          "hidden": {
+            "merit": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "heart": 2
+          },
+          "npc": {
+            "yijian": -1
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_pi",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "power": 2
+          },
+          "npc": {
+            "houpi": 5
+          },
+          "hidden": {
+            "merit": 6,
+            "piRep": 5
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 2,
+            "heart": -3
+          },
+          "npc": {
+            "houpi": 1
+          },
+          "hidden": {
+            "merit": 2
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": -1
+          },
+          "npc": {
+            "houpi": -2
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_cro",
+      "choices": [
+        {
+          "e": {
+            "progress": 2,
+            "power": 2
+          },
+          "npc": {
+            "heina": 3,
+            "xiaoen": 3
+          },
+          "hidden": {
+            "merit": 5,
+            "reputation": 3,
+            "blame": -2
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 4,
+            "heart": -3
+          },
+          "npc": {
+            "heina": 4
+          },
+          "hidden": {
+            "merit": 2,
+            "blame": 4
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": -1
+          },
+          "npc": {
+            "heina": -2
+          },
+          "hidden": {
+            "blame": 3
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_version",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "power": 1
+          },
+          "npc": {
+            "kzong": 5,
+            "xiaoen": 2
+          },
+          "hidden": {
+            "merit": 5,
+            "reputation": 3
+          },
+          "record": "coverageVersionLock",
+          "recordSource": "额外交付：版本清理",
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 4,
+            "heart": -4
+          },
+          "npc": {
+            "kzong": 1
+          },
+          "hidden": {
+            "merit": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "trust": 1
+          },
+          "hidden": {
+            "blame": 1
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_site",
+      "choices": [
+        {
+          "e": {
+            "progress": 2,
+            "morale": 3
+          },
+          "npc": {
+            "miaomiao": 5
+          },
+          "hidden": {
+            "merit": 5,
+            "piRep": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 4,
+            "heart": -4
+          },
+          "npc": {
+            "miaomiao": 1
+          },
+          "hidden": {
+            "merit": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 2,
+            "morale": -3
+          },
+          "npc": {
+            "miaomiao": -5
+          },
+          "hidden": {
+            "blame": 2
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_decision",
+      "choices": [
+        {
+          "e": {
+            "progress": 3,
+            "power": 2
+          },
+          "npc": {
+            "mingye": 4,
+            "kzong": 4
+          },
+          "hidden": {
+            "merit": 6,
+            "reputation": 4
+          },
+          "record": "coverageDecisionLog",
+          "recordSource": "额外交付：决策留痕",
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 4,
+            "power": 3,
+            "dragon": 2
+          },
+          "npc": {
+            "mingye": -1
+          },
+          "hidden": {
+            "merit": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "trust": 1
+          },
+          "hidden": {
+            "blame": 2
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_tfl",
+      "choices": [
+        {
+          "e": {
+            "progress": 2
+          },
+          "npc": {
+            "zihan": 5,
+            "mingye": 3
+          },
+          "hidden": {
+            "merit": 4,
+            "reputation": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 3,
+            "heart": -4
+          },
+          "npc": {
+            "zihan": 2
+          },
+          "hidden": {
+            "merit": 2
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "trust": 1
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_mentor",
+      "choices": [
+        {
+          "e": {
+            "morale": 2
+          },
+          "npc": {
+            "pvp": 6
+          },
+          "hidden": {
+            "merit": 4,
+            "reputation": 2
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 2,
+            "heart": -2
+          },
+          "npc": {
+            "pvp": 3
+          },
+          "hidden": {
+            "merit": 2
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "power": 1
+          },
+          "npc": {
+            "pvp": -2
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_competitor",
+      "choices": [
+        {
+          "e": {
+            "power": 1
+          },
+          "npc": {
+            "caolan": 5,
+            "ceo": 2
+          },
+          "hidden": {
+            "merit": 4,
+            "reputation": 4
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          }
+        },
+        {
+          "e": {
+            "progress": 2,
+            "heart": -4
+          },
+          "npc": {
+            "caolan": 2
+          },
+          "hidden": {
+            "merit": 2
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "trust": 1
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "d147_handoff",
+      "choices": [
+        {
+          "e": {
+            "power": 2,
+            "morale": 2
+          },
+          "npc": {
+            "kzong": 5
+          },
+          "hidden": {
+            "merit": 4,
+            "reputation": 3
+          },
+          "coverage": {
+            "completed": 1,
+            "highValue": 1
+          },
+          "lock": {
+            "power": 35
+          }
+        },
+        {
+          "e": {
+            "progress": 3,
+            "heart": -4
+          },
+          "npc": {
+            "kzong": -1
+          },
+          "hidden": {
+            "merit": 2
+          },
+          "coverage": {
+            "completed": 1,
+            "rescue": 1
+          }
+        },
+        {
+          "e": {
+            "heart": 2
+          },
+          "coverage": {
+            "failed": 1
+          }
+        }
+      ]
+    },
+    {
+      "id": "pi_chain_lead",
+      "choices": [
+        {
+          "e": {
+            "trust": 4
+          },
+          "npc": {
+            "houpi": 6,
+            "niupi": -6
+          }
+        },
+        {
+          "visibility": "PUBLIC",
+          "record": "piGovernance",
+          "witnesses": [
+            "ceo"
+          ],
+          "e": {
+            "power": 5,
+            "progress": 3
+          },
+          "npc": {
+            "houpi": 5,
+            "niupi": 5
+          },
+          "hidden": {
+            "merit": 7,
+            "piRep": 6
+          }
+        },
+        {
+          "visibility": "PUBLIC",
+          "record": "piPromiseLog",
+          "e": {
+            "power": 3,
+            "trust": -5
+          },
+          "npc": {
+            "houpi": 4,
+            "niupi": -4
+          }
+        }
+      ]
+    },
+    {
+      "id": "pi_chain_site",
+      "choices": [
+        {
+          "e": {
+            "trust": 3
+          },
+          "npc": {
+            "zhangpi": 5,
+            "houpi": -4
+          }
+        },
+        {
+          "visibility": "PUBLIC",
+          "record": "piContributionLedger",
+          "witnesses": [
+            "ceo"
+          ],
+          "e": {
+            "power": 4,
+            "morale": 4
+          },
+          "npc": {
+            "zhangpi": 6,
+            "houpi": 3
+          },
+          "hidden": {
+            "merit": 6,
+            "piRep": 5
+          }
+        },
+        {
+          "e": {
+            "trust": 5,
+            "progress": -2
+          },
+          "npc": {
+            "zhangpi": -7,
+            "houpi": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "rom_dinner",
+      "choices": [
+        {
+          "e": {
+            "heart": 14,
+            "sanity": 5,
+            "progress": -2
+          },
+          "bond": 3
+        },
+        {
+          "e": {
+            "heart": 9,
+            "sanity": 3,
+            "progress": 1
+          },
+          "bond": 2
+        },
+        {
+          "e": {
+            "heart": -7,
+            "progress": 5
+          },
+          "bond": -2
+        }
+      ]
+    },
+    {
+      "id": "rom_trip",
+      "choices": [
+        {
+          "e": {
+            "heart": 16,
+            "sanity": 5,
+            "progress": -2
+          },
+          "bond": 3
+        },
+        {
+          "e": {
+            "heart": 10,
+            "progress": 2
+          },
+          "bond": 2
+        },
+        {
+          "e": {
+            "heart": -6,
+            "progress": 6
+          },
+          "bond": -2
+        }
+      ]
+    },
+    {
+      "id": "rom_sick",
+      "choices": [
+        {
+          "e": {
+            "heart": 18,
+            "sanity": 7,
+            "progress": -3,
+            "trust": -1
+          },
+          "bond": 4
+        },
+        {
+          "e": {
+            "heart": 11,
+            "sanity": 4,
+            "progress": 1
+          },
+          "bond": 2
+        },
+        {
+          "e": {
+            "heart": -8,
+            "sanity": -2
+          },
+          "bond": -3
+        }
+      ]
+    },
+    {
+      "id": "rom_argument",
+      "choices": [
+        {
+          "e": {
+            "heart": 12,
+            "sanity": 6
+          },
+          "bond": 4
+        },
+        {
+          "e": {
+            "heart": 15,
+            "sanity": 5,
+            "progress": -1
+          },
+          "bond": 5
+        },
+        {
+          "e": {
+            "heart": -9,
+            "progress": 2
+          },
+          "bond": -4
+        }
+      ]
+    },
+    {
+      "id": "rom_weekend",
+      "choices": [
+        {
+          "e": {
+            "heart": 22,
+            "sanity": 8,
+            "progress": -2
+          },
+          "bond": 5
+        },
+        {
+          "e": {
+            "heart": 12,
+            "sanity": 4,
+            "progress": 1
+          },
+          "bond": 2
+        },
+        {
+          "e": {
+            "heart": -10,
+            "progress": 6
+          },
+          "bond": -4
+        }
+      ]
+    },
+    {
+      "id": "ph_friend_dinner",
+      "choices": [
+        {
+          "e": {
+            "heart": 14,
+            "sanity": 5,
+            "progress": -2
+          }
+        },
+        {
+          "e": {
+            "heart": -5,
+            "progress": 4,
+            "trust": 1
+          }
+        },
+        {
+          "e": {
+            "heart": 4,
+            "stamina": -4
+          }
+        }
+      ]
+    },
+    {
+      "id": "ph_pi_thanks",
+      "choices": [
+        {
+          "e": {
+            "heart": 10,
+            "sanity": 3
+          },
+          "npc": {
+            "houpi": 2
+          }
+        },
+        {
+          "e": {
+            "heart": 4,
+            "progress": 2
+          },
+          "npc": {
+            "houpi": 3
+          }
+        },
+        {
+          "e": {
+            "heart": 1,
+            "progress": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "ph_pm_breakdown",
+      "choices": [
+        {
+          "e": {
+            "heart": 3,
+            "sanity": -1,
+            "morale": 3
+          },
+          "npc": {
+            "linan": 6
+          },
+          "social": {
+            "favor": {
+              "linan": 1
+            },
+            "respect": {
+              "linan": 3
+            }
+          }
+        },
+        {
+          "e": {
+            "heart": -2,
+            "progress": 2
+          },
+          "npc": {
+            "linan": -3
+          },
+          "social": {
+            "fear": {
+              "linan": 4
+            }
+          }
+        },
+        {
+          "e": {
+            "heart": -1,
+            "power": 1
+          },
+          "npc": {
+            "linan": -5
+          }
+        }
+      ]
+    },
+    {
+      "id": "ph_vp_midnight",
+      "choices": [
+        {
+          "e": {
+            "heart": -4,
+            "sanity": -2,
+            "trust": 1
+          },
+          "record": "writtenWarning"
+        },
+        {
+          "e": {
+            "heart": -12,
+            "sanity": -5,
+            "trust": 6,
+            "stamina": -8
+          }
+        },
+        {
+          "e": {
+            "heart": 6,
+            "sanity": 4,
+            "trust": -5
+          }
+        }
+      ]
+    },
+    {
+      "id": "ph_mingye_gossip",
+      "choices": [
+        {
+          "e": {
+            "heart": 2,
+            "sanity": 2
+          },
+          "npc": {
+            "mingye": 2
+          },
+          "hidden": {
+            "blame": -2
+          }
+        },
+        {
+          "e": {
+            "heart": 0,
+            "power": 1
+          },
+          "npc": {
+            "mingye": -2
+          }
+        },
+        {
+          "e": {
+            "heart": 7,
+            "sanity": 3
+          },
+          "npc": {
+            "mingye": -1
+          }
+        }
+      ]
+    },
+    {
+      "id": "ph_home",
+      "choices": [
+        {
+          "e": {
+            "heart": 12,
+            "sanity": 4
+          }
+        },
+        {
+          "e": {
+            "heart": 1,
+            "power": 1
+          }
+        },
+        {
+          "e": {
+            "heart": -8,
+            "progress": 3
+          }
+        }
+      ]
+    },
+    {
+      "id": "home_deadline",
+      "choices": [
+        {
+          "e": {
+            "heart": 12,
+            "progress": 1
+          },
+          "bond": 3
+        },
+        {
+          "e": {
+            "progress": 5,
+            "heart": -6
+          },
+          "bond": -3
+        },
+        {
+          "e": {
+            "heart": 9,
+            "sanity": 3
+          },
+          "bond": 2
+        }
+      ]
+    },
+    {
+      "id": "home_weekend",
+      "choices": [
+        {
+          "e": {
+            "heart": 18,
+            "sanity": 5,
+            "progress": -2
+          },
+          "bond": 4
+        },
+        {
+          "e": {
+            "heart": 10,
+            "progress": 2
+          },
+          "bond": 2
+        },
+        {
+          "e": {
+            "progress": 5,
+            "heart": -8
+          },
+          "bond": -4
+        }
+      ]
+    },
+    {
+      "id": "home_truth",
+      "choices": [
+        {
+          "e": {
+            "heart": 15,
+            "sanity": 7
+          },
+          "bond": 4
+        },
+        {
+          "e": {
+            "heart": 13,
+            "sanity": 5,
+            "progress": -1
+          },
+          "bond": 5
+        },
+        {
+          "e": {
+            "heart": -10,
+            "sanity": -3
+          },
+          "bond": -5
+        }
+      ]
+    },
+    {
+      "id": "meta_archivist",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 3,
+            "power": 2
+          },
+          "npc": {
+            "zihan": 3
+          },
+          "branchFlag": "meta_memory_early"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "heart": 2
+          }
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 2,
+            "trust": -2
+          }
+        }
+      ]
+    },
+    {
+      "id": "meta_operator",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "power": 4,
+            "progress": 3
+          },
+          "branchFlag": "meta_shadow_clean"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "trust": 3
+          }
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 7,
+            "dragon": 3
+          },
+          "branchFlag": "meta_shadow_control"
+        }
+      ]
+    },
+    {
+      "id": "meta_weaver",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "progress": 5,
+            "morale": 4,
+            "power": 2
+          },
+          "npc": {
+            "xiaoen": 3,
+            "miaomiao": 3,
+            "kzong": 3
+          },
+          "branchFlag": "meta_coalition_early"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "morale": 3,
+            "progress": -2
+          }
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 6,
+            "stamina": -5
+          }
+        }
+      ]
+    },
+    {
+      "id": "meta_echo",
+      "choices": [
+        {
+          "route": "govern",
+          "e": {
+            "power": 3,
+            "morale": 5,
+            "dragon": -3
+          },
+          "npc": {
+            "mingye": 5,
+            "kzong": 4
+          },
+          "branchFlag": "meta_echo_refuse"
+        },
+        {
+          "route": "appease",
+          "e": {
+            "progress": 5,
+            "power": 4,
+            "dragon": 2
+          },
+          "branchFlag": "meta_echo_once"
+        },
+        {
+          "route": "power",
+          "e": {
+            "power": 9,
+            "dragon": 6,
+            "morale": -4
+          },
+          "npc": {
+            "mingye": -3
+          },
+          "branchFlag": "meta_echo_take"
+        }
+      ]
+    },
+    {
+      "id": "love_a",
+      "choices": [
+        {
+          "e": {
+            "heart": 15,
+            "trust": -2,
+            "progress": -2
+          },
+          "npc": {},
+          "ok": true
+        },
+        {
+          "e": {
+            "heart": -6,
+            "progress": 4,
+            "trust": 2
+          },
+          "npc": {}
+        },
+        {
+          "e": {
+            "heart": -10,
+            "sanity": -3
+          },
+          "npc": {}
+        }
+      ]
+    },
+    {
+      "id": "love_b",
+      "choices": [
+        {
+          "e": {
+            "heart": 20,
+            "stamina": 14,
+            "progress": -3
+          },
+          "npc": {},
+          "ok": true
+        },
+        {
+          "e": {
+            "heart": -8,
+            "progress": 5,
+            "trust": 2
+          },
+          "npc": {}
+        },
+        {
+          "e": {
+            "heart": -12,
+            "trust": 3,
+            "progress": 3
+          },
+          "npc": {}
+        }
+      ]
+    },
+    {
+      "id": "love_c",
+      "choices": [
+        {
+          "e": {
+            "heart": 25,
+            "sanity": 4
+          },
+          "npc": {},
+          "ok": true
+        },
+        {
+          "e": {
+            "heart": -10,
+            "power": 3,
+            "dragon": 1
+          },
+          "npc": {}
+        },
+        {
+          "e": {
+            "heart": -14,
+            "sanity": -2
+          },
+          "npc": {}
+        }
+      ]
+    }
+  ]
+}

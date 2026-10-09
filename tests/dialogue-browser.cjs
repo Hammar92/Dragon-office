@@ -1,0 +1,27 @@
+'use strict';
+const fs=require('fs'),path=require('path'),http=require('http'),assert=require('assert/strict');
+const pw=require(process.env.PLAYWRIGHT_MODULE||'playwright'),root=path.join(__dirname,'..'),out=process.env.DIALOGUE_OUTPUT||__dirname;
+const server=http.createServer((req,res)=>{const file=path.resolve(root,'.'+decodeURIComponent(req.url.split('?')[0]==='/'?'/index.html':req.url.split('?')[0]));if(!file.startsWith(root+path.sep)){res.writeHead(403);return res.end();}fs.readFile(file,(e,b)=>{res.writeHead(e?404:200,{'Content-Type':file.endsWith('.html')?'text/html':file.endsWith('.webp')?'image/webp':'application/octet-stream'});res.end(e?'missing':b);});});
+(async()=>{let browser;try{
+ await new Promise(r=>server.listen(8770,'127.0.0.1',r));browser=await pw.chromium.launch({headless:true,...(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})});
+ const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'}),errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto(process.env.DIALOGUE_URL||'http://127.0.0.1:8770/');
+ await page.evaluate(async()=>{openCreatorScreen();CharacterCreatorV2.identity('gender','female');CharacterCreatorV2.identity('age','g3');CharacterCreatorV2.select('f_g3_b');await CharacterCreatorV2.pending;await CharacterCreatorV2.confirm();selectedDifficulty='story';startGame();});
+ assert.equal(await page.locator('.sd-turn').count(),6);assert.match(await page.locator('.sd-turn[data-speaker="钟时"]').first().innerText(),/首名受试者/);assert.match(await page.locator('.md-risk').innerText(),/版本与批次对应、首例放行条件/);assert.match(await page.locator('.md-risk').innerText(),/第9月/);assert.equal(await page.locator('.md-paper-rows>div').count(),3);
+ const clean=await page.evaluate(()=>JSON.stringify(S));await page.locator('button[onclick="pickChapter(0)"]').hover();assert(await page.locator('[data-person="钟时"].md-loss').count());assert.equal(await page.evaluate(()=>JSON.stringify(S)),clean,'hover is only a projection');await page.mouse.move(0,0);
+ await page.evaluate(()=>window.scrollTo(0,0));await page.screenshot({path:path.join(out,'dialogue-meeting-desktop.png'),fullPage:true});
+ for(const width of [768,390]){await page.setViewportSize({width,height:1000});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));assert(await page.locator('button[onclick="pickChapter(0)"]').isVisible());await page.screenshot({path:path.join(out,'dialogue-meeting-'+width+'.png'),fullPage:true});}await page.setViewportSize({width:1440,height:1000});
+ await page.evaluate(()=>{Math.random=()=>.99;maybeEvent=(id,next)=>next();maybePhoneEvent=next=>next();});await page.locator('button[onclick="pickChapter(1)"]').click();assert.match(await page.locator('.result-box .md-minutes').innerText(),/未形成有效/);assert.equal(await page.evaluate(()=>S.meetingMinutes[0].verified),false);await page.screenshot({path:path.join(out,'dialogue-unresolved-minutes.png'),fullPage:true});await page.locator('button[onclick="continueResult()"]').click();assert.match(await page.locator('.sd-dialogue').innerText(),/附件差异还没核实/);
+ await page.evaluate(()=>{saveGameV2();});const saved=await page.evaluate(()=>JSON.stringify(S.meetingMinutes));await page.reload();await page.evaluate(()=>loadGameV2());assert.equal(await page.evaluate(()=>JSON.stringify(S.meetingMinutes)),saved);assert.match(await page.locator('.sd-dialogue').innerText(),/附件差异还没核实/);
+ await page.locator('button[onclick="pickChapter(0)"]').click();assert.match(await page.locator('.result-box .md-minutes').innerText(),/已形成可追溯交付/);await page.locator('button[onclick="continueResult()"]').click();
+ // Render every live event through its actual family entry; this is UI coverage, not a probability claim.
+ const ids=await page.evaluate(()=>Object.keys(StoryDialogue.events));for(const id of ids){await page.evaluate(id=>{
+  window._evObj=null;window._romEv=null;window._homeEv=null;window._lovePending=false;window._next=null;S.coverage.current=null;S.relationshipArc={origin:'open',current:'open',homeBond:5,seen:[]};chapterIdx=17;Math.random=()=>0;
+  const ev=[...V11_EVENTS,...PI_CHAIN_EVENTS,...PHONE_EVENTS].find(e=>e.id===id)||(['archivist','operator','weaver','echo'].map(k=>DragonMetaEventFor(k))).find(e=>e.id===id);
+  if(ev){window._evObj={ev,next:()=>{},cro:false};renderEventFromObj();}
+  else if(id.startsWith('d147_'))renderCoverageDelivery147(DELIVERY_EVENTS_147.find(e=>e.id===id),1,()=>{});
+  else if(id.startsWith('love_'))renderLove(id.slice(5),()=>{});
+  else if(id.startsWith('home_')){S.relationshipArc.origin='strained';S.relationshipArc.seen=DragonHomeEvents.filter(e=>e.id!==id).map(e=>e.id);maybeRomanceEncounter(()=>{});}
+  else {S.romance={bond:100,seen:ROMANCE_ENCOUNTERS.filter(e=>e.id!==id).map(e=>e.id)};maybeRomanceEncounter(()=>{});}
+ },id);await page.waitForFunction(()=>!!document.querySelector('#scene-area .sd-dialogue'));assert((await page.locator('.sd-turn').count())>=2,id);const first=await page.locator('#scene-area button.choice').first().innerText();assert(first.includes('「'),id+' spoken choice');}
+ assert.deepEqual(errors,[]);console.log(JSON.stringify({result:'PASS',mainMeeting:true,liveSideEntries:ids.length,layouts:[1440,768,390],hoverDoesNotChangeState:true,unresolvedAndVerifiedReceipts:true,saveRestore:true,earlierChoiceDialogue:true,errors},null,2));
+ }finally{if(browser)await browser.close();server.close();}})().catch(e=>{console.error(e);process.exitCode=1;});

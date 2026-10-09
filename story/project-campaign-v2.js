@@ -3,6 +3,7 @@
  'use strict';
  const data=typeof module!=='undefined'&&module.exports?require('./campaign-v2-data.js'):root.DragonCampaignData;
  const clone=x=>JSON.parse(JSON.stringify(x)),cap=x=>Math.max(0,Math.min(100,x));
+ const dialogue=typeof module!=='undefined'&&module.exports?require('./dialogue-scenes.js'):root.StoryDialogue;
  const metrics=['progress','cash','quality','coalition','boss','credit','obstruction'];
  const labels={progress:'验收进度',cash:'现金（万元）',quality:'已核查质量',coalition:'职能支持',boss:'老板认可',credit:'交付记录',obstruction:'管理摩擦'};
  function fresh(migrated){return Object.assign({},data.initial,{version:2,product:data.product.code,flags:{},proofs:{},risks:[],history:[],entries:{},financing:{},milestones:{},coalition:30,boss:30,credit:10,obstruction:20,rank:0,authority:0,promotionHistory:[],btd:{status:'potential'},teamReady:false,dailyMeeting:false,meetingReformed:false,careCount:0,finished:false,migrated:!!migrated,offers:{newCompany:Math.random()<0.60},events:[]});}
@@ -73,7 +74,10 @@
   p=ensureVersion(p);const d=data.chapters[index];if(!d)throw Error('Invalid chapter');
   const rows=available(p,index);
   const text='DO-8006 · 皮下注射液。开发至NDA递交；认定需实际数据，不是开局身份。\n\n'+d.politics+'\n\n'+(p.risks.some(r=>r.status!=='closed')?'前期异议仍在：'+p.risks.filter(r=>r.status!=='closed').map(r=>r.key).join('、')+'。':'已有记录将决定本阶段可以采取的行动。')+'\n\n'+summary(p);
-  return{id:d.id,n:d.n,stage:d.stage,act:d.act,title:d.title,aside:{from:d.from,text:'当前交付：'+d.honest},text,campaign:true,choices:rows.map((r,j)=>({t:r.t,route:r.route,achievement:'a'+(index*3+Math.min(j,2)+1),achievementName:d.title,e:{progress:0,trust:r.kind==='shortcut'?3:-1,power:r.kind==='authority'?4:0,morale:r.kind==='shortcut'?-2:1,heart:r.kind==='shortcut'?2:2,sanity:r.kind==='shortcut'?-2:0},npc:r.kind==='shortcut'?{}:Object.fromEntries((index===1?['pvp','jialin']:index===2?['zihan','mingye']:index===4?['miaomiao','yangyang']:index===8?['kzong','heina']:index===13?['xiaoen','zihan']:['yijian','kzong']).map(k=>[k,2])),r:r.kind==='shortcut'?'表面日期保住了，未核实的内容仍留下来源与责任记录。':'实际交付、限制与专业owner一并记录。',project:{set:{}},record:r.kind==='shortcut'?undefined:'campaign_'+d.proof,campaignChoice:{index,kind:r.kind,slot:j,extraCost:r.extraCost||0,extraMonths:r.extraMonths||0,context:false}}))};
+  const ch={id:d.id,n:d.n,stage:d.stage,act:d.act,title:d.title,aside:{from:d.from,text:'当前交付：'+d.honest},text,campaign:true,choices:rows.map((r,j)=>({t:r.t,route:r.route,achievement:'a'+(index*3+Math.min(j,2)+1),achievementName:d.title,e:{progress:0,trust:r.kind==='shortcut'?3:-1,power:r.kind==='authority'?4:0,morale:r.kind==='shortcut'?-2:1,heart:r.kind==='shortcut'?2:2,sanity:r.kind==='shortcut'?-2:0},npc:r.kind==='shortcut'?{}:Object.fromEntries((index===1?['pvp','jialin']:index===2?['zihan','mingye']:index===4?['miaomiao','yangyang']:index===8?['kzong','heina']:index===13?['xiaoen','zihan']:['yijian','kzong']).map(k=>[k,2])),r:r.kind==='shortcut'?'表面日期保住了，未核实的内容仍留下来源与责任记录。':'实际交付、限制与专业owner一并记录。',project:{set:{}},record:r.kind==='shortcut'?undefined:'campaign_'+d.proof,campaignChoice:{index,kind:r.kind,slot:j,extraCost:r.extraCost||0,extraMonths:r.extraMonths||0,context:false}}))};
+  ch.text=dialogue.text(index,p)+'\n\n'+summary(p);ch.location=dialogue.scenes[index].place;ch.aside=undefined;
+  ch.choices.forEach(c=>{c.t=dialogue.choice(index,c.campaignChoice.kind,p);});
+  return ch;
  }
  function apply(p,c){
   const m=c.campaignChoice;if(!m)return null;if(m.context){p.careCount++;return null;}

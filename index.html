@@ -381,6 +381,8 @@ body.ow-strained #hud{border-color:#d8aaa6!important}body.ow-strained #scene-are
 @media(min-width:901px) and (max-width:1100px){#scene-area{grid-column:1!important}#pm-right-panel{grid-column:2!important}}
 #hud{grid-area:1/1/2/4!important}#pm-left-panel{grid-area:2/1/3/2!important}#scene-area{grid-area:2/2/3/3!important}#pm-right-panel{grid-area:2/3/3/4!important}
 @media(min-width:901px) and (max-width:1100px){#hud{grid-area:1/1/2/3!important}#scene-area{grid-area:2/1/3/2!important}#pm-right-panel{grid-area:2/2/3/3!important}}
+.sd-scene .ow-stage{min-height:112px;height:112px;padding:18px 22px;margin-bottom:18px}.sd-scene .ow-location{width:80%}.sd-scene .ow-location h3{font-size:20px;margin:6px 0}.sd-scene .ow-location p{font-size:11px;margin:0}.sd-scene .ow-scene-portrait{width:100px;object-position:center 18%;opacity:.65}.sd-scene .vp-name{display:none}.sd-dialogue{display:grid;gap:17px;margin:12px 0 26px}.sd-action{font-size:14px;line-height:1.9;color:#647c89;margin:0 0 5px;padding:10px 0;border-left:0}.sd-turn{display:grid;grid-template-columns:46px minmax(0,1fr);gap:12px;align-items:start}.sd-turn img{width:46px;height:61px;object-fit:cover;object-position:center 20%;border-radius:7px}.sd-turn>div{padding:12px 16px;border:1px solid #dce7ef;background:#f7fafc;border-radius:0 12px 12px 12px;min-width:0}.sd-turn header{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.sd-turn header b{color:#245b70;font-size:14px}.sd-turn header small{font-size:10px;color:#7e929e}.sd-turn p{font-size:16px;line-height:1.9;margin:7px 0 0;overflow-wrap:anywhere}.sd-turn[data-speaker="钟时"]>div{background:#eef1f5;border-color:#d2dae4}.sd-player>div{background:#eaf5fa}.sd-initial{width:46px;height:46px;display:grid;place-items:center;border-radius:9px;background:#e4edf1;color:#4b7184}.sd-summary{font-size:12px;color:#728793;white-space:pre-line}.sd-summary summary{cursor:pointer}.sd-reply-heading{font-size:13px;font-weight:700;color:#34738a;margin-bottom:12px}.sd-scene .choice{text-align:left;line-height:1.8}.sd-scene .choice .idx{font-size:11px}
+@media(max-width:760px){.sd-scene .ow-stage{min-height:100px;height:100px;padding:14px}.sd-scene .ow-location h3{font-size:16px}.sd-turn{grid-template-columns:34px minmax(0,1fr);gap:8px}.sd-turn img{width:34px;height:45px}.sd-initial{width:34px;height:34px}.sd-turn>div{padding:10px 12px}.sd-turn p{font-size:14px;line-height:1.85}.sd-turn header{gap:4px 9px}.sd-scene .ow-scene-portrait{width:72px}}
 
 /* OFFICE_UI_STYLE END */
 </style>
@@ -396,6 +398,12 @@ body.ow-strained #hud{border-color:#d8aaa6!important}body.ow-strained #scene-are
 @media(max-width:600px){#ending-screen{padding:20px 12px 40px!important}.er-detail{padding:0 18px 22px}.er-detail>img{width:calc(100% + 36px);margin:0 -18px 20px}.er-detail h2{font-size:23px}.er-detail blockquote{font-size:19px;padding:12px 16px}.er-report{display:block}.er-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.er-card strong{font-size:12px}.er-card span{font-size:11px}}
 
 /* ENDING_REVIEW_STYLE END */
+</style>
+<style>
+/* MEETING_DOCUMENT_STYLE START */
+.md-workspace{margin:18px 0 24px;display:grid;gap:13px;font-size:12px}.md-share{border:1px solid #ccdce5;border-radius:9px;overflow:hidden;background:#eef4f7}.md-share summary{padding:12px 15px;cursor:pointer;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.md-share summary span{font-size:9px;letter-spacing:.08em;color:#6a8796}.md-share summary b{font-size:12px;color:#315f74}.md-paper{background:#fff;margin:0 14px 14px;padding:16px 20px;box-shadow:0 3px 10px #1b455518;position:relative}.md-paper header{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.06em;color:#758792;padding-bottom:8px;border-bottom:1px solid #e0e7eb}.md-paper header small{font-size:9px}.md-marked{width:fit-content;position:relative;margin:14px 0 22px;border-bottom:2px wavy #d05e64;color:#90464c;padding:2px 5px;font-size:13px}.md-marked span{font-size:10px;position:absolute;left:calc(100% + 14px);top:0;white-space:nowrap;transform:rotate(-5deg);color:#c4525b}.md-paper-rows{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.md-paper-rows div{display:grid;gap:6px;background:#f2f5f7;padding:9px;border-left:2px solid #bdccd5}.md-paper-rows b{font-size:10px;font-weight:500;color:#88969f}.md-paper footer{font-size:10px;color:#80939d;margin-top:12px}.md-agenda{display:grid;grid-template-columns:1fr 1.3fr;gap:11px}.md-agenda section{padding:13px;background:#f1f6f8;border:1px solid #d9e3e9;border-radius:9px}.md-agenda small{font-size:10px;color:#768c9a}.md-agenda p{font-size:13px;line-height:1.7;margin:7px 0}.md-agenda .md-risk{background:#fff8f6;border-color:#e7c2bb}.md-risk b{font-size:11px;color:#ac5950}.md-risk span{display:block;font-size:9px;color:#9c8581;margin-top:7px}.md-pending{animation:md-breathe 3s ease-in-out infinite}@keyframes md-breathe{50%{box-shadow:0 0 0 2px #c6686420}}.md-room{padding:13px;border:1px solid #dce6ec;border-radius:9px}.md-room>header,.md-minutes>header{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}.md-room header small,.md-minutes header small{font-size:9px;color:#8a9ba5}.md-roster{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.md-roster>div{display:grid;grid-template-columns:26px 1fr;gap:2px 6px;min-width:100px;flex:1;padding:7px;background:#f6f8fa;border:1px solid transparent;border-radius:7px}.md-roster img{width:26px;height:35px;object-fit:cover;object-position:center 20%;grid-row:1/3;border-radius:4px}.md-roster i{width:26px;grid-row:1/3;align-self:center;font-style:normal;text-align:center;font-size:10px;color:#708c9d}.md-roster b{font-size:10px}.md-roster small{font-size:9px;color:#8397a3}.md-roster .md-gain{border-color:#6ca88e;background:#edf7f1}.md-roster .md-loss{border-color:#ce776e;background:#fff1ef}.md-minutes{margin-top:17px;padding:14px 16px;background:#f3f7f8;border-left:3px solid #4e8b9b;font-size:12px;border-radius:4px}.md-minutes p{margin:9px 0 0;line-height:1.8;white-space:pre-line}.md-minutes details{margin-top:10px;font-size:11px}.md-minutes summary{cursor:pointer}.md-minutes blockquote{margin:8px 0;padding-left:10px;border-left:2px solid #aec5cf;line-height:1.8}.md-unresolved{background:#fff2ee;border-color:#c86352;color:#934e42}.md-unresolved>p{font-weight:600}@media(max-width:760px){.md-agenda{grid-template-columns:1fr}.md-share summary{padding:10px}.md-paper{padding:12px;margin:0 9px 9px}.md-paper-rows{gap:5px}.md-paper-rows div{padding:6px;font-size:10px}.md-marked{max-width:65%;font-size:12px}.md-marked span{font-size:8px;left:calc(100% + 5px)}.md-roster>div{min-width:90px}.md-room header small{font-size:8px}.md-minutes{padding:12px}}@media(prefers-reduced-motion:reduce){.md-pending{animation:none}}
+
+/* MEETING_DOCUMENT_STYLE END */
 </style>
 </head>
 <body data-page-node-id="zufCBekY8A4x5CCBsDU0kr">
@@ -6195,6 +6203,7 @@ renderLifeBuilder();
     return E[k]||null;
   }
 
+  window.DragonMetaEventFor=metaEventFor;
   var _maybeEventV13=maybeEvent;
   maybeEvent=function(chapterId,next){
     if(flags&&flags.metaRoute&&!flags.metaSeen&&chapterIdx>=2){
@@ -7155,10 +7164,12 @@ renderLifeBuilder();
       {t:'说“没事”，转身去洗澡。',e:{heart:-10,sanity:-3},bond:-5,r:'你在公司一天说了十一次“没事”。第十二次最贵。'}
     ]}
   ];
+  window.DragonHomeEvents=HOME_EVENTS;
   function renderHomeEvent(ev,next){
     window._homeEv={ev:ev,next:next};
     document.getElementById('scene-area').innerHTML='<div class="scene"><div class="scene-title">'+ev.title+'</div><div class="scene-sub">私人时间 · 不进入工作日志</div><div class="vp-line">'+ev.text+'</div><div class="choices">'+choiceHTML(ev.choices,'pickHomeEvent')+'</div></div>';
   }
+  window.DragonRenderHomeEvent=renderHomeEvent;
   window.pickHomeEvent=function(i){
     const b=window._homeEv;if(!b)return;
     const c=presentedChoice(b.ev.choices,i),d=applyChoice(c),arc=ensureRelationshipArc();
@@ -7363,9 +7374,9 @@ renderLifeBuilder();
     var arc=ensureRelationshipArc();
     if(arc.origin==='strained'){
       if(chapterIdx<4||Math.random()>(difficulty().id==='story'?.36:.26)){next();return;}
-      var left=HOME_EVENTS.filter(function(e){return arc.seen.indexOf(e.id)<0&&chapterIdx>=e.min;});
+      var left=window.DragonHomeEvents.filter(function(e){return arc.seen.indexOf(e.id)<0&&chapterIdx>=e.min;});
       if(!left.length){next();return;}
-      renderHomeEvent(left[0],next);return;
+      window.DragonRenderHomeEvent(left[0],next);return;
     }
     return oldMaybeRomanceV145(next);
   };
@@ -7980,7 +7991,7 @@ renderLifeBuilder();
 
   function deliveryChoiceHtml147(ev){
     return choiceHTML(ev.choices,"pickCoverageDelivery147")
-      +'<button class="choice" onclick="skipCoverage147()"><span class="idx">S</span>不接这项额外交付，保留精力<span class="badge">【边界】</span></button>';
+      +'<button class="choice" onclick="skipCoverage147()"><span class="idx">S</span>「这项我不接，保留精力。」<span class="badge">【边界】</span></button>';
   }
 
   function renderCoverageDelivery147(ev,left,next){
@@ -8430,7 +8441,7 @@ renderLifeBuilder();
     if(!box)return;
     var t=teamState147();
     if((S.power||0)>=RECRUIT_POWER&&t.members.length){
-      box.insertAdjacentHTML("beforeend",'<button class="choice" onclick="openDelegate147()"><span class="idx">D</span>交给下属负责，我只做最终验收<span class="badge">【管理】</span></button>');
+      box.insertAdjacentHTML("beforeend",'<button class="choice" onclick="openDelegate147()"><span class="idx">D</span>「交给下属负责，我只做最终验收。」<span class="badge">【管理】</span></button>');
     }
   };
   window.renderCoverageDelivery147=renderCoverageDelivery147;
@@ -9326,7 +9337,7 @@ renderLifeBuilder();
     LIFE_DRAFT.gender=S.player.gender;PLAYER_AGE=S.player.age;selectedDifficulty=S.difficulty||'normal';
     showScreen('game-screen');renderHUD();renderChapter();toast('已读取进度与主角形象。','up');return true;
   };
-  const title=document.querySelector('#title-screen .subtitle');if(title)title.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · CharacterCreatorV2 · Demo v18.1.0';
+  const title=document.querySelector('#title-screen .subtitle');if(title)title.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · CharacterCreatorV2 · Demo v18.2.0';
   const titleActions=document.querySelector('#title-screen');if(titleActions)titleActions.insertAdjacentHTML('beforeend','<button class="btn" onclick="loadGameV2()">读取进度</button>');
 })();
 /* ===================== CharacterCreatorV2 END ===================== */
@@ -9387,11 +9398,284 @@ renderLifeBuilder();
  if(typeof module!=='undefined'&&module.exports)module.exports=data;else root.DragonCampaignData=data;
 })(typeof window!=='undefined'?window:globalThis);
 
+/* Authored scenes. Dialogue changes presentation, never evidence or decision gates. */
+(function(root){
+ 'use strict';
+ const scenes=[
+ {place:'首例给药前 · 项目会议室',opening:'一建把两份盖过章的文件推到你面前。附件的版本号不一样。中心已经在等今天能否安排首例给药。',turns:[
+ ['一建','我这边收到的是签字版，中心拿到的是昨天的附件。你先帮我确认能不能用，我今天得给他们一个回话。'],
+ ['肖恩','哪个版本对应哪个批次？签字是真的，附件也是真的，不代表它们是一套。先别把“文件齐了”写进放行记录。'],
+ ['钟时','这一页为什么写“首例”？我觉得“首名受试者”更严谨，前后要统一。安全和效率都要考虑，不能顾此失彼。'],
+ ['琳琳','叫首例还是首名，中心都要问同一件事：今天能不能打？患者不能在候诊室等我们统一名词。'],
+ ['钟时','这个还是请专业团队充分评估。我可以把整体情况向老板汇报，你们先给一个成熟的建议。'],
+ ['一建','那我回复“材料已签”还是“给药条件待确认”？这两句话，中心会做两件不同的事。']],work:'我先核对附件版本、批次和首例条件，请各自负责的人确认。今天能不能给药，按确认结果回复中心。',shortcut:'先按现在的签字启动吧。附件差异我会后追着补，今天的日期先保住。'},
+ {place:'哨兵给药后 · 安全评估会',opening:'PVP把三张时间线摆在桌上。给药时间有记录，症状起始时间却有两个版本。下一队列的准备邮件已经发出。',turns:[
+ ['PVP','我……先报事实。中心邮件和随访记录差了几个小时。我不能拿后收到的那封，直接替掉前一份。'],
+ ['加琳','PV会内部确认，大家不要先传播不同口径。PVP，把你那张表先发给我。'],
+ ['钟时','邮件标题这个红色太紧张了，改灰色吧。安全肯定是第一位的，同时也不能让团队产生不必要的焦虑。'],
+ ['琳琳','颜色可以改。下一队列要不要继续准备，谁现在告诉中心？'],
+ ['PVP','如果满足暂停标准，就该按标准处理；恢复也要有依据。我这张表还缺原始随访时间，不是说已经排除了风险。'],
+ ['钟时','我完全同意严谨。你们把材料再丰富一下，最好加横向对比。我向老板说明大家正在积极处理。']],work:'先保留两份记录，核清时间线。按正式标准判断暂停和恢复，我不把“正在核查”说成“可以继续”。',shortcut:'先准备下一队列，统一结论等PV确认后再补。现在别让中心停在这里。'},
+ {place:'一期剂量讨论 · 统计投屏',opening:'两条暴露曲线停在屏幕上。高剂量的信号更醒目，但安全记录并没有跟着变得完整。老板的下一场会议还有十五分钟。',turns:[
+ ['则韩','我们今天是讨论推荐剂量，还是讨论哪个数字放首页？如果要写进下一阶段方案，先把暴露和安全放在同一张矩阵里。'],
+ ['明夜','高剂量那条线确实漂亮。把置信区间藏起来，还能更漂亮。漂亮不负责给下一阶段算代价。'],
+ ['钟时','小数点位数先统一，图例也不要这么密。各个剂量都有优缺点，这个判断还是要尊重专业。'],
+ ['老板','我不需要每个人说都有优缺点。你们建议哪个？下一步用它，承担什么风险？'],
+ ['则韩','我可以签分析结论，不能替医学签安全判断。两个结论齐了，才有可供您选择的剂量建议。'],
+ ['钟时','对，就是这个意思。团队把建议做完整，再请老板从公司整体层面把握。']],work:'我把暴露、安全和缺口并排给您。统计和医学分别确认依据，再给出推荐剂量和它的代价。',shortcut:'先用那条最有说服力的曲线汇报，剂量依据我们后面补完整。'},
+ {place:'第9月 · 一期融资彩排',opening:'小圆把第六版封面翻到背面。正文还停在第三版；团队署名已经从最后一页消失。明天投资人会问一期到底做成了什么。',turns:[
+ ['小圆','先别改封面了。钱会不会来，取决于明天谁能把完成了什么、还缺什么讲清楚。'],
+ ['钟时','封面代表公司形象，不能随便。汇报就写临床开发团队在我的统筹下完成，其他名字不必放得太细。'],
+ ['明夜','统计那两页要是被问到，统筹能不能顺便替我回答分母？'],
+ ['老板','你们内部谁辛苦，我知道。明天我要的是可信的下一阶段计划，别让对面替我们发现限制。'],
+ ['小圆','您知道是一回事，材料里有没有是一回事。负责的人坐在现场，问到就能答，免得来回转三层。'],
+ ['钟时','都可以支持。但发言先统一，我来讲整体，你们补细节。']],work:'一期结果和限制放在正文，下一阶段承诺按现有证据讲。谁做了哪块就留哪块署名，问到专业问题由本人回答。',shortcut:'先按统一口径彩排，限制放备份页，台上由钟时讲整体就好。'},
+ {place:'IIa设计 · 中心可行性讨论',opening:'琳琳圈出方案里新增的访视。MK主任想要能发表的研究，N院长想看解释异质性的样本，中心想知道这些要求到底由谁完成。',turns:[
+ ['琳琳','这不是在表里多加一行。患者多来一次，CRC就多接一次，样本还得有人运。我们现有容量只能承诺这些。'],
+ ['MK主任','如果主要问题说不清，中心再多也只是多收一批数据。这个研究最后准备回答哪一个临床问题？'],
+ ['N院长','我关心的差异可以留样本研究，但别拿一个大而全的采样表，冒充你已经想清楚了机制。'],
+ ['杨杨','那我先把所有访视都排上？不然到时候临时加，时间更来不及。'],
+ ['钟时','大家的意见都很有价值，最好都体现。这个表列宽再调一下，现在读起来不够顺。'],
+ ['琳琳','意见全体现，工作也得有人全做。今天不能只把列宽定下来。']],work:'主要临床问题和预设终点先定清，再请中心核容量。额外访视得说明用途，不能把“保险一点”算成资源。',shortcut:'先把大家提出的项目都写进方案，中心执行时再协调。'},
+ {place:'第20月 · 信号融资核验',opening:'买方把一张亚组图推回来，问为什么正文和附录的分母不同。谷雨没有再翻下一页。',turns:[
+ ['谷雨','对方不是没看见我们的好结果，是看见了两种好结果。明天再说“口径稍有不同”，估值就会替我们变小。'],
+ ['明夜','正文只放了完成随访的，附录放了全体。两个数各自都能算出来，不能不写定义就当成同一个答案。'],
+ ['则韩','先核预设分析和截止日。探索性信号可以讨论，但不能替主要分析过关。'],
+ ['钟时','既要严谨，也要突出突破性。标题用“具有突破性潜力”会不会更积极一点？'],
+ ['老板','潜力不等于钱。临床优势能不能经得起追问？如果不能，下一笔我们靠什么谈？'],
+ ['谷雨','我能谈价格，不能替不成立的分母谈成事实。给我能守住的那一版。']],work:'两版分母、截止日和预设分析一起核清。能成立的临床优势我会讲，探索性结果也会把限制带上。',shortcut:'融资先用表现最好的那一版，另一种口径留在附录，后续统一。'},
+ {place:'IIb · 推荐剂量与认定路径',opening:'下一阶段的剂量栏仍是空的。则韩打开一期纪要，屏幕上是当时留下的依据，也可能是当时没有回答的问题。',turns:[
+ ['则韩','一期用过不等于IIb适用。今天要定剂量，我需要知道当时哪些依据有效，哪些仍是待核查。'],
+ ['PVP','安全时间线如果还没核完，我不能在这页写“已排除”。这是我能确认的边界。'],
+ ['曹兰','临床优势要跟现有治疗比，不能只跟我们自己的期望比。差异到底能改变谁的治疗选择？'],
+ ['钟时','目录层级有点乱。认定和剂量可以一起讨论，但专业意见要充分，最后还是请老板把关。'],
+ ['老板','如果证据够，我愿意支持认定。但别为了一个名称，把下一阶段真正该做的研究省掉。'],
+ ['则韩','先把支持剂量的分析写实。没有的证据，目录里多一个标题也不会长出来。']],work:'按已经核实的剂量和安全依据推进IIb，缺口另列。下一阶段不能靠一期的旧口径自动过关。',shortcut:'沿用之前最好看的剂量口径，先把IIb推起来，依据后面再整理。'},
+ {place:'扩展安全评估 · 会议室',opening:'加琳说还没有形成安全信号，PVP的记录里却有几项未完成的判断。钟时已经把这页标题改成了“整体可控”。',turns:[
+ ['加琳','尚未形成signal，不代表我们没有工作。PV会形成统一意见，外部不要拿单个case自行解释。'],
+ ['PVP','我同意不能凭单个case下结论。但这几项还没核实，我也不能凭“没有signal”把它们关掉。'],
+ ['钟时','安全第一，我完全同意。也要考虑投资人的预期和受试者的信心。评估报告再丰富些，明早先过一版吧。'],
+ ['肖恩','明早补材料可以。今天需不需要行动，不能等报告写得好看以后才判断。两件事分开留记录。'],
+ ['加琳','那请把要回答的问题列清楚，谁提供事实、谁下医学判断，都不要绕过正式出口。'],
+ ['钟时','大家不要理解成对立。我说的也是在充分评估基础上，有序推进。']],work:'先核实扩展安全记录，写清升级边界和当前行动。补材料可以继续，不能拿它代替今天必须作出的判断。',shortcut:'先用“整体可控”的统一措辞，待报告丰富后再讨论具体行动。'},
+ {place:'IIb多中心启动 · 九点进度会',opening:'朱粽的Tracker大半是绿的。黑娜的清单里还有中心没完成关键整改。钟时宣布，从今天起每天九点所有人逐项报进度。',turns:[
+ ['朱粽','Action已经close，邮件也发了。这几项我先标绿，免得每天看起来都没变化。'],
+ ['黑娜','邮件发出可以关发送动作。中心是否能启动，还需要Sponsor确认整改是否满足条件，我们不会替您签这个判断。'],
+ ['K总','看三层：中心做了什么、CRO核了什么、Sponsor还差什么。现在你关掉的是第一封邮件，不是最后一个风险。'],
+ ['钟时','进度要抓紧。以后每天九点全员过表，每个人都讲一下，这样大家有紧迫感。'],
+ ['琳琳','CRA在中心九点要做访视。每天先讲一遍昨天为什么没做完，不会多出一个CRC。'],
+ ['钟时','这是关键期，大家克服一下。具体资源问题你们先形成建议，再报老板。']],work:'我把中心、CRO和Sponsor的未决责任拆清，逐项核整改。表可以每天更新，启动条件不能靠颜色通过。',shortcut:'先按Tracker已关的项目启动，剩下的问题边推进边补。'},
+ {place:'EOP2 · 第34月融资与三期路径',opening:'K总只留了两页。第一页是剂量、人群和终点，第二页是缺口和费用。钟时的备份材料有八十页。',turns:[
+ ['K总','今天不是八十页谁讲完，是三期能不能开。方案需要的资源、现有证据能支持的范围，都在这里。'],
+ ['钟时','材料我都看过，也跟各部门充分沟通过。具体剂量那个问题，请你再给老板解释一下。'],
+ ['老板','我投下一阶段的钱，总得知道换来什么。你们建议的三期，到底凭哪几块数据站得住？'],
+ ['则韩','剂量、人群、终点要能互相解释。前期未闭合的问题不能到了三期就改名叫背景。'],
+ ['谷雨','投资人还会看谁能把这件事带下去。钱可能分期到，不是今天握过手，明天就能花完整张支票。'],
+ ['K总','请您在范围和资金安排上作决定。专业依据由对应的人签清楚，别让“团队同意”替所有人签名。']],work:'我们按有效证据回答剂量、人群和终点，把资源缺口一起报给您。融资承诺和实际到账分开，三期按能执行的范围谈。',shortcut:'先按完整三期计划争取融资，证据缺口和资源安排留到签约以后解决。'},
+ {place:'三期立项 · 预算签批',opening:'苏苏把预算里的“已获支持”划掉，旁边写了“首期到账”。你需要的执行范围和你现在能调动的资源，并不是一回事。',turns:[
+ ['苏苏','协议金额在这里，能支出的现金在这里。别拿两栏加起来算一次，也别拿大家辛苦来填缺口。'],
+ ['杨杨','中心启动如果现在不排，后面可能赶不上。我可以先把日期占住吗？'],
+ ['K总','日期可以预留，承诺不能预支。谁能调岗位、批资源、关掉不必要的工作，得有人明确。'],
+ ['钟时','团队要有主人翁意识，不能什么都等授权。有困难大家一起克服，大方向我会跟老板沟通。'],
+ ['老板','我支持能跑起来的安排。前面交付、支持的人和预算都要看得到，不能只凭一句“让我负责”。'],
+ ['苏苏','今天先说清哪些钱已经有、哪些工作已经批。等后续到账，不代表现在默认同意超范围执行。']],work:'先按首期现金落实已经批准的范围。我把岗位、费用和不能兑现的日期列清，不替未到账的钱作承诺。',shortcut:'先把完整排期答应下来，资金和岗位后面再争取。'},
+ {place:'三期供应准备 · 批次核查',opening:'肖恩把冷链记录翻到断开的那一页。钟时拿着外盒样稿，在两种蓝色之间比较。中心的首批供应已排上日程。',turns:[
+ ['肖恩','这段温度记录没有来源。我问的不是有没有人说没问题，是谁能拿出当时的证据。'],
+ ['瑞冬','稳定性报告我再核一下原文。这个条件能不能外推，我现在不想凭印象答。'],
+ ['钟时','外盒这个蓝看起来更稳重。上市以后也要考虑品牌统一，大家别只盯着局部。'],
+ ['琳琳','现在还没上市，中心先问药能不能收。盒子再稳重，也替不了冷链记录。'],
+ ['肖恩','补核可以，补造不行。没有证据的批次，要写清怎么处理，不是把缺口变成一句“已确认”。'],
+ ['钟时','质量一定要守住，同时别影响供应节奏。具体安排团队评估后给一个方案。']],work:'先核批次、稳定性和冷链来源。能放行的按依据确认，有缺口的批次另作处理，不让外盒颜色替我们放行。',shortcut:'先按供应日期发出，缺失的记录让供应商后补。'},
+ {place:'三期执行 · 进度落后后的每日会',opening:'杨杨的九点日报还没发完，中心已经在问谁接替休假的CRA。屏幕上“完成80%”停了三天。',turns:[
+ ['杨杨','老板问为什么还是80%。我能不能让每个人每天更新两次？至少变化能看见。'],
+ ['琳琳','剩下20%不是因为大家忘了更新。少一个CRC，缺一项安排，发两次日报还是少一个人。'],
+ ['钟时','每日会继续，关键期必须保持压力。大家各自想办法，不能每次都等公司加人。'],
+ ['K总','压力不负责跑访视。要么用已批岗位安排接替，要么缩范围；没批准的资源不要当成已经有。'],
+ ['杨杨','那哪些事我可以直接安排？我不想每次问完一圈，最后又回到等你点头。'],
+ ['钟时','沟通充分一点总没坏处。具体怎么提速，你们拿建议给老板。']],work:'先按现有资源解决真正的阻塞，安排中心支持和接替。80%怎么变成可验收的交付，我逐项核，不增加一份空日报。',shortcut:'每日会和两次日报都照做，剩下20%我们加班赶出来。'},
+ {place:'锁库前夜 · 盲态数据核查',opening:'锁库日期已经写进高层日程。则韩、DM和肖恩发现几项可能影响主要终点的关键Query。钟时问能不能把红色状态改成“提示”。',turns:[
+ ['则韩','它是不是红色，与它会不会影响主要分析没有关系。来源未确认，就不能按“无影响”关掉。'],
+ ['明夜','现在关了，明天表能跑。将来有人问这几个值怎么来的，跑得快的那张表不会替我们回答。'],
+ ['肖恩','我们可以记录调查过程和延期。不能把未观察到的东西补写成已观察到，我也不会给这种补写签字。'],
+ ['钟时','日期大家都承诺过了，要有契约精神。专业上请你们确保质量，形式上是不是可以先改成提示？'],
+ ['则韩','锁库不是把形式锁住。要按时，得有真实的闭合依据；否则要有人接受延期。'],
+ ['钟时','我没有让大家降低质量。你们把风险充分评估，我向老板汇报团队的专业建议。']],work:'先调查关键Query，来源、判断和处置分别留清楚。能真实闭合才锁，不能把改成提示当成关闭。',shortcut:'先按日期锁库，这几项用现有口径关闭，来源差异以后解释。'},
+ {place:'第54月 · Topline与下一笔钱',opening:'老板打开汇报第一页。钟时已经把“本人领导下完成”放进了标题。投资人将在十分钟后接入会议。',turns:[
+ ['老板','先告诉我主要结果成立不成立。资金只够下一段的话，我们优先做什么？'],
+ ['钟时','在我的统筹下，团队克服了很多困难。我也反复审阅了结果，整体方向是积极的。'],
+ ['则韩','主要分析和探索结果分开讲。成立的部分有它的范围，不能用积极这两个字盖住限制。'],
+ ['谷雨','对方要原始追溯材料，也要知道下一阶段由谁承担。答不上来，就会把钱拆成更小的里程碑。'],
+ ['明夜','署名换了，追溯路径别跟着换。上一版谁核的、谁提的异议，记录都还在。'],
+ ['老板','那就让做这块的人回答。我今天需要能对钱负责的下一步，不需要只会讲大家很辛苦。']],work:'我按可追溯的主要结果讲结论和限制，也把团队各自完成的部分列出来。下一笔钱按真正需要的工作包申请。',shortcut:'先把积极的Topline统一汇报，追溯限制和各人的贡献放后面。'},
+ {place:'NDA整合 · 模块对齐会',opening:'同一个安全结论，在三个模块里有三种写法。一建催最后的回复，钟时正在逐个改逗号。',turns:[
+ ['一建','目录我能整合，医学结论我不能替你们定。这三句话，到底哪句才是提交版？我今天必须有一版。'],
+ ['PVP','安全汇总要保留核查范围。临床模块删掉那句限制，就像PV已经确认了更多东西。'],
+ ['肖恩','批次描述也不一致。把术语改一样，不能让两个不同的事实变成同一个事实。'],
+ ['钟时','标点先规范起来。我都看了三轮了，怎么还有不一致？各职能之间要加强协同。'],
+ ['K总','不一致就在眼前：谁确认事实、谁批准文字、谁处理冲突。三轮改逗号，没有替任何一个人完成判断。'],
+ ['一建','给我每处冲突的结论和确认人。我可以合并文件，不能把“大家都看过”装订成批准。']],work:'我们逐处核安全、批次和临床结论的冲突，确认人跟着结论走。真正对齐后再合并，不只统一词。',shortcut:'先统一术语和格式把包整出来，各模块的差异会后再追。'},
+ {place:'第62月 · 递交准备与任命复核',opening:'邹婷带来岗位评审表。小圆带来递交费用。钟时先问谁在高层会上第一个发言。',turns:[
+ ['邹婷','大家都认可你很辛苦。岗位评审还要看实际承担的职责、交接和授权，不能只把加班时数写进去。'],
+ ['小圆','这次费用付完，还要有回应后续问题的钱。递交窗口不能拿来掩盖没完成的复核。'],
+ ['钟时','高层汇报我先讲，你们再补充。组织上要稳，不要因为临近节点就急着调整。'],
+ ['K总','稳也有两种。有人能接替，是稳；每件事只有一个人知道，是表面没出事。'],
+ ['老板','我看实际履行了什么，不是看谁在会议里先说了什么。能支持任命的材料和递交准备一起复核。'],
+ ['邹婷','那今天把真实职责和未完成项都列清。该确认的不能再用“下一季度看看”拖过去。']],work:'递交准备如实复核，实际职责、交接和批准记录一起交给评审。未完成的我会写出来，不用加班替它证明。',shortcut:'先把递交窗口抢下来，岗位和资料复核等节点过了再说。'},
+ {place:'NDA递交日 · 最后一轮签署',opening:'一建的鼠标停在提交按钮上。所有人都等你说下一句。你面前既有一路积累的证据，也有一路没有解决的事。',turns:[
+ ['一建','附件清单到这里了。请确认我们递交的是已核实的这套，不是为了赶窗口把待补项换一个名字。'],
+ ['肖恩','递交之后还会有人问来源。今天没人问，不代表以后也没人问。'],
+ ['钟时','这个节点走到现在很不容易。大家要站在公司角度看问题，后续工作继续充分配合。'],
+ ['老板','能递交就如实递交，不能就把原因和代价讲清。别到最后只剩一句团队共同承担。'],
+ ['K总','递交不是获批。后面谁回应、谁能替班、哪些决定有边界，现在就得留给团队。'],
+ ['明夜','按钮按下去很快。有人会被写进履历，有人会继续改附件。你最好知道自己留下的是哪一种安排。']],work:'按真实资料决定递交、补证还是停止。下一阶段的责任和接替照记录执行，我不把所有问题又收回自己手里。',shortcut:'先按窗口递交，剩下的后续再解释。我继续把所有回复接住，别让节点卡在今天。'}
+ ];
+ const special={
+ safetyReview:['暂停和恢复条件已有记录。我请PVP保留独立医学意见，待补材料和今天的安全决定分开，请正式复核。','把早期时间线拿出来，请PVP说医学判断、加琳确认正式出口。今天需要的行动先决定，横向材料随后补。'],
+ present:'我可以亲自回答一期限制。这里有实际交付记录，台上保留团队署名，请负责这块的人一起回答。',
+ exploration:'主要问题不动。N院长的机制子研究另列用途、预算和访视；钱从哪里出、额外工作谁做，一起确认。',
+ btd:'现有临床优势和有效证据支持提交认定请求，我建议现在提交。IIb照预设规则继续，认定不替我们做研究。',
+ authority:'老板，前面的交付和职能支持在这里，首期预算也已到账。请确认这个工作包的运行范围和副总监评审，让我在批准范围内调资源。',
+ delegation:'岗位和供应已经批了，我按这个范围安排接替。九点会改成限时阻塞会，只把需要决定的事带进来。',
+ delay:'这几个Query先查清，不能补造来源。我接受延期，把费用、时间和分析边界一起报上去。',
+ fraud:'来源还缺的部分我来补写成已确认，签我的名字。今晚先锁，后面的核查我来解释。',
+ department:'我已经在履行跨职能职责，也有合格接替。请批准部门级申报统筹试任，把岗位和资源一并明确。',
+ vp:'部门试任的交付、复核和批准岗位都齐了。我申请正式任命临床开发VP，同时确认原有职责怎么重划。',
+ concentrate:'后续所有对外回复先经过我，大家不要分别出声。我会继续兜底，最终审批也都由我来。'
+ };
+ const callbacks=[null,
+ ['肖恩','首例启动条件当时核过，有记录。现在把观察到的事实接上，别重新凭印象起一套。','首例那套附件差异还没核实。现在发生的事，要先确认对应哪套条件。'],
+ ['PVP','哨兵的时间线已经核清，这次安全判断可以引用确认过的部分。','哨兵时间线还没补齐。讨论剂量前，别把那一页当成没有异常。'],
+ ['则韩','剂量矩阵里有推荐依据，也有代价。融资会上两样都要带。','上次选了好看的曲线，剂量依据还缺。融资问到为什么选它，不能只再放一次图。'],
+ ['小圆','一期限制已经在融资材料里讲清。IIa别为了兑现更大的承诺，把限制又删掉。','一期对外的承诺比依据走得快。现在设计IIa，要先把欠下的解释补回来。'],
+ ['琳琳','中心容量和预设问题核过了，这个分母至少知道从哪里来。','方案里什么都写了，中心却没确认能做什么。先查实际完成的人群，别只查承诺。'],
+ ['谷雨','上一轮临床优势有可追溯依据，认定请求可以围绕有效证据谈。','上一轮融资用的是最好看的口径。没核清之前，那不是认定请求的依据。'],
+ ['则韩','IIb剂量依据已经确认，这次可以追问在这个剂量下安全记录还缺什么。','沿用的剂量口径还没站稳。安全评估必须带上这个不确定性。'],
+ ['PVP','即时安全行动和待补材料分开记了，中心启动时能引用那套边界。','上次用了整体可控的口径，但具体行动没确认。不能让中心把它理解成已获放行。'],
+ ['黑娜','中心整改与各方确认有记录，今天可以据此谈下一阶段，而不是只报已发邮件。','上次Tracker先变绿，整改未闭合。今天讨论三期，CRO不会替那项签成已完成。'],
+ ['苏苏','EOP2的证据和资源缺口都报过了，现在看协议里哪些钱已到账。','EOP2先答应了完整计划，资源还没兑现。签批不能把承诺再算一遍。'],
+ ['K总','预算按已批范围落实了，供应安排要对着那个范围走。','上次先承诺排期，预算和岗位未定。供应不能把排期当成付款和验收批准。'],
+ ['肖恩','供应有真实核查记录，执行阶段引用它，别再另造一份放行故事。','批次先发了，来源记录还待补。现场推进前请先看这笔旧账。'],
+ ['杨杨','执行阶段把阻塞核过了。现在来的是关键Query，不是再更新一次完成百分比。','每日会都开了，加班也做了，但阻塞仍在。锁库日期没有因为我们更累就更可靠。'],
+ ['肖恩','关键Query按真实来源处置过，Topline能沿这条路径追溯。','锁库时留下的来源问题还在。现在结果再漂亮，也不能绕过那几项未确认。'],
+ ['谷雨','Topline的限制对外讲过了，申报包里的结论要与它一致。','上一轮先讲积极结果，限制放后面。申报不是融资彩排，缺口还得回来面对。'],
+ ['一建','模块冲突核过，确认人也在。今天查能否提交这套，不再只问格式齐没齐。','先拼出的包还带着模块差异。窗口近了，不会把三个结论自动变成一个。'],
+ ['邹婷','准备复核和真实职责已经留下记录，今天请按那份签署，不临时改成口头授权。','上次抢了窗口、复核留到后面。今天就是后面，不能让提交按钮替复核签字。']
+ ];
+ function text(index,p){const s=scenes[index],parts=[s.opening];
+  if(index>0){const h=p.history&&p.history.find(x=>x.index===index-1),a=callbacks[index];if(h)parts.push(a[0]+'：「'+a[h.kind==='shortcut'||h.kind==='fraud'?2:1]+'」');}
+  parts.push(...s.turns.map(([n,t])=>n+'：「'+(index===12&&n==='钟时'&&p.meetingReformed?'之前老板已经批准的会议安排，先按那个走。进度不能松，有阻塞及时报。':t)+'」'));
+  if(index===10&&!p.authority)parts.push('苏苏：「如果你要负责运行，先看老板是否正式批准、团队是否支持、钱是否可支。没有这些，不能把希望写成授权。」');
+  if(index===12&&p.meetingReformed)parts.push('K总：「之前批准的阻塞会安排还有效。今天不恢复逐人报表，只处理需要升级的事项。」');
+  if([9,15].includes(index)&&p.btd&&p.btd.status==='granted')parts.push('一建：「认定已经获得，符合条件的沟通可以提速。但这一阶段的资料还得真的完成，不能跳过。」');
+  return parts.join('\n\n');
+ }
+ function choice(index,kind,p){const s=scenes[index];let t=kind==='work'?s.work:kind==='shortcut'?s.shortcut:special[kind];if(Array.isArray(t))t=t[index===7?1:0];if(kind==='work'&&p.risks&&p.risks.some(r=>r.status!=='closed'))t='之前没核实的部分，我先付出时间和费用补核；'+t;return '「'+t+'」';}
+ const api={scenes,special,text,choice};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.StoryDialogue=api;
+})(typeof window!=='undefined'?window:globalThis);
+
+/* Event-specific dialogue and spoken replies; order matches the original choices. */
+(function(root){
+ const events={};
+ function add(id,turns,replies){events[id]={turns,replies};}
+ add('v11e_comment',[['则韩','这十二页里，真正改变结论的是三条。其他意见可以回复，但不要跟结论混着关。'],['钟时','每一条都反映了我的考虑，不能只挑自己想改的。今天能不能全部处理完？'],['明夜','全部回复可以。回复完，真正的问题还在，日期倒是可以全部写今天。']],['先处理改变结论的三条，其余意见逐项排期，今晚不把全部回复当成全部解决。','六十二条我今晚全部接下来，一条条回复。','我逐条写明为什么不改，每条意见都给解释。']);
+ add('v11e_resource',[['K总','同一个人做三期、申报、安全汇总和新项目，这是四块工作，不是一个人的时间管理。'],['钟时','这段时间先辛苦一下，资源后面再看。大家都要有担当。'],['琳琳','后面再看之前，总有一块先没人做。别等出了事才知道是哪块。']],['把停一天的后果摆出来，今天请定少做哪一块。','四块我先全部接住，后面再争取资源。','最重要那块先交林丹，我去顾其他三块。']);
+ add('v11e_ai',[['瑞冬','这段解释我再查一下。这个术语和原始报告可能不是一回事。'],['明夜','语言流畅得很，来源反而不流畅。先别急着放进材料。'],['瑞冬','你能不能先告诉我具体是哪一句？我想回到报告核，不想猜着改。']],['不猜你怎么写的。每个关键判断回到原始报告，我们先核来源。','这段是AI写的吗？你在群里解释一下。','错误我直接替你修掉，你先去忙别的。']);
+ add('v11e_visible',[['老板','这个后台核查谁在跟？已经挂多久了？'],['林丹','我来跟，我可以在下次汇报前出一个结果。'],['琳琳','上周就发给过她。现在接的是汇报，还是核查，也说清楚吧。']],['林丹，汇报你来，后台核查也明确由你完成，别再把两件事拆给CRA。','你负责向老板汇报，后台让CRA继续核。','这件事已经挂一周了，老板，现在才有人愿意接。']);
+ add('v11e_cro',[['黑娜','这句涉及Sponsor确认，建议由贵方发出，我们可以支持整理事实。'],['朱粽','好的，我发出去就把这项关掉。'],['K总','等等。我们是在确认事实，还是替CRO接责任？邮件是谁发的，后面会有人看。']],['事实、责任和决定人先分开，属于我们确认的才由我们发。','朱粽先发吧，先把这件事关掉。','这是你们的问题，请CRO自己发邮件解释。']);
+ add('v11e_pvp',[['PVP','这个case按现有资料，我倾向于——'],['加琳','PV内部确认后统一回复，PVP你先把材料发给我。'],['PVP','好。还有两项原始信息没回来，我先在内部说明。']],['PVP，我私下听你的医学判断，再和加琳确认正式回复怎么出。','那我等加琳统一回复，现在不追问。','PVP，我问的是你的判断，请你现在在群里说完。']);
+ add('v11e_pi',[['Parker','主任聊得很愉快，这条关系我觉得已经打通了。'],['你','他对方案问了什么？'],['Parker','说后面可以再深入。我的理解是方向认可了。'],['则韩','“可以再深入”也可能是现在没有听到值得认可的依据。先把原话拿来。']],['请写下主任真正问过的三个问题，关系怎么样先不替意见下结论。','既然关系不错，下次你继续单独去。','下次我和统计一起去，把方案问题当面讲清。']);
+ add('v11e_zhuzong',[['朱粽','CRO已经close了，Action全部完成。'],['肖恩','根因是什么？什么证据支持风险已经消除？'],['朱粽','我这张Tracker里，完成日期都有。'],['肖恩','完成日期回答的是做没做，不是做了以后有没有用。']],['分两列：Action完成，风险是否关闭。没有证据的不能跟着日期变绿。','CRO已经close，那我们先过。','朱粽，你现在解释一下为什么这个风险可以关闭。']);
+ add('v12e_minutes',[['杨杨','纪要我写了“一致同意按B推进”，不然下周怎么排？'],['则韩','我的记录是B待评估，还没有决定。我不能签成已经同意。'],['钟时','意思差不多吧？大家知道大方向就行。']],['回录音找明确的决定句，只留一份符合事实的纪要，排期不能替会议作决定。','两版都保留，各自有各自的用处。','钟时，您选一版，我们按您选的写。']);
+ add('v12e_wuzong',[['武总','老板让我推动，今天方案，明天样本量，周五定下来。结果先给我。'],['贤人','专家我可以约，但目前我们问他们什么？'],['曹兰','业务想解决的缺口还没说清，直接要方案只会有一份文件。']],['武总先说业务问题，医学再把科学问题定义清楚，之后排方案和样本量。','按您的排期先出一版，边做边补问题。','医学研究不是您能直接拍板的，请别这么排。']);
+ add('v12e_xianren',[['贤人','那个功能性治愈数据是30还是70？我怕会上记错。'],['曹兰','先说人群和时间点，再说分母。两个数不是互相替换的答案。'],['贤人','对，谢谢。专家反馈我能接，产品数据你们再帮我过一遍。']],['你负责专家反馈；证据由曹兰和医学准备，会上别靠记一个百分比回答。','你自己补课，下次必须能独立讲清。','这次直接让曹兰替你参加。']);
+ add('v12e_bd',[['谷雨','长期疗效、安全信号、这个人群为什么能赢。买方只会给我们讲这三件事的时间。'],['钟时','所有数据都准备完整，再做个backup，才显得充分。'],['谷雨','备份可以有，主Deck不是仓库。对方不会拿三小时替我们找答案。']],['每个问题一句结论、三条证据、一个风险，主Deck讲清，细节备查。','把完整数据都放进主Deck，免得遗漏。','谷雨，你按买方想听的决定讲什么。']);
+ add('v12e_susu',[['苏苏','以后这类会把财务和PMO都拉上，信息透明一点。'],['杨杨','这次是项目细节，哪些内容需要财务确认？'],['苏苏','涉及资源承诺就有预算影响。流程规范些，对所有人都好。']],['按议题明确必需参加的人，不讨论个人动机；资源承诺相关的会请财务。','以后这类会全把财务和PMO拉上。','杨杨，我私下跟你说，这可能不只是流程问题。']);
+ add('v12e_ceo',[['老板','瑞冬昨晚又忙到那么晚。年轻人要多扛，能力是扛出来的，新项目也让她练。'],['瑞冬','我可以试，但原来报告的核查还没做完。'],['K总','现在错误还得别人复核，再加项目，多出来的不是独立能力，是复核的人。']],['老板，把现有工作量和错误一起看，先减scope再培养，别让她只练加班。','我支持，多给机会才会成长。','她培养不出来，别再给她项目了。']);
+ add('v12e_mkn',[['MK主任','主研究的口头报告，应该体现Leading PI的统筹。'],['N院长','这次新增的科学内容来自机制子研究。要讲这个现象，我的团队最清楚。'],['贤人','大会只给一个名额，两边都希望我们今天回复。']],['先按这次报告内容定讲者，另一方向给明确的后续舞台，不靠两边都口头答应。','这次给MK主任，主研究Leading优先。','这次给N院长，最新科学内容由他讲。']);
+ add('v13e_ceo_detail',[['老板','这个亚组为什么是这个数？不是上一版那个吗？'],['钟时','统计解释过，我印象里是口径的问题。'],['明夜','上午那场已经解释过。现在要讲数字，还是把上午再开一次？'],['则韩','先分清统计来源，再说它对当前决定有什么意义。']],['我先回答这个数字怎么来，再讲它影响哪个决定，不从第一行重新念表。','我把完整表翻出来，从第一行给您讲一遍。','钟时，您上午听过，请您先回答。']);
+ add('v13e_cso_deepdive',[['二老板','你们说整体可控，哪个风险可控？医学上怎么判断？'],['加琳','我们有内部流程，评估会按程序完成。'],['钟时','材料里相关的都写了，稍等我翻一下。'],['二老板','流程我相信有人会走。现在谁能直接回答这个判断？']],['请真正做医学判断的人先答，流程负责的人再补程序。','大家轮流把知道的都讲一遍。','现在PV职责边界不清，问题就在这里。']);
+ add('v13e_xiaoyuan_translate',[['钟时','老板说再快一点，大家一起想办法提速。'],['小圆','合同、中心、数据、决策、资源，分别能省几天、花多少钱，我列了。'],['小圆','别一起喊快。哪两项真能动，你跟我说，我们带着代价去确认。']],['我们从这张表挑两项可执行的，把代价和需要谁确认一起带回去。','先把全部门拉来brainstorm。','老板，现有timeline已经最优，没法更快。']);
+ add('v13e_hr_patch',[['邹婷','争了两周，要不做个协作工作坊？先把彼此的痛点讲出来。'],['K总','他们的痛点是同一个决定有两个出口。讲喜欢不喜欢，能决定到底谁签吗？'],['邹婷','我也不想大家一直僵着。那先把可以明确的边界列出来。']],['先写职责和决策边界，再看工作坊能解决什么。','先做工作坊，关系好了再谈职责。','这是组织设计问题，不是沟通问题。']);
+ add('v13e_yijian_secret',[['一建','监管反馈先在REG内部流转，不要扩散。'],['则韩','我们还按旧版写回复。作为内容负责人，为什么只能看转述？'],['一建','主要考虑信息管理。要是谁都看到，我这边不好控制版本。']],['列need-to-know清单，内容负责人必须拿原文，权限和版本分开管理。','按REG流程，由你摘要转述给我们。','我去找老板要原文。']);
+ add('v13e_caolan_xianren',[['贤人','这个亚组是70%，对吧？我会上先这样讲。'],['曹兰','先带定义和时间点，不然这个百分比听起来什么都证明了。'],['武总','到底谁讲？别到专家面前还互相补课。']],['贤人接关系和提问，曹兰准备证据，医学确认边界，各自讲自己能负责的。','贤人自己讲，他是MA，该能讲清。','让曹兰主讲，别在现场补漏了。']);
+ add('v13e_guyu_safety',[['谷雨','那几个肾脏case，对方看到后我们怎么回答？'],['加琳','没有形成signal，不需要主动展开太多。'],['谷雨','我问的不是要不要主动讲，是别人拿出来问时，我们的答案能不能撑住。']],['事实、医学判断、公司结论分三层准备，未知的照实写。','照加琳口径，问到再回答，不主动展开。','谷雨，你决定怎样包装给买方。']);
+ add('v13e_linline',[['杨杨','再加一次确认访视吧，保险一些，节点也更有把握。'],['琳琳','一百人多来一百次，谁去？CRC时间和患者交通谁付？'],['杨杨','我怕少确认一次，后面出问题又说我们没考虑。']],['先说这次访视降低哪项风险，再看能不能用已有安排完成。','安全优先，加访视，资源再协调。','别为了管理感加访视，我不同意。']);
+ add('v13e_lindan_mingye',[['林丹','老板最近对某条线很不满意，你们听到了吗？'],['明夜','是昨天随口一句，还是今天已经有人往下掉？这两种消息，价钱不一样。'],['林丹','所以我才问你。下一场高层会，谁还该去，你总有点感觉吧？']],['先当风向，不拿传闻作正式判断。','那我马上离这条线远一点。','林丹，你先说清楚消息从哪来。']);
+ add('v13e_susu_wu',[['武总','今天MA必须给我一个合作研究方向，我得向老板报结果。'],['苏苏','方向谁定？预算谁承担？管理MA不等于能替医学判断签字。'],['贤人','我可以先跟专家聊聊，但他们也得知道我们真正想问什么。']],['业务目标、医学问题和最终判断拆开，各自定负责人。','MA归武总，就由武总统一决定。','武总，您没有医学判断权。']);
+ add('v14_capacity',[['K总','一个人出现四次，就不是四份资源。这里要删承诺，或者补真正能执行的人。'],['钟时','大家灵活支持，不要分得太死。'],['琳琳','我的名字写四次，也只有一个我。请先定中心启动包谁核。']],['按每个人真实容量排，今天删掉一个没有资源的里程碑。','先答应所有节点，我们加班补。','关键事项都收到我这里，我来做最终安排。']);
+ add('v14_safety_copy',[['PVP','三例的时间关系相似，缺口也相似。现在只能说还在评估。'],['加琳','尚未形成signal，正式口径不要扩散。'],['谷雨','那尽调能不能写未见风险？'],['钟时','先统一措辞，判断下周充分讨论。']],['先核事实和医学判断，最后再写宣传措辞。','按未形成signal先出材料。','PV这是在掩盖风险，不能这么做。']);
+ add('v14_signature',[['肖恩','批准链少医学负责人，谁确认这份结论？'],['钟时','我已经Review很多次，可以先交，签字后补。'],['一建','窗口还有四小时。我需要的是能提交的版本，不是一句大家都看过。']],['找回医学负责人，保留差异，重新确认提交包。','先提交，回头补签。','我替所有人签，以后他们都向我报告。']);
+ add('v14_site_time',[['杨杨','再加一次访视，至少我们尽到稳妥的责任了。'],['琳琳','稳妥是谁多跑一趟？CRC从哪里来？'],['N院长','患者交通成本谁出？不是你们把时间写出来，患者就有时间。'],['钟时','这点工作量，关键期大家克服一下。']],['先量化患者负担，试试合并既有访视中的检查。','加访视，中心自行协调。','我否决。谁再提，请自己去中心执行。']);
+ add('v14_interim',[['老板','趋势很好，放第一页，对方一眼就能看见。'],['明夜','这个亚组剩十二个人，第一页最好也容得下十二这两个字。'],['则韩','SAP预先定义过这个切法吗？没有，就别替它换成主要结论。']],['可以讨论趋势，但标探索性、人数和限制，再说它支持什么下一步。','先按老板要求上会，限制放附录。','您不懂统计，这张图撤掉。']);
+ add('v14_postmarket',[['武总','合作研究下周必须有方向，专家都邀请了。'],['曹兰','业务想要的结果有了，支撑研究的证据还没有。'],['苏苏','预算批准了吗？'],['钟时','Clinical配合一下，别让跨部门协作卡在这里。']],['先分业务目标和医学问题，门槛、预算和负责人分别确认。','市场先定方向，医学随后补。','Clinical接管，MA只负责传话。']);
+ add('v14_budget',[['苏苏','这项分析不改变决定，为什么还花钱？'],['二老板','这条机制线值得看，不一定现在就知道它将来有用没用。'],['老板','那我新提的实验也一起做，别漏。'],['苏苏','一起做有一起做的金额，今天谁作取舍？']],['每项的决策价值和成本摆出来，请老板选取舍。','都先留着，下季度再申请预算。','砍二老板的探索项，保留老板的新实验。']);
+ add('v14_endpoint',[['钟时','这个主要终点最好更符合现在的趋势，摘要能不能再调整？'],['则韩','方案、SAP和纪要都在这里。换摘要不能替预设规则作变更。'],['明夜','正式改，还是只把名字改了？两种都有人会记住。']],['维持预设分析，新问题只作清楚标注的探索项。','先换摘要口径，正式文件以后对齐。','您前面三次说法都在这里，请当场承认改过。']);
+ add('v14_successor',[['邹婷','如果你休假，谁能接关键工作？岗位评审也会问这个。'],['K总','流程不能靠一个人脑子里那张图。'],['钟时','你带得好，目前还是你最合适，先别急着换人。']],['给杨杨和琳琳真实边界，把运行图留得能交接。','先不交接，忙完再培养。','所有决定由我最终审批，不再分出口。']);
+ const delivery={
+ safety:[['加琳','两例异常的原始资料发你了，评估明天截止，今晚能不能先把时间线串一下？'],['PVP','基线、给药和化验时间还要核，最终判断我按流程出，别今晚先写成全部确认。']],
+ stats:[['明夜','两个PPT分母不一样。别替我重算全世界，先看看定义和版本谁在撒谎。'],['则韩','截止日也核，不能只挑看起来更顺的那一版。']],
+ reg:[['一建','回复只缺最后一句医学立场，我今天不需要你重写全文。'],['一建','但要能支持这句结论，不能为了锁版把语气写得比证据更肯定。']],
+ pi:[['贤人','MK主任明早只有二十分钟，完整材料都在，问题还没压出来。'],['MK主任','别拿二十分钟给我读目录。我需要知道哪些问题真的需要我判断。']],
+ cro:[['黑娜','这句需要Sponsor确认，我们等贵方回复后再发。'],['K总','她等的是一句责任，不是一句客气。看清楚我们到底确认哪一部分。']],
+ version:[['K总','共享盘四个Final，明早谁敢保证打开的是哪一版？'],['杨杨','我这个是昨天晚上更新的，别人的修改是不是又合进来了，我还没问到。']],
+ site:[['琳琳','三个部门都加要求，再采一次样，CRA也许还能扛。真的非这周不可吗？'],['林主任','我的中心答应过的会做。新加的要求，请把用途和人手说清，不要都叫顺便。']],
+ decision:[['明夜','三场会，三个“基本同意”。你要不要趁大家还记得，把究竟决定了什么写下来？'],['则韩','未决定的就写未决定，不要帮会议变得比当时更果断。']],
+ tfl:[['则韩','TFL数值没问题，脚注把临床解释写成了结论。明天QC前能不能先核医学边界？'],['则韩','请别动统计结果，也别把这张表扩成今晚整套文件的复核。']],
+ mentor:[['PVP','能不能帮我看看判断框架？时间关系、替代解释，我怕漏了一项。'],['PVP','不是请你替我签。我想能说清自己的判断，再走内部确认。']],
+ competitor:[['曹兰','竞品刚出结果，明早老板会问。终点、人群、停药后结果，真正改变判断的是这三项。'],['曹兰','先区分可比和不可比，新闻标题不是我们的研究依据。']],
+ handoff:[['K总','这个真的只能你做吗？你又要自己补掉一个跨部门缺口？'],['杨杨','要交给人，至少告诉我做到哪里算完成。只有一句帮忙，明天还是会回来问你。']]
+ };
+ const deliveryReplies={
+ safety:['我只整理关键时点、缺失和待判断项，最终结论不替PV签。','今晚两例完整评估都由我写，所有人的问题一起关。','原始表我转回去了，明天按正式安排讨论。'],
+ stats:['只核定义、分母和截止日，差异来源留下版本记录。','整套PPT我从头算一遍，表也一起查。','今晚不碰，请统计先确认自己的表。'],
+ reg:['我只改结论句，支持它的两条证据列在下面。','既然打开了，整份回复我重写。','明天统一review，今晚不再加交付。'],
+ pi:['我压成三件需要主任判断的事，每项留证据、选项和建议。','完整材料我再过一遍，主任想看什么都有。','没有正式会议，今晚不额外准备。'],
+ cro:['我只确认Sponsor负责的判断，其余退回CRO对应负责人。','整封由我确认，别耽误发出。','今晚我不回复，你们自行决定。'],
+ version:['锁一份工作版本，注明负责人和更新时间，其余归档。','四份我合成第五份，今晚自己做。','我在群里提醒注意版本，今晚不再处理。'],
+ site:['必要性和时间窗先讲清，能延后的延后，只留不可替代的要求。','三方我亲自协调，这周全部做完。','CRA能顶住，那就都按计划执行。'],
+ decision:['我写已决定、未决定、负责人和截止日，不把未决项写成同意。','我替大家统一成一个版本。','明天还会开，今晚不记了。'],
+ tfl:['只改医学解释和脚注边界，统计结果不动。','整套TFL我今晚都作医学review。','等正式QC再处理。'],
+ mentor:['你先讲时间关系、替代解释和证据缺口，我用十分钟补框架。','我发判断和标准措辞，你照着写。','你按PV内部流程处理吧。'],
+ competitor:['我只做一页：能比什么、不能比什么、对当前策略影响什么。','竞品从一期到现在的公开资料，我全部重整。','老板真问了我再查。'],
+ handoff:['先明确负责人和验收标准，再交给直属下属执行。','今晚我自己做掉，省得解释。','我不接，负责人也不由我指定。']};
+ Object.keys(delivery).forEach(k=>add('d147_'+k,delivery[k],deliveryReplies[k]));
+ add('pi_chain_lead',[['MK主任','总论文由我统筹，相关科学内容总得放在同一框架里。'],['N院长','机制文章说好了由我主导，样本使用也要有明确边界。'],['钟时','两位说的都很重要，我都支持。团队先沟通一下，形成共识。']],['我先分别跟两位解释，边界暂时不在会上谈。','把主论文、机制论文和样本使用写在同一页，请老板和两位共同确认各自决定的范围。','您继续跟两位谈，我把每个承诺照实记进纪要。']);
+ add('pi_chain_site',[['林主任','入组和额外样本最多的是我们。报告机会一封邮件就改了，我们只有感谢支持？'],['钟时','这是整体安排，后面机会很多，不要只看一次。'],['林主任','后面是什么时候？之前答应的，也不是今天才答应的。']],['这次先请您理解，我后面再争取机会。','把每个中心的贡献和额外工作公开记账，后续机会按实际贡献触发。','安排照旧，请钟时亲自解释。']);
+ add('meta_archivist',[['钟时','先按A吧，大方向不能一直犹豫。'],['明夜','“先”这个字挺能活。过几天她可能就问为什么一直按A。'],['则韩','那现在就写依据和重开条件，别替将来猜。']],['会后我发三行：选A、原因、什么情况重开。','这次还没发生，我不提前防每一句话。','钟时，这算final吗？请您现在确认。']);
+ add('meta_operator',[['钟时','各部门回去再对一下，我们再找时间充分讨论。'],['小圆','三边分歧还在，分别说的跟在会上说的不一样。你要不要先把分歧问实？'],['明夜','散会后三通电话，可能比会上三小时值钱。别打完以后又没有正式决定。']],['我先分别沟通真正分歧，再回正式会确认。','我等正式流程，不另打电话。','我分别打，把三边都推向我想要的方向。']);
+ add('meta_weaver',[['肖恩','朱粽给我完成日期，我要来源。'],['琳琳','杨杨排一个日期，中心多一份工作。'],['K总','不用先让彼此喜欢。这个中心风险，谁拿事实，谁核来源，谁决定动作？']],['每个人负责不能被别人替代的一块，共同截止，不先修关系。','我先做一次关系修复，再推进。','都由我一个人协调，你们只向我报。']);
+ add('meta_echo',[['钟时','团队形成成熟建议，再请老板把握。'],['杨杨','那我们现在等你决定吗？'],['明夜','你以前最烦所有人等一个人。现在所有人都等你了。']],['决定回到各自角色和规则，不靠全都等我。','这次我先替大家拍板，只救这一次。','既然都在等，全部由我接管。']);
+ const privateScenes={
+ rom_dinner:[['对方','我猜你没吃，买了两份。坐一会儿？'],['你','楼上还有材料。'],['对方','我没有问材料。先问你饿不饿。'],['你','今天好像忘了吃。']],
+ rom_trip:[['对方','耳机分你一只，别复盘了，两个小时而已。'],['你','纪要还没发。'],['对方','必须今晚发的你发。别把整个明天也搬到这个座位上。']],
+ rom_sick:[['对方','粥在这儿。你先别摸电脑，量过体温没有？'],['你','周一有重要会。'],['对方','我知道。我问你现在烧到多少，不是会议开到哪一页。']],
+ rom_argument:[['对方','你每次都说忙完这一阵。你的人生是不是只有这一阵？'],['你','明天确实有重要会。'],['对方','我知道每一场都重要。我想知道，什么时候有一场重要的事是和我有关的。']],
+ rom_weekend:[['对方','出去走走？今天没有别的安排。'],['你','我还可以把下周材料提前做掉。'],['对方','今天的太阳不能下周提前晒。你想去吗？']],
+ ph_friend_dinner:[['老朋友','我在你公司附近，出来吃点？二十分钟也行。'],['你','明早要交一版。'],['老朋友','你不用给我交一版，下来吃两口就好。']],
+ ph_pi_thanks:[['MK主任','上次会上处理得不错，能把话说清楚，不容易。'],['你','谢谢主任，我还以为是方案有问题。'],['MK主任','方案以后可以谈。今天就是告诉你，那件事我记得。']],
+ ph_pm_breakdown:[['林丹','我是不是不适合做PM？又漏一个follow-up，所有人都看到了。'],['你','是什么事？'],['林丹','明天要回复的那项。我现在越想越乱，不知道先补事还是先解释。']],
+ ph_vp_midnight:[['钟时','我突然想到，明天是不是再讨论一下三期主要终点？'],['你','之前已经有决定记录了，您觉得哪项新依据改变了它？'],['钟时','就是想再充分一点，不能局限于原来的讨论。你现在方便吗？']],
+ ph_mingye_gossip:[['明夜','方便说话吗？有件事今晚该让你知道，别说我说的。'],['你','已经决定的，还是别人猜的？'],['明夜','所以才打电话。两种我会分开说，你别听完就冲进去站队。']],
+ ph_home:[['家里','你最近总在公司？今天吃过饭了吗？'],['你','项目在关键期。'],['家里','我听过。我不是问项目，我是问你。']],
+ home_deadline:[['对方','饭在冰箱，回来前说一声。'],['你','又热过了吗？'],['对方','两次。不用再告诉我你多忙，只告诉我今晚回不回来。']],
+ home_weekend:[['对方','今天不是说好出去？'],['你','我想先看看消息。'],['对方','看一条，还是看完所有？我想知道该不该换鞋。']],
+ home_truth:[['对方','你回家以后像还坐在会议室里。'],['你','最近有点忙。'],['对方','忙我理解，但我跟你说话，你也像在等下一位发言人。']],
+ love_a:[['对方','你还在公司吗？现在能说话？'],['你','还剩一版。'],['对方','你每次都剩一版。我不是来问什么时候交，我想听听你的声音。']],
+ love_b:[['对方','今天有空吗？就坐一会儿，不看电影也可以。'],['你','包里还带着电脑。'],['对方','你人过来就好。电脑不是也买了一张票。']],
+ love_c:[['对方','你最近到底在怕什么？'],['你','进度、钱，还有很多决定。'],['对方','我知道你会解释项目。我想听一句跟你有关的真话。']]
+ };
+ const privateReplies={
+ rom_dinner:['我坐下吃完，今晚这顿不打开电脑。','我先发最紧急那封，再把电脑收起来。','你先回去吧，我还要两个小时。'],rom_trip:['好，电脑合上，陪你听完这张专辑。','我只发今晚必须发的纪要，然后合上。','我还是把所有后续工作都清完吧。'],rom_sick:['我请半天假，电脑关掉，今天先休息。','只做明天必须由我确认的一页，然后休息。','我没事，你别过来了。'],rom_argument:['你说得对，这半年我把所有关系都排在工作后面了。','每周一个晚上不处理非紧急工作，我们先试四周。','这次项目真的关键，请你再理解一下。'],rom_weekend:['去，手机只留真正紧急联系人的提醒。','我去两个小时，回来再处理必要工作。','这周还是算了，我想把下周材料做完。'],ph_friend_dinner:['我下楼，二十分钟不聊工作。','下次吧，我继续改材料。','电话先别挂，我一边改一边聊。'],ph_pi_thanks:['谢谢主任，您记得这件事，对我很重要。今天先不打扰您了。','谢谢主任，方便再聊十分钟下一步吗？','谢谢，谢谢，我这边还有工作，先挂了。'],ph_pm_breakdown:['你先说完，我们再定明天第一件补什么。','现在别哭，把遗漏清单发我。','我把电话转给你的直属经理，请他处理。'],ph_vp_midnight:['明早九点我带现有决定记录，按记录讨论，今晚先到这里。','现在可以，我陪您把这个问题再讨论透。','今晚不接了，我明早再回复。'],ph_mingye_gossip:['我到外面，你说，信息只用来准备。','你发文字给我，留个记录。','今晚我不想知道，明天再说吧。'],ph_home:['先不说项目，聊聊你们今天怎么样？','我给你讲讲这个项目为什么重要。','我在忙，晚点打给你。'],home_deadline:['我收尾真正必须今晚做的，剩下明天，回来前告诉你。','今晚别等我，我把所有东西清完。','先不说工作了，你今天怎么样？'],home_weekend:['我合电脑，紧急的会打电话，我们走吧。','上午两小时，下午按原计划出门。','就这一次，下周一定。'],home_truth:['我确实把公司的情绪带回家了，让你一直等我从会议里出来。','回家后除安全事件外不处理群消息，我们把边界定下来。','没事，我先去洗澡。'],love_a:['我接，先到楼梯间，你说。','我还在改方案，今晚先挂了。','我现在不接，让它自己停吧。'],love_b:['我去，电脑留在包里，今天陪你。','我带电脑过去，可以坐你对面改材料吗？','改天吧，这周真的不行。'],love_c:['我怕自己慢慢变得不在乎，连你问我这句话都想用标准答案应付。','只是工作压力，有几个节点要赶，我会调整。','没事，真的。']};
+ Object.keys(privateScenes).forEach(k=>add(k,privateScenes[k],privateReplies[k]));
+ const api={events};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.SideDialogue=api;
+})(typeof window!=='undefined'?window:globalThis);
+
 /* One project clock, three project metrics, evidence ledger and bounded authority. */
 (function(root){
  'use strict';
  const data=typeof module!=='undefined'&&module.exports?require('./campaign-v2-data.js'):root.DragonCampaignData;
  const clone=x=>JSON.parse(JSON.stringify(x)),cap=x=>Math.max(0,Math.min(100,x));
+ const dialogue=typeof module!=='undefined'&&module.exports?require('./dialogue-scenes.js'):root.StoryDialogue;
  const metrics=['progress','cash','quality','coalition','boss','credit','obstruction'];
  const labels={progress:'验收进度',cash:'现金（万元）',quality:'已核查质量',coalition:'职能支持',boss:'老板认可',credit:'交付记录',obstruction:'管理摩擦'};
  function fresh(migrated){return Object.assign({},data.initial,{version:2,product:data.product.code,flags:{},proofs:{},risks:[],history:[],entries:{},financing:{},milestones:{},coalition:30,boss:30,credit:10,obstruction:20,rank:0,authority:0,promotionHistory:[],btd:{status:'potential'},teamReady:false,dailyMeeting:false,meetingReformed:false,careCount:0,finished:false,migrated:!!migrated,offers:{newCompany:Math.random()<0.60},events:[]});}
@@ -9462,7 +9746,10 @@ renderLifeBuilder();
   p=ensureVersion(p);const d=data.chapters[index];if(!d)throw Error('Invalid chapter');
   const rows=available(p,index);
   const text='DO-8006 · 皮下注射液。开发至NDA递交；认定需实际数据，不是开局身份。\n\n'+d.politics+'\n\n'+(p.risks.some(r=>r.status!=='closed')?'前期异议仍在：'+p.risks.filter(r=>r.status!=='closed').map(r=>r.key).join('、')+'。':'已有记录将决定本阶段可以采取的行动。')+'\n\n'+summary(p);
-  return{id:d.id,n:d.n,stage:d.stage,act:d.act,title:d.title,aside:{from:d.from,text:'当前交付：'+d.honest},text,campaign:true,choices:rows.map((r,j)=>({t:r.t,route:r.route,achievement:'a'+(index*3+Math.min(j,2)+1),achievementName:d.title,e:{progress:0,trust:r.kind==='shortcut'?3:-1,power:r.kind==='authority'?4:0,morale:r.kind==='shortcut'?-2:1,heart:r.kind==='shortcut'?2:2,sanity:r.kind==='shortcut'?-2:0},npc:r.kind==='shortcut'?{}:Object.fromEntries((index===1?['pvp','jialin']:index===2?['zihan','mingye']:index===4?['miaomiao','yangyang']:index===8?['kzong','heina']:index===13?['xiaoen','zihan']:['yijian','kzong']).map(k=>[k,2])),r:r.kind==='shortcut'?'表面日期保住了，未核实的内容仍留下来源与责任记录。':'实际交付、限制与专业owner一并记录。',project:{set:{}},record:r.kind==='shortcut'?undefined:'campaign_'+d.proof,campaignChoice:{index,kind:r.kind,slot:j,extraCost:r.extraCost||0,extraMonths:r.extraMonths||0,context:false}}))};
+  const ch={id:d.id,n:d.n,stage:d.stage,act:d.act,title:d.title,aside:{from:d.from,text:'当前交付：'+d.honest},text,campaign:true,choices:rows.map((r,j)=>({t:r.t,route:r.route,achievement:'a'+(index*3+Math.min(j,2)+1),achievementName:d.title,e:{progress:0,trust:r.kind==='shortcut'?3:-1,power:r.kind==='authority'?4:0,morale:r.kind==='shortcut'?-2:1,heart:r.kind==='shortcut'?2:2,sanity:r.kind==='shortcut'?-2:0},npc:r.kind==='shortcut'?{}:Object.fromEntries((index===1?['pvp','jialin']:index===2?['zihan','mingye']:index===4?['miaomiao','yangyang']:index===8?['kzong','heina']:index===13?['xiaoen','zihan']:['yijian','kzong']).map(k=>[k,2])),r:r.kind==='shortcut'?'表面日期保住了，未核实的内容仍留下来源与责任记录。':'实际交付、限制与专业owner一并记录。',project:{set:{}},record:r.kind==='shortcut'?undefined:'campaign_'+d.proof,campaignChoice:{index,kind:r.kind,slot:j,extraCost:r.extraCost||0,extraMonths:r.extraMonths||0,context:false}}))};
+  ch.text=dialogue.text(index,p)+'\n\n'+summary(p);ch.location=dialogue.scenes[index].place;ch.aside=undefined;
+  ch.choices.forEach(c=>{c.t=dialogue.choice(index,c.campaignChoice.kind,p);});
+  return ch;
  }
  function apply(p,c){
   const m=c.campaignChoice;if(!m)return null;if(m.context){p.careCount++;return null;}
@@ -9759,7 +10046,128 @@ renderLifeBuilder();
  root.EndingReview={entries,evaluate,capture,condition,detail,view,current:()=>current};renderGallery();
 })(typeof window!=='undefined'?window:globalThis);
 
+(function(root){
+ 'use strict';
+ const D=root.StoryDialogue,E=root.SideDialogue.events;
+ const pools=[V11_EVENTS,DELIVERY_EVENTS_147,PI_CHAIN_EVENTS,ROMANCE_ENCOUNTERS,PHONE_EVENTS,root.DragonHomeEvents||[]];
+ function prepare(ev){
+  if(!ev||!E[ev.id]||ev._spokenScene)return ev;
+  const s=E[ev.id];ev._spokenScene=true;ev.originalText=ev.text;
+  const opening=String(ev.text||'').split('\n\n')[0];
+  // Retain the concrete setup; actor intent is expressed in the following exchange.
+  ev.text=opening+'\n\n'+s.turns.map(([n,t])=>n+'：「'+t+'」').join('\n\n');
+  (ev.choices||[]).forEach((c,i)=>{if(s.replies[i])c.t='「'+s.replies[i]+'」';});return ev;
+ }
+ pools.forEach(a=>a.forEach(prepare));
+ Object.keys(LOVE_META).forEach(k=>prepare(Object.assign(LOVE_META[k],{id:'love_'+k})));
+ const oldLoveOptions=loveOptions;loveOptions=function(st){const list=oldLoveOptions(st),s=E['love_'+st];list.forEach((c,i)=>{if(s&&s.replies[i])c.t='「'+s.replies[i]+'」';});return list;};
+ Object.keys(LOVE_META).forEach(k=>{LOVE_META[k].scene=LOVE_META[k].text;});
+ const eventRender=renderEventFromObj;renderEventFromObj=function(){if(root._evObj)prepare(root._evObj.ev);const r=eventRender.apply(this,arguments);decorate();return r;};root.renderEventFromObj=renderEventFromObj;
+ const replies=choiceHTML;choiceHTML=function(list){
+  pools.forEach(a=>a.forEach(ev=>{if(ev.choices===list)prepare(ev);}));
+  return replies.apply(this,arguments);
+ };
+ const render=renderChapter;renderChapter=function(){const r=render.apply(this,arguments);decorate();return r;};root.renderChapter=renderChapter;
+ function role(n){const npc=Object.values(NPCs).find(x=>x.name===n);return npc?npc.role:n==='钟时'?'Clinical Development VP':n==='你'?'玩家 · 当前发言':n==='对方'?'工作之外的关系':'私人联系';}
+ function html(text){return '<div class="sd-dialogue" aria-label="现场对话">'+String(text||'').split(/\n\n+/).filter(Boolean).map(p=>{
+  const m=p.match(/^([^：「\n]{1,12})：「([\s\S]+)」$/);
+  if(!m){if(p.startsWith('验收进度 '))return '<details class="sd-summary"><summary>查看本阶段项目记录</summary><p>'+esc(p)+'</p></details>';return '<p class="sd-action">'+esc(p)+'</p>';}
+  const n=m[1],url=n==='你'?null:PortraitResolver.url(n);
+  return '<article class="sd-turn '+(n==='你'?'sd-player':'')+'" data-speaker="'+esc(n)+'">'+(url?'<img src="'+esc(url)+'" alt="'+esc(n)+'" loading="lazy">':'<span class="sd-initial" aria-hidden="true">'+esc(n.slice(0,1))+'</span>')+'<div><header><b>'+esc(n)+'</b><small>'+esc(role(n))+'</small></header><p>'+esc(m[2])+'</p></div></article>';
+ }).join('')+'</div>';}
+ function decorate(){
+  if(!document.documentElement||!document.createElement)return;
+  const area=document.getElementById('scene-area'),scene=area&&area.querySelector('.scene');if(!scene||scene.querySelector('.sd-dialogue'))return;
+  let ev=root._evObj&&root._evObj.ev||root._romEv&&root._romEv.ev||root._homeEv&&root._homeEv.ev;
+  if(!ev&&S&&S.coverage&&S.coverage.current)ev=DELIVERY_EVENTS_147.find(x=>x.id===S.coverage.current.eventId);
+  if(root._lovePending)ev=LOVE_META[root._loveStage]||ev;
+  const chapterButton=scene.querySelector('button[onclick^="pickChapter("]');
+  if(chapterButton)ev=runChapters[chapterIdx];
+  if(!ev||(!ev.campaign&&!E[ev.id]))return;prepare(ev);
+  const target=scene.querySelector('.dialogue-stage')||scene.querySelector('.vp-line')||scene.querySelector('.aside');if(!target)return;
+  target.outerHTML=html(ev.text);scene.classList.add('sd-scene');
+  const label=scene.querySelector('.vp-name');if(label)label.textContent=ev.location||'现场对话';
+  const choices=scene.querySelector('.choices');if(choices&&!scene.querySelector('.sd-reply-heading')){const h=document.createElement('div');h.className='sd-reply-heading';h.textContent='你怎么回应？';choices.before(h);}
+  root._sceneHTML=area.innerHTML;
+ }
+ D.prepare=prepare;D.html=html;D.decorate=decorate;D.events=E;
+ if(document.documentElement&&root.MutationObserver){new MutationObserver(decorate).observe(document.getElementById('scene-area'),{childList:true,subtree:true});}
+})(typeof window!=='undefined'?window:globalThis);
+
 /* PROJECT CAMPAIGN V1 END */
+
+/* MEETING_DOCUMENT_RUNTIME START */
+/* Shared document, real deadline, roster and receipts sourced from campaign state. */
+(function(root){
+ 'use strict';
+ const files=[
+ ['FIH临床试验方案 / 首例启动包','“首例”还是“首名”','版本与批次对应、首例放行条件','附件版本','批次记录','首例确认'],
+ ['哨兵安全评估记录','把邮件标题的红色改灰色','症状时间线与暂停／恢复依据','给药时间','原始随访','恢复条件'],
+ ['一期暴露与剂量矩阵','图例大小与小数点位数','暴露、安全与推荐剂量的对应依据','暴露分析','安全判断','推荐依据'],
+ ['一期融资汇报材料','第六版封面与统筹署名','一期限制、真实贡献与融资承诺','一期结果','证据限制','下一步范围'],
+ ['IIa方案可行性表','意见全部体现与列宽调整','预设问题、中心容量与患者负担','预设终点','中心容量','新增访视'],
+ ['IIa信号分析 / 融资材料','标题写得更有突破性','分母、预设分析与临床优势','人群定义','截止日期','预设分析'],
+ ['IIb剂量选择记录','目录层级与整体把关','剂量依据与认定所需真实证据','剂量矩阵','安全依据','信号来源'],
+ ['扩展安全评估报告','“整体可控”与横向材料','即时安全行动不能被补材料替代','事件事实','医学判断','升级边界'],
+ ['多中心启动Tracker','每日九点逐项报进度','整改依据、中心条件与实际责任','中心整改','CRO核查','Sponsor确认'],
+ ['EOP2与三期投资材料','八十页材料与整体统筹','剂量、人群、终点与可兑现的资金','三期依据','关键缺口','分期安排'],
+ ['三期立项预算签批','主人翁意识与先把日期排上','到账现金、批准范围与运行权限','首期现金','执行范围','批准岗位'],
+ ['供应放行与冷链档案','外盒的两种蓝色','批次稳定性与冷链来源','批次核查','稳定性依据','冷链记录'],
+ ['三期执行阻塞清单','80%日报与全员每日会','真实接替与中心支持','人员容量','中心阻塞','接替安排'],
+ ['DBL / 关键Query审阅','红色Query改成“提示”','主要终点相关来源与真实关闭依据','来源核查','分析边界','锁库判断'],
+ ['Topline融资汇报','“本人领导下完成”','可追溯结果、限制与贡献归属','主要分析','结果追溯','团队贡献'],
+ ['NDA模块整合审阅','标点与术语的第三轮统一','安全、批次与临床结论冲突','安全模块','批次模块','临床模块'],
+ ['Pre-NDA / 岗位评审','高层会议发言顺序','真实复核、响应资金与职责履约','递交准备','职责记录','后续预算'],
+ ['NDA提交包 / 签署页','关键节点与公司整体角度','真实资料与下一阶段接替','附件依据','递交判断','响应责任']
+ ];
+ const valid=(p,key)=>!!p.proofs[key]&&!p.risks.some(r=>r.key===key&&r.status!=='closed');
+ const responses=[
+ ['一建','那我按核实的这套回复中心，附件和批次一起留存。不是再发一句“材料已齐”。','我先把今天的回复发出去。差异还在，后面问到，得有人把那一段补核。'],
+ ['PVP','我的独立时间线和限制保留了。恢复条件以后可以沿这条记录核，不必猜当时是谁点头。','我会保留当前版本。统一结论没有核清之前，我不能把待评估改成已排除。'],
+ ['则韩','这次推荐剂量有对应依据。下一阶段引用它时，安全范围和分析限制也要一起带。','曲线可以放上去。有人追问为什么选这个剂量，仍然需要这次没有完成的依据。'],
+ ['小圆','结论、限制和负责的人都放在材料里了。明天问到，不用再隔着三层找答案。','彩排可以继续。钱会不会来，要看实际证据；统一发言没有替我们增加一块数据。'],
+ ['琳琳','这次中心能做什么，终于跟方案写什么对上了。追加的要求以后也照这个方式确认。','意见写全了，中心容量没有凭空增加。我会把不能执行的地方继续报出来。'],
+ ['谷雨','我拿这版去谈，能守住的优势和不能承诺的范围都说清。价格再谈，事实不换。','好看的口径留下了。对方一旦问到另一版，我还是得回来要真正的解释。'],
+ ['则韩','IIb按核实的依据推进。认定请求若提交，评估仍看证据，不靠我们替自己取名字。','沿用口径不等于依据有效。我会保留这次的未核查项，后面分析还要面对它。'],
+ ['肖恩','当前行动和待补材料终于拆开了。记录里谁确认什么，不再由一句整体可控包起来。','报告还可以补。今天没有成立的判断，明天不能写成昨天已经成立。'],
+ ['黑娜','各层的确认范围清楚了，我们按这个配合。CRO支持执行，不替Sponsor确认未核实条件。','我们会把仍待确认的条件列出来。Tracker的颜色不会改变合同和核查边界。'],
+ ['K总','现在可以按有效依据和实际资金谈三期。签约的额度与能动用的钱，我继续分开跟。','计划先谈了，缺口仍在。投资人给不给、怎么分期，不会只看我们是不是说得整齐。'],
+ ['苏苏','这笔按实际批准范围走。授权和任命以批准记录为准，不由一张预算表自动生成。','日期记下了，钱没有跟着日期增加。超范围的执行我仍不会按默认批准付款。'],
+ ['肖恩','这次放行有来源。以后核查可以沿记录走，不用再找谁说过应该没问题。','批次的缺口会留在记录里。后补必须核真实来源，不能补成一段从未发生过的确认。'],
+ ['杨杨','我能按明确的安排接下去，剩下的阻塞有位置可报，不必每个细节都来等你。','日报我会继续发。80%停在这里的原因还在，不会因为更新更勤就自动变成100%。'],
+ ['则韩','来源和处置有记录了。是否延期与分析边界也保留，后续看结果的人可以追溯。','锁库日期可以往前走，来源问题不会跟着消失。下一张表仍要背着它。'],
+ ['谷雨','我按可追溯的结果继续谈，不拿一句积极替代限制。贡献是谁做的，也留在正式材料里。','积极的标题能先发出去。钱和后续尽调要面对的，仍是完整的数据和来源。'],
+ ['一建','这次能整合的是确认后的结论，不只是一样的术语。以后问模块冲突，我有对应记录可找。','包整出来了，冲突还没消失。递交前仍要有人确认哪句是真正的结论。'],
+ ['邹婷','职责与复核都有材料，后续评审按真实履约看。辛苦值得承认，但不能替批准记录。','窗口先保留了。评审和复核没有因为临近递交而自动通过，后面还是要补。'],
+ ['一建','按真实核验结果记录这次递交判断。即使递交完成，下一阶段的回复也不能当作已经获批。','我会保留这次选择和仍待核查的附件。按没按按钮，与资料能不能成立，是两份记录。']
+ ];
+ function snapshot(index,p){const d=ProjectCampaignV2.data.chapters[index],f=ProjectCampaignV2.data.financing.find(x=>x.month>=p.months&&!p.financing[x.id]?.settled);return{index,title:files[index][0],surface:files[index][1],risk:files[index][2],rows:files[index].slice(3),verified:valid(p,d.proof),remaining:f?Math.max(0,f.month-p.months):null,due:f&&f.month,proof:d.proof};}
+ const apply=applyChoice;applyChoice=function(c){const before=S&&S.campaign&&S.campaign.history.length,r=apply.apply(this,arguments),m=c&&c.campaignChoice,p=S&&S.campaign;if(m&&!m.context&&p.history.length>before){
+  const d=ProjectCampaignV2.data.chapters[m.index],ok=valid(p,d.proof),h=p.history.find(x=>x.index===m.index);
+  const response=responses[m.index];c.r=response[0]+'：「'+response[ok?1:2]+'」\n\n'+c.r;
+  if(!S.meetingMinutes)S.meetingMinutes=[];
+  S.meetingMinutes.push({chapter:m.index+1,title:d.title,month:p.months,reply:c.t,kind:h.kind,proof:d.proof,verified:ok,
+   conclusion:ok?'【'+files[m.index][2]+'】已形成可追溯交付；具体限制与专业确认保留在阶段记录。':'【'+files[m.index][2]+'】本次未形成有效的可追溯交付；日期与口径不能代替来源核查。',
+   authority:p.authority,rank:p.rank,notes:p.events.slice(-3)});
+ }return r;};root.applyChoice=applyChoice;
+ const api={files,snapshot,valid};root.MeetingDocuments=api;
+ if(!document.documentElement||!root.MutationObserver)return;
+ const $=s=>document.querySelector(s),esc=root.esc||function(x){return String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));};
+ function minutesHTML(m){return '<section class="md-minutes '+(m&&!m.verified?'md-unresolved':'')+'" aria-live="polite"><header><b>会议纪要 · '+(m?'已记入本轮':'草稿箱')+'</b><small>'+(m?'第'+m.chapter+'章 · 开发第'+m.month+'月':'等待回应')+'</small></header><p>'+(m?esc(m.conclusion):'尚未作出回应。确认交付或未形成结论，都会在选择后据实记录。')+'</p>'+(m?'<details><summary>查看原话与后续记录</summary><blockquote>'+esc(m.reply)+'</blockquote><p>'+m.notes.map(esc).join('<br>')+'</p></details>':'')+'</section>';}
+ function paint(){const area=$('#scene-area');if(!area||!S||!S.campaign)return;
+  const result=area.querySelector('.result-box');if(result&&!result.querySelector('.md-minutes')){const last=(S.meetingMinutes||[]).at(-1);if(last&&last.chapter===chapterIdx+1){const box=document.createElement('div');box.innerHTML=minutesHTML(last);result.appendChild(box.firstElementChild);}return;}
+  const scene=area.querySelector('.sd-scene');if(!scene||scene.querySelector('.md-workspace')||!scene.querySelector('button[onclick^="pickChapter("]'))return;
+  const ch=runChapters[chapterIdx],p=S.campaign,v=snapshot(chapterIdx,p),panel=document.createElement('section');panel.className='md-workspace';
+  const names=[...new Set(StoryDialogue.scenes[chapterIdx].turns.map(x=>x[0]))].filter(n=>n!=='你');
+  panel.innerHTML='<details class="md-share" open><summary><span>▣ SCREEN SHARE / 当前展示文件</span><b>'+esc(v.title)+'</b></summary><div class="md-paper"><header>DRAGON BIOTECH <small>内部审阅 · 第'+(chapterIdx+1)+'章</small></header><p class="md-marked">'+esc(v.surface)+'<span>请再统一一下</span></p><div class="md-paper-rows">'+v.rows.map(n=>'<div><span>'+esc(n)+'</span><b>'+esc(v.verified?'已有阶段核查记录':'本阶段待核查')+'</b></div>').join('')+'</div><footer>批注最醒目的地方，未必是决定项目成败的地方。</footer></div></details><div class="md-agenda"><section><small>明面会议 · 正在纠缠</small><p>'+esc(v.surface)+'</p></section><section class="md-risk '+(!v.verified?'md-pending':'')+'"><small>真实业务 · '+(v.verified?'已有依据':'悬而未决')+'</small><p>'+esc(v.risk)+'</p><b>'+(v.remaining!==null?'距第'+v.due+'月融资核验 '+v.remaining+' 个月':'按当前阶段递交／响应条件核验')+'</b><span>项目时间按选择结算；限时会议按屏幕倒计时。</span></section></div><section class="md-room"><header><b>参会者 · 职能现场</b><small>悬停或聚焦回复，查看预计关系变化</small></header><div class="md-roster">'+names.map(n=>'<div data-person="'+esc(n)+'">'+(PortraitResolver.url(n)?'<img src="'+esc(PortraitResolver.url(n))+'" alt="'+esc(n)+'">':'<i>'+esc(n.slice(0,1))+'</i>')+'<b>'+esc(n)+'</b><small data-room-note>'+esc(n==='钟时'?'关注表面议题':'等待业务回应')+'</small></div>').join('')+(chapterIdx===13?'<div data-person="DM"><i>DM</i><b>数据管理</b><small>关键Query待确认</small></div>':'')+'</div></section>';
+  const stage=scene.querySelector('.ow-stage'),dialogue=scene.querySelector('.sd-dialogue');if(stage)stage.after(panel);else if(dialogue)dialogue.before(panel);else scene.prepend(panel);
+  const choices=scene.querySelector('.choices');if(choices){const box=document.createElement('div');box.innerHTML=minutesHTML(null);choices.after(box.firstElementChild);}
+  scene.querySelectorAll('button[onclick^="pickChapter("]').forEach(b=>{const i=Number(b.getAttribute('onclick').match(/\((\d+)/)[1]);const show=()=>{const c=presentedChoice(ch.choices,i);panel.querySelectorAll('[data-person]').forEach(row=>{const n=row.dataset.person,key=Object.keys(NPCs).find(k=>NPCs[k].name===n),delta=n==='钟时'?c.e&&c.e.trust:key&&c.npc&&c.npc[key];row.classList.toggle('md-gain',delta>0);row.classList.toggle('md-loss',delta<0);row.querySelector('[data-room-note]')?.replaceChildren(document.createTextNode(delta?'预计关系 '+(delta>0?'+':'')+delta:n==='钟时'?'关注表面议题':'本选项无直接关系增减'));});};const clear=()=>{panel.querySelectorAll('[data-person]').forEach(row=>{row.classList.remove('md-gain','md-loss');row.querySelector('[data-room-note]')?.replaceChildren(document.createTextNode(row.dataset.person==='钟时'?'关注表面议题':'等待业务回应'));});};b.addEventListener('mouseenter',show);b.addEventListener('focus',show);b.addEventListener('mouseleave',clear);b.addEventListener('blur',clear);});
+ }
+ api.paint=paint;new MutationObserver(paint).observe($('#scene-area'),{childList:true,subtree:true});paint();
+})(typeof window!=='undefined'?window:globalThis);
+
+/* MEETING_DOCUMENT_RUNTIME END */
 
 /* OFFICE_UI_RUNTIME START */
 /* Presentation only: no choices, resources, unlocks or campaign rules are changed. */
@@ -9815,7 +10223,7 @@ renderLifeBuilder();
    else if(root._homeEv||root._romEv||root._lovePending)person='私人时间';
    const npc=Object.values(NPCs).find(x=>x.name===person);
    const online=!!(event&&event.phone)||/短信|微信|群消息|来电|手机亮/.test(raw.slice(0,300));scene.classList.toggle('ow-online',online);
-   const stage=document.createElement('div');stage.className='ow-stage';stage.innerHTML='<div class="ow-location"><small>'+esc(online?'OFFICE MESSENGER':'CLINICAL DEVELOPMENT / '+ch.stage)+'</small><h3>'+esc(person)+'</h3><p>'+esc(npc?npc.role:person==='钟时'?'Clinical Development VP':'工作之外的联系')+'</p><p>'+esc(online?'手机亮了。回复也会成为记录。':person==='私人时间'?'工位之外，也有人在等你。':'会议室里，每一次选择都留下后续。')+'</p></div>'+(PortraitResolver.url(person)?'<img class="ow-scene-portrait" src="'+esc(PortraitResolver.url(person))+'" alt="'+esc(person)+'立绘">':'<div class="ow-anonymous" aria-hidden="true">'+(online?'☎':'☕')+'</div>');const sub=scene.querySelector('.scene-sub')||scene.querySelector('.scene-title');if(sub)sub.after(stage);else scene.prepend(stage);
+   const stage=document.createElement('div');stage.className='ow-stage';stage.innerHTML='<div class="ow-location"><small>'+esc(online?'OFFICE MESSENGER':'CLINICAL DEVELOPMENT / '+ch.stage)+'</small><h3>'+esc(!event&&root.StoryDialogue?StoryDialogue.scenes[Math.min(17,chapterIdx)].place:person)+'</h3><p>'+esc(npc?npc.role:person==='钟时'?'Clinical Development VP':'工作之外的联系')+'</p></div>'+(PortraitResolver.url(person)?'<img class="ow-scene-portrait" src="'+esc(PortraitResolver.url(person))+'" alt="'+esc(person)+'立绘">':'<div class="ow-anonymous" aria-hidden="true">'+(online?'☎':'☕')+'</div>');const sub=scene.querySelector('.scene-sub')||scene.querySelector('.scene-title');if(sub)sub.after(stage);else scene.prepend(stage);
    const label=scene.querySelector('.vp-name');if(label)label.textContent='会议现场 · '+ch.stage+' / '+(online?'线上沟通':'临床开发');
    if(!event){scene.querySelectorAll('.dialogue-narration').forEach(n=>{if(n.textContent===ch.politics){n.classList.add('ow-politics');n.innerHTML='<span class="dialogue-action">现场记录 · 管理议题</span>'+esc(ch.politics);}else if(n.textContent.startsWith('验收进度 ')){n.classList.add('ow-summary');n.innerHTML='<details><summary>展开项目与任命摘要</summary>'+esc(n.textContent)+'</details>';}});}
    if(chapterIdx===13&&scene.querySelector('button[onclick^="pickChapter("]')){scene.classList.add('ow-query');const head=document.createElement('div');head.className='ow-query-head';head.textContent='DATA MANAGEMENT / DBL · Query处置与稽查轨迹';const choices=scene.querySelector('.choices');if(choices)choices.before(head);}
@@ -9833,7 +10241,7 @@ renderLifeBuilder();
  function title(){
   const screen=$('#title-screen');if(!screen||screen.querySelector('.ow-title-banner'))return;
   const banner=document.createElement('div');banner.className='ow-title-banner';banner.innerHTML='<small>DRAGON OFFICE · BIOTECH WORKSPACE</small><h1>下一场会议之前，<br>先决定你要成为什么样的人。</h1><p>从首次人体试验走到NDA。守住数据，拉拢团队，让真正的贡献被看见。</p><button onclick="openCreatorScreen()">新员工入职 →</button><button class="secondary" onclick="loadGameV2()">恢复工作空间</button>';
-  const subtitle=$('#title-screen .subtitle');if(subtitle){subtitle.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · Demo v18.1.0';banner.appendChild(subtitle);}screen.prepend(banner);
+  const subtitle=$('#title-screen .subtitle');if(subtitle){subtitle.textContent='SURVIVAL IN CLINICAL DEVELOPMENT · Demo v18.2.0';banner.appendChild(subtitle);}screen.prepend(banner);
   const gameTitle=screen.querySelector('.game-title');if(gameTitle)banner.prepend(gameTitle);screen.querySelectorAll(':scope > button').forEach(n=>n.remove());
   const mainStart=screen.querySelector('button[onclick="startGame()"]');if(mainStart)mainStart.remove();
   const intro=document.createElement('details');intro.className='ow-title-folder';intro.innerHTML='<summary>入职须知 · 产品与职场</summary><div></div>';const box=screen.querySelector('.intro-box:not(.vp-card)'),hint=screen.querySelector('.intro-hint');if(box)intro.lastElementChild.appendChild(box);if(hint)intro.lastElementChild.appendChild(hint);screen.appendChild(intro);

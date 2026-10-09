@@ -1,0 +1,13 @@
+'use strict';
+const assert=require('assert/strict'),baseline=require('./dialogue-mechanics-baseline.json'),createGame=require('./runtime-fixture.cjs');
+const g=createGame(),strip=c=>Object.fromEntries(Object.entries(c).filter(([k])=>!['t','r','achievementName'].includes(k)));
+const entries=g.json(`[...V11_EVENTS,...DELIVERY_EVENTS_147,...PI_CHAIN_EVENTS,...ROMANCE_ENCOUNTERS,...PHONE_EVENTS,...DragonHomeEvents,...['archivist','operator','weaver','echo'].map(k=>StoryDialogue.prepare(DragonMetaEventFor(k))),...Object.keys(LOVE_META).map(k=>({id:'love_'+k,text:LOVE_META[k].scene,choices:loveOptions(k)}))]`);
+assert.equal(entries.length,69);
+for(const old of baseline.events){const ev=entries.find(e=>e.id===old.id);assert(ev,'actual event '+old.id);assert.deepEqual(ev.choices.map(strip),old.choices,'mechanics unchanged: '+ev.id);assert(ev.text.split('\n\n').filter(x=>/^[^：「\n]{1,12}：「/.test(x)).length>=2,'conversation: '+ev.id);ev.choices.forEach(c=>assert(/^「.+」$/.test(c.t),'spoken response '+ev.id));}
+const chapters=g.json(`ProjectCampaignV2.data.chapters.map((d,i)=>{const p=ProjectCampaignV2.fresh(false);Object.assign(p,{cash:100000,progress:100,quality:100,credit:100,boss:100,coalition:100,rank:3,authority:2,teamReady:true,supporters:['PV','统计','运营'],flags:{clinicalAdvantage:true,departmentDutyCompleted:true},proofs:Object.fromEntries(ProjectCampaignV2.data.chapters.map(x=>[x.proof,true]))});return ProjectCampaignV2.chapter(i,p);})`);
+chapters.forEach((c,i)=>{assert.deepEqual(c.choices.map(strip),baseline.main[i].choices,'main choice gates and mechanics '+(i+1));assert(c.text.split('\n\n').filter(x=>/^[^：「\n]{1,12}：「/.test(x)).length>=6);c.choices.forEach(x=>assert(/^「.+」$/.test(x.t)));assert(!c.text.includes('DO-8006 · 皮下注射液。开发至NDA递交'));});
+const callback=g.json(`(()=>{const p=ProjectCampaignV2.fresh(false);ProjectCampaignV2.apply(p,ProjectCampaignV2.chapter(0,p).choices[1]);return {text:ProjectCampaignV2.chapter(1,p).text,state:JSON.stringify(p),repeat:ProjectCampaignV2.chapter(1,p).text,after:JSON.stringify(p)};})()`);
+assert.match(callback.text,/附件差异还没核实/);assert.equal(callback.text,callback.repeat);assert.equal(callback.state,callback.after,'rendering does not change state');
+g.run(`startGame();window._evObj={ev:DragonMetaEventFor('archivist'),next:()=>{},cro:false};renderEventFromObj();`);assert(g.run('_evObj.ev._spokenScene'));
+assert(g.run(`StoryDialogue.html('对方：「不要替我编一張NPC脸。」').includes('sd-initial')`));assert(!g.run(`StoryDialogue.html('对方：「不要替我编一張NPC脸。」').includes('<img')`));
+console.log('PASS dialogue: 18 main scenes / 69 active events, all original choice gates/effects, real meta entry, earlier-choice response, render purity and private identity.');
