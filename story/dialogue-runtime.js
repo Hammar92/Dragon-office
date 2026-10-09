@@ -37,6 +37,7 @@
   const chapterButton=scene.querySelector('button[onclick^="pickChapter("]');
   if(chapterButton)ev=runChapters[chapterIdx];
   if(!ev||(!ev.campaign&&!E[ev.id]))return;prepare(ev);
+  if(ev.campaign)scene.querySelectorAll('button[onclick^="pickChapter("]').forEach(b=>{const match=b.getAttribute('onclick').match(/pickChapter\((\d+)\)/),c=match&&ev.choices[Number(match[1])];if(c&&c.traitOption){b.classList.add('trait-option-'+c.traitOption.tier);b.dataset.trait=c.traitOption.id;}});
   const target=scene.querySelector('.dialogue-stage')||scene.querySelector('.vp-line')||scene.querySelector('.aside');if(!target)return;
   target.outerHTML=html(ev.text);scene.classList.add('sd-scene');
   const label=scene.querySelector('.vp-name');if(label)label.textContent=ev.location||'现场对话';

@@ -5,6 +5,8 @@
  const clone=x=>JSON.parse(JSON.stringify(x)),cap=x=>Math.max(0,Math.min(100,x));
  const dialogue=typeof module!=='undefined'&&module.exports?require('./dialogue-scenes.js'):root.StoryDialogue;
  const responsibilities=typeof module!=='undefined'&&module.exports?require('./responsibilities.js'):root.StoryResponsibilities;
+ const traitOptions=typeof module!=='undefined'&&module.exports?require('./trait-options.js'):root.StoryTraitOptions;
+ const playerTraits=()=>typeof S!=='undefined'&&S&&S.player?S.player.traits||[]:[];
  const metrics=['progress','cash','quality','coalition','boss','credit','obstruction'];
  const labels={progress:'验收进度',cash:'现金（万元）',quality:'已核查质量',coalition:'职能支持',boss:'老板认可',credit:'交付记录',obstruction:'管理摩擦'};
  function fresh(migrated){return Object.assign({},data.initial,{version:2,product:data.product.code,flags:{},proofs:{},risks:[],history:[],entries:{},financing:{},milestones:{},coalition:30,boss:30,credit:10,obstruction:20,rank:0,authority:0,promotionHistory:[],btd:{status:'potential'},teamReady:false,dailyMeeting:false,meetingReformed:false,careCount:0,finished:false,migrated:!!migrated,offers:{newCompany:Math.random()<0.60},events:[]});}
@@ -71,16 +73,16 @@
   if(index===17&&p.authority>=1&&p.rank>=2)rows.push({kind:'concentrate',t:'把后续所有对外入口收归自己，替团队继续兜底。',route:'power'});
   return rows;
  }
- function chapter(index,p){
+ function chapter(index,p,traits){
   p=ensureVersion(p);const d=data.chapters[index];if(!d)throw Error('Invalid chapter');
   const rows=available(p,index);
   const text='DO-8006 · 皮下注射液。开发至NDA递交；认定需实际数据，不是开局身份。\n\n'+d.politics+'\n\n'+(p.risks.some(r=>r.status!=='closed')?'前期异议仍在：'+p.risks.filter(r=>r.status!=='closed').map(r=>r.key).join('、')+'。':'已有记录将决定本阶段可以采取的行动。')+'\n\n'+summary(p);
   const ch={id:d.id,n:d.n,stage:d.stage,act:d.act,title:d.title,aside:{from:d.from,text:'当前交付：'+d.honest},text,campaign:true,choices:rows.map((r,j)=>({t:r.t,route:r.route,achievement:'a'+(index*3+Math.min(j,2)+1),achievementName:d.title,e:{progress:0,trust:r.kind==='shortcut'?3:-1,power:r.kind==='authority'?4:0,morale:r.kind==='shortcut'?-2:1,heart:r.kind==='shortcut'?2:2,sanity:r.kind==='shortcut'?-2:0},npc:r.kind==='shortcut'?{}:Object.fromEntries((index===1?['pvp','jialin']:index===2?['zihan','mingye']:index===4?['miaomiao','yangyang']:index===8?['kzong','heina']:index===13?['xiaoen','zihan']:['yijian','kzong']).map(k=>[k,2])),r:r.kind==='shortcut'?'表面日期保住了，未核实的内容仍留下来源与责任记录。':'实际交付、限制与专业owner一并记录。',project:{set:{}},record:r.kind==='shortcut'?undefined:'campaign_'+d.proof,campaignChoice:{index,kind:r.kind,slot:j,extraCost:r.extraCost||0,extraMonths:r.extraMonths||0,context:false}}))};
   ch.text=dialogue.text(index,p)+'\n\n'+summary(p);ch.location=dialogue.scenes[index].place;ch.aside=undefined;ch.from=d.from;ch.responsibility=d.responsibility;
   ch.choices.forEach(c=>{c.t=dialogue.choice(index,c.campaignChoice.kind,p);c.npc=['shortcut','fraud','concentrate'].includes(c.campaignChoice.kind)?{}:Object.fromEntries(responsibilities.chapters[index].npc.map(k=>[k,2]));});
-  return ch;
+  return traitOptions.augment(ch,p,index,traits||playerTraits());
  }
- function apply(p,c){
+ function apply(p,c,traits){
   const m=c.campaignChoice;if(!m)return null;if(m.context){p.careCount++;return null;}
   if(p.history.some(h=>h.index===m.index))return null;
   const d=data.chapters[m.index],before=clone(p),bad=p.risks.filter(r=>r.status!=='closed'),kind=m.kind||'work';
@@ -96,6 +98,7 @@
     bad.filter(r=>r.key!=='lock'||!p.flags.fraud).forEach(r=>{r.status='closed';p.proofs[r.key]=true;p.progress=cap(p.progress+data.chapters[r.index].progress);p.quality=cap(p.quality+3);});
     p.proofs[d.proof]=true;p.progress=cap(p.progress+d.progress);p.quality=cap(p.quality+(m.index<4?4:3));
     p.coalition=cap(p.coalition+4);p.boss=cap(p.boss+3);p.credit=cap(p.credit+5);
+    traitOptions.reward(p,m,traits||playerTraits());
     const support=m.index===1?['PV']:m.index===2?['统计']:m.index===4?['运营']:m.index===8?['CRO执行']:m.index===13?['质量']:[];p.supporters=Array.from(new Set((p.supporters||[]).concat(support)));
     if(m.index===5)p.flags.clinicalAdvantage=p.flags.negativeClinicalData?false:p.proofs.design&&p.proofs.dose&&p.proofs.safety;
     if(kind==='btd'){p.btd={status:'pending',requestedAt:p.months};p.events.push('认定请求已提交；资格不是获得认定。');}
@@ -119,6 +122,11 @@
  const api={data,metrics,labels,fresh,patch,gate,chapter,apply,summary,available,canAuthority,advance,funding,ensureVersion};
  if(typeof module!=='undefined'&&module.exports){module.exports=api;return;}
  root.ProjectCampaignV2=api;root.ProjectCampaignV1=api;
+ // Preview and settlement use the same discount; failed execution and ordinary responses get no extra reduction.
+ function traitDiscount(c){const m=c&&c.campaignChoice,r=m&&traitOptions.rules[m.trait],p=S&&S.campaign;if(!r||!p||!playerTraits().includes(r.id)||m.kind!=='work')return 0;const used=(p.traitUses||{})[r.id];if(!traitOptions.eligible(p,m.index,playerTraits()).some(x=>x.id===r.id)&&!(used&&used.index===m.index&&p.history.at(-1)&&p.history.at(-1).index===m.index))return 0;if(!used&&p.cash<data.chapters[m.index].cost+(m.extraCost||0))return 0;return traitOptions.tiers[r.tier].discount;}
+ const priorHeart=costHeart,priorStamina=costStamina;
+ costHeart=function(c,heavy){return Math.max(0,Math.round(priorHeart(c,heavy)*(1-traitDiscount(c))));};
+ costStamina=function(c){return Math.max(1,Math.round(priorStamina(c)*(1-traitDiscount(c))));};
  function ensure(){S.campaign=ensureVersion(S.campaign);return S.campaign;}api.ensure=ensure;
  V12_BRANCH_VARIANTS={};root.V12_BRANCH_VARIANTS=V12_BRANCH_VARIANTS;
  V11_CHAPTERS.splice(0,V11_CHAPTERS.length,...data.chapters.map((_,i)=>chapter(i,fresh(false))));

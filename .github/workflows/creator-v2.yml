@@ -17,6 +17,7 @@ jobs:
       - run: node tests/project-campaign.cjs
       - run: node tests/dialogue-contract.cjs
       - run: node tests/responsibilities.cjs
+      - run: node tests/trait-options.cjs
       - run: node tests/collection-contract.spec.cjs
       - run: node tests/ending-review.cjs
       - run: node tests/collection-paths.cjs
@@ -26,6 +27,7 @@ jobs:
       - run: node tests/creator-v2.cjs
       - run: node tests/office-ui.cjs
       - run: node tests/dialogue-browser.cjs
+      - run: node tests/trait-browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
