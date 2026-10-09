@@ -9934,7 +9934,7 @@ renderLifeBuilder();
  if(typeof module!=='undefined'&&module.exports){module.exports=api;return;}
  root.ProjectCampaignV2=api;root.ProjectCampaignV1=api;
  // Preview and settlement use the same discount; failed execution and ordinary responses get no extra reduction.
- function traitModifiers(c){const m=c&&c.campaignChoice,r=m&&traitOptions.rules[m.trait],p=S&&S.campaign;if(!r||!p||!playerTraits().includes(r.id)||['shortcut','fraud','concentrate'].includes(m.kind))return null;const used=(p.traitUses||{})[r.id];if(!traitOptions.eligible(p,m.index,playerTraits()).some(x=>x.id===r.id)&&!(used&&used.index===m.index&&p.history.at(-1)&&p.history.at(-1).index===m.index))return null;if(!used&&p.cash<data.chapters[m.index].cost+(m.extraCost||0))return null;return r;}
+ function traitModifiers(c){const m=c&&c.campaignChoice,r=m&&traitOptions.rules[m.trait],p=S&&S.campaign;if(!r||!p||m.context||!playerTraits().includes(r.id)||['shortcut','fraud','concentrate'].includes(m.kind))return null;const used=(p.traitUses||{})[r.id];if(!traitOptions.eligible(p,m.index,playerTraits()).some(x=>x.id===r.id)&&!(used&&used.index===m.index&&p.history.at(-1)&&p.history.at(-1).index===m.index))return null;if(!used&&p.cash<data.chapters[m.index].cost+(m.extraCost||0))return null;return r;}
  const priorHeart=costHeart,priorStamina=costStamina;
  costHeart=function(c,heavy){const r=traitModifiers(c);return Math.max(0,Math.round(priorHeart(c,heavy)*(1-(r?r.heartDiscount:0)))+(r?r.heartSurcharge:0));};
  costStamina=function(c){const r=traitModifiers(c);return Math.max(1,Math.round(priorStamina(c)*(1-(r?r.staminaDiscount:0))));};
